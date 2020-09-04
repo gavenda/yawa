@@ -19,9 +19,13 @@ class Plugin : JavaPlugin() {
         // Register placeholders
         Placeholder.register(PlayerPlaceholderProvider())
         Placeholder.register(WorldPlaceholderProvider())
+
+        getCommand("placeholders")?.setExecutor(PlaceholderCommand())
     }
 
     override fun onDisable() {
         Placeholder.clear()
+
+        getCommand("placeholders")?.setExecutor(null)
     }
 }

@@ -27,11 +27,7 @@ val World.isDebugMode: Boolean
  */
 fun World.broadcastMessage(message: String, alternateChar: Char = '&') {
     players.forEach { player ->
-        player.sendMessage(
-            *TextComponent.fromLegacyText(
-                ChatColor.translateAlternateColorCodes(alternateChar, message)
-            )
-        )
+        player.sendMessage(ChatColor.translateAlternateColorCodes(alternateChar, message))
     }
 }
 

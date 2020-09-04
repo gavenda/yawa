@@ -10,3 +10,13 @@ depend:
 api-version: '1.16'
 version: ${project.version}
 main: work.gavenda.yawa.api.Plugin
+
+commands:
+  placeholders:
+    description: Lists all available placeholders.
+    permission: yawa.api.placeholder
+    usage: /placeholders
+
+permissions:
+  yawa.api.placeholder:
+    default: op

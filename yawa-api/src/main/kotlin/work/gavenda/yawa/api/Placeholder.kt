@@ -1,5 +1,8 @@
 package work.gavenda.yawa.api
 
+import net.md_5.bungee.api.ChatColor
+import net.md_5.bungee.api.chat.BaseComponent
+import net.md_5.bungee.api.chat.ComponentBuilder
 import org.bukkit.World
 import org.bukkit.entity.Player
 
@@ -72,6 +75,21 @@ class PlaceholderContext(
         }
 
         return parsed
+    }
+
+    fun asHelpList(): List<String> {
+        val placeholders = providers
+            .map { it.provide(player, world) }
+            .flatMap { it.entries }
+            .map { it.key to it.value }
+            .toMap()
+
+        return placeholders.map { entry ->
+            val placeholder = entry.key
+            val value = entry.value
+
+            "&a[&r$placeholder&a]&r &e» &r$value"
+        }
     }
 
 }
