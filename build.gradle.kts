@@ -1,13 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.ByteArrayOutputStream
 
 plugins {
     base
     kotlin("jvm") version Version.KOTLIN
 }
 
+val gitHash: String = ByteArrayOutputStream().use { outputStream ->
+    project.exec {
+        commandLine("git")
+        args("rev-parse", "--short", "HEAD")
+        standardOutput = outputStream
+    }
+    outputStream.toString().trim()
+}
+
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.0.0"
+    version = "1.0.0-SNAPSHOT-$gitHash"
 
     repositories {
         jcenter()

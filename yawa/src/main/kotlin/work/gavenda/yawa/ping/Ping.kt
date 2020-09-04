@@ -32,7 +32,7 @@ fun Plugin.enablePing() {
             val name = player.name
             val ping = player.latencyInMillis
             val afk = if (player.isAfk) "AFK" else ""
-            val displayFormat = String.format("%-16s&e%3s ", name, afk).plus("&6»")
+            val displayFormat = String.format("%s &e%s ", name, afk)
             val playerListName = ChatColor.translateAlternateColorCodes('&', displayFormat)
 
             val serverNameFormat = "&6${Config.Ping.ServerName}"
