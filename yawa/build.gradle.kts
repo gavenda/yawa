@@ -12,5 +12,5 @@ shadowedKotlinProject("Yawa")
 paperPlugin()
 
 dependencies {
-    api(project(":yawa-api"))
+    compileOnly(project(":yawa-api"))
 }
