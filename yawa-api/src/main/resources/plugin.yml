@@ -1,0 +1,12 @@
+name: YawaAPI
+description: The Yawa API.
+author: Gavenda
+website: https://gavenda.work
+load: STARTUP
+depend:
+  - Kotlin
+  - ProtocolLib
+
+api-version: '1.16'
+version: ${project.version}
+main: work.gavenda.yawa.api.Plugin

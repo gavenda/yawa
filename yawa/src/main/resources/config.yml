@@ -1,0 +1,41 @@
+# Yawa - general all-in-one plugin for any of my personally deployed minecraft servers.
+#
+# https://github.com/gavenda/yawa
+#
+# The main reason this plugin was created so I can instantly get server up to date with any Spigot updates or fix
+# any errors I found and also remove unnecessary features I don't really want.
+#
+# This is simply micro optimizing, and yes, I'm doing it for evil.
+
+# Ping feature configuration
+ping:
+  disabled: false
+  server-name: Yawaland
+
+# Sleep - Configure how we pass the night, defaults to desired values.
+# based on Harbor (https://github.com/nkomarn/Harbor)
+sleep:
+  disabled: false
+  messages:
+    chat:
+      enabled: true
+      player-sleeping: "&e[player-name] is now sleeping."
+      player-left-bed: "&e[player-name] got out of bed."
+      night-skipping:
+        - "&ePassing the night."
+      night-skipped:
+        - "&eThe night has passed."
+
+    action-bar:
+      enabled: true
+      player-sleeping: "&e[world-sleeping] out of [world-player-count] players are sleeping."
+      night-skipping: "&eEveryone is now sleeping."
+
+# Skin feature configuration
+skin:
+  disabled: true
+
+afk:
+  disabled: false
+  entry-message: "&e[player-name] is now AFK."
+  leave-message: "&e[player-name] is no longer AFK."
