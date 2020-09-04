@@ -66,7 +66,7 @@ class PlaceholderContext(
         placeholders.forEach { entry ->
             val placeholder = entry.key
             val value = entry.value
-            if(value != null) {
+            if (value != null) {
                 parsed = parsed.replace("[${placeholder}]", value)
             }
         }
