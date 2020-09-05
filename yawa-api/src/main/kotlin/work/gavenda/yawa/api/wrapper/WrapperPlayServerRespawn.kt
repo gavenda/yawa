@@ -24,9 +24,7 @@ package work.gavenda.yawa.api.wrapper
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
-import java.nio.ByteBuffer
-import java.security.MessageDigest
-
+import com.google.common.hash.Hashing
 
 /**
  * @since Minecraft 1.16.2
@@ -61,25 +59,25 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
      * Write the world seed.
      * @param seed the un-hashed world seed
      */
+    @Suppress("UnstableApiUsage")
     fun writeSeed(seed: Long) {
-        val bufferBytes = ByteBuffer.allocate(Long.SIZE_BYTES).apply {
-            putLong(seed)
-        }
-        val digest = MessageDigest.getInstance("SHA-256").digest(bufferBytes.array())
-        val bufferLong = ByteBuffer.allocate(Long.SIZE_BYTES).apply {
-            put(digest)
-            flip()
-        }
-
-        handle.longs.write(0, bufferLong.long)
+        handle.longs.write(0, Hashing.sha256().hashLong(seed).asLong())
     }
 
     /**
      * Write debug mode
      * @param value new value
      */
-    fun writeDebug(value: Boolean) {
+    fun writeIsDebug(value: Boolean) {
         handle.booleans.write(0, value)
+    }
+
+    fun writeIsWorldFlat(value: Boolean) {
+        handle.booleans.write(1, value)
+    }
+
+    fun writeIsAlive(value: Boolean) {
+        handle.booleans.write(2, value)
     }
 
     companion object {

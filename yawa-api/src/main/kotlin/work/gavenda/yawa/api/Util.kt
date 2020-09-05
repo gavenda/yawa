@@ -15,6 +15,16 @@ fun URL.asText(): String {
     }
 }
 
+fun HttpURLConnection.asText(): String {
+    return inputStream.bufferedReader().readText()
+}
+
+fun URL.asHttpConnection(): HttpURLConnection {
+    return openConnection().run {
+        this as HttpURLConnection
+    }
+}
+
 /**
  * Simple helper for running bukkit tasks asynchronously.
  * @param plugin executing plugin

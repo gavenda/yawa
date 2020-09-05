@@ -1,18 +1,21 @@
 package work.gavenda.yawa.api
 
+import com.comphenix.protocol.reflect.StructureModifier
 import com.comphenix.protocol.utility.MinecraftReflection
+import com.comphenix.protocol.wrappers.*
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.ADD_PLAYER
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.REMOVE_PLAYER
-import com.comphenix.protocol.wrappers.WrappedGameProfile
-import com.comphenix.protocol.wrappers.WrappedSignedProperty
 import org.bukkit.Bukkit
+import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
-import work.gavenda.yawa.api.wrapper.*
-import java.lang.reflect.Field
-import java.lang.reflect.Method
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerHeldItemSlot
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerRespawn
+
 
 const val META_AFK = "Afk"
 
@@ -36,9 +39,9 @@ var Player.isAfk: Boolean
 val Player.latencyInMillis: Int
     get() {
         try {
-            val getHandle: Method = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
-            val entityPlayer: Any = getHandle.invoke(this)
-            val ping: Field = entityPlayer.javaClass.getDeclaredField("ping")
+            val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
+            val entityPlayer = getHandle.invoke(this)
+            val ping = entityPlayer.javaClass.getDeclaredField("ping")
 
             return ping.getInt(entityPlayer)
         } catch (e: Exception) {
@@ -87,30 +90,75 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
         gameProfile.properties.clear()
         gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
 
-        updateSkin()
+        if (!isDead) {
+            updateSkin()
+        }
     } catch (ex: Exception) {
         logger.error("Unable to apply skin", ex)
     }
+}
+
+fun Player.updateAbilities() {
+    val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
+    val entityPlayer = getHandle.invoke(this)
+    val updateAbilities = entityPlayer.javaClass.getDeclaredMethod("updateAbilities")
+
+    updateAbilities.invoke(entityPlayer)
+}
+
+fun Player.updateScaledHealth() {
+    val updateScaledHealth = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
+    updateScaledHealth.invoke(this)
+}
+
+fun Player.triggerHealthUpdate() {
+    val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
+    val entityPlayer = getHandle.invoke(this)
+    val updateAbilities = entityPlayer.javaClass.getDeclaredMethod("triggerHealthUpdate")
+
+    updateAbilities.invoke(entityPlayer)
 }
 
 /**
  * Does a refresh of the player, applying the currently set skin if changed.
  * Always called after [Player.applySkin].
  */
-@Suppress("DEPRECATION")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 fun Player.updateSkin() {
+    val wrappedGameProfile = WrappedGameProfile.fromPlayer(this)
+    val enumGameMode = NativeGameMode.fromBukkit(gameMode)
+    val displayName = WrappedChatComponent.fromText(playerListName)
+    val playerInfoData = PlayerInfoData(wrappedGameProfile, 0, enumGameMode, displayName)
+
     val removeInfo = WrapperPlayServerPlayerInfo().apply {
         writeAction(REMOVE_PLAYER)
+        writeData(listOf(playerInfoData))
     }
     val addInfo = WrapperPlayServerPlayerInfo().apply {
         writeAction(ADD_PLAYER)
+        writeData(listOf(playerInfoData))
     }
     val respawn = WrapperPlayServerRespawn().apply {
+        val nmsWorldClass = MinecraftReflection.getNmsWorldClass()
+        val localWorldKey = nmsWorldClass.getDeclaredField("dimensionKey").apply {
+            isAccessible = true
+        }
+        val resourceKeyClass = MinecraftReflection.getMinecraftClass("ResourceKey")
+        val nmsWorld = BukkitConverters.getWorldConverter().getGeneric(world)
+        val resourceKey = localWorldKey.get(nmsWorld)
+        val resourceMod = handle.getSpecificModifier(resourceKeyClass) as StructureModifier<Any>
+
+        // Write resource key
+        resourceMod.write(resourceMod.size() - 1, resourceKey)
+
         writeDimension(world.environment.id)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
         writePreviousGameMode(previousGameMode)
         writeSeed(world.seed)
-        writeDebug(world.isDebugMode)
+        writeIsDebug(world.isDebugMode)
+        writeIsWorldFlat(world.worldType == WorldType.FLAT)
+        // true = teleport like, false = player actually died
+        writeIsAlive(true)
     }
     val position = WrapperPlayServerPosition().apply {
         writeX(location.x)
@@ -123,27 +171,23 @@ fun Player.updateSkin() {
     val slot = WrapperPlayServerHeldItemSlot().apply {
         writeSlot(inventory.heldItemSlot)
     }
-    val abilities = WrapperPlayServerAbilities().apply {
-        writeInvulnerable(isInvulnerable)
-        writeFlyingSpeed(flySpeed)
-        writeFlying(isFlying)
-        writeWalkingSpeed(walkSpeed)
-        writeCanFly(allowFlight)
-        writeCanInstantlyBuild(false)
-    }
 
+    // Send self
+    removeInfo.sendPacket(this)
+    addInfo.sendPacket(this)
+    respawn.sendPacket(this)
+    updateAbilities()
+    position.sendPacket(this)
+    slot.sendPacket(this)
+    updateScaledHealth()
+    updateInventory()
+    triggerHealthUpdate()
+
+    // Show update to other players
     bukkitTask(Plugin.Instance) {
         for (p in Bukkit.getOnlinePlayers()) {
             p.hidePlayer(Plugin.Instance, this)
             p.showPlayer(Plugin.Instance, this)
         }
-
-        removeInfo.sendPacket(this)
-        addInfo.sendPacket(this)
-        respawn.sendPacket(this)
-        position.sendPacket(this)
-        slot.sendPacket(this)
-        abilities.sendPacket(this)
-        updateInventory()
     }
 }

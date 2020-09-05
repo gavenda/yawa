@@ -1,17 +1,24 @@
 package work.gavenda.yawa.api.mojang
 
+import com.google.common.cache.CacheBuilder
+import com.google.common.util.concurrent.RateLimiter
 import com.google.gson.JsonParser
+import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
 import work.gavenda.yawa.api.logger
 import java.math.BigInteger
 import java.net.URL
 import java.text.ParseException
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Provides a simplistic way to access the Mojang API.
  */
+@Suppress("UnstableApiUsage")
 object MojangAPI {
+    private const val HTTP_NO_CONTENT = 204
+    private const val HTTP_TOO_MANY_REQUESTS = 429
 
     private const val URI_API_STATUS = "https://status.mojang.com/check"
     private const val URI_API_USERNAME_UUID = "https://api.mojang.com/users/profiles/minecraft"
@@ -20,11 +27,23 @@ object MojangAPI {
     // We could have used a full blown object mapper such as Jackson, but that would be overkill
     private val parser = JsonParser()
 
+    // Mojang API rate limiter, does not apply to profile since it can be as many as long as its unique
+    private val rateLimiter = RateLimiter.create(600.0, 10, TimeUnit.MINUTES)
+
+    // We cache to avoid hitting the 1 minute rate limit per profile
+    private val profileCache = CacheBuilder.newBuilder()
+        .expireAfterWrite(1, TimeUnit.MINUTES)
+        .build<UUID, MojangProfile>()
+
     /**
      * Retrieves all Mojang services.
      * @return a list of [MojangService]
      */
     fun findServiceStatus(): List<MojangService> {
+        if (!rateLimiter.tryAcquire()) {
+            throw RateLimitException()
+        }
+
         val response = URL(URI_API_STATUS).asText()
 
         try {
@@ -51,10 +70,21 @@ object MojangAPI {
      * @return an instance of [UUID], will return null when not found
      */
     fun findUuidByUsername(username: String): UUID? {
-        val response = URL("$URI_API_USERNAME_UUID/$username").asText()
+        if (!rateLimiter.tryAcquire()) {
+            throw RateLimitException()
+        }
+
+        val httpConnection = URL("$URI_API_USERNAME_UUID/$username").asHttpConnection()
+
+        if (httpConnection.responseCode == HTTP_NO_CONTENT) {
+            return null
+        }
+        if (httpConnection.responseCode == HTTP_TOO_MANY_REQUESTS) {
+            throw RateLimitException()
+        }
 
         try {
-            val element = parser.parse(response)
+            val element = parser.parse(httpConnection.asText())
             val obj = element.asJsonObject
             val uuid = obj[MOJANG_KEY_ID].asString
 
@@ -76,11 +106,24 @@ object MojangAPI {
      * @return an instance of [MojangProfile], will return null when not found
      */
     fun findProfile(uuid: UUID): MojangProfile? {
+        val cachedProfile = profileCache.getIfPresent(uuid)
+
+        // Return cache immediately if available
+        if (cachedProfile != null) {
+            return cachedProfile
+        }
+        // Or we continue our business
+
         val uuidNoDash = uuid.toString().replace("-", "")
-        val response = URL("$URI_API_PROFILE/$uuidNoDash?unsigned=false").asText()
+        val httpConnection = URL("$URI_API_PROFILE/$uuidNoDash?unsigned=false").asHttpConnection()
+
+        // If we actually hit this, we have a bad cache implementation
+        if (httpConnection.responseCode == HTTP_TOO_MANY_REQUESTS) {
+            throw RateLimitException()
+        }
 
         try {
-            val element = parser.parse(response)
+            val element = parser.parse(httpConnection.asText())
             val obj = element.asJsonObject
 
             val uuidStr = obj[MOJANG_KEY_ID].asString
@@ -103,7 +146,10 @@ object MojangAPI {
                 MojangProfileProperty(propName, propValue, signature)
             }
 
-            return MojangProfile(uuidObj, playerName, properties)
+            return MojangProfile(uuidObj, playerName, properties).also {
+                // We cache the result
+                profileCache.put(uuid, it)
+            }
         } catch (e: ParseException) {
             logger.error("Unable to retrieve minecraft uuid: ${e.message}")
         }

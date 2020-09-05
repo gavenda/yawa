@@ -2,7 +2,6 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
-import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.ChatColor
 import org.bukkit.World
 
@@ -12,12 +11,10 @@ import org.bukkit.World
  */
 val World.isDebugMode: Boolean
     get() {
-        val worldClass: Class<*> = MinecraftReflection.getNmsWorldClass()
-        val localWorldKey = worldClass.getDeclaredField("dimensionKey")
-        localWorldKey.isAccessible = true
-        val localDebugWorld = worldClass.getDeclaredField("debugWorld")
-        localDebugWorld.isAccessible = true
-
+        val nmsWorldClass: Class<*> = MinecraftReflection.getNmsWorldClass()
+        val localDebugWorld = nmsWorldClass.getDeclaredField("debugWorld").apply {
+            isAccessible = true
+        }
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
     }
 
