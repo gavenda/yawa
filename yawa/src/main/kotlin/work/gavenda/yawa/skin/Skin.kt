@@ -1,8 +1,11 @@
 package work.gavenda.yawa.skin
 
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.DisabledCommand
 import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.api.bukkitAsyncTask
 
 /**
  * Enable skin feature.
@@ -11,6 +14,13 @@ fun Plugin.enableSkin() {
     if (Config.Skin.Disabled) {
         getCommand("skin")?.setExecutor(DisabledCommand())
         return
+    }
+
+    // Init tables if not created
+    bukkitAsyncTask(this) {
+        transaction {
+            SchemaUtils.create(PlayerTextureSchema)
+        }
     }
 
     val skinCommand = SkinCommand()

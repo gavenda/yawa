@@ -7,6 +7,12 @@
 #
 # This is simply micro optimizing, and yes, I'm doing it for evil.
 
+# Database configuration
+db:
+  jdbc-url: 'jdbc:mysql://localhost:3306/db'
+  username: root
+  password: ''
+
 # Ping feature configuration
 ping:
   disabled: false

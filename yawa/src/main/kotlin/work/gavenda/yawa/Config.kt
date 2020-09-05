@@ -11,6 +11,18 @@ object Config {
      */
     private lateinit var config: FileConfiguration
 
+    /**
+     * Database configuration
+     */
+    object Database {
+        val JdbcUrl = config.getString("db.jdbc-url")
+        val Username = config.getString("db.username")
+        val Password = config.getString("db.password")
+    }
+
+    /**
+     * Ping feature configuration.
+     */
     object Ping {
         val Disabled = config.getBoolean("ping.disabled", false)
         val ServerName = config.getString("ping.server-name", "")

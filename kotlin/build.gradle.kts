@@ -9,6 +9,7 @@ shadowedKotlinProject("Kotlin")
 
 // Manually set the server plugin api, since this basically is a provider for Kotlin
 dependencies {
+    implementation(kotlin("reflect"))
     compileOnly(Library.PAPER)
 }
 
