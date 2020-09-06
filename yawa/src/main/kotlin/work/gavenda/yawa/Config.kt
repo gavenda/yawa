@@ -36,8 +36,8 @@ object Config {
 
         object ActionBar {
             val Enabled get() = config.getBoolean("sleep.messages.action-bar.enabled")
-            val PlayerSleeping get() = config.getString("sleep.messages.action-bar.player-sleeping")!!
-            val NightSkipping get() = config.getString("sleep.messages.action-bar.night-skipping")!!
+            val Sleeping get() = config.getString("sleep.messages.action-bar.sleeping")!!
+            val SleepingDone get() = config.getString("sleep.messages.action-bar.sleeping-done")!!
         }
 
         object Chat {

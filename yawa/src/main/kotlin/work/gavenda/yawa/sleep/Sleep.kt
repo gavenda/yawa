@@ -6,7 +6,7 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.*
 
-private var skipNightTaskId = -1
+private var sleepAnimationTaskId = -1
 private var sleepTaskId = -1
 private val sleepingWorlds = mutableSetOf<World>()
 private lateinit var sleepBedListener: SleepBedListener
@@ -56,7 +56,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     if (world.hasBegunSleeping) {
         val message = Placeholder
             .withContext(world)
-            .parse(Config.Sleep.ActionBar.PlayerSleeping)
+            .parse(Config.Sleep.ActionBar.Sleeping)
 
         world.broadcastActionBarIf(message) {
             Config.Sleep.ActionBar.Enabled
@@ -66,7 +66,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     else if (world.isEveryoneSleeping) {
         val message = Placeholder
             .withContext(world)
-            .parse(Config.Sleep.ActionBar.NightSkipping)
+            .parse(Config.Sleep.ActionBar.SleepingDone)
 
         world.broadcastActionBarIf(message) {
             Config.Sleep.ActionBar.Enabled
@@ -74,14 +74,14 @@ private fun Plugin.checkWorldForSleeping(world: World) {
 
         sleepingWorlds.add(world)
 
-        val nightSkipMessage = Config.Sleep.Chat.Sleeping.random()
+        val sleepingMessage = Config.Sleep.Chat.Sleeping.random()
 
-        // Broadcast skipping the night.
-        world.broadcastMessageIf(nightSkipMessage) {
+        // Broadcast everyone sleeping
+        world.broadcastMessageIf(sleepingMessage) {
             Config.Sleep.Chat.Enabled
         }
 
-        skipNightTaskId = bukkitTimerTask(this, 1, 1) {
+        sleepAnimationTaskId = bukkitTimerTask(this, 1, 1) {
             val time = world.time
             val dayTime = 1200
             val timeRate = 50
@@ -93,28 +93,18 @@ private fun Plugin.checkWorldForSleeping(world: World) {
                 // Remove world from set
                 sleepingWorlds.remove(world)
 
-                val nightSkippedMessage = Config.Sleep.Chat.SleepingDone.random()
-                // Broadcast successful night skip
-                world.broadcastMessageIf(nightSkippedMessage) {
+                val sleepingDoneMessage = Config.Sleep.Chat.SleepingDone.random()
+                // Broadcast successful sleep
+                world.broadcastMessageIf(sleepingDoneMessage) {
                     Config.Sleep.Chat.Enabled
                 }
                 // Finish
-                server.scheduler.cancelTask(skipNightTaskId)
+                server.scheduler.cancelTask(sleepAnimationTaskId)
             }
-            // Out of range, keep accelerating
+            // Out of range, keep animating
             else {
                 world.time = time + timeRate
             }
         }
-    }
-}
-
-private fun prepareAndBroadcast(world: World, rawMessage: String) {
-    val message = Placeholder
-        .withContext(world)
-        .parse(rawMessage)
-
-    world.broadcastActionBarIf(message) {
-        Config.Sleep.ActionBar.Enabled
     }
 }
