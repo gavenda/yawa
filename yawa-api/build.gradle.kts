@@ -10,8 +10,6 @@ paperPlugin()
 
 dependencies {
     compileOnly(Library.PROTOCOL_LIB)
-    implementation(files("$rootDir/libs/PacketWrapper.jar"))
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }

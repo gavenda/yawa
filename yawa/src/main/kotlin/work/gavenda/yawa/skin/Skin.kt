@@ -29,9 +29,11 @@ fun Plugin.enableSkin() {
     // Register event listeners
     server.pluginManager.registerEvents(skinListener, this)
 
-    val skinCommand = SkinCommand()
-    skinCommand.sub(SkinPlayerCommand(), "player")
-    skinCommand.sub(SkinResetCommand(), "reset")
+    val skinCommand = SkinCommand().apply {
+        sub(SkinPlayerCommand(), "player")
+        sub(SkinResetCommand(), "reset")
+        sub(SkinUrlCommand(), "url")
+    }
 
     getCommand("skin")?.setExecutor(skinCommand)
 }

@@ -43,8 +43,8 @@ class Plugin : JavaPlugin() {
     }
 
     override fun onDisable() {
-        if(!safeLoad) {
-            slF4JLogger.warn("Plugin was not able to start safely, restarting your server might be best.")
+        if (!safeLoad) {
+            slF4JLogger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
             return
         }
 

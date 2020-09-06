@@ -11,7 +11,7 @@ import java.util.*
  * Represents a player texture in the database. Usually represented as a mojang profile property.
  * @see MojangProfileProperty
  */
-class PlayerTexture(uuid: EntityID<UUID>): UUIDEntity(uuid) {
+class PlayerTexture(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
     companion object : UUIDEntityClass<PlayerTexture>(PlayerTextureSchema)
 
     var texture by PlayerTextureSchema.texture

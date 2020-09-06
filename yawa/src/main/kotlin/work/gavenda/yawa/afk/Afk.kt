@@ -36,7 +36,9 @@ fun Plugin.enableAfk() {
                     .withContext(player)
                     .parse(Config.Afk.EntryMessage)
 
-                player.world.broadcastMessage(message)
+                player.world.broadcastMessageIf(message) {
+                    Config.Afk.MessageEnabled
+                }
             }
         }
     }

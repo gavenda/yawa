@@ -6,4 +6,4 @@ import org.slf4j.LoggerFactory
 /**
  * Logger for the entire api.
  */
-val logger: Logger = LoggerFactory.getLogger("YawaAPI")
+val apiLogger: Logger = LoggerFactory.getLogger("YawaAPI")

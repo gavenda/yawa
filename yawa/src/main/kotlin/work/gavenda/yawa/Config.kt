@@ -44,8 +44,8 @@ object Config {
             val Enabled get() = config.getBoolean("sleep.messages.chat.enabled")
             val PlayerSleeping get() = config.getString("sleep.messages.chat.player-sleeping")!!
             val PlayerLeftBed get() = config.getString("sleep.messages.chat.player-left-bed")!!
-            val NightSkipping: List<String> get() = config.getStringList("sleep.messages.chat.night-skipping")
-            val NightSkipped: List<String> get() = config.getStringList("sleep.messages.chat.night-skipped")
+            val Sleeping: List<String> get() = config.getStringList("sleep.messages.chat.sleeping")
+            val SleepingDone: List<String> get() = config.getStringList("sleep.messages.chat.sleeping-done")
         }
     }
 
@@ -55,8 +55,9 @@ object Config {
 
     object Afk {
         val Disabled = config.getBoolean("afk.disabled", false)
-        val EntryMessage get() = config.getString("afk.entry-message")!!
-        val LeaveMessage get() = config.getString("afk.leave-message")!!
+        val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
+        val EntryMessage get() = config.getString("afk.messages.entry")!!
+        val LeaveMessage get() = config.getString("afk.messages.leave")!!
     }
 
     /**

@@ -4,10 +4,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.*
-import work.gavenda.yawa.api.mojang.MOJANG_VAL_TEXTURES
-import work.gavenda.yawa.api.mojang.MojangAPI
-import work.gavenda.yawa.api.mojang.MojangProfileProperty
-import work.gavenda.yawa.api.mojang.RateLimitException
+import work.gavenda.yawa.api.mojang.*
 
 /**
  * Applies a skin from an existing minecraft account name.
@@ -20,13 +17,15 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
         if (args.size == 1) {
             val name = args[0]
 
+            sender.sendWithColor("&eRetrieving premium player skin...")
+
             bukkitAsyncTask(Plugin.Instance) {
                 try {
-                    val uuid = MojangAPI.findUuidByUsername(name)
+                    val uuid = MojangApi.findUuidByUsername(name)
                     if (uuid != null) {
-                        MojangAPI.findProfile(uuid)?.let { playerProfile ->
+                        MojangApi.findProfile(uuid)?.let { playerProfile ->
                             playerProfile.properties
-                                .find { it.name == MOJANG_VAL_TEXTURES }
+                                .find { it.name == MOJANG_KEY_TEXTURES }
                                 ?.let { texture -> applyAndSaveSkin(sender, texture) }
                         }
                     } else {
@@ -48,9 +47,11 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
             playerTexture.texture = texture.value
             playerTexture.signature = texture.signature
         }
+
+        player.sendWithColor("&eSkin successfully applied.")
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+        return listOf("<player>")
     }
 }

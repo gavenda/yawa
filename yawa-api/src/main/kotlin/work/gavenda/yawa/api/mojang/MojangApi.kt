@@ -2,13 +2,13 @@ package work.gavenda.yawa.api.mojang
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.util.concurrent.RateLimiter
-import com.google.gson.JsonParser
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
-import work.gavenda.yawa.api.logger
+import work.gavenda.yawa.api.apiLogger
 import java.math.BigInteger
 import java.net.URL
-import java.text.ParseException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
  * Provides a simplistic way to access the Mojang API.
  */
 @Suppress("UnstableApiUsage")
-object MojangAPI {
+object MojangApi {
     private const val HTTP_NO_CONTENT = 204
     private const val HTTP_TOO_MANY_REQUESTS = 429
 
@@ -24,8 +24,7 @@ object MojangAPI {
     private const val URI_API_USERNAME_UUID = "https://api.mojang.com/users/profiles/minecraft"
     private const val URI_API_PROFILE = "https://sessionserver.mojang.com/session/minecraft/profile"
 
-    // We could have used a full blown object mapper such as Jackson, but that would be overkill
-    private val parser = JsonParser()
+    private val gson = Gson()
 
     // Mojang API rate limiter, does not apply to profile since it can be as many as long as its unique
     private val rateLimiter = RateLimiter.create(600.0, 10, TimeUnit.MINUTES)
@@ -47,18 +46,11 @@ object MojangAPI {
         val response = URL(URI_API_STATUS).asText()
 
         try {
-            val element = parser.parse(response)
-            val array = element.asJsonArray
-
-            return array.map {
-                val obj = it.asJsonObject.entrySet().first()
-                val name = obj.key
-                val status = MojangServiceStatus.from(obj.value.asString)
-
-                MojangService(name, status)
-            }
-        } catch (e: ParseException) {
-            logger.error("Unable to retrieve service status: ${e.message}")
+            return gson
+                .fromJson(response, Array<MojangService>::class.java)
+                .toList()
+        } catch (e: JsonSyntaxException) {
+            apiLogger.error("Unable to retrieve service status", e)
         }
 
         return emptyList()
@@ -84,17 +76,13 @@ object MojangAPI {
         }
 
         try {
-            val element = parser.parse(httpConnection.asText())
-            val obj = element.asJsonObject
-            val uuid = obj[MOJANG_KEY_ID].asString
-
+            val result = gson.fromJson(httpConnection.asText(), MojangProfile::class.java)
             // Parse to uuid
-            val bi1 = BigInteger(uuid.substring(0, 16), 16)
-            val bi2 = BigInteger(uuid.substring(16, 32), 16)
-
+            val bi1 = BigInteger(result.id.substring(0, 16), 16)
+            val bi2 = BigInteger(result.id.substring(16, 32), 16)
             return UUID(bi1.toLong(), bi2.toLong())
-        } catch (e: ParseException) {
-            logger.error("Unable to retrieve minecraft uuid: ${e.message}")
+        } catch (e: JsonSyntaxException) {
+            apiLogger.error("Unable to retrieve minecraft uuid", e)
         }
 
         return null
@@ -119,39 +107,17 @@ object MojangAPI {
 
         // If we actually hit this, we have a bad cache implementation
         if (httpConnection.responseCode == HTTP_TOO_MANY_REQUESTS) {
+            apiLogger.warn("We have actually hit the HTTP 429 response, please report it to the developer")
             throw RateLimitException()
         }
 
         try {
-            val element = parser.parse(httpConnection.asText())
-            val obj = element.asJsonObject
-
-            val uuidStr = obj[MOJANG_KEY_ID].asString
-            val playerName = obj[MOJANG_KEY_NAME].asString
-            val jsonProperties = obj[MOJANG_KEY_PROPERTIES].asJsonArray
-            val uuidObj = uuidStr.let {
-                // Parse to uuid
-                val bi1 = BigInteger(it.substring(0, 16), 16)
-                val bi2 = BigInteger(it.substring(16, 32), 16)
-                UUID(bi1.toLong(), bi2.toLong())
-            }
-            val properties = jsonProperties.map {
-                val propObj = it.asJsonObject
-                val propName = propObj[MOJANG_KEY_NAME].asString
-                val propValue = propObj[MOJANG_KEY_VALUE].asString
-                val signature = if (propObj.has(MOJANG_KEY_SIGNATURE)) {
-                    propObj[MOJANG_KEY_SIGNATURE].asString
-                } else ""
-
-                MojangProfileProperty(propName, propValue, signature)
-            }
-
-            return MojangProfile(uuidObj, playerName, properties).also {
+            return gson.fromJson(httpConnection.asText(), MojangProfile::class.java).also {
                 // We cache the result
                 profileCache.put(uuid, it)
             }
-        } catch (e: ParseException) {
-            logger.error("Unable to retrieve minecraft uuid: ${e.message}")
+        } catch (e: JsonSyntaxException) {
+            apiLogger.error("Unable to retrieve minecraft uuid", e)
         }
 
         return null

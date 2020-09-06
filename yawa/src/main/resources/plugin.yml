@@ -33,3 +33,5 @@ permissions:
     default: true
   yawa.skin.player:
     default: true
+  yawa.skin.url:
+    default: true

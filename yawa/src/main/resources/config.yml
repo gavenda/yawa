@@ -27,15 +27,15 @@ sleep:
       enabled: true
       player-sleeping: "&e[player-name] is now sleeping."
       player-left-bed: "&e[player-name] got out of bed."
-      night-skipping:
+      sleeping:
         - "&ePassing the night."
-      night-skipped:
+      sleeping-done:
         - "&eThe night has passed."
 
     action-bar:
       enabled: true
-      player-sleeping: "&e[world-sleeping] out of [world-player-count] players are sleeping."
-      night-skipping: "&eEveryone is now sleeping."
+      sleeping: "&e[world-sleeping] out of [world-player-count] players are sleeping."
+      sleeping-done: "&eEveryone is now sleeping."
 
 # Skin feature configuration
 skin:
@@ -43,5 +43,7 @@ skin:
 
 afk:
   disabled: false
-  entry-message: "&e[player-name] is now AFK."
-  leave-message: "&e[player-name] is no longer AFK."
+  messages:
+    enabled: false
+    entry: "&e[player-name] is now AFK."
+    leave: "&e[player-name] is no longer AFK."

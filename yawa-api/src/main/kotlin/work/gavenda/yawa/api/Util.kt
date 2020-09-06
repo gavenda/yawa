@@ -20,9 +20,7 @@ fun HttpURLConnection.asText(): String {
 }
 
 fun URL.asHttpConnection(): HttpURLConnection {
-    return openConnection().run {
-        this as HttpURLConnection
-    }
+    return openConnection() as HttpURLConnection
 }
 
 /**

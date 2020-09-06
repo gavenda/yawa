@@ -1,8 +1,5 @@
 package work.gavenda.yawa.api
 
-import net.md_5.bungee.api.ChatColor
-import net.md_5.bungee.api.chat.BaseComponent
-import net.md_5.bungee.api.chat.ComponentBuilder
 import org.bukkit.World
 import org.bukkit.entity.Player
 
@@ -17,7 +14,7 @@ object Placeholder {
      * Register a placeholder provider.
      */
     fun register(provider: PlaceholderProvider) {
-        logger.info("Registered placeholder provider: ${provider::class.qualifiedName}")
+        apiLogger.info("Registered placeholder provider: ${provider::class.qualifiedName}")
         providers.add(provider)
     }
 

@@ -1,5 +1,7 @@
 package work.gavenda.yawa.api.mojang
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Represents a Mojang service.
  */
@@ -15,16 +17,19 @@ enum class MojangServiceStatus(val color: String) {
     /**
      * Service is running without issues.
      */
+    @SerializedName(MOJANG_VAL_GREEN)
     OK(MOJANG_VAL_GREEN),
 
     /**
      * Service is running with some issues.
      */
+    @SerializedName(MOJANG_VAL_YELLOW)
     PARTIAL(MOJANG_VAL_YELLOW),
 
     /**
      * Service is unavailable.
      */
+    @SerializedName(MOJANG_VAL_RED)
     UNAVAILABLE(MOJANG_VAL_RED);
 
     companion object {

@@ -10,30 +10,18 @@ class MojangApiTest {
     @Test
     @DisplayName("Test Mojang API")
     fun testMojangAPI() {
+        val expectedUuidStr = "542189cf68fb415bbbe6c60da626e65a"
         val expectedUuid = UUID.fromString("542189cf-68fb-415b-bbe6-c60da626e65a")
         val playerName = "Red"
 
-        val playerUuid = MojangAPI.findUuidByUsername(playerName)
+        val playerUuid = MojangApi.findUuidByUsername(playerName)
 
         assertEquals(expectedUuid, playerUuid)
 
-        val playerProfile = MojangAPI.findProfile(expectedUuid)
-
-        println(playerProfile)
+        val playerProfile = MojangApi.findProfile(expectedUuid)
 
         assertNotNull(playerProfile)
         assertEquals(playerName, playerProfile?.name)
-        assertEquals(expectedUuid, playerProfile?.uuid)
-
-        val textureInfo = playerProfile?.textureInfo
-
-        println(textureInfo)
-
-        assertEquals(expectedUuid, textureInfo?.profileId)
-        assertEquals(playerName, textureInfo?.profileName)
-
-        println(textureInfo?.textures)
-
-        textureInfo?.textures?.forEach { println(it.value) }
+        assertEquals(expectedUuidStr, playerProfile?.id)
     }
 }

@@ -5,7 +5,7 @@ import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.broadcastMessage
+import work.gavenda.yawa.api.broadcastMessageIf
 import work.gavenda.yawa.api.isAfk
 
 const val META_AFK_LAST = "AfkLast"
@@ -33,7 +33,9 @@ fun Player.doInteract() {
             .withContext(this)
             .parse(Config.Afk.LeaveMessage)
 
-        world.broadcastMessage(message)
+        world.broadcastMessageIf(message) {
+            Config.Afk.MessageEnabled
+        }
     }
 
     lastInteractionMillis = System.currentTimeMillis()

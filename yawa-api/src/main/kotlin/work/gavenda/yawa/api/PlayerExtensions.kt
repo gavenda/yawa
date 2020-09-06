@@ -11,8 +11,7 @@ import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
-import work.gavenda.yawa.api.mojang.MOJANG_VAL_TEXTURES
-import work.gavenda.yawa.api.mojang.MojangAPI
+import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerHeldItemSlot
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
@@ -47,7 +46,7 @@ val Player.latencyInMillis: Int
 
             return ping.getInt(entityPlayer)
         } catch (e: Exception) {
-            logger.error("Error retrieving latency: ${e.message}")
+            apiLogger.error("Error retrieving latency: ${e.message}")
         }
 
         return 0
@@ -72,7 +71,7 @@ val Player.previousGameMode: NativeGameMode
             val gameMode = localGameMode.get(interactionManager) as Enum<*>
             return NativeGameMode.valueOf(gameMode.name)
         } catch (e: Exception) {
-            logger.error("Error retrieving previous game mode", e.message)
+            apiLogger.error("Error retrieving previous game mode", e.message)
         }
 
         return NativeGameMode.fromBukkit(gameMode)
@@ -96,7 +95,7 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
             updateSkin()
         }
     } catch (ex: Exception) {
-        logger.error("Unable to apply skin", ex)
+        apiLogger.error("Unable to apply skin", ex)
     }
 }
 
@@ -106,12 +105,12 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
 fun Player.restoreSkin() = bukkitAsyncTask(Plugin.Instance) {
     val uuid = if (server.onlineMode) {
         uniqueId
-    } else MojangAPI.findUuidByUsername(name)
+    } else MojangApi.findUuidByUsername(name)
 
     if (uuid != null) {
-        MojangAPI.findProfile(uuid)?.let { playerProfile ->
+        MojangApi.findProfile(uuid)?.let { playerProfile ->
             playerProfile.properties
-                .find { it.name == MOJANG_VAL_TEXTURES }
+                .find { it.name == MOJANG_KEY_TEXTURES }
                 ?.let { texture -> applySkin(texture.value, texture.signature) }
         }
     }

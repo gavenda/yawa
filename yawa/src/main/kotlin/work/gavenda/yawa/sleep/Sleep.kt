@@ -8,7 +8,7 @@ import work.gavenda.yawa.api.*
 
 private var skipNightTaskId = -1
 private var sleepTaskId = -1
-private val skippingWorlds = mutableSetOf<World>()
+private val sleepingWorlds = mutableSetOf<World>()
 private lateinit var sleepBedListener: SleepBedListener
 
 /**
@@ -21,18 +21,18 @@ fun Plugin.enableSleep() {
     Placeholder.register(SleepPlaceholderProvider())
 
     // Event listeners
-    sleepBedListener = SleepBedListener(this, skippingWorlds)
+    sleepBedListener = SleepBedListener(this, sleepingWorlds)
 
     // Tasks
     sleepTaskId = bukkitAsyncTimerTask(this, 0, 20) {
         server.worlds.asSequence()
-            // World is not skipping day
-            .filter { it !in skippingWorlds }
+            // World is not sleeping
+            .filter { it !in sleepingWorlds }
             // And is night time
             .filter { it.isNightTime }
             // And happens on the over world
             .filter { it.environment == World.Environment.NORMAL }
-            .forEach(this::check)
+            .forEach(this::checkWorldForSleeping)
     }
 
     // Register events
@@ -51,17 +51,30 @@ fun Plugin.disableSleep() {
     server.scheduler.cancelTask(sleepTaskId)
 }
 
-private fun Plugin.check(world: World) {
+private fun Plugin.checkWorldForSleeping(world: World) {
     // Someone is asleep, and we lack more people.
     if (world.hasBegunSleeping) {
-        prepareAndBroadcast(world, Config.Sleep.ActionBar.PlayerSleeping)
+        val message = Placeholder
+            .withContext(world)
+            .parse(Config.Sleep.ActionBar.PlayerSleeping)
+
+        world.broadcastActionBarIf(message) {
+            Config.Sleep.ActionBar.Enabled
+        }
     }
     // Everyone is asleep, and we have enough people
     else if (world.isEveryoneSleeping) {
-        prepareAndBroadcast(world, Config.Sleep.ActionBar.NightSkipping)
-        skippingWorlds.add(world)
+        val message = Placeholder
+            .withContext(world)
+            .parse(Config.Sleep.ActionBar.NightSkipping)
 
-        val nightSkipMessage = Config.Sleep.Chat.NightSkipping.random()
+        world.broadcastActionBarIf(message) {
+            Config.Sleep.ActionBar.Enabled
+        }
+
+        sleepingWorlds.add(world)
+
+        val nightSkipMessage = Config.Sleep.Chat.Sleeping.random()
 
         // Broadcast skipping the night.
         world.broadcastMessageIf(nightSkipMessage) {
@@ -78,9 +91,9 @@ private fun Plugin.check(world: World) {
             // Time within range, we have reached morning
             if (isMorning) {
                 // Remove world from set
-                skippingWorlds.remove(world)
+                sleepingWorlds.remove(world)
 
-                val nightSkippedMessage = Config.Sleep.Chat.NightSkipped.random()
+                val nightSkippedMessage = Config.Sleep.Chat.SleepingDone.random()
                 // Broadcast successful night skip
                 world.broadcastMessageIf(nightSkippedMessage) {
                     Config.Sleep.Chat.Enabled
