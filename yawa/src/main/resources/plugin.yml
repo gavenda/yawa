@@ -29,3 +29,7 @@ permissions:
     default: true
   yawa.skin:
     default: true
+  yawa.skin.reset:
+    default: true
+  yawa.skin.player:
+    default: true

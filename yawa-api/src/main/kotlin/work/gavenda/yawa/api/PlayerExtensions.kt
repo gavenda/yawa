@@ -11,6 +11,8 @@ import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
+import work.gavenda.yawa.api.mojang.MOJANG_VAL_TEXTURES
+import work.gavenda.yawa.api.mojang.MojangAPI
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerHeldItemSlot
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
@@ -95,6 +97,23 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
         }
     } catch (ex: Exception) {
         logger.error("Unable to apply skin", ex)
+    }
+}
+
+/**
+ * Restore player skin as it is found in Mojang servers.
+ */
+fun Player.restoreSkin() = bukkitAsyncTask(Plugin.Instance) {
+    val uuid = if (server.onlineMode) {
+        uniqueId
+    } else MojangAPI.findUuidByUsername(name)
+
+    if (uuid != null) {
+        MojangAPI.findProfile(uuid)?.let { playerProfile ->
+            playerProfile.properties
+                .find { it.name == MOJANG_VAL_TEXTURES }
+                ?.let { texture -> applySkin(texture.value, texture.signature) }
+        }
     }
 }
 

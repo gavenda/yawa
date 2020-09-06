@@ -31,6 +31,7 @@ fun Plugin.enableSkin() {
 
     val skinCommand = SkinCommand()
     skinCommand.sub(SkinPlayerCommand(), "player")
+    skinCommand.sub(SkinResetCommand(), "reset")
 
     getCommand("skin")?.setExecutor(skinCommand)
 }

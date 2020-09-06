@@ -3,7 +3,7 @@ package work.gavenda.yawa.skin
 import org.bukkit.command.CommandSender
 import work.gavenda.yawa.api.Command
 
-class SkinCommand : Command() {
+class SkinCommand : Command("yawa.skin") {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
     }

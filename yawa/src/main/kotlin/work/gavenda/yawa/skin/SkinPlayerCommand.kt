@@ -12,7 +12,7 @@ import work.gavenda.yawa.api.mojang.RateLimitException
 /**
  * Applies a skin from an existing minecraft account name.
  */
-class SkinPlayerCommand : Command("yawa.skin") {
+class SkinPlayerCommand : Command("yawa.skin.player") {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return
@@ -23,16 +23,14 @@ class SkinPlayerCommand : Command("yawa.skin") {
             bukkitAsyncTask(Plugin.Instance) {
                 try {
                     val uuid = MojangAPI.findUuidByUsername(name)
-
-                    if (uuid == null) {
+                    if (uuid != null) {
+                        MojangAPI.findProfile(uuid)?.let { playerProfile ->
+                            playerProfile.properties
+                                .find { it.name == MOJANG_VAL_TEXTURES }
+                                ?.let { texture -> applyAndSaveSkin(sender, texture) }
+                        }
+                    } else {
                         sender.sendWithColor("&cCannot find premium player with that name.")
-                        return@bukkitAsyncTask
-                    }
-
-                    MojangAPI.findProfile(uuid)?.let { playerProfile ->
-                        playerProfile.properties
-                            .find { it.name == MOJANG_VAL_TEXTURES }
-                            ?.let { texture -> applyAndSaveSkin(sender, texture) }
                     }
                 } catch (e: RateLimitException) {
                     sender.sendWithColor("&cWe have reached our rate limits for changing skins, please try again later.")
