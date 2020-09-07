@@ -1,5 +1,5 @@
 name: Exposed
-description: Simply provides Exposed to the classpath. Includes reflections and coroutines.
+description: Simply provides Exposed to the classpath. Includes kotlin coroutines.
 author: Gavenda
 website: https://gavenda.work
 load: STARTUP
