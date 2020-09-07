@@ -17,7 +17,7 @@ fun Project.shadowedKotlinProject(archiveName: String) {
     val operatingSystem = "${sysProp["os.name"]} ${sysProp["os.arch"]} ${sysProp["os.version"]}"
 
     jar {
-        archiveBaseName.set(archiveName)
+        archiveFileName.set("$archiveName.${archiveExtension.get()}")
 
         manifest {
             attributes(
@@ -36,9 +36,7 @@ fun Project.shadowedKotlinProject(archiveName: String) {
     }
 
     shadowJar {
-        // We don't want a suffix
-        archiveClassifier.set("")
-        archiveBaseName.set(archiveName)
+        archiveFileName.set("$archiveName.${archiveExtension.get()}")
     }
 
     build {
