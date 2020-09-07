@@ -24,8 +24,8 @@ object Config {
      * Ping feature configuration.
      */
     object Ping {
-        val Disabled = config.getBoolean("ping.disabled", false)
-        val ServerName = config.getString("ping.server-name", "")
+        val Disabled = config.getBoolean("ping.disabled")
+        val ServerName = config.getString("ping.server-name")
     }
 
     /**
@@ -50,11 +50,11 @@ object Config {
     }
 
     object Skin {
-        val Disabled = config.getBoolean("skin.disabled", true)
+        val Disabled = config.getBoolean("skin.disabled")
     }
 
     object Afk {
-        val Disabled = config.getBoolean("afk.disabled", false)
+        val Disabled = config.getBoolean("afk.disabled")
         val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
         val EntryMessage get() = config.getString("afk.messages.entry")!!
         val LeaveMessage get() = config.getString("afk.messages.leave")!!
