@@ -24,7 +24,18 @@ commands:
     permission: yawa.skin
     usage: /skin
 
+  yawa:
+    description: Plugin root command.
+    permission: yawa
+    usage: /yawa
+
 permissions:
+  yawa:
+    default: op
+  yawa.reload:
+    default: op
+  yawa.reload.config:
+    default: op
   yawa.afk:
     default: true
   yawa.skin:

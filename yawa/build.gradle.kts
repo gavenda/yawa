@@ -13,6 +13,7 @@ dependencies {
     compileOnly(Library.Exposed.CORE)
     compileOnly(Library.Exposed.DAO)
     compileOnly(Library.Exposed.JDBC)
+
     compileOnly(project(":yawa-api"))
 }
 

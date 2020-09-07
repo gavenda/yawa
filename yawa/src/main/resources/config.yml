@@ -9,9 +9,15 @@
 
 # Database configuration
 db:
-  jdbc-url: 'jdbc:mysql://localhost:3306/db'
+  jdbc-url: "jdbc:sqlite:plugins/Yawa/yawa.db"
+  # Use this for MySQL connections
+  # jdbc-url: 'jdbc:mysql://localhost:3306/db'
   username: root
   password: ''
+
+# Essentials feature configuration
+essentials:
+  disabled: false
 
 # Ping feature configuration
 ping:

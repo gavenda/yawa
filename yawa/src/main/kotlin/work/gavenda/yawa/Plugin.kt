@@ -6,6 +6,10 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.disableAfk
 import work.gavenda.yawa.afk.enableAfk
+import work.gavenda.yawa.chat.disableChat
+import work.gavenda.yawa.chat.enableChat
+import work.gavenda.yawa.essentials.disableEssentials
+import work.gavenda.yawa.essentials.enableEssentials
 import work.gavenda.yawa.ping.disablePing
 import work.gavenda.yawa.ping.enablePing
 import work.gavenda.yawa.skin.disableSkin
@@ -34,10 +38,14 @@ class Plugin : JavaPlugin() {
         // Init data source
         initDataSource()
         // Enable features
+        enableEssentials()
         enablePing()
         enableSkin()
         enableAfk()
         enableSleep()
+        enableChat()
+        // Register root command
+        registerRootCommand()
 
         safeLoad = true
     }
@@ -48,13 +56,20 @@ class Plugin : JavaPlugin() {
             return
         }
 
+        // Unregister root command
+        unregisterRootCommand()
+
         // Disable features
+        disableEssentials()
         disablePing()
         disableSkin()
         disableAfk()
         disableSleep()
+        disableChat()
         // Close data source
         dataSource.close()
+        // Safe load flag to false, in case of reloads
+        safeLoad = false
     }
 
     private fun initDataSource() {
@@ -70,7 +85,23 @@ class Plugin : JavaPlugin() {
         Database.connect(dataSource)
     }
 
-    private fun loadConfig() {
+    fun loadConfig() {
         Config.load(config)
+    }
+
+    private fun registerRootCommand() {
+        val rootCommand = YawaCommand().apply {
+            val reloadCommand = YawaReloadCommand().apply {
+                sub(YawaReloadConfigCommand(), "config")
+            }
+
+            sub(reloadCommand, "reload")
+        }
+
+        getCommand("yawa")?.setExecutor(rootCommand)
+    }
+
+    private fun unregisterRootCommand() {
+        getCommand("yawa")?.setExecutor(null)
     }
 }
