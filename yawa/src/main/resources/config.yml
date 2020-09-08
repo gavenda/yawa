@@ -34,7 +34,7 @@ sleep:
 
 # Skin feature configuration
 skin:
-  disabled: true
+  disabled: false
 
 afk:
   disabled: false
