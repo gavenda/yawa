@@ -21,6 +21,7 @@ package work.gavenda.yawa.api
 
 import org.bukkit.plugin.java.JavaPlugin
 import work.gavenda.yawa.api.providers.PlayerPlaceholderProvider
+import work.gavenda.yawa.api.providers.ServerPlaceholderProvider
 import work.gavenda.yawa.api.providers.WorldPlaceholderProvider
 
 /**
@@ -38,6 +39,7 @@ class Plugin : JavaPlugin() {
         // Register placeholders
         Placeholder.register(PlayerPlaceholderProvider())
         Placeholder.register(WorldPlaceholderProvider())
+        Placeholder.register(ServerPlaceholderProvider())
 
         getCommand("placeholders")?.setExecutor(PlaceholderCommand())
     }

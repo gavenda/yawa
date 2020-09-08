@@ -17,51 +17,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.ping
+package work.gavenda.yawa.tablist
 
-import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.*
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.bukkitTimerTask
+import work.gavenda.yawa.api.translateColorCodes
 
-private var pingTaskId = -1
+private var tabListTaskId = -1
 
-const val SB_NAME = "ping"
-const val SB_CRITERIA = "dummy"
-const val SB_DISPLAY_NAME = "ms"
+fun Plugin.enableTabList() {
+    if (Config.TabList.Disabled) return
 
-/**
- * Enable ping feature.
- */
-fun Plugin.enablePing() {
-    if (Config.Ping.Disabled) return
-
-    val board = server.scoreboardManager.newScoreboard
-    val objective = board.registerNewObjective(SB_NAME, SB_CRITERIA, SB_DISPLAY_NAME).apply {
-        displaySlot = DisplaySlot.PLAYER_LIST
-    }
-
-    pingTaskId = bukkitTimerTask(this, 0, 20) {
+    // Tasks
+    tabListTaskId = bukkitTimerTask(this, 0, 20) {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {
-            val ping = player.latencyInMillis
-
-            // Update latency
-            objective.getScore(player.name).apply {
-                score = ping
-            }
-
-            player.scoreboard = board
+            player.playerListHeader = Placeholder
+                .withContext(player)
+                .parse(Config.TabList.Header)
+                .translateColorCodes()
+            player.playerListFooter = Placeholder
+                .withContext(player)
+                .parse(Config.TabList.Footer)
+                .translateColorCodes()
         }
     }
 }
 
-/**
- * Disable ping feature.
- */
-fun Plugin.disablePing() {
-    if (Config.Ping.Disabled) return
+fun Plugin.disableTabList() {
+    if (Config.TabList.Disabled) return
 
-    server.scheduler.cancelTask(pingTaskId)
+    // Tasks
+    server.scheduler.cancelTask(tabListTaskId)
 }

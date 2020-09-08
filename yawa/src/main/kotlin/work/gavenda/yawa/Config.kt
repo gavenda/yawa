@@ -39,6 +39,12 @@ object Config {
         val Password get() = config.getString("db.password")
     }
 
+    object TabList {
+        val Disabled get() = config.getBoolean("tab-list.disabled")
+        val Header get() = config.getString("tab-list.header")!!
+        val Footer get() = config.getString("tab-list.footer")!!
+    }
+
     /**
      * Essentials feature configuration.
      */
@@ -51,7 +57,6 @@ object Config {
      */
     object Ping {
         val Disabled get() = config.getBoolean("ping.disabled")
-        val ServerName get() = config.getString("ping.server-name")!!
     }
 
     /**
@@ -75,6 +80,7 @@ object Config {
 
     object Afk {
         val Disabled get() = config.getBoolean("afk.disabled")
+        val PlayerListName get() = config.getString("afk.player-list-name")!!
         val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
     }
 

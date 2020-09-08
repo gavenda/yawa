@@ -60,6 +60,16 @@ fun Plugin.enableAfk() {
                     Config.Afk.MessageEnabled
                 }
             }
+
+            if(player.isAfk) {
+                player.setPlayerListName(
+                    Placeholder.withContext(player)
+                        .parse(Config.Afk.PlayerListName)
+                        .translateColorCodes()
+                )
+            } else {
+                player.setPlayerListName(null)
+            }
         }
     }
 

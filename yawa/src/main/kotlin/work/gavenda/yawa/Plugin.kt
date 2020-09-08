@@ -35,6 +35,8 @@ import work.gavenda.yawa.skin.disableSkin
 import work.gavenda.yawa.skin.enableSkin
 import work.gavenda.yawa.sleep.disableSleep
 import work.gavenda.yawa.sleep.enableSleep
+import work.gavenda.yawa.tablist.disableTabList
+import work.gavenda.yawa.tablist.enableTabList
 
 /**
  * Yawa plugin entry point.
@@ -63,6 +65,7 @@ class Plugin : JavaPlugin() {
         enableAfk()
         enableSleep()
         enableChat()
+        enableTabList()
         // Register root command
         registerRootCommand()
 
@@ -85,6 +88,7 @@ class Plugin : JavaPlugin() {
         disableAfk()
         disableSleep()
         disableChat()
+        disableTabList()
         // Close data source
         dataSource.close()
         // Safe load flag to false, in case of reloads
