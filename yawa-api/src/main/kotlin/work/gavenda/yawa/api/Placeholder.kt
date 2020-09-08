@@ -45,7 +45,7 @@ object Placeholder {
     /**
      * Returns a provider with the given context.
      */
-    fun withContext(player: Player) = PlaceholderContext(providers, player = player)
+    fun withContext(player: Player) = PlaceholderContext(providers,  player, player.world)
 
     /**
      * Returns a provider with the given context.

@@ -51,7 +51,7 @@ object Config {
      */
     object Ping {
         val Disabled get() = config.getBoolean("ping.disabled")
-        val ServerName get() = config.getString("ping.server-name")
+        val ServerName get() = config.getString("ping.server-name")!!
     }
 
     /**

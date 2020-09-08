@@ -22,7 +22,7 @@ essentials:
 # Ping feature configuration
 ping:
   disabled: false
-  server-name: Yawaland
+  server-name: "&6Yawaland"
 
 # Sleep - Configure how we pass the night, defaults to desired values.
 # based on Harbor (https://github.com/nkomarn/Harbor)

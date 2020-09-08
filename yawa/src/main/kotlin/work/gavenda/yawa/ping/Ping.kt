@@ -19,13 +19,10 @@
 
 package work.gavenda.yawa.ping
 
-import org.bukkit.ChatColor
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.bukkitTimerTask
-import work.gavenda.yawa.api.isAfk
-import work.gavenda.yawa.api.latencyInMillis
+import work.gavenda.yawa.api.*
 
 private var pingTaskId = -1
 
@@ -52,15 +49,16 @@ fun Plugin.enablePing() {
             val ping = player.latencyInMillis
             val afk = if (player.isAfk) "AFK" else ""
             val displayFormat = String.format("%s &e%s ", name, afk)
-            val playerListName = ChatColor.translateAlternateColorCodes('&', displayFormat)
-
-            val serverNameFormat = "&6${Config.Ping.ServerName}"
-            val displayServerNameFormat = ChatColor.translateAlternateColorCodes('&', serverNameFormat)
+                .translateColorCodes()
 
             // Display
-            player.playerListHeader = displayServerNameFormat
-            player.setPlayerListName(playerListName)
+            player.playerListHeader = Placeholder
+                .withContext(player)
+                .parse(Config.Ping.ServerName)
+                .translateColorCodes()
+            player.setPlayerListName(displayFormat)
 
+            // Update latency
             objective.getScore(player.name).apply {
                 score = ping
             }
