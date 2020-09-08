@@ -1,3 +1,22 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package work.gavenda.yawa.sleep
 
 import org.bukkit.World
@@ -56,9 +75,9 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     if (world.hasBegunSleeping) {
         val message = Placeholder
             .withContext(world)
-            .parse(Config.Sleep.ActionBar.Sleeping)
+            .parse(Config.Messages.ActionBarSleeping)
 
-        world.broadcastActionBarIf(message) {
+        world.sendActionBarIf(message) {
             Config.Sleep.ActionBar.Enabled
         }
     }
@@ -66,18 +85,20 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     else if (world.isEveryoneSleeping) {
         val message = Placeholder
             .withContext(world)
-            .parse(Config.Sleep.ActionBar.SleepingDone)
+            .parse(Config.Messages.ActionBarSleepingDone)
 
-        world.broadcastActionBarIf(message) {
+        world.sendActionBarIf(message) {
             Config.Sleep.ActionBar.Enabled
         }
 
         sleepingWorlds.add(world)
 
-        val sleepingMessage = Config.Sleep.Chat.Sleeping.random()
+        val sleepingMessage = Placeholder
+            .withContext(world)
+            .parse(Config.Messages.Sleeping.random())
 
         // Broadcast everyone sleeping
-        world.broadcastMessageIf(sleepingMessage) {
+        world.sendMessageIf(sleepingMessage) {
             Config.Sleep.Chat.Enabled
         }
 
@@ -93,9 +114,12 @@ private fun Plugin.checkWorldForSleeping(world: World) {
                 // Remove world from set
                 sleepingWorlds.remove(world)
 
-                val sleepingDoneMessage = Config.Sleep.Chat.SleepingDone.random()
+                val sleepingDoneMessage = Placeholder
+                    .withContext(world)
+                    .parse(Config.Messages.SleepingDone.random())
+
                 // Broadcast successful sleep
-                world.broadcastMessageIf(sleepingDoneMessage) {
+                world.sendMessageIf(sleepingDoneMessage) {
                     Config.Sleep.Chat.Enabled
                 }
                 // Finish

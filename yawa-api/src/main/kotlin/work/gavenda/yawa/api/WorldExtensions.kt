@@ -1,8 +1,26 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
-import org.bukkit.ChatColor
 import org.bukkit.World
 
 /**
@@ -19,43 +37,37 @@ val World.isDebugMode: Boolean
     }
 
 /**
- * Broadcast a message to all players in this world.
+ * Send a message to all players in this world.
  * @param message message to broadcast
  */
-fun World.broadcastMessage(message: String, alternateChar: Char = '&') {
-    players.forEach { player ->
-        player.sendMessage(ChatColor.translateAlternateColorCodes(alternateChar, message))
-    }
+fun World.sendMessage(message: String) {
+    players.forEach { it.sendMessage(message) }
 }
 
 /**
- * Broadcast an action bar message to all players in this world.
+ * Send an action bar to all players in this world.
  * @param text text to broadcast
  */
-fun World.broadcastActionBar(text: String) {
-    players.forEach { player ->
-        player.sendActionBar('&', text)
-    }
+fun World.sendActionBar(text: String) {
+    players.forEach { it.sendActionBar(text) }
 }
 
 /**
- * Broadcast a message to all players in this world.
- * Automatically converts color with the '&' character.
+ * Send a message to all players in this world.
  * @param message  message to broadcast
  * @param condition condition if allowed to broadcast
  */
-fun World.broadcastMessageIf(message: String, condition: () -> Boolean) {
+fun World.sendMessageIf(message: String, condition: () -> Boolean) {
     if (!condition()) return
-    broadcastMessage(message)
+    sendMessage(message)
 }
 
 /**
- * Broadcast an action bar text to all players in this world.
- * Automatically converts color with the '&' character.
+ * Send an action bar text to all players in this world.
  * @param text text to broadcast
  * @param condition condition if allowed to broadcast
  */
-fun World.broadcastActionBarIf(text: String, condition: () -> Boolean) {
+fun World.sendActionBarIf(text: String, condition: () -> Boolean) {
     if (!condition()) return
-    broadcastActionBar(text)
+    sendActionBar(text)
 }

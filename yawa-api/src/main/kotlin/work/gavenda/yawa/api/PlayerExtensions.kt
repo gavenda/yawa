@@ -1,11 +1,32 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package work.gavenda.yawa.api
 
-import com.comphenix.protocol.reflect.StructureModifier
 import com.comphenix.protocol.utility.MinecraftReflection
-import com.comphenix.protocol.wrappers.*
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.ADD_PLAYER
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.REMOVE_PLAYER
+import com.comphenix.protocol.wrappers.PlayerInfoData
+import com.comphenix.protocol.wrappers.WrappedChatComponent
+import com.comphenix.protocol.wrappers.WrappedGameProfile
+import com.comphenix.protocol.wrappers.WrappedSignedProperty
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
@@ -16,7 +37,6 @@ import work.gavenda.yawa.api.wrapper.WrapperPlayServerHeldItemSlot
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerRespawn
-
 
 const val META_AFK = "Afk"
 
@@ -141,7 +161,7 @@ fun Player.triggerHealthUpdate() {
  * Does a refresh of the player, applying the currently set skin if changed.
  * Always called after [Player.applySkin].
  */
-@Suppress("UNCHECKED_CAST", "DEPRECATION")
+@Suppress("DEPRECATION")
 fun Player.updateSkin() {
     val wrappedGameProfile = WrappedGameProfile.fromPlayer(this)
     val enumGameMode = NativeGameMode.fromBukkit(gameMode)
@@ -157,18 +177,7 @@ fun Player.updateSkin() {
         writeData(listOf(playerInfoData))
     }
     val respawn = WrapperPlayServerRespawn().apply {
-        val nmsWorldClass = MinecraftReflection.getNmsWorldClass()
-        val localWorldKey = nmsWorldClass.getDeclaredField("dimensionKey").apply {
-            isAccessible = true
-        }
-        val resourceKeyClass = MinecraftReflection.getMinecraftClass("ResourceKey")
-        val nmsWorld = BukkitConverters.getWorldConverter().getGeneric(world)
-        val resourceKey = localWorldKey.get(nmsWorld)
-        val resourceMod = handle.getSpecificModifier(resourceKeyClass) as StructureModifier<Any>
-
-        // Write resource key
-        resourceMod.write(resourceMod.size() - 1, resourceKey)
-
+        writeResourceKey(world)
         writeDimension(world.environment.id)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
         writePreviousGameMode(previousGameMode)

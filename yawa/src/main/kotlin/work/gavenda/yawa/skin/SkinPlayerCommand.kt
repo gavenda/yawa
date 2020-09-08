@@ -1,10 +1,33 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package work.gavenda.yawa.skin
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.*
-import work.gavenda.yawa.api.mojang.*
+import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
+import work.gavenda.yawa.api.mojang.MojangApi
+import work.gavenda.yawa.api.mojang.MojangProfileProperty
+import work.gavenda.yawa.api.mojang.RateLimitException
 
 /**
  * Applies a skin from an existing minecraft account name.
@@ -17,7 +40,12 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
         if (args.size == 1) {
             val name = args[0]
 
-            sender.sendWithColor("&eRetrieving premium player skin...")
+            sender.sendMessage(
+                Placeholder
+                    .withContext(sender)
+                    .parse(Config.Messages.SkinRetrieve)
+                    .translateColorCodes()
+            )
 
             bukkitAsyncTask(Plugin.Instance) {
                 try {
@@ -29,10 +57,20 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
                                 ?.let { texture -> applyAndSaveSkin(sender, texture) }
                         }
                     } else {
-                        sender.sendWithColor("&cCannot find premium player with that name.")
+                        sender.sendMessage(
+                            Placeholder
+                                .withContext(sender)
+                                .parse(Config.Messages.SkinNotFound)
+                                .translateColorCodes()
+                        )
                     }
                 } catch (e: RateLimitException) {
-                    sender.sendWithColor("&cWe have reached our rate limits for changing skins, please try again later.")
+                    sender.sendMessage(
+                        Placeholder
+                            .withContext(sender)
+                            .parse(Config.Messages.SkinRateLimit)
+                            .translateColorCodes()
+                    )
                 }
             }
         }
@@ -48,7 +86,12 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
             playerTexture.signature = texture.signature
         }
 
-        player.sendWithColor("&eSkin successfully applied.")
+        player.sendMessage(
+            Placeholder
+                .withContext(player)
+                .parse(Config.Messages.SkinApplied)
+                .translateColorCodes()
+        )
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {

@@ -29,19 +29,8 @@ ping:
 sleep:
   disabled: false
   messages:
-    chat:
-      enabled: true
-      player-sleeping: "&e[player-name] is now sleeping."
-      player-left-bed: "&e[player-name] got out of bed."
-      sleeping:
-        - "&ePassing the night."
-      sleeping-done:
-        - "&eThe night has passed."
-
-    action-bar:
-      enabled: true
-      sleeping: "&e[world-sleeping] out of [world-player-count] players are sleeping."
-      sleeping-done: "&eEveryone is now sleeping."
+    chat.enabled: true
+    action-bar.enabled: true
 
 # Skin feature configuration
 skin:
@@ -49,7 +38,27 @@ skin:
 
 afk:
   disabled: false
-  messages:
-    enabled: false
-    entry: "&e[player-name] is now AFK."
-    leave: "&e[player-name] is no longer AFK."
+  messages.enabled: false
+
+# Messages for the plugin, customize to your needs.
+messages:
+  afk-entry: "&e[player-name] is now AFK"
+  afk-leave: "&e[player-name] is no longer AFK"
+  action-bar-sleeping: "&e[world-sleeping] out of [world-player-count] players are sleeping"
+  action-bar-sleeping-done: "&eEveryone is now sleeping"
+  chat-sleeping:
+    - "&ePassing the night"
+  chat-sleeping-done:
+    - "&eThe night has passed"
+  player-enter-bed: "&e[player-name] is now sleeping"
+  player-left-bed: "&e[player-name] got out of bed"
+  plugin-reload: "&ePlugin reloaded"
+  plugin-config-reload: "&ePlugin configuration reloaded"
+  feature-disabled: "&eThis feature is currently disabled."
+  skin-generate: "&eGenerating skin please wait..."
+  skin-applied: "&eSkin successfully applied."
+  skin-retrieve: "&eRetrieving premium player skin..."
+  skin-not-found: "&cCannot find premium player with that name."
+  skin-rate-limit: "&cWe have reached our rate limits for changing skins, please try again later."
+  skin-reject: "&cPlease pass a valid url that starts with http or https."
+  skin-reset: "&eYour skin has been reset."

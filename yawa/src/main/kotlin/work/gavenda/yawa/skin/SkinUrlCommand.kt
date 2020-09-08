@@ -1,8 +1,28 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package work.gavenda.yawa.skin
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.*
 import work.gavenda.yawa.api.mineskin.MineSkinApi
 import work.gavenda.yawa.api.mineskin.MineSkinTexture
@@ -21,10 +41,8 @@ class SkinUrlCommand : Command("yawa.skin.url") {
 
         if (args.isNotEmpty()) {
             try {
-
-
                 val url = URI(args[0])
-                val slim = if(args.size == 2) args[1].toBoolean() else false
+                val slim = if (args.size == 2) args[1].toBoolean() else false
                 val validScheme = url.scheme == "http" || url.scheme == "https"
 
                 if (!validScheme) {
@@ -32,14 +50,24 @@ class SkinUrlCommand : Command("yawa.skin.url") {
                     return
                 }
 
-                sender.sendWithColor("&eGenerating skin please wait...")
+                sender.sendMessage(
+                    Placeholder
+                        .withContext(sender)
+                        .parse(Config.Messages.SkinGenerate)
+                        .translateColorCodes()
+                )
 
                 bukkitAsyncTask(Plugin.Instance) {
                     try {
                         val texture = MineSkinApi.generateTexture(url, slim)
                         applyAndSaveSkin(sender, texture)
                     } catch (e: RateLimitException) {
-                        sender.sendWithColor("&cWe have reached our rate limits for changing skins, please try again later.")
+                        sender.sendMessage(
+                            Placeholder
+                                .withContext(sender)
+                                .parse(Config.Messages.SkinRateLimit)
+                                .translateColorCodes()
+                        )
                     }
                 }
             } catch (e: URISyntaxException) {
@@ -50,7 +78,13 @@ class SkinUrlCommand : Command("yawa.skin.url") {
 
     private fun reject(player: Player) {
         logger.warn("${player.name} sent an invalid url.")
-        player.sendWithColor("&cPlease pass a valid url that starts with http or https.")
+
+        player.sendMessage(
+            Placeholder
+                .withContext(player)
+                .parse(Config.Messages.SkinReject)
+                .translateColorCodes()
+        )
     }
 
     private fun applyAndSaveSkin(player: Player, texture: MineSkinTexture) {
@@ -63,7 +97,12 @@ class SkinUrlCommand : Command("yawa.skin.url") {
             playerTexture.signature = texture.signature
         }
 
-        player.sendWithColor("&eSkin successfully applied.")
+        player.sendMessage(
+            Placeholder
+                .withContext(player)
+                .parse(Config.Messages.SkinApplied)
+                .translateColorCodes()
+        )
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
