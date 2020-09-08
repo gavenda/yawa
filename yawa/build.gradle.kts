@@ -7,6 +7,7 @@ shadowedKotlinProject("Yawa")
 paperPlugin()
 
 dependencies {
+    implementation(kotlin("reflect"))
     // Data source
     implementation(Library.HIKARICP)
 
@@ -20,5 +21,6 @@ dependencies {
 tasks.shadowJar {
     dependencies {
         relocate("com.zaxxer.hikari", "work.gavenda.hikari")
+        exclude(dependency("org.slf4j:.*"))
     }
 }

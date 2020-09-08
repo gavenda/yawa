@@ -42,10 +42,12 @@ fun Project.shadowedKotlinProject(archiveName: String) {
             attributes(
                 "Built-By" to sysProp["user.name"],
                 "Created-By" to "Gradle ${gradle.gradleVersion}",
-                "Build-OS" to operatingSystem,
-                "Build-JDK" to javaVersion,
+                "Build-System" to operatingSystem,
+                "Build-Jdk" to javaVersion,
                 "Kotlin-Version" to Version.KOTLIN,
-                "Version" to project.version
+                "Implementation-Version" to project.version,
+                "Implementation-Title" to archiveName,
+                "Implementation-Vendor" to "Gavenda"
             )
         }
     }

@@ -57,6 +57,7 @@ fun Project.paperPlugin() {
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
     }

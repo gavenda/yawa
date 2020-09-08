@@ -42,6 +42,14 @@ subprojects {
         into(distDir)
     }
 
+    tasks.register<Copy>("copyLicense") {
+        val srcDir = file("$rootDir/LICENSE")
+        val distDir = file("$buildDir/resources/main/META-INF/")
+
+        from(srcDir)
+        into(distDir)
+    }
+
     tasks.register<Copy>("deployPlugin") {
         dependsOn("build")
 
@@ -54,6 +62,7 @@ subprojects {
 
     afterEvaluate {
         tasks.build {
+            dependsOn("copyLicense")
             finalizedBy("copyArtifacts")
         }
     }
