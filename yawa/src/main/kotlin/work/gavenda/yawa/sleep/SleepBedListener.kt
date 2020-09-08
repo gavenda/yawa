@@ -15,7 +15,7 @@ import work.gavenda.yawa.api.broadcastMessageIf
  */
 class SleepBedListener(
     private val plugin: Plugin,
-    private val skippingWorlds: Set<World>
+    private val sleepingWorlds: Set<World>
 ) : Listener {
 
     @EventHandler(ignoreCancelled = true)
@@ -39,7 +39,7 @@ class SleepBedListener(
         val world = event.bed.world
         val player = event.player
 
-        if (world in skippingWorlds) return
+        if (world in sleepingWorlds) return
 
         plugin.server.scheduler.runTaskAsynchronously(plugin) { _ ->
             val message = Placeholder
