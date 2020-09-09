@@ -25,7 +25,6 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.*
 
-private var sleepAnimationTaskId = -1
 private var sleepTaskId = -1
 private val sleepingWorlds = mutableSetOf<World>()
 private lateinit var sleepBedListener: SleepBedListener
@@ -71,6 +70,8 @@ fun Plugin.disableSleep() {
 }
 
 private fun Plugin.checkWorldForSleeping(world: World) {
+    var sleepAnimationTaskId = -1
+
     // Someone is asleep, and we lack more people.
     if (world.hasBegunSleeping) {
         val message = Placeholder
