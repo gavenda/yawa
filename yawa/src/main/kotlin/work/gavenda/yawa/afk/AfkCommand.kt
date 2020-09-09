@@ -24,7 +24,7 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.isAfk
+import work.gavenda.yawa.api.afk
 import work.gavenda.yawa.api.sendMessageIf
 
 class AfkCommand : Command("yawa.afk") {
@@ -32,7 +32,7 @@ class AfkCommand : Command("yawa.afk") {
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return
 
-        sender.isAfk = true
+        sender.afk = true
 
         val message = Placeholder
             .withContext(sender)

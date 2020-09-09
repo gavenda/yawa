@@ -24,7 +24,7 @@ import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.isAfk
+import work.gavenda.yawa.api.afk
 import work.gavenda.yawa.api.sendMessageIf
 
 const val META_AFK_LAST = "AfkLast"
@@ -45,8 +45,8 @@ var Player.lastInteractionMillis: Long
  * Fires a player interaction.
  */
 fun Player.doInteract() {
-    if (isAfk) {
-        isAfk = false
+    if (afk) {
+        afk = false
 
         val message = Placeholder
             .withContext(this)

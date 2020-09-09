@@ -9,9 +9,10 @@
 
 # Database configuration
 db:
+  # You can use any jdbc url as long as you can somehow provide the driver on the classpath
+  # By default it is set to use SQLite
+  # Use this for MySQL connections: <jdbc:mysql://localhost:3306/db>
   jdbc-url: "jdbc:sqlite:plugins/Yawa/yawa.db"
-  # Use this for MySQL connections
-  # jdbc-url: 'jdbc:mysql://localhost:3306/db'
   username: root
   password: ''
 

@@ -44,7 +44,7 @@ const val META_AFK = "Afk"
  * AFK state.
  * @return true if afk otherwise false
  */
-var Player.isAfk: Boolean
+var Player.afk: Boolean
     get() = if (hasMetadata(META_AFK)) {
         getMetadata(META_AFK)
             .first { it.owningPlugin == Plugin.Instance }

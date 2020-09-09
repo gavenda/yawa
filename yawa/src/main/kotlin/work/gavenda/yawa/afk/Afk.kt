@@ -46,10 +46,10 @@ fun Plugin.enableAfk() {
         server.onlinePlayers.forEach { player ->
             val afkDelta = System.currentTimeMillis() - player.lastInteractionMillis
             val afkSeconds = TimeUnit.MILLISECONDS.toSeconds(afkDelta)
-            val isNotAfk = !player.isAfk
+            val isNotAfk = !player.afk
 
             if (isNotAfk && afkSeconds > 30) {
-                player.isAfk = true
+                player.afk = true
 
                 val message = Placeholder
                     .withContext(player)
@@ -61,7 +61,7 @@ fun Plugin.enableAfk() {
                 }
             }
 
-            if(player.isAfk) {
+            if(player.afk) {
                 player.setPlayerListName(
                     Placeholder.withContext(player)
                         .parse(Config.Afk.PlayerListName)
