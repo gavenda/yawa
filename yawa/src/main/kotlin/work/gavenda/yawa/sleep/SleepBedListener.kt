@@ -28,6 +28,7 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
+import work.gavenda.yawa.api.translateColorCodes
 
 /**
  * Sleep feature bed listener.
@@ -48,6 +49,7 @@ class SleepBedListener(
             val message = Placeholder
                 .withContext(player, world)
                 .parse(Config.Messages.PlayerEnterBed)
+                .translateColorCodes()
 
             world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
         }
@@ -64,6 +66,7 @@ class SleepBedListener(
             val message = Placeholder
                 .withContext(player, world)
                 .parse(Config.Messages.PlayerLeftBed)
+                .translateColorCodes()
 
             world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
         }

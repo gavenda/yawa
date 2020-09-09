@@ -76,6 +76,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         val message = Placeholder
             .withContext(world)
             .parse(Config.Messages.ActionBarSleeping)
+            .translateColorCodes()
 
         world.sendActionBarIf(message) {
             Config.Sleep.ActionBar.Enabled
@@ -86,6 +87,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         val message = Placeholder
             .withContext(world)
             .parse(Config.Messages.ActionBarSleepingDone)
+            .translateColorCodes()
 
         world.sendActionBarIf(message) {
             Config.Sleep.ActionBar.Enabled
@@ -96,6 +98,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         val sleepingMessage = Placeholder
             .withContext(world)
             .parse(Config.Messages.Sleeping.random())
+            .translateColorCodes()
 
         // Broadcast everyone sleeping
         world.sendMessageIf(sleepingMessage) {
@@ -117,6 +120,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
                 val sleepingDoneMessage = Placeholder
                     .withContext(world)
                     .parse(Config.Messages.SleepingDone.random())
+                    .translateColorCodes()
 
                 // Broadcast successful sleep
                 world.sendMessageIf(sleepingDoneMessage) {
