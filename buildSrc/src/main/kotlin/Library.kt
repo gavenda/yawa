@@ -22,19 +22,27 @@ object Version {
     const val KOTLINX_COROUTINES = "1.3.9"
     const val SPIGOT = "1.16.2-R0.1-SNAPSHOT"
     const val PAPER = "1.16.2-R0.1-SNAPSHOT"
+    const val MOCKBUKKIT = "v1.16-SNAPSHOT"
     const val HIKARICP = "3.4.5"
     const val KODEIN = "7.0.0"
     const val PROTOCOL_LIB = "4.5.1"
     const val EXPOSED = "0.27.1"
+    const val JUNIT_JUPITER = "5.6.2"
 }
 
 object Library {
     const val KOTLINX_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLINX_COROUTINES}"
     const val SPIGOT = "org.spigotmc:spigot-api:${Version.SPIGOT}"
     const val PAPER = "com.destroystokyo.paper:paper-api:${Version.PAPER}"
+    const val MOCKBUKKIT = "com.github.seeseemelk:MockBukkit:${Version.MOCKBUKKIT}"
     const val HIKARICP = "com.zaxxer:HikariCP:${Version.HIKARICP}"
     const val KODEIN = "org.kodein.di:kodein-di:${Version.KODEIN}"
     const val PROTOCOL_LIB = "com.comphenix.protocol:ProtocolLib:${Version.PROTOCOL_LIB}"
+
+    object JUNIT {
+        const val API = "org.junit.jupiter:junit-jupiter-api:${Version.JUNIT_JUPITER}"
+        const val ENGINE = "org.junit.jupiter:junit-jupiter-engine:${Version.JUNIT_JUPITER}"
+    }
 
     object Exposed {
         const val CORE = "org.jetbrains.exposed:exposed-core:${Version.EXPOSED}"

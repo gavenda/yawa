@@ -19,6 +19,7 @@
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import org.gradle.language.jvm.tasks.ProcessResources
@@ -26,13 +27,18 @@ import org.gradle.language.jvm.tasks.ProcessResources
 /**
  * Configures the current project as a Spigot plugin.
  */
+@Suppress("UnstableApiUsage")
 fun Project.spigotPlugin() {
     val processResources by tasks.existing(ProcessResources::class)
     val shadowJar by tasks.existing(ShadowJar::class)
     val jar by tasks.existing(Jar::class)
+    val test by tasks.existing(Test::class)
 
     dependencies {
         "compileOnly"(Library.SPIGOT)
+        "testImplementation"(Library.MOCKBUKKIT)
+        "testImplementation"(Library.JUNIT.API)
+        "testRuntimeOnly"(Library.JUNIT.ENGINE)
     }
 
     jar {
@@ -41,6 +47,10 @@ fun Project.spigotPlugin() {
                 "Spigot-Version" to Version.SPIGOT
             )
         }
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
     processResources {

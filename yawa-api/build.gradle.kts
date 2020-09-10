@@ -10,12 +10,6 @@ paperPlugin()
 
 dependencies {
     compileOnly(Library.PROTOCOL_LIB)
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 tasks.shadowJar {
