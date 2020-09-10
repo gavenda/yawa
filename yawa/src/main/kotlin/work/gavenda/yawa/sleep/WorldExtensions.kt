@@ -26,7 +26,7 @@ import kotlin.math.max
 /**
  * Returns true if the world is currently on night time.
  */
-val World.isNightTime get(): Boolean = time > 12950 || time < 23950
+val World.nightTime get(): Boolean = time > 12950 || time < 23950
 
 /**
  * Returns all sleeping players in this world.
@@ -46,9 +46,9 @@ val World.sleepingNeeded
 /**
  * Returns true if any player begins to sleep.
  */
-val World.hasBegunSleeping get() = sleeping.isNotEmpty() && sleepingNeeded > 0
+val World.begunSleeping get() = sleeping.isNotEmpty() && sleepingNeeded > 0
 
 /**
  * Returns true if every player is in bed.
  */
-val World.isEveryoneSleeping get() = sleepingNeeded == 0 && sleeping.isNotEmpty()
+val World.everyoneSleeping get() = sleepingNeeded == 0 && sleeping.isNotEmpty()

@@ -182,7 +182,7 @@ fun Player.updateSkin() {
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
         writePreviousGameMode(previousGameMode)
         writeSeed(world.seed)
-        writeIsDebug(world.isDebugMode)
+        writeIsDebug(world.debugMode)
         writeIsWorldFlat(world.worldType == WorldType.FLAT)
         // true = teleport like, false = player actually died
         writeIsAlive(true)

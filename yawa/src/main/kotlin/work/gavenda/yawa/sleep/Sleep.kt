@@ -47,7 +47,7 @@ fun Plugin.enableSleep() {
             // World is not sleeping
             .filter { it !in sleepingWorlds }
             // And is night time
-            .filter { it.isNightTime }
+            .filter { it.nightTime }
             // And happens on the over world
             .filter { it.environment == World.Environment.NORMAL }
             .forEach(this::checkWorldForSleeping)
@@ -73,7 +73,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     var sleepAnimationTaskId = -1
 
     // Someone is asleep, and we lack more people.
-    if (world.hasBegunSleeping) {
+    if (world.begunSleeping) {
         val message = Placeholder
             .withContext(world)
             .parse(Config.Messages.ActionBarSleeping)
@@ -84,7 +84,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         }
     }
     // Everyone is asleep, and we have enough people
-    else if (world.isEveryoneSleeping) {
+    else if (world.everyoneSleeping) {
         val message = Placeholder
             .withContext(world)
             .parse(Config.Messages.ActionBarSleepingDone)

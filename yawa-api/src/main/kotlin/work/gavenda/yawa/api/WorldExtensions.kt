@@ -27,7 +27,7 @@ import org.bukkit.World
  * Retrieves debug mode status.
  * @return true if world is in debug mode
  */
-val World.isDebugMode: Boolean
+val World.debugMode: Boolean
     get() {
         val nmsWorldClass: Class<*> = MinecraftReflection.getNmsWorldClass()
         val localDebugWorld = nmsWorldClass.getDeclaredField("debugWorld").apply {
