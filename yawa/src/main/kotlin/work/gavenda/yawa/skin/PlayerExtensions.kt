@@ -19,34 +19,30 @@
 
 package work.gavenda.yawa.skin
 
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.skin.restoreSkin
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.*
+import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
+import work.gavenda.yawa.api.mojang.MojangApi
 
-class SkinResetCommand : Command("yawa.skin.reset") {
+/**
+ * Restore player skin as it is found in Mojang servers.
+ */
+fun Player.restoreSkin() = bukkitAsyncTask(Plugin.Instance) {
+    val uuid = if (server.onlineMode) {
+        uniqueId
+    } else MojangApi.findUuidByUsername(name)
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
-        if (sender !is Player) return
-        sender.restoreSkin()
-
-        transaction {
-            PlayerTexture.findById(sender.uniqueId)?.delete()
+    if (uuid != null) {
+        MojangApi.findProfile(uuid)?.let { playerProfile ->
+            playerProfile.properties
+                .find { it.name == MOJANG_KEY_TEXTURES }
+                ?.let { texture -> applySkin(texture.value, texture.signature) }
         }
-
-        sender.sendMessage(
-            Placeholder
-                .withContext(sender)
-                .parse(Config.Messages.SkinReset)
-                .translateColorCodes()
+    } else {
+        applySkin(
+            Config.Skin.DefaultTexture.Value,
+            Config.Skin.DefaultTexture.Signature
         )
-    }
-
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
     }
 }

@@ -74,8 +74,17 @@ object Config {
         }
     }
 
+    object Login {
+        val Disabled get() = config.getBoolean("login.disabled")
+    }
+
     object Skin {
         val Disabled get() = config.getBoolean("skin.disabled")
+
+        object DefaultTexture {
+            val Value get() = config.getString("skin.default-texture.value")!!
+            val Signature get() = config.getString("skin.default-texture.signature")!!
+        }
     }
 
     object Afk {
@@ -103,6 +112,7 @@ object Config {
         val SkinApplied get() = config.getString("messages.skin-applied")!!
         val SkinGenerate get() = config.getString("messages.skin-generate")!!
         val SkinReject get() = config.getString("messages.skin-reject")!!
+        val SkinRestoreFail get() = config.getString("messages.skin-restore-fail")!!
         val SkinRetrieve get() = config.getString("messages.skin-retrieve")!!
         val SkinNotFound get() = config.getString("messages.skin-not-found")!!
         val SkinRateLimit get() = config.getString("messages.skin-rate-limit")!!

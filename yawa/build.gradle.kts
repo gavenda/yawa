@@ -11,6 +11,7 @@ dependencies {
     // Data source
     implementation(Library.HIKARICP)
 
+    compileOnly(Library.PROTOCOL_LIB)
     compileOnly(Library.Exposed.CORE)
     compileOnly(Library.Exposed.DAO)
     compileOnly(Library.Exposed.JDBC)

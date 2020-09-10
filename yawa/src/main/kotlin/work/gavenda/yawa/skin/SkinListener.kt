@@ -26,7 +26,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.Plugin
 import work.gavenda.yawa.api.applySkin
 import work.gavenda.yawa.api.bukkitAsyncTask
-import work.gavenda.yawa.api.restoreSkin
+import work.gavenda.yawa.skin.restoreSkin
 
 /**
  * Applies skin on player join.

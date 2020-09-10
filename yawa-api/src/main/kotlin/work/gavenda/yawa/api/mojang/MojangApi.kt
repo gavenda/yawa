@@ -27,7 +27,11 @@ import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
 import java.math.BigInteger
+import java.net.HttpURLConnection
+import java.net.InetAddress
 import java.net.URL
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -42,6 +46,7 @@ object MojangApi {
     private const val URI_API_STATUS = "https://status.mojang.com/check"
     private const val URI_API_USERNAME_UUID = "https://api.mojang.com/users/profiles/minecraft"
     private const val URI_API_PROFILE = "https://sessionserver.mojang.com/session/minecraft/profile"
+    private const val URI_API_HAS_JOIN = "https://sessionserver.mojang.com/session/minecraft/hasJoined"
 
     private val gson = Gson()
 
@@ -102,6 +107,28 @@ object MojangApi {
             return UUID(bi1.toLong(), bi2.toLong())
         } catch (e: JsonSyntaxException) {
             apiLogger.error("Unable to retrieve minecraft uuid", e)
+        }
+
+        return null
+    }
+
+    /**
+     * Retrieves the minecraft profile by confirming the username, server hash, and host ip.
+     */
+    fun hasJoined(username: String, serverHash: String, hostIp: InetAddress): MojangProfile? {
+        val encodedIP = URLEncoder.encode(hostIp.hostAddress, "UTF-8")
+        val httpConnection = URL("$URI_API_HAS_JOIN?username=$username&serverId=$serverHash&ip=$encodedIP")
+            .asHttpConnection()
+        val responseCode = httpConnection.responseCode
+
+        if(responseCode == HTTP_NO_CONTENT) {
+            return null
+        }
+
+        try {
+            return gson.fromJson(httpConnection.asText(), MojangProfile::class.java)
+        } catch (e: JsonSyntaxException) {
+            apiLogger.error("Unable to retrieve minecraft session", e)
         }
 
         return null

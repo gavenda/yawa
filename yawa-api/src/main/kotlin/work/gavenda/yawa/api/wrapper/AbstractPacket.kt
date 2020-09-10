@@ -51,6 +51,7 @@ import java.lang.reflect.InvocationTargetException
  * @param type - the packet type.
  */
 abstract class AbstractPacket(val handle: PacketContainer, type: PacketType) {
+
     /**
      * Send the current packet to the given receiver.
      *
@@ -66,13 +67,6 @@ abstract class AbstractPacket(val handle: PacketContainer, type: PacketType) {
         } catch (e: InvocationTargetException) {
             throw RuntimeException("Cannot send packet.", e)
         }
-    }
-
-    /**
-     * Send the current packet to all online players.
-     */
-    fun broadcastPacket() {
-        ProtocolLibrary.getProtocolManager().broadcastServerPacket(handle)
     }
 
     init {

@@ -26,13 +26,12 @@ import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.REMOVE_PLAY
 import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
-import com.comphenix.protocol.wrappers.WrappedSignedProperty
+import com.destroystokyo.paper.profile.ProfileProperty
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
-import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerHeldItemSlot
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
@@ -103,35 +102,9 @@ val Player.previousGameMode: NativeGameMode
  * @param signature base64 string signature, if any
  */
 fun Player.applySkin(textureInfo: String, signature: String = "") {
-    try {
-        val gameProfile = WrappedGameProfile.fromPlayer(this)
-        val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
-
-        // Clear and re-assign textures with valid signature
-        gameProfile.properties.clear()
-        gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
-
-        if (!isDead) {
-            updateSkin()
-        }
-    } catch (ex: Exception) {
-        apiLogger.error("Unable to apply skin", ex)
-    }
-}
-
-/**
- * Restore player skin as it is found in Mojang servers.
- */
-fun Player.restoreSkin() = bukkitAsyncTask(Plugin.Instance) {
-    val uuid = if (server.onlineMode) {
-        uniqueId
-    } else MojangApi.findUuidByUsername(name)
-
-    if (uuid != null) {
-        MojangApi.findProfile(uuid)?.let { playerProfile ->
-            playerProfile.properties
-                .find { it.name == MOJANG_KEY_TEXTURES }
-                ?.let { texture -> applySkin(texture.value, texture.signature) }
+    bukkitTask(Plugin.Instance) {
+        playerProfile = playerProfile.apply {
+            setProperty(ProfileProperty(MOJANG_KEY_TEXTURES, textureInfo, signature))
         }
     }
 }
@@ -159,9 +132,9 @@ fun Player.triggerHealthUpdate() {
 
 /**
  * Does a refresh of the player, applying the currently set skin if changed.
- * Always called after [Player.applySkin].
+ * @deprecated [applySkin] actually does this
  */
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "UNUSED")
 fun Player.updateSkin() {
     val wrappedGameProfile = WrappedGameProfile.fromPlayer(this)
     val enumGameMode = NativeGameMode.fromBukkit(gameMode)
