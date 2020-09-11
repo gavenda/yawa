@@ -49,7 +49,7 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
 
             bukkitAsyncTask(Plugin.Instance) {
                 try {
-                    val uuid = MojangApi.findUuidByUsername(name)
+                    val uuid = MojangApi.findUuidByName(name)
                     if (uuid != null) {
                         MojangApi.findProfile(uuid)?.let { playerProfile ->
                             playerProfile.properties

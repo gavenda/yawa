@@ -31,7 +31,7 @@ import work.gavenda.yawa.api.mojang.MojangApi
 fun Player.restoreSkin() = bukkitAsyncTask(Plugin.Instance) {
     val uuid = if (server.onlineMode) {
         uniqueId
-    } else MojangApi.findUuidByUsername(name)
+    } else MojangApi.findUuidByName(name)
 
     if (uuid != null) {
         MojangApi.findProfile(uuid)?.let { playerProfile ->

@@ -19,31 +19,23 @@
 
 package work.gavenda.yawa.login
 
-/**
- * Represents a login session.
- */
-data class LoginSession(
-    val name: String,
-    val serverId: String,
-    val verifyToken: ByteArray,
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.UUIDTable
+import java.util.*
 
-        other as LoginSession
+class UserLogin(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<UserLogin>(UserLoginSchema)
 
-        if (name != other.name) return false
-        if (serverId != other.serverId) return false
-        if (!verifyToken.contentEquals(other.verifyToken)) return false
+    val premium get() = premiumUuid != null
+    var premiumUuid by UserLoginSchema.premiumUuid
+    var name by UserLoginSchema.name
+    var lastLoginAddress by UserLoginSchema.lastLoginAddress
+}
 
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + serverId.hashCode()
-        result = 31 * result + verifyToken.contentHashCode()
-        return result
-    }
+object UserLoginSchema : UUIDTable("yawa_user_login", "uuid") {
+    val premiumUuid = uuid("premium_uuid").nullable()
+    val name = varchar("name", 16)
+    val lastLoginAddress = varchar("last_login_address", 15)
 }

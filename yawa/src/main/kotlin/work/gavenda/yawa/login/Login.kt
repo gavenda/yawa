@@ -20,11 +20,25 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.ProtocolLibrary
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.api.bukkitAsyncTask
+import work.gavenda.yawa.skin.PlayerTextureSchema
+import work.gavenda.yawa.skin.enableSkin
+import java.security.KeyPair
+
+private val protocolManager = ProtocolLibrary.getProtocolManager()
 
 private lateinit var loginListener: LoginListener
+private lateinit var loginEncryptionListener: LoginEncryptionListener
 
+val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
+
+/**
+ * Enable premium login feature.
+ */
 fun Plugin.enableLogin() {
     if (Config.Login.Disabled) return
     if (server.onlineMode) {
@@ -32,21 +46,43 @@ fun Plugin.enableLogin() {
         return
     }
 
-    loginListener = LoginListener(this)
+    // Init tables if not created
+    transaction {
+        SchemaUtils.create(UserLoginSchema)
+    }
 
-    ProtocolLibrary.getProtocolManager()
+    loginListener = LoginListener(this)
+    loginEncryptionListener = LoginEncryptionListener(this)
+
+    protocolManager
         .asynchronousManager
         .registerAsyncHandler(loginListener)
         .start()
+
+    protocolManager
+        .asynchronousManager
+        .registerAsyncHandler(loginEncryptionListener)
+        .start()
 }
 
+/**
+ * Disable premium login feature.
+ */
 fun Plugin.disableLogin() {
     if (Config.Login.Disabled) return
     if (server.onlineMode) return
 
-    ProtocolLibrary.getProtocolManager()
-        .asynchronousManager
-        .unregisterAsyncHandler(loginListener)
+    try {
+        protocolManager
+            .asynchronousManager
+            .unregisterAsyncHandler(loginEncryptionListener)
+
+        protocolManager
+            .asynchronousManager
+            .unregisterAsyncHandler(loginListener)
+    } catch (e: NullPointerException) {
+        slF4JLogger.warn("Unable to unregister handlers, perhaps plugin was reloaded")
+    }
 
     Session.invalidateAll()
 }

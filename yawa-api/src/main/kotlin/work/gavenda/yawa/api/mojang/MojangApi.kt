@@ -22,6 +22,7 @@ package work.gavenda.yawa.api.mojang
 import com.google.common.cache.CacheBuilder
 import com.google.common.util.concurrent.RateLimiter
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asHttpConnection
@@ -48,7 +49,9 @@ object MojangApi {
     private const val URI_API_PROFILE = "https://sessionserver.mojang.com/session/minecraft/profile"
     private const val URI_API_HAS_JOIN = "https://sessionserver.mojang.com/session/minecraft/hasJoined"
 
-    private val gson = Gson()
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(UUID::class.java, UuidNoDashDeserializer())
+        .create()
 
     // Mojang API rate limiter, does not apply to profile since it can be as many as long as its unique
     private val rateLimiter = RateLimiter.create(600.0, 10, TimeUnit.MINUTES)
@@ -85,7 +88,7 @@ object MojangApi {
      * @param username minecraft username
      * @return an instance of [UUID], will return null when not found
      */
-    fun findUuidByUsername(username: String): UUID? {
+    fun findUuidByName(username: String): UUID? {
         if (!rateLimiter.tryAcquire()) {
             throw RateLimitException()
         }
@@ -101,10 +104,7 @@ object MojangApi {
 
         try {
             val result = gson.fromJson(httpConnection.asText(), MojangProfile::class.java)
-            // Parse to uuid
-            val bi1 = BigInteger(result.id.substring(0, 16), 16)
-            val bi2 = BigInteger(result.id.substring(16, 32), 16)
-            return UUID(bi1.toLong(), bi2.toLong())
+            return result.id
         } catch (e: JsonSyntaxException) {
             apiLogger.error("Unable to retrieve minecraft uuid", e)
         }

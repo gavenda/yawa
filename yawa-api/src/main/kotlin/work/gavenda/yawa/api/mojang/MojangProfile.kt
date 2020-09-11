@@ -19,11 +19,13 @@
 
 package work.gavenda.yawa.api.mojang
 
+import java.util.*
+
 /**
  * Represents a Mojang profile.
  */
 data class MojangProfile(
-    val id: String,
+    val id: UUID,
     val name: String,
     val properties: List<MojangProfileProperty> = listOf()
 )

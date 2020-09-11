@@ -76,6 +76,7 @@ object Config {
 
     object Login {
         val Disabled get() = config.getBoolean("login.disabled")
+        val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid")
     }
 
     object Skin {
@@ -112,11 +113,15 @@ object Config {
         val SkinApplied get() = config.getString("messages.skin-applied")!!
         val SkinGenerate get() = config.getString("messages.skin-generate")!!
         val SkinReject get() = config.getString("messages.skin-reject")!!
-        val SkinRestoreFail get() = config.getString("messages.skin-restore-fail")!!
         val SkinRetrieve get() = config.getString("messages.skin-retrieve")!!
         val SkinNotFound get() = config.getString("messages.skin-not-found")!!
         val SkinRateLimit get() = config.getString("messages.skin-rate-limit")!!
         val SkinReset get() = config.getString("messages.skin-reset")!!
+        val LoginInvalidSession get() = config.getString("messages.login-invalid-session")!!
+        val LoginInvalidSessionRetry get() = config.getString("messages.login-invalid-session-retry")!!
+        val LoginInvalidRequest get() = config.getString("messages.login-invalid-request")!!
+        val LoginError get() = config.getString("messages.login-error")!!
+        val LoginInvalidToken get() = config.getString("messages.login-invalid-token")!!
     }
 
     /**

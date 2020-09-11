@@ -20,8 +20,8 @@
 object Version {
     const val KOTLIN = "1.4.0"
     const val KOTLINX_COROUTINES = "1.3.9"
-    const val SPIGOT = "1.16.2-R0.1-SNAPSHOT"
-    const val PAPER = "1.16.2-R0.1-SNAPSHOT"
+    const val SPIGOT = "1.16.3-R0.1-SNAPSHOT"
+    const val PAPER = "1.16.3-R0.1-SNAPSHOT"
     const val MOCKBUKKIT = "v1.16-SNAPSHOT"
     const val HIKARICP = "3.4.5"
     const val KODEIN = "7.0.0"

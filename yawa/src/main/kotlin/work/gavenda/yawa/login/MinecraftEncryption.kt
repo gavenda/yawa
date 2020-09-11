@@ -20,7 +20,6 @@
 package work.gavenda.yawa.login
 
 import java.math.BigInteger
-import java.nio.charset.StandardCharsets
 import java.security.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -48,7 +47,7 @@ object MinecraftEncryption {
      *
      * This is used to verify that we are communicating with the same player in a login session.
      *
-     * @return an verify token with 4 bytes long
+     * @return a verify token with 4 bytes long
      */
     fun generateVerifyToken(): ByteArray {
         val bytes = ByteArray(verifyTokenLength)
@@ -65,18 +64,20 @@ object MinecraftEncryption {
      * @return the server id formatted as a hexadecimal string.
      */
     fun generateServerIdHash(sessionId: String, sharedSecret: SecretKey, publicKey: PublicKey): String {
-        val digest = MessageDigest.getInstance("SHA-1")
-        digest.update(sessionId.toByteArray(StandardCharsets.ISO_8859_1))
-        digest.update(sharedSecret.encoded)
-        digest.update(publicKey.encoded)
+        val digest = MessageDigest.getInstance("SHA-1").apply {
+            update(sessionId.toByteArray(Charsets.ISO_8859_1))
+            update(sharedSecret.encoded)
+            update(publicKey.encoded)
+        }
         val serverHash = digest.digest()
         return BigInteger(serverHash).toString(16)
     }
 
     /**
-     * Decrypts the content and extracts the key spec.
+     * Decrypts the content and extracts the shared key.
      *
-     * @param sharedKey  the encrypted shared key
+     * @param privateKey the private key
+     * @param sharedKey the encrypted shared key
      * @return shared secret key
      * @throws GeneralSecurityException if it fails to decrypt the data
      */
@@ -84,7 +85,7 @@ object MinecraftEncryption {
         SecretKeySpec(decrypt(privateKey, sharedKey), "AES")
 
     /**
-     * Decrypted the given data using the given private key.
+     * Decrypt the given data using the given private key.
      *
      * @param key the private key
      * @param data the encrypted data

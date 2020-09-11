@@ -33,7 +33,7 @@ class MojangApiTest {
         val expectedUuid = UUID.fromString("542189cf-68fb-415b-bbe6-c60da626e65a")
         val playerName = "Red"
 
-        val playerUuid = MojangApi.findUuidByUsername(playerName)
+        val playerUuid = MojangApi.findUuidByName(playerName)
 
         assertEquals(expectedUuid, playerUuid)
 

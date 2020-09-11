@@ -39,10 +39,8 @@ fun Plugin.enableSkin() {
     }
 
     // Init tables if not created
-    bukkitAsyncTask(this) {
-        transaction {
-            SchemaUtils.create(PlayerTextureSchema)
-        }
+    transaction {
+        SchemaUtils.create(PlayerTextureSchema)
     }
 
     // Register event listeners

@@ -17,33 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.login
+package work.gavenda.yawa.api.mojang
+
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import java.lang.reflect.Type
+import java.math.BigInteger
+import java.util.*
 
 /**
- * Represents a login session.
+ * UUID no dash deserializer.
  */
-data class LoginSession(
-    val name: String,
-    val serverId: String,
-    val verifyToken: ByteArray,
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as LoginSession
-
-        if (name != other.name) return false
-        if (serverId != other.serverId) return false
-        if (!verifyToken.contentEquals(other.verifyToken)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + serverId.hashCode()
-        result = 31 * result + verifyToken.contentHashCode()
-        return result
+class UuidNoDashDeserializer : JsonDeserializer<UUID> {
+    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): UUID {
+        val value = json.asJsonPrimitive.asString
+        // Parse to uuid
+        val bi1 = BigInteger(value.substring(0, 16), 16)
+        val bi2 = BigInteger(value.substring(16, 32), 16)
+        return UUID(bi1.toLong(), bi2.toLong())
     }
 }

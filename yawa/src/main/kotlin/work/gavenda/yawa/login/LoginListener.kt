@@ -20,57 +20,151 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.entity.Player
+import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Plugin
-import java.security.KeyPair
+import work.gavenda.yawa.api.bukkitAsyncTask
+import work.gavenda.yawa.api.mojang.MojangApi
+import work.gavenda.yawa.api.mojang.RateLimitException
+import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
+import work.gavenda.yawa.logger
+import java.security.PublicKey
+import java.util.*
 import java.util.concurrent.TimeUnit
 
+/**
+ * Listens to the client login attempt and determines whether we can encrypt the connection or not.
+ * Basically determines if you have paid for minecraft.
+ */
 @Suppress("UnstableApiUsage")
 class LoginListener(plugin: Plugin) : PacketAdapter(
     params()
         .plugin(plugin)
-        .types(PacketType.Login.Client.START, PacketType.Login.Client.ENCRYPTION_BEGIN)
+        .types(PacketType.Login.Client.START)
         .optionAsync()
 ) {
 
+    private val serverId = ""
     private val rateLimiter = RateLimiter.create(200.0, 5, TimeUnit.MINUTES)
-    private val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
+    private val protocolManager = ProtocolLibrary.getProtocolManager()
 
     override fun onPacketReceiving(packetEvent: PacketEvent) {
         if (packetEvent.isCancelled) return
+        if (rateLimiter.tryAcquire().not()) return
 
-        val sender = packetEvent.player
-        val packetType = packetEvent.packetType
+        val packet = packetEvent.packet
+        val name = packet.gameProfiles.read(0).name
+        val player = packetEvent.player
 
-        if (packetType == PacketType.Login.Client.START) {
-            if (!rateLimiter.tryAcquire()) return
-            onLogin(packetEvent, sender)
-        } else {
-            onEncryptionBegin(packetEvent, sender)
+        // Remove old data every time on a new login in order to keep the session only for one person
+        Session.invalidate(player.address)
+
+        // Delay processing
+        packetEvent.asyncMarker.incrementProcessingDelay()
+
+        bukkitAsyncTask(plugin) {
+            transaction {
+                try {
+                    val uuid = UUID.nameUUIDFromBytes("OfflinePlayer:$name".toByteArray(Charsets.UTF_8))
+
+                    // Try getting information from database
+                    val userLogin = UserLogin.findById(uuid)
+
+                    if (userLogin != null) {
+                        logger.info("User information already exists")
+                        if (userLogin.premium) {
+                            encryptConnection(packetEvent, player, name, keyPair.public)
+                        } else {
+                            unsecureConnection(player, name)
+                        }
+                    } else if (Session.hasPendingSession(player.address, name)) {
+                        logger.info("Pending session for: $name")
+                        // Player has pending session, must have failed first premium attempt -> start an offline session
+                        unsecureConnection(player, name)
+                    } else {
+                        logger.info("Looking up premium uuid for: $name")
+                        // Contact Mojang API
+                        val premiumUuid = MojangApi.findUuidByName(name)
+
+                        if (premiumUuid != null) {
+                            logger.info("Premium uuid found")
+                            // Player is premium, encrypt connection
+                            encryptConnection(packetEvent, player, name, keyPair.public)
+                        } else {
+                            logger.info("Cannot find a premium uuid for: $name")
+                            // Player is not premium -> start an offline session
+                            unsecureConnection(player, name)
+                        }
+                    }
+                } catch (ex: RateLimitException) {
+                    logger.warn("Cannot retrieve premium uuid, we have been rate-limited by the Mojang API", ex)
+                } finally {
+                    protocolManager
+                        .asynchronousManager
+                        .signalPacketTransmission(packetEvent)
+                }
+            }
         }
     }
 
-    private fun onEncryptionBegin(packetEvent: PacketEvent, sender: Player) {
-        val sharedSecret = packetEvent.packet.byteArrays.read(0)
-        packetEvent.asyncMarker.incrementProcessingDelay()
-        val verifyTask = VerifyResponseTask(packetEvent, sender, sharedSecret.copyOf(), keyPair)
-        plugin.server.scheduler.runTaskAsynchronously(plugin, verifyTask)
+    /**
+     * Begin an unsecure connection.
+     */
+    private fun unsecureConnection(player: Player, playerName: String) {
+        logger.info("Initiating unsecure connection for: $playerName")
+
+        val session = LoginSession(playerName, serverId, byteArrayOf())
+        Session.cache(player.address, session)
+
+        val uuid = UUID.nameUUIDFromBytes("OfflinePlayer:$playerName".toByteArray(Charsets.UTF_8))
+
+        // Remember unsecure login
+        bukkitAsyncTask(plugin) {
+            transaction {
+                val userLogin = UserLogin.findById(uuid) ?: UserLogin.new(uuid) {
+                    name = playerName
+                    premiumUuid = null
+                }
+
+                userLogin.lastLoginAddress = player.address.address.hostAddress
+            }
+        }
     }
 
-    private fun onLogin(packetEvent: PacketEvent, player: Player) {
-        // remove old data every time on a new login in order to keep the session only for one person
-        Session.invalidate(player.address)
+    /**
+     * Begin an encrypted connection.
+     */
+    private fun encryptConnection(packetEvent: PacketEvent, player: Player, name: String, publicKey: PublicKey) {
+        logger.info("Initiating secure connection for: $name")
 
-        // player.getName() won't work at this state
-        val packet = packetEvent.packet
-        val username = packet.gameProfiles.read(0).name
+        val verifyToken = MinecraftEncryption.generateVerifyToken()
 
-        packetEvent.asyncMarker.incrementProcessingDelay()
+        try {
+            val encryptionBegin = WrapperLoginServerEncryptionBegin().apply {
+                writeServerId(serverId)
+                writePublicKey(publicKey)
+                writeVerifyToken(verifyToken)
+            }
+            encryptionBegin.sendPacket(player)
+        } catch (ex: Exception) {
+            logger.warn("Cannot send encrypt connection. Falling back to unsecure login")
+            return
+        }
 
-        val nameCheckTask = NameCheckTask(packetEvent, player, username, keyPair.public)
-        plugin.server.scheduler.runTaskAsynchronously(plugin, nameCheckTask)
+        val session = LoginSession(name, serverId, verifyToken)
+
+        // Pending verification
+        Session.pending(player.address, name)
+        // Cache the session
+        Session.cache(player.address, session)
+
+        // Cancel only if the player has a paid account otherwise login as normal offline player
+        synchronized(packetEvent.asyncMarker.processingLock) {
+            packetEvent.isCancelled = true
+        }
     }
 }

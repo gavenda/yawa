@@ -19,6 +19,9 @@
 
 package work.gavenda.yawa.api
 
+import com.comphenix.protocol.injector.server.TemporaryPlayerFactory
+import com.comphenix.protocol.reflect.FieldUtils
+import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.ADD_PLAYER
@@ -32,10 +35,8 @@ import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerHeldItemSlot
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerRespawn
+import work.gavenda.yawa.api.wrapper.*
+import java.util.*
 
 const val META_AFK = "Afk"
 
@@ -97,7 +98,7 @@ val Player.previousGameMode: NativeGameMode
     }
 
 /**
- * Applies a skin to this player.
+ * Applies a skin to this player and immediately reflects the changes in-game.
  * @param textureInfo json encoded texture
  * @param signature base64 string signature, if any
  */
@@ -190,4 +191,39 @@ fun Player.updateSkin() {
             p.showPlayer(Plugin.Instance, this)
         }
     }
+}
+
+/**
+ * Underlying network manager.
+ */
+val Player.networkManager: Any
+    get() {
+        val injectorContainer = TemporaryPlayerFactory.getInjectorFromPlayer(player)
+        val injectorClass = Class.forName("com.comphenix.protocol.injector.netty.Injector")
+        val rawInjector = FuzzyReflection.getFieldValue(injectorContainer, injectorClass, true)
+        return FieldUtils.readField(rawInjector, "networkManager", true)
+    }
+
+/**
+ * Retrieves the spoofed uuid for this player.
+ */
+var Player.spoofedUuid: UUID
+    get() = FieldUtils.readField(networkManager, "spoofedUUID", true) as UUID
+    set(value) {
+        //https://github.com/bergerkiller/CraftSource/blob/master/net.minecraft.server/NetworkManager.java#L69
+        FieldUtils.writeField(networkManager, "spoofedUUID", value, true)
+    }
+
+/**
+ * Disconnect the player using a packet.
+ */
+fun Player.disconnect(reason: String = "") {
+    apiLogger.info("Packet disconnect: $reason")
+    val disconnectPacket = WrapperLoginServerDisconnect().apply {
+        writeReason(WrappedChatComponent.fromText(reason))
+    }
+    // Send disconnect packet
+    disconnectPacket.sendPacket(this)
+    // Server cleanup
+    kickPlayer("Disconnected.")
 }

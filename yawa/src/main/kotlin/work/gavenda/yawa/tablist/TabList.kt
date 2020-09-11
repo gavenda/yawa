@@ -27,6 +27,9 @@ import work.gavenda.yawa.api.translateColorCodes
 
 private var tabListTaskId = -1
 
+/**
+ * Enable tab list feature.
+ */
 fun Plugin.enableTabList() {
     if (Config.TabList.Disabled) return
 
@@ -47,6 +50,9 @@ fun Plugin.enableTabList() {
     }
 }
 
+/**
+ * Disable tab list feature.
+ */
 fun Plugin.disableTabList() {
     if (Config.TabList.Disabled) return
 
