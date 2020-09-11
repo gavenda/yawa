@@ -26,8 +26,10 @@ import com.comphenix.protocol.events.PacketEvent
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.bukkitAsyncTask
+import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
@@ -48,6 +50,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
         .optionAsync()
 ) {
 
+    private val nameRegex = Regex("^[0-z_]+\$")
     private val serverId = ""
     private val rateLimiter = RateLimiter.create(200.0, 5, TimeUnit.MINUTES)
     private val protocolManager = ProtocolLibrary.getProtocolManager()
@@ -59,6 +62,23 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
         val packet = packetEvent.packet
         val name = packet.gameProfiles.read(0).name
         val player = packetEvent.player
+
+        // Validate name
+        if(name.length < 3) {
+            player.disconnect(Config.Messages.LoginNameShort)
+            logger.warn("Disconnected player '$name' due to invalid name")
+            return
+        }
+        if(name.length > 16) {
+            player.disconnect(Config.Messages.LoginNameLong)
+            logger.warn("Disconnected player '$name' due to invalid name")
+            return
+        }
+        if(nameRegex.matches(name).not()) {
+            player.disconnect(Config.Messages.LoginNameIllegal)
+            logger.warn("Disconnected player '$name' due to invalid name")
+            return
+        }
 
         // Remove old data every time on a new login in order to keep the session only for one person
         Session.invalidate(player.address)

@@ -120,8 +120,11 @@ object Config {
         val LoginInvalidSession get() = config.getString("messages.login-invalid-session")!!
         val LoginInvalidSessionRetry get() = config.getString("messages.login-invalid-session-retry")!!
         val LoginInvalidRequest get() = config.getString("messages.login-invalid-request")!!
-        val LoginError get() = config.getString("messages.login-error")!!
         val LoginInvalidToken get() = config.getString("messages.login-invalid-token")!!
+        val LoginNameIllegal get() = config.getString("messages.login-name-illegal")!!
+        val LoginNameShort get() = config.getString("messages.login-name-short")!!
+        val LoginNameLong get() = config.getString("messages.login-name-long")!!
+        val LoginError get() = config.getString("messages.login-error")!!
     }
 
     /**

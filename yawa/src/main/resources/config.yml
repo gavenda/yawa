@@ -82,4 +82,7 @@ messages:
   login-invalid-token: "&rInvalid token."
   login-invalid-request: "&rMalicious login detected."
   login-invalid-session-retry: "&rCracked client detected. Please reconnect to initiate cracked login."
+  login-name-illegal: "&rName contains illegal characters."
+  login-name-short: "&rName is too short (at least 3 characters)."
+  login-name-long: "&rName is too long (maximum of 16 characters)."
   login-error: "&rA login error occurred."
