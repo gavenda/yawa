@@ -24,9 +24,6 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.bukkitAsyncTask
-import work.gavenda.yawa.skin.PlayerTextureSchema
-import work.gavenda.yawa.skin.enableSkin
 import java.security.KeyPair
 
 private val protocolManager = ProtocolLibrary.getProtocolManager()

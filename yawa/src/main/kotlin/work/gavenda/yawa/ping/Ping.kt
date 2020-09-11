@@ -22,7 +22,8 @@ package work.gavenda.yawa.ping
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.*
+import work.gavenda.yawa.api.bukkitTimerTask
+import work.gavenda.yawa.api.latencyInMillis
 
 private var pingTaskId = -1
 

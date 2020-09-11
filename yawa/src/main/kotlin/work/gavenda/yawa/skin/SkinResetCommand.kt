@@ -25,7 +25,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.skin.restoreSkin
 import work.gavenda.yawa.api.translateColorCodes
 
 class SkinResetCommand : Command("yawa.skin.reset") {

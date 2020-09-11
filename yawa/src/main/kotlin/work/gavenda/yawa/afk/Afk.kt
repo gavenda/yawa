@@ -61,7 +61,7 @@ fun Plugin.enableAfk() {
                 }
             }
 
-            if(player.afk) {
+            if (player.afk) {
                 player.setPlayerListName(
                     Placeholder.withContext(player)
                         .parse(Config.Afk.PlayerListName)

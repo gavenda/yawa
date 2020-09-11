@@ -119,7 +119,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
                         val userLogin = UserLogin.findById(uuid)
 
                         // Check if user has already logged in before and is a verified premium player
-                        if(userLogin != null && userLogin.premium) {
+                        if (userLogin != null && userLogin.premium) {
                             // Then invalid session
                             player.disconnect(Config.Messages.LoginInvalidSession.translateColorCodes())
                         } else {

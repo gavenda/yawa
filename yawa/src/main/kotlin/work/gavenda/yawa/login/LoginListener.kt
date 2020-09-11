@@ -64,17 +64,17 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
         val player = packetEvent.player
 
         // Validate name
-        if(name.length < 3) {
+        if (name.length < 3) {
             player.disconnect(Config.Messages.LoginNameShort)
             logger.warn("Disconnected player '$name' due to invalid name")
             return
         }
-        if(name.length > 16) {
+        if (name.length > 16) {
             player.disconnect(Config.Messages.LoginNameLong)
             logger.warn("Disconnected player '$name' due to invalid name")
             return
         }
-        if(nameRegex.matches(name).not()) {
+        if (nameRegex.matches(name).not()) {
             player.disconnect(Config.Messages.LoginNameIllegal)
             logger.warn("Disconnected player '$name' due to invalid name")
             return

@@ -25,7 +25,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.DisabledCommand
 import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.bukkitAsyncTask
 
 private val skinListener = SkinListener()
 
