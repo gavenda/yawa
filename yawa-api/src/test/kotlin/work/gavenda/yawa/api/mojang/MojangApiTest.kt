@@ -29,7 +29,6 @@ class MojangApiTest {
     @Test
     @DisplayName("Test Mojang API")
     fun testMojangAPI() {
-        val expectedUuidStr = "542189cf68fb415bbbe6c60da626e65a"
         val expectedUuid = UUID.fromString("542189cf-68fb-415b-bbe6-c60da626e65a")
         val playerName = "Red"
 
@@ -41,6 +40,6 @@ class MojangApiTest {
 
         assertNotNull(playerProfile)
         assertEquals(playerName, playerProfile?.name)
-        assertEquals(expectedUuidStr, playerProfile?.id)
+        assertEquals(expectedUuid, playerProfile?.id)
     }
 }

@@ -24,7 +24,6 @@ allprojects {
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots")
         maven("https://papermc.io/repo/repository/maven-public")
         maven("https://repo.dmulloy2.net/nexus/repository/public")
-        maven("https://jitpack.io")
     }
 
     tasks.withType<KotlinCompile> {
