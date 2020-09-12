@@ -39,10 +39,20 @@ object Config {
         val Password get() = config.getString("db.password")
     }
 
+    /**
+     * Tab list configuration.
+     */
     object TabList {
         val Disabled get() = config.getBoolean("tab-list.disabled")
         val Header get() = config.getString("tab-list.header")!!
         val Footer get() = config.getString("tab-list.footer")!!
+    }
+
+    /**
+     * Ender dragon battle configuration.
+     */
+    object Ender {
+        val Disabled get() = config.getBoolean("ender.disabled")
     }
 
     /**
@@ -117,6 +127,8 @@ object Config {
         val SkinNotFound get() = config.getString("messages.skin-not-found")!!
         val SkinRateLimit get() = config.getString("messages.skin-rate-limit")!!
         val SkinReset get() = config.getString("messages.skin-reset")!!
+        val EnderBattleStart get() = config.getString("messages.ender-battle-start")!!
+        val EnderBattleTeleport get() = config.getString("messages.ender-battle-teleport")!!
         val LoginInvalidSession get() = config.getString("messages.login-invalid-session")!!
         val LoginInvalidSessionRetry get() = config.getString("messages.login-invalid-session-retry")!!
         val LoginInvalidRequest get() = config.getString("messages.login-invalid-request")!!

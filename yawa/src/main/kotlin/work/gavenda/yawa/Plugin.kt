@@ -27,6 +27,8 @@ import work.gavenda.yawa.afk.disableAfk
 import work.gavenda.yawa.afk.enableAfk
 import work.gavenda.yawa.chat.disableChat
 import work.gavenda.yawa.chat.enableChat
+import work.gavenda.yawa.ender.disableEnder
+import work.gavenda.yawa.ender.enableEnder
 import work.gavenda.yawa.essentials.disableEssentials
 import work.gavenda.yawa.essentials.enableEssentials
 import work.gavenda.yawa.login.disableLogin
@@ -69,6 +71,7 @@ class Plugin : JavaPlugin() {
         enableChat()
         enableTabList()
         enableLogin()
+        enableEnder()
         // Register root command
         registerRootCommand()
 
@@ -93,6 +96,7 @@ class Plugin : JavaPlugin() {
         disableChat()
         disableTabList()
         disableLogin()
+        disableEnder()
         // Close data source
         dataSource.close()
         // Safe load flag to false, in case of reloads

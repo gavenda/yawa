@@ -38,6 +38,10 @@ sleep:
     chat.enabled: true
     action-bar.enabled: true
 
+# Ender dragon battle configuration
+ender:
+  disabled: false
+
 # Skin feature configuration
 skin:
   disabled: false
@@ -77,6 +81,8 @@ messages:
   skin-rate-limit: "&cWe have reached our rate limits for changing skins, please try again later"
   skin-reject: "&cPlease pass a valid url that starts with http or https"
   skin-reset: "&eYour skin has been reset"
+  ender-battle-start: "&eA battle for the ender dragon has begun and you are forced to join..."
+  ender-battle-teleport: "&eYou have been teleported by an unknown entity to fight the ender dragon"
   # No placeholder support for login state
   login-invalid-session: "&rInvalid session."
   login-invalid-token: "&rInvalid token."
