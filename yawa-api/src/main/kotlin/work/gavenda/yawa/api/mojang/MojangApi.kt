@@ -21,18 +21,14 @@ package work.gavenda.yawa.api.mojang
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.util.concurrent.RateLimiter
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
-import java.math.BigInteger
-import java.net.HttpURLConnection
 import java.net.InetAddress
 import java.net.URL
 import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -121,7 +117,7 @@ object MojangApi {
             .asHttpConnection()
         val responseCode = httpConnection.responseCode
 
-        if(responseCode == HTTP_NO_CONTENT) {
+        if (responseCode == HTTP_NO_CONTENT) {
             return null
         }
 

@@ -45,7 +45,7 @@ object Placeholder {
     /**
      * Returns a provider with the given context.
      */
-    fun withContext(player: Player) = PlaceholderContext(providers,  player, player.world)
+    fun withContext(player: Player) = PlaceholderContext(providers, player, player.world)
 
     /**
      * Returns a provider with the given context.
@@ -93,6 +93,9 @@ class PlaceholderContext(
         return parsed
     }
 
+    /**
+     * Returns this placeholder as a help list.
+     */
     fun asHelpList(): List<String> {
         val placeholders = providers
             .map { it.provide(player, world) }

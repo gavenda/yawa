@@ -29,7 +29,7 @@ private val enderListener = EnderListener()
  * Enable Ender dragon battle feature, forces everyone fight the Ender dragon together.
  */
 fun Plugin.enableEnder() {
-    if(Config.Ender.Disabled) return
+    if (Config.Ender.Disabled) return
 
     server.pluginManager.registerEvents(enderListener, this)
 }
@@ -38,7 +38,7 @@ fun Plugin.enableEnder() {
  * Disable Ender dragon battle feature.
  */
 fun Plugin.disableEnder() {
-    if(Config.Ender.Disabled) return
+    if (Config.Ender.Disabled) return
 
     HandlerList.unregisterAll(enderListener)
 }

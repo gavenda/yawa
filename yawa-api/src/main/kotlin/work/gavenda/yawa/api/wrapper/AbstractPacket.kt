@@ -46,17 +46,15 @@ import java.lang.reflect.InvocationTargetException
 
 /**
  * Constructs a new strongly typed wrapper for the given packet.
- *
- * @param handle - handle to the raw packet data.
- * @param type - the packet type.
+ * @param handle handle to the raw packet data
+ * @param type the packet type
  */
 abstract class AbstractPacket(val handle: PacketContainer, type: PacketType) {
 
     /**
      * Send the current packet to the given receiver.
-     *
-     * @param receiver - the receiver.
-     * @throws RuntimeException If the packet cannot be sent.
+     * @param receiver the receiver
+     * @throws RuntimeException if the packet cannot be sent
      */
     fun sendPacket(receiver: Player) {
         try {

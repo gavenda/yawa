@@ -29,6 +29,10 @@ class WrapperLoginServerDisconnect : AbstractPacket(PacketContainer(type), type)
         handle.modifier.writeDefaults()
     }
 
+    /**
+     * Write the reason.
+     * @param value new value
+     */
     fun writeReason(value: WrappedChatComponent) {
         handle.chatComponents.write(0, value)
     }

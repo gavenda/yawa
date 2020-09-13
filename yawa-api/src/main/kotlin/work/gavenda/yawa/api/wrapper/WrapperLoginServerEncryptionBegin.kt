@@ -28,14 +28,26 @@ class WrapperLoginServerEncryptionBegin : AbstractPacket(PacketContainer(type), 
         handle.modifier.writeDefaults()
     }
 
+    /**
+     * Writes the server identifier.
+     * @param value new value
+     */
     fun writeServerId(value: String) {
         handle.strings.write(0, value)
     }
 
+    /**
+     * Writes the public key.
+     * @param publicKey the public key
+     */
     fun writePublicKey(publicKey: PublicKey) {
         handle.getSpecificModifier(PublicKey::class.java).write(0, publicKey)
     }
 
+    /**
+     * Writes the verify token
+     * @param value new value
+     */
     fun writeVerifyToken(value: ByteArray) {
         handle.byteArrays.write(0, value)
     }

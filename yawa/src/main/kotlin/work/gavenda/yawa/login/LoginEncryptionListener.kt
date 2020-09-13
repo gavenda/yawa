@@ -146,6 +146,11 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
 
     }
 
+    /**
+     * Validate the verify token of the current login session.
+     * @param session the current login session
+     * @param encryptedVerifyToken the encrypted verified token
+     */
     private fun validateVerifyToken(session: LoginSession, encryptedVerifyToken: ByteArray): Boolean {
         try {
             val verifyToken = session.verifyToken
@@ -188,7 +193,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
     private fun receiveFakeStartPacket(player: Player, name: String) {
         // uuid is ignored by the packet definition
         val fakeProfile = WrappedGameProfile(UUID.randomUUID(), name)
-        // see StartPacketListener for packet information
+        // See StartPacketListener for packet information
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
             gameProfiles.write(0, fakeProfile)
         }
@@ -197,7 +202,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
             protocolManager.recieveClientPacket(player, startPacket, false)
         } catch (ex: Exception) {
             logger.warn("Failed to fake a new start packet")
-            // cancel the event in order to prevent the server receiving an invalid packet
+            // Cancel the event in order to prevent the server receiving an invalid packet
             player.disconnect(Config.Messages.LoginInvalidToken.translateColorCodes())
         }
     }

@@ -102,11 +102,11 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
                             unsecureConnection(player, name)
                         }
                     } else if (Session.hasPendingSession(player.address, name)) {
-                        logger.info("Pending session for: $name")
+                        logger.info("Pending session for $name")
                         // Player has pending session, must have failed first premium attempt -> start an offline session
                         unsecureConnection(player, name)
                     } else {
-                        logger.info("Looking up premium uuid for: $name")
+                        logger.info("Looking up premium uuid for $name")
                         // Contact Mojang API
                         val premiumUuid = MojangApi.findUuidByName(name)
 
@@ -115,7 +115,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
                             // Player is premium, encrypt connection
                             encryptConnection(packetEvent, player, name, keyPair.public)
                         } else {
-                            logger.info("Cannot find a premium uuid for: $name")
+                            logger.info("Cannot find a premium uuid for $name")
                             // Player is not premium -> start an offline session
                             unsecureConnection(player, name)
                         }
@@ -135,7 +135,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
      * Begin an unsecure connection.
      */
     private fun unsecureConnection(player: Player, playerName: String) {
-        logger.info("Initiating unsecure connection for: $playerName")
+        logger.info("Initiating unsecure connection for $playerName")
 
         val session = LoginSession(playerName, serverId, byteArrayOf())
         Session.cache(player.address, session)
@@ -159,7 +159,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
      * Begin an encrypted connection.
      */
     private fun encryptConnection(packetEvent: PacketEvent, player: Player, name: String, publicKey: PublicKey) {
-        logger.info("Initiating secure connection for: $name")
+        logger.info("Initiating secure connection for $name")
 
         val verifyToken = MinecraftEncryption.generateVerifyToken()
 

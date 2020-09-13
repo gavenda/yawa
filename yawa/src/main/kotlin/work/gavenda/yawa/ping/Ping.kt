@@ -37,11 +37,13 @@ const val SB_DISPLAY_NAME = "ms"
 fun Plugin.enablePing() {
     if (Config.Ping.Disabled) return
 
+    // Create new scoreboard
     val board = server.scoreboardManager.newScoreboard
     val objective = board.registerNewObjective(SB_NAME, SB_CRITERIA, SB_DISPLAY_NAME).apply {
         displaySlot = DisplaySlot.PLAYER_LIST
     }
 
+    // Tasks
     pingTaskId = bukkitTimerTask(this, 0, 20) {
         val onlinePlayers = server.onlinePlayers
 
@@ -64,5 +66,6 @@ fun Plugin.enablePing() {
 fun Plugin.disablePing() {
     if (Config.Ping.Disabled) return
 
+    // Tasks
     server.scheduler.cancelTask(pingTaskId)
 }

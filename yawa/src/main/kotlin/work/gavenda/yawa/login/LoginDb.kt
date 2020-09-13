@@ -25,6 +25,9 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.*
 
+/**
+ * Represents a user login.
+ */
 class UserLogin(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
     companion object : UUIDEntityClass<UserLogin>(UserLoginSchema)
 
@@ -34,6 +37,9 @@ class UserLogin(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
     var lastLoginAddress by UserLoginSchema.lastLoginAddress
 }
 
+/**
+ * Represents a user login schema that is created on the database.
+ */
 object UserLoginSchema : UUIDTable("yawa_user_login", "uuid") {
     val premiumUuid = uuid("premium_uuid").nullable()
     val name = varchar("name", 16)

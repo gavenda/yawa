@@ -33,7 +33,7 @@ fun String.translateColorCodes(altCharCode: Char = '&'): String {
 }
 
 /**
- * Returns the response in text of the URL using an HTTP GET request.
+ * Returns the response in text of the [URL] using an HTTP GET request.
  */
 fun URL.asText(): String {
     return openConnection().run {
@@ -42,10 +42,16 @@ fun URL.asText(): String {
     }
 }
 
+/**
+ * Returns the response in text of the [HttpURLConnection].
+ */
 fun HttpURLConnection.asText(): String {
     return inputStream.bufferedReader().readText()
 }
 
+/**
+ * Returns this [URL] as an instance of [HttpURLConnection].
+ */
 fun URL.asHttpConnection(): HttpURLConnection {
     return openConnection() as HttpURLConnection
 }

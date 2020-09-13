@@ -48,7 +48,7 @@ class WrapperPlayServerHeldItemSlot : AbstractPacket(PacketContainer(type), type
 
     /**
      * Write helm item slot.
-     * @param value - new value.
+     * @param value new value
      */
     fun writeSlot(value: Int) {
         handle.integers.write(0, value)
