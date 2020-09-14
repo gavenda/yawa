@@ -89,7 +89,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
                 return@bukkitAsyncTask
             }
 
-            val serverId = MinecraftEncryption.generateServerIdHash("", loginKey, keyPair.public)
+            val serverId = MinecraftEncryption.generateServerIdHash(session.serverId, loginKey, keyPair.public)
             val socketAddress = player.address
             try {
                 val address = socketAddress.address

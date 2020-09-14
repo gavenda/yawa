@@ -75,7 +75,7 @@ messages:
   plugin-config-reload: "&ePlugin configuration reloaded"
   feature-disabled: "&eThis feature is currently disabled"
   skin-generate: "&eGenerating skin please wait..."
-  skin-applied: "&eSkin successfully applied."
+  skin-applied: "&eSkin successfully applied"
   skin-retrieve: "&eRetrieving premium player skin..."
   skin-not-found: "&cCannot find premium player with that name"
   skin-rate-limit: "&cWe have reached our rate limits for changing skins, please try again later"

@@ -25,8 +25,6 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.disableAfk
 import work.gavenda.yawa.afk.enableAfk
-import work.gavenda.yawa.chat.disableChat
-import work.gavenda.yawa.chat.enableChat
 import work.gavenda.yawa.ender.disableEnder
 import work.gavenda.yawa.ender.enableEnder
 import work.gavenda.yawa.essentials.disableEssentials
@@ -68,7 +66,6 @@ class Plugin : JavaPlugin() {
         enableSkin()
         enableAfk()
         enableSleep()
-        enableChat()
         enableTabList()
         enableLogin()
         enableEnder()
@@ -93,7 +90,6 @@ class Plugin : JavaPlugin() {
         disableSkin()
         disableAfk()
         disableSleep()
-        disableChat()
         disableTabList()
         disableLogin()
         disableEnder()

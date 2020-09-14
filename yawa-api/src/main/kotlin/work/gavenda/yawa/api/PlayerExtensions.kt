@@ -29,7 +29,7 @@ import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.REMOVE_PLAY
 import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
-import com.destroystokyo.paper.profile.ProfileProperty
+import com.comphenix.protocol.wrappers.WrappedSignedProperty
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
@@ -104,8 +104,15 @@ val Player.previousGameMode: NativeGameMode
  */
 fun Player.applySkin(textureInfo: String, signature: String = "") {
     bukkitTask(Plugin.Instance) {
-        playerProfile = playerProfile.apply {
-            setProperty(ProfileProperty(MOJANG_KEY_TEXTURES, textureInfo, signature))
+        val gameProfile = WrappedGameProfile.fromPlayer(this)
+        val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
+
+        // Clear and re-assign textures with valid signature
+        gameProfile.properties.clear()
+        gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
+
+        if (!isDead) {
+            updateSkin()
         }
     }
 }
@@ -133,7 +140,6 @@ fun Player.triggerHealthUpdate() {
 
 /**
  * Does a refresh of the player, applying the currently set skin if changed.
- * @deprecated [applySkin] actually does this
  */
 @Suppress("DEPRECATION", "UNUSED")
 fun Player.updateSkin() {
@@ -173,6 +179,14 @@ fun Player.updateSkin() {
         writeSlot(inventory.heldItemSlot)
     }
 
+    // Show update to other players
+    bukkitTask(Plugin.Instance) {
+        for (p in Bukkit.getOnlinePlayers()) {
+            p.hidePlayer(Plugin.Instance, this)
+            p.showPlayer(Plugin.Instance, this)
+        }
+    }
+
     // Send self
     removeInfo.sendPacket(this)
     addInfo.sendPacket(this)
@@ -184,12 +198,10 @@ fun Player.updateSkin() {
     updateInventory()
     triggerHealthUpdate()
 
-    // Show update to other players
-    bukkitTask(Plugin.Instance) {
-        for (p in Bukkit.getOnlinePlayers()) {
-            p.hidePlayer(Plugin.Instance, this)
-            p.showPlayer(Plugin.Instance, this)
-        }
+    // Op refresh
+    if (this.isOp) {
+        this.isOp = false
+        this.isOp = true
     }
 }
 
