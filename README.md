@@ -19,3 +19,4 @@ All code is licensed under [GNU GPL](LICENSE).
 - [Custom Skins Manager](https://gitlab.com/Nanit/custom-skins-manager) - GPLv3
 - [Harbor](https://github.com/nkomarn/Harbor) - MIT
 - [FastLogin](https://github.com/games647/FastLogin) - MIT
+- [Chairs](https://github.com/Shevchik/Chairs) - GPLv3
