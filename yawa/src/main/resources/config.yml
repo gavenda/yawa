@@ -94,7 +94,7 @@ messages:
   feature-set-disabled: "&eFeature has been disabled"
   feature-set-enabled: "&eFeature has been enabled"
   plugin-reload: "&ePlugin reloaded"
-  plugin-config-reload: "&ePlugin configuration reloaded"
+  plugin-reload-config: "&ePlugin configuration reloaded"
   login-invalid-session: "&rInvalid session."
   login-invalid-token: "&rInvalid token."
   login-invalid-request: "&rMalicious login detected."
