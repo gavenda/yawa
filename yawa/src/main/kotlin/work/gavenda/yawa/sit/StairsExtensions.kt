@@ -20,6 +20,7 @@
 package work.gavenda.yawa.sit
 
 import org.bukkit.block.data.Bisected
+import org.bukkit.block.data.type.Slab
 import org.bukkit.block.data.type.Stairs
 
 /**
@@ -28,3 +29,10 @@ import org.bukkit.block.data.type.Stairs
 val Stairs.canSit: Boolean
     get() =
         half == Bisected.Half.BOTTOM && shape == Stairs.Shape.STRAIGHT
+
+/**
+ * Returns true if the slab can be sit upon.
+ */
+val Slab.canSit: Boolean
+    get() =
+        type == Slab.Type.BOTTOM

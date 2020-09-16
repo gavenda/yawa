@@ -22,6 +22,7 @@ package work.gavenda.yawa.sit
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
+import org.bukkit.block.data.type.Slab
 import org.bukkit.block.data.type.Stairs
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
@@ -72,35 +73,44 @@ fun Player.canSitAt(block: Block): Boolean {
 fun Player.sit(block: Block) {
     // Make sure we can sit
     if (canSitAt(block).not()) return
-    // And only at stairs
-    if (block.blockData !is Stairs) return
+    // And only at stairs and slabs
+    if ((block.blockData is Stairs || block.blockData is Slab).not()) return
 
-    val stairs = block.blockData as Stairs
-    val sitHeight = 0.5
-
-    // Make sure we can sit on it
-    if (stairs.canSit.not()) return
-
-    val ascendingFacing = stairs.facing
-    val yaw = when (ascendingFacing.oppositeFace) {
-        BlockFace.NORTH -> 180f
-        BlockFace.EAST -> -90f
-        BlockFace.SOUTH -> 0f
-        BlockFace.WEST -> 90f
-        else -> location.yaw
-    }
-
-    val facingLeft = ascendingFacing.rotateLeft()
-    val facingRight = ascendingFacing.rotateRight()
-    val widthLeft = ascendingFacing.calculateStairsWidth(block, facingLeft)
-    val widthRight = ascendingFacing.calculateStairsWidth(block, facingRight)
-    val widthSum = widthLeft + widthRight + 1
-    if (widthSum > MAX_STAIRS_WIDTH) return
-
+    val blockData = block.blockData
+    val stairsSitHeight = 0.5
+    val slabSitHeight = 0.5
     val sitLocation = block.location
 
-    sitLocation.yaw = yaw
-    sitLocation.add(0.5, sitHeight - 0.5, 0.5)
+    sitLocation.yaw = location.yaw
+
+    if (blockData is Stairs) {
+        // Make sure we can sit on it
+        if (blockData.canSit.not()) return
+
+        val ascendingFacing = blockData.facing
+        sitLocation.yaw = when (ascendingFacing.oppositeFace) {
+            BlockFace.NORTH -> 180f
+            BlockFace.EAST -> -90f
+            BlockFace.SOUTH -> 0f
+            BlockFace.WEST -> 90f
+            else -> location.yaw
+        }
+
+        val facingLeft = ascendingFacing.rotateLeft()
+        val facingRight = ascendingFacing.rotateRight()
+        val widthLeft = ascendingFacing.calculateStairsWidth(block, facingLeft)
+        val widthRight = ascendingFacing.calculateStairsWidth(block, facingRight)
+        val widthSum = widthLeft + widthRight + 1
+        if (widthSum > MAX_STAIRS_WIDTH) return
+
+        sitLocation.add(0.5, stairsSitHeight - 0.5, 0.5)
+    }
+    if (blockData is Slab) {
+        // Make sure we can sit on it
+        if (blockData.canSit.not()) return
+
+        sitLocation.add(0.5, slabSitHeight - 0.5, 0.5)
+    }
 
     val chairEntity = sitLocation.spawnChairEntity()
 
