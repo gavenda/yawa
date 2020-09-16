@@ -17,30 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sit
+package work.gavenda.yawa.api.wrapper
 
-import org.bukkit.Location
-import org.bukkit.entity.AbstractArrow
-import org.bukkit.entity.Entity
-import org.bukkit.util.Vector
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerEntityDestroy
+import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.events.PacketContainer
 
-/**
- * Spawns a chair entity at this location.
- * Used by the sit feature.
- */
-fun Location.spawnChairEntity(): Entity {
-    val arrow = world.spawnArrow(this, Vector(0, 1, 0), 0f, 0f).apply {
-        setGravity(false)
-        isInvulnerable = true
-        pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
+class WrapperPlayServerEntityDestroy : AbstractPacket(PacketContainer(type), type) {
+
+    init {
+        handle.modifier.writeDefaults()
     }
 
-    val destroyArrow = WrapperPlayServerEntityDestroy().apply {
-        writeEntityIds(intArrayOf(arrow.entityId))
+    /**
+     * Write entity identifiers.
+     * @param value new value
+     */
+    fun writeEntityIds(value: IntArray) {
+        handle.integerArrays.write(0, value)
     }
 
-    world.players.forEach(destroyArrow::sendPacket)
-
-    return arrow
+    companion object {
+        val type: PacketType = PacketType.Play.Server.ENTITY_DESTROY
+    }
 }
