@@ -70,13 +70,13 @@ private val featureEnableMap = mapOf(
 )
 
 private val featureDisableMap = mapOf(
-    FEATURE_AFK to { Plugin.Instance.disableAfk() },
+    FEATURE_AFK to { Plugin.Instance.disableAfk(true) },
     FEATURE_ENDER to { Plugin.Instance.disableEnder() },
     FEATURE_ESSENTIALS to { Plugin.Instance.disableEssentials() },
     FEATURE_LOGIN to { Plugin.Instance.disableLogin() },
     FEATURE_PING to { Plugin.Instance.disablePing() },
     FEATURE_SIT to { Plugin.Instance.disableSit() },
-    FEATURE_SKIN to { Plugin.Instance.disableSkin() },
+    FEATURE_SKIN to { Plugin.Instance.disableSkin(true) },
     FEATURE_SLEEP to { Plugin.Instance.disableSleep() },
     FEATURE_TABLIST to { Plugin.Instance.disableTabList() },
 )

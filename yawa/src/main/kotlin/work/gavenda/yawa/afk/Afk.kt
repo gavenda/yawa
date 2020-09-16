@@ -84,8 +84,9 @@ fun Plugin.enableAfk() {
 
 /**
  * Disable afk feature.
+ * @param reload set to true if reloading, defaults to false
  */
-fun Plugin.disableAfk() {
+fun Plugin.disableAfk(reload: Boolean = false) {
     if (Config.Afk.Disabled) return
 
     // Events
@@ -93,5 +94,9 @@ fun Plugin.disableAfk() {
     // Tasks
     server.scheduler.cancelTask(afkTaskId)
     // Command handlers
-    getCommand("afk")?.setExecutor(DisabledCommand)
+    if (reload) {
+        getCommand("afk")?.setExecutor(DisabledCommand)
+    } else {
+        getCommand("afk")?.setExecutor(null)
+    }
 }

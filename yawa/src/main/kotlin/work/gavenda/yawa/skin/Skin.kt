@@ -56,11 +56,16 @@ fun Plugin.enableSkin() {
 
 /**
  * Disable skin feature.
+ * @param reload set to true if reloading, defaults to false
  */
-fun Plugin.disableSkin() {
+fun Plugin.disableSkin(reload: Boolean = false) {
     if (Config.Skin.Disabled) return
 
-    getCommand("skin")?.setExecutor(DisabledCommand)
+    if (reload) {
+        getCommand("skin")?.setExecutor(DisabledCommand)
+    } else {
+        getCommand("skin")?.setExecutor(null)
+    }
 
     // Unregister event listeners
     HandlerList.unregisterAll(skinListener)
