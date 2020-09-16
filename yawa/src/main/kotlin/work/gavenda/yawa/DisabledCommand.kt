@@ -23,7 +23,7 @@ import org.bukkit.command.CommandSender
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.translateColorCodes
 
-class DisabledCommand : Command() {
+object DisabledCommand : Command() {
     override fun execute(sender: CommandSender, args: Array<String>) {
         sender.sendMessage(Config.Messages.FeatureDisabled.translateColorCodes())
     }

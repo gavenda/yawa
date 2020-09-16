@@ -34,7 +34,7 @@ private val afkListener = AfkListener()
  */
 fun Plugin.enableAfk() {
     if (Config.Afk.Disabled) {
-        getCommand("afk")?.setExecutor(DisabledCommand())
+        getCommand("afk")?.setExecutor(DisabledCommand)
         return
     }
 
@@ -93,5 +93,5 @@ fun Plugin.disableAfk() {
     // Tasks
     server.scheduler.cancelTask(afkTaskId)
     // Command handlers
-    getCommand("afk")?.setExecutor(DisabledCommand())
+    getCommand("afk")?.setExecutor(DisabledCommand)
 }

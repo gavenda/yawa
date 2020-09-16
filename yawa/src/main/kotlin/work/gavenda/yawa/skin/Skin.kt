@@ -33,7 +33,7 @@ private val skinListener = SkinListener()
  */
 fun Plugin.enableSkin() {
     if (Config.Skin.Disabled) {
-        getCommand("skin")?.setExecutor(DisabledCommand())
+        getCommand("skin")?.setExecutor(DisabledCommand)
         return
     }
 
@@ -60,7 +60,7 @@ fun Plugin.enableSkin() {
 fun Plugin.disableSkin() {
     if (Config.Skin.Disabled) return
 
-    getCommand("skin")?.setExecutor(DisabledCommand())
+    getCommand("skin")?.setExecutor(DisabledCommand)
 
     // Unregister event listeners
     HandlerList.unregisterAll(skinListener)
