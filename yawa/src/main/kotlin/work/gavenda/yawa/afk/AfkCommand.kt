@@ -22,25 +22,28 @@ package work.gavenda.yawa.afk
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.afk
-import work.gavenda.yawa.api.sendMessageIf
+import work.gavenda.yawa.api.*
 
 class AfkCommand : Command("yawa.afk") {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return
 
-        sender.afk = true
+        sender.isAfk = true
 
         val message = Placeholder
             .withContext(sender)
             .parse(Config.Messages.AfkEntryMessage)
+            .translateColorCodes()
+        val selfMessage = Placeholder
+            .withContext(sender)
+            .parse(Config.Messages.PlayerAfkStart)
+            .translateColorCodes()
 
         sender.world.sendMessageIf(message) {
             Config.Afk.MessageEnabled
         }
+        sender.sendMessage(selfMessage)
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {

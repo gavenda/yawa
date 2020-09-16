@@ -20,11 +20,22 @@
 package work.gavenda.yawa.skin
 
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.HelpList
 
 class SkinCommand : Command("yawa.skin") {
 
+    private val helpList = HelpList()
+        .command("skin", listOf(), "Shows this command list")
+        .command("skin player", listOf("<player>"), "Apply a skin from a premium player")
+        .command("skin url", listOf("<url>", "<slim:true>"), "Apply a skin from a url")
+        .command("skin reset", listOf(), "Resets your skin")
+        .generateMessages()
+
     override fun execute(sender: CommandSender, args: Array<String>) {
+        if (sender !is Player) return
+        helpList.forEach(sender::sendMessage)
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {

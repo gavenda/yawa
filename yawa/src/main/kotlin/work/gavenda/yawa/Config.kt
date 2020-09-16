@@ -43,7 +43,9 @@ object Config {
      * Tab list configuration.
      */
     object TabList {
-        val Disabled get() = config.getBoolean("tab-list.disabled")
+        var Disabled
+            get() = config.getBoolean("tab-list.disabled")
+            set(value) = config.set("tab-list.disabled", value)
         val Header get() = config.getString("tab-list.header")!!
         val Footer get() = config.getString("tab-list.footer")!!
     }
@@ -52,28 +54,36 @@ object Config {
      * Ender dragon battle configuration.
      */
     object Ender {
-        val Disabled get() = config.getBoolean("ender.disabled")
+        var Disabled
+            get() = config.getBoolean("ender.disabled")
+            set(value) = config.set("ender.disabled", value)
     }
 
     /**
      * Essentials feature configuration.
      */
     object Essentials {
-        val Disabled get() = config.getBoolean("essentials.disabled")
+        var Disabled
+            get() = config.getBoolean("essentials.disabled")
+            set(value) = config.set("essentials.disabled", value)
     }
 
     /**
      * Ping feature configuration.
      */
     object Ping {
-        val Disabled get() = config.getBoolean("ping.disabled")
+        var Disabled
+            get() = config.getBoolean("ping.disabled")
+            set(value) = config.set("ping.disabled", value)
     }
 
     /**
      * Sleep feature configuration.
      */
     object Sleep {
-        val Disabled get() = config.getBoolean("sleep.disabled")
+        var Disabled
+            get() = config.getBoolean("sleep.disabled")
+            set(value) = config.set("sleep.disabled", value)
 
         object ActionBar {
             val Enabled get() = config.getBoolean("sleep.messages.action-bar.enabled")
@@ -85,12 +95,22 @@ object Config {
     }
 
     object Login {
-        val Disabled get() = config.getBoolean("login.disabled")
+        var Disabled
+            get() = config.getBoolean("login.disabled")
+            set(value) = config.set("login.disabled", value)
         val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid")
     }
 
+    object Sit {
+        var Disabled
+            get() = config.getBoolean("sit.disabled")
+            set(value) = config.set("sit.disabled", value)
+    }
+
     object Skin {
-        val Disabled get() = config.getBoolean("skin.disabled")
+        var Disabled
+            get() = config.getBoolean("skin.disabled")
+            set(value) = config.set("skin.disabled", value)
 
         object DefaultTexture {
             val Value get() = config.getString("skin.default-texture.value")!!
@@ -99,13 +119,11 @@ object Config {
     }
 
     object Afk {
-        val Disabled get() = config.getBoolean("afk.disabled")
+        var Disabled
+            get() = config.getBoolean("afk.disabled")
+            set(value) = config.set("afk.disabled", value)
         val PlayerListName get() = config.getString("afk.player-list-name")!!
         val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
-    }
-
-    object Chat {
-        val Disabled get() = config.getBoolean("chat.disabled")
     }
 
     object Messages {
@@ -113,13 +131,19 @@ object Config {
         val AfkLeaveMessage get() = config.getString("messages.afk-leave")!!
         val ActionBarSleeping get() = config.getString("messages.action-bar-sleeping")!!
         val ActionBarSleepingDone get() = config.getString("messages.action-bar-sleeping-done")!!
+        val PlayerAfkStart get() = config.getString("messages.player-afk-start")!!
+        val PlayerAfkEnd get() = config.getString("messages.player-afk-end")!!
         val PlayerEnterBed get() = config.getString("messages.player-enter-bed")!!
         val PlayerLeftBed get() = config.getString("messages.player-left-bed")!!
+        val PlayerSitStart get() = config.getString("messages.player-sit-start")!!
+        val PlayerSitEnd get() = config.getString("messages.player-sit-end")!!
         val Sleeping: List<String> get() = config.getStringList("messages.chat-sleeping")
         val SleepingDone: List<String> get() = config.getStringList("messages.chat-sleeping-done")
         val PluginReload get() = config.getString("messages.plugin-reload")!!
         val PluginReloadConfig get() = config.getString("messages.plugin-reload-config")!!
         val FeatureDisabled get() = config.getString("messages.feature-disabled")!!
+        val FeatureSetDisabled get() = config.getString("messages.feature-set-disabled")!!
+        val FeatureSetEnabled get() = config.getString("messages.feature-set-enabled")!!
         val SkinApplied get() = config.getString("messages.skin-applied")!!
         val SkinGenerate get() = config.getString("messages.skin-generate")!!
         val SkinReject get() = config.getString("messages.skin-reject")!!
@@ -144,6 +168,16 @@ object Config {
      */
     fun load(configuration: FileConfiguration) {
         config = configuration
+    }
+
+    /**
+     * Set a config value.
+     * @param path config path
+     * @param value new value
+     */
+    fun set(path: String, value: Any) {
+        config.set(path, value)
+        Plugin.Instance.saveConfig()
     }
 
 }

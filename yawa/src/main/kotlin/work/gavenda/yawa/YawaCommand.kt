@@ -20,21 +20,130 @@
 package work.gavenda.yawa
 
 import org.bukkit.command.CommandSender
+import work.gavenda.yawa.afk.disableAfk
+import work.gavenda.yawa.afk.enableAfk
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.ender.disableEnder
+import work.gavenda.yawa.ender.enableEnder
+import work.gavenda.yawa.essentials.disableEssentials
+import work.gavenda.yawa.essentials.enableEssentials
+import work.gavenda.yawa.login.disableLogin
+import work.gavenda.yawa.login.enableLogin
+import work.gavenda.yawa.ping.disablePing
+import work.gavenda.yawa.ping.enablePing
+import work.gavenda.yawa.sit.disableSit
+import work.gavenda.yawa.sit.enableSit
+import work.gavenda.yawa.skin.disableSkin
+import work.gavenda.yawa.skin.enableSkin
+import work.gavenda.yawa.sleep.disableSleep
+import work.gavenda.yawa.sleep.enableSleep
+import work.gavenda.yawa.tablist.disableTabList
+import work.gavenda.yawa.tablist.enableTabList
+
+// Switches
+const val FEATURE_SWITCH_ENABLE = "enable"
+const val FEATURE_SWITCH_DISABLE = "disable"
+
+// Features
+const val FEATURE_AFK = "afk"
+const val FEATURE_ESSENTIALS = "essentials"
+const val FEATURE_ENDER = "ender"
+const val FEATURE_LOGIN = "login"
+const val FEATURE_PING = "ping"
+const val FEATURE_SIT = "sit"
+const val FEATURE_SKIN = "skin"
+const val FEATURE_SLEEP = "sleep"
+const val FEATURE_TABLIST = "tab-list"
+
+private val featureEnableMap = mapOf(
+    FEATURE_AFK to { Plugin.Instance.enableAfk() },
+    FEATURE_ENDER to { Plugin.Instance.enableEnder() },
+    FEATURE_ESSENTIALS to { Plugin.Instance.enableEssentials() },
+    FEATURE_LOGIN to { Plugin.Instance.enableLogin() },
+    FEATURE_PING to { Plugin.Instance.enablePing() },
+    FEATURE_SIT to { Plugin.Instance.enableSit() },
+    FEATURE_SKIN to { Plugin.Instance.enableSkin() },
+    FEATURE_SLEEP to { Plugin.Instance.enableSleep() },
+    FEATURE_TABLIST to { Plugin.Instance.enableTabList() },
+)
+
+private val featureDisableMap = mapOf(
+    FEATURE_AFK to { Plugin.Instance.disableAfk() },
+    FEATURE_ENDER to { Plugin.Instance.disableEnder() },
+    FEATURE_ESSENTIALS to { Plugin.Instance.disableEssentials() },
+    FEATURE_LOGIN to { Plugin.Instance.disableLogin() },
+    FEATURE_PING to { Plugin.Instance.disablePing() },
+    FEATURE_SIT to { Plugin.Instance.disableSit() },
+    FEATURE_SKIN to { Plugin.Instance.disableSkin() },
+    FEATURE_SLEEP to { Plugin.Instance.disableSleep() },
+    FEATURE_TABLIST to { Plugin.Instance.disableTabList() },
+)
+
+private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
 
 /**
  * Plugin main command.
  */
 class YawaCommand : Command("yawa") {
 
+    private val helpList = HelpList()
+        .command("yawa", listOf(), "Shows this command list")
+        .command("yawa reload", listOf("<config>"), "Reloads the plugin")
+        .command("yawa feature", listOf("<feature>", "<enable|disable>"), "Enable or disable a feature")
+        .generateMessages()
+
     override fun execute(sender: CommandSender, args: Array<String>) {
+        helpList.forEach(sender::sendMessage)
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+        return subCommandKeys.toList()
     }
 
+}
+
+/**
+ * Enable a feature.
+ */
+class YawaFeatureCommand : Command("yawa.feature") {
+
+    override fun execute(sender: CommandSender, args: Array<String>) {
+        if (args.size == 2) {
+            val feature = args[0]
+            val switch = args[1]
+
+            if (featureSwitch.contains(switch).not()) {
+                sender.sendMessage("&ePlease provide if enable or disable")
+                return
+            }
+            if (switch == FEATURE_SWITCH_ENABLE) {
+                Config.set("$feature.disabled", false)
+
+                featureEnableMap[feature]?.invoke().also {
+                    sender.sendMessage(Config.Messages.FeatureSetEnabled.translateColorCodes())
+                    logger.info("Feature '$feature' has been enabled")
+                }
+            }
+            if (switch == FEATURE_SWITCH_DISABLE) {
+                Config.set("$feature.disabled", true)
+
+                featureDisableMap[feature]?.invoke().also {
+                    sender.sendMessage(Config.Messages.FeatureSetDisabled.translateColorCodes())
+                    logger.info("Feature '$feature' has been disabled")
+                }
+            }
+        }
+    }
+
+    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+        return when (args.size) {
+            1 -> featureEnableMap.keys.toList()
+            2 -> featureSwitch
+            else -> listOf()
+        }
+    }
 }
 
 /**
@@ -42,29 +151,25 @@ class YawaCommand : Command("yawa") {
  */
 class YawaReloadCommand : Command("yawa.reload") {
     override fun execute(sender: CommandSender, args: Array<String>) {
-        Plugin.Instance.onDisable()
-        Plugin.Instance.onEnable()
+        if (args.isEmpty()) {
+            Plugin.Instance.onDisable()
+            Plugin.Instance.onEnable()
+            sender.sendMessage(Config.Messages.PluginReload.translateColorCodes())
+            return
+        }
 
-        sender.sendMessage(Config.Messages.PluginReload.translateColorCodes())
+        if (args[0] == "config") {
+            Plugin.Instance.reloadConfig()
+            Plugin.Instance.loadConfig()
+
+            sender.sendMessage(Config.Messages.PluginReloadConfig.translateColorCodes())
+        }
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
-    }
-}
-
-/**
- * Only reloads the plugin configuration.
- */
-class YawaReloadConfigCommand : Command("yawa.reload.config") {
-    override fun execute(sender: CommandSender, args: Array<String>) {
-        Plugin.Instance.reloadConfig()
-        Plugin.Instance.loadConfig()
-
-        sender.sendMessage(Config.Messages.PluginReloadConfig.translateColorCodes())
-    }
-
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+        return when (args.size) {
+            1 -> listOf("config")
+            else -> listOf()
+        }
     }
 }

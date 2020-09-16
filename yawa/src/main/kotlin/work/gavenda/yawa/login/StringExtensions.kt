@@ -17,37 +17,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.api.mineskin
+package work.gavenda.yawa.login
 
 import java.util.*
 
 /**
- * Represents a mineskin generation result.
+ * Generates a minecraft online uuid on this string.
  */
-data class MineSkinResult(
-    val id: Int,
-    val name: String,
-    val data: MineSkinTextureData,
-    val duration: Int,
-    val accountId: String,
-    val private: Boolean,
-    val views: Int,
-    val nextRequest: Int
-)
-
-/**
- * Represents a mineskin texture data.
- */
-data class MineSkinTextureData(
-    val uuid: UUID,
-    val texture: MineSkinTexture
-)
-
-/**
- * Represents a mineskin texture.
- */
-data class MineSkinTexture(
-    val value: String,
-    val signature: String,
-    val url: String
-)
+fun String.minecraftOfflineUuid(): UUID {
+    return UUID.nameUUIDFromBytes("OfflinePlayer:$this".toByteArray(Charsets.UTF_8))
+}

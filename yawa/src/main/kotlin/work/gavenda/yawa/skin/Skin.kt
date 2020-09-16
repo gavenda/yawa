@@ -60,7 +60,7 @@ fun Plugin.enableSkin() {
 fun Plugin.disableSkin() {
     if (Config.Skin.Disabled) return
 
-    getCommand("skin")?.setExecutor(null)
+    getCommand("skin")?.setExecutor(DisabledCommand())
 
     // Unregister event listeners
     HandlerList.unregisterAll(skinListener)

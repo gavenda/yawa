@@ -109,7 +109,7 @@ class SkinUrlCommand : Command("yawa.skin.url") {
         return when (args.size) {
             1 -> listOf("<url>")
             2 -> listOf("true")
-            else -> null
+            else -> listOf()
         }
     }
 }

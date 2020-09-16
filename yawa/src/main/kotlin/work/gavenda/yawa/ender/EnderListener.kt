@@ -49,8 +49,13 @@ class EnderListener : Listener {
             .asSequence()
             // Don't include the damaging player
             .filter { it != e.damager }
+            // Don't include the dead
+            .filter { it.isDead.not() }
             // Don't include others who are already in the end
             .filter { it.world.environment != World.Environment.THE_END }
+
+        // Empty, no one is on over world
+        if (players.none()) return
 
         players.forEach { player ->
             // Tell everyone
@@ -62,6 +67,7 @@ class EnderListener : Listener {
             )
         }
 
+        // Teleport to ender dragon after 5 seconds
         bukkitTask(Plugin.Instance, 100) {
             players.forEach { player ->
                 // Teleport to damaging entity

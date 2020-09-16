@@ -33,6 +33,8 @@ import work.gavenda.yawa.login.disableLogin
 import work.gavenda.yawa.login.enableLogin
 import work.gavenda.yawa.ping.disablePing
 import work.gavenda.yawa.ping.enablePing
+import work.gavenda.yawa.sit.disableSit
+import work.gavenda.yawa.sit.enableSit
 import work.gavenda.yawa.skin.disableSkin
 import work.gavenda.yawa.skin.enableSkin
 import work.gavenda.yawa.sleep.disableSleep
@@ -69,6 +71,7 @@ class Plugin : JavaPlugin() {
         enableTabList()
         enableLogin()
         enableEnder()
+        enableSit()
         // Register root command
         registerRootCommand()
 
@@ -93,6 +96,7 @@ class Plugin : JavaPlugin() {
         disableTabList()
         disableLogin()
         disableEnder()
+        disableSit()
         // Close data source
         dataSource.close()
         // Safe load flag to false, in case of reloads
@@ -118,11 +122,8 @@ class Plugin : JavaPlugin() {
 
     private fun registerRootCommand() {
         val rootCommand = YawaCommand().apply {
-            val reloadCommand = YawaReloadCommand().apply {
-                sub(YawaReloadConfigCommand(), "config")
-            }
-
-            sub(reloadCommand, "reload")
+            sub(YawaReloadCommand(), "reload")
+            sub(YawaFeatureCommand(), "feature")
         }
 
         getCommand("yawa")?.setExecutor(rootCommand)

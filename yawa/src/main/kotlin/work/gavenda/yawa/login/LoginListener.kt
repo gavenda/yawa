@@ -35,7 +35,6 @@ import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
 import work.gavenda.yawa.logger
 import java.security.PublicKey
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -89,7 +88,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
         bukkitAsyncTask(plugin) {
             transaction {
                 try {
-                    val uuid = UUID.nameUUIDFromBytes("OfflinePlayer:$name".toByteArray(Charsets.UTF_8))
+                    val uuid = name.minecraftOfflineUuid()
 
                     // Try getting information from database
                     val userLogin = UserLogin.findById(uuid)
@@ -140,7 +139,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
         val session = LoginSession(playerName, serverId, byteArrayOf())
         Session.cache(player.address, session)
 
-        val uuid = UUID.nameUUIDFromBytes("OfflinePlayer:$playerName".toByteArray(Charsets.UTF_8))
+        val uuid = playerName.minecraftOfflineUuid()
 
         // Remember unsecure login
         bukkitAsyncTask(plugin) {

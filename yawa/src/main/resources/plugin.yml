@@ -34,7 +34,7 @@ permissions:
     default: op
   yawa.reload:
     default: op
-  yawa.reload.config:
+  yawa.feature:
     default: op
   yawa.afk:
     default: true

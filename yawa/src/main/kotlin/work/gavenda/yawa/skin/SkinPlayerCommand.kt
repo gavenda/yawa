@@ -95,6 +95,9 @@ class SkinPlayerCommand : Command("yawa.skin.player") {
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return listOf("<player>")
+        return when (args.size) {
+            1 -> listOf("<player>")
+            else -> listOf()
+        }
     }
 }

@@ -42,6 +42,10 @@ sleep:
 ender:
   disabled: false
 
+# Sit feature configuration
+sit:
+  disabled: false
+
 # Skin feature configuration
 skin:
   disabled: false
@@ -61,6 +65,7 @@ afk:
 
 # Messages for the plugin, customize to your needs.
 messages:
+  # Messages with placeholder support
   afk-entry: "&e[player-name] is now AFK"
   afk-leave: "&e[player-name] is no longer AFK"
   action-bar-sleeping: "&e[world-sleeping] out of [world-player-count] players are sleeping"
@@ -71,9 +76,10 @@ messages:
     - "&eThe night has passed"
   player-enter-bed: "&e[player-name] is now sleeping"
   player-left-bed: "&e[player-name] got out of bed"
-  plugin-reload: "&ePlugin reloaded"
-  plugin-config-reload: "&ePlugin configuration reloaded"
-  feature-disabled: "&eThis feature is currently disabled"
+  player-afk-start: "&eYou are now AFK"
+  player-afk-end: "&eYou are no longer AFK"
+  player-sit-start: "&eYou are now sitting"
+  player-sit-end: "&eYou are no longer sitting"
   skin-generate: "&eGenerating skin please wait..."
   skin-applied: "&eSkin successfully applied"
   skin-retrieve: "&eRetrieving premium player skin..."
@@ -83,7 +89,12 @@ messages:
   skin-reset: "&eYour skin has been reset"
   ender-battle-start: "&eA battle for the ender dragon has begun and you are forced to join..."
   ender-battle-teleport: "&eYou have been teleported by an unknown entity to fight the ender dragon"
-  # No placeholder support for login state
+  # Messages with no placeholder support
+  feature-disabled: "&eThis feature is currently disabled"
+  feature-set-disabled: "&eFeature has been disabled"
+  feature-set-enabled: "&eFeature has been enabled"
+  plugin-reload: "&ePlugin reloaded"
+  plugin-config-reload: "&ePlugin configuration reloaded"
   login-invalid-session: "&rInvalid session."
   login-invalid-token: "&rInvalid token."
   login-invalid-request: "&rMalicious login detected."

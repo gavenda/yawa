@@ -46,22 +46,27 @@ fun Plugin.enableAfk() {
         server.onlinePlayers.forEach { player ->
             val afkDelta = System.currentTimeMillis() - player.lastInteractionMillis
             val afkSeconds = TimeUnit.MILLISECONDS.toSeconds(afkDelta)
-            val isNotAfk = !player.afk
+            val isNotAfk = !player.isAfk
 
             if (isNotAfk && afkSeconds > 30) {
-                player.afk = true
+                player.isAfk = true
 
                 val message = Placeholder
                     .withContext(player)
                     .parse(Config.Messages.AfkEntryMessage)
                     .translateColorCodes()
+                val selfMessage = Placeholder
+                    .withContext(player)
+                    .parse(Config.Messages.PlayerAfkStart)
+                    .translateColorCodes()
 
                 player.world.sendMessageIf(message) {
                     Config.Afk.MessageEnabled
                 }
+                player.sendMessage(selfMessage)
             }
 
-            if (player.afk) {
+            if (player.isAfk) {
                 player.setPlayerListName(
                     Placeholder.withContext(player)
                         .parse(Config.Afk.PlayerListName)
@@ -88,5 +93,5 @@ fun Plugin.disableAfk() {
     // Tasks
     server.scheduler.cancelTask(afkTaskId)
     // Command handlers
-    getCommand("afk")?.setExecutor(null)
+    getCommand("afk")?.setExecutor(DisabledCommand())
 }

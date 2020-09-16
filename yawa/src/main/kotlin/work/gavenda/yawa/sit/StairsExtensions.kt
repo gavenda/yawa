@@ -17,37 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.api.mineskin
+package work.gavenda.yawa.sit
 
-import java.util.*
-
-/**
- * Represents a mineskin generation result.
- */
-data class MineSkinResult(
-    val id: Int,
-    val name: String,
-    val data: MineSkinTextureData,
-    val duration: Int,
-    val accountId: String,
-    val private: Boolean,
-    val views: Int,
-    val nextRequest: Int
-)
+import org.bukkit.block.data.Bisected
+import org.bukkit.block.data.type.Stairs
 
 /**
- * Represents a mineskin texture data.
+ * Returns true if the stairs can be sit upon.
  */
-data class MineSkinTextureData(
-    val uuid: UUID,
-    val texture: MineSkinTexture
-)
-
-/**
- * Represents a mineskin texture.
- */
-data class MineSkinTexture(
-    val value: String,
-    val signature: String,
-    val url: String
-)
+val Stairs.canSit: Boolean
+    get() =
+        half == Bisected.Half.BOTTOM && shape == Stairs.Shape.STRAIGHT

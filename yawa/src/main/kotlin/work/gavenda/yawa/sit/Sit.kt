@@ -17,37 +17,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.api.mineskin
+package work.gavenda.yawa.sit
 
-import java.util.*
+import org.bukkit.event.HandlerList
+import work.gavenda.yawa.Config
+import work.gavenda.yawa.Plugin
 
-/**
- * Represents a mineskin generation result.
- */
-data class MineSkinResult(
-    val id: Int,
-    val name: String,
-    val data: MineSkinTextureData,
-    val duration: Int,
-    val accountId: String,
-    val private: Boolean,
-    val views: Int,
-    val nextRequest: Int
-)
+private val sitListener = SitListener()
 
 /**
- * Represents a mineskin texture data.
+ * Enable skin feature.
  */
-data class MineSkinTextureData(
-    val uuid: UUID,
-    val texture: MineSkinTexture
-)
+fun Plugin.enableSit() {
+    if (Config.Sit.Disabled) return
+
+    server.pluginManager.registerEvents(sitListener, this)
+}
 
 /**
- * Represents a mineskin texture.
+ * Disable sit feature
  */
-data class MineSkinTexture(
-    val value: String,
-    val signature: String,
-    val url: String
-)
+fun Plugin.disableSit() {
+    if (Config.Sit.Disabled) return
+
+    HandlerList.unregisterAll(sitListener)
+}

@@ -17,37 +17,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.api.mineskin
+package work.gavenda.yawa.sit
 
-import java.util.*
-
-/**
- * Represents a mineskin generation result.
- */
-data class MineSkinResult(
-    val id: Int,
-    val name: String,
-    val data: MineSkinTextureData,
-    val duration: Int,
-    val accountId: String,
-    val private: Boolean,
-    val views: Int,
-    val nextRequest: Int
-)
+import org.bukkit.Location
+import org.bukkit.entity.AbstractArrow
+import org.bukkit.entity.Entity
+import org.bukkit.util.Vector
 
 /**
- * Represents a mineskin texture data.
+ * Spawns a chair entity at this location.
+ * Used by the sit feature.
  */
-data class MineSkinTextureData(
-    val uuid: UUID,
-    val texture: MineSkinTexture
-)
-
-/**
- * Represents a mineskin texture.
- */
-data class MineSkinTexture(
-    val value: String,
-    val signature: String,
-    val url: String
-)
+fun Location.spawnChairEntity(): Entity {
+    val arrow = world.spawnArrow(this, Vector(0, 1, 0), 0f, 0f)
+    arrow.setGravity(false)
+    arrow.isInvulnerable = true
+    arrow.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
+    return arrow
+}

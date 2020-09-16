@@ -94,7 +94,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
             try {
                 val address = socketAddress.address
                 val profile = MojangApi.hasJoined(session.name, serverId, address)
-                val uuid = UUID.nameUUIDFromBytes("OfflinePlayer:${session.name}".toByteArray(Charsets.UTF_8))
+                val uuid = session.name.minecraftOfflineUuid()
 
                 if (profile != null) {
                     if (Config.Login.UsePremiumUuid) {

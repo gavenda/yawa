@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.sleep
 
+import org.bukkit.Statistic
 import org.bukkit.World
 import org.bukkit.event.HandlerList
 import work.gavenda.yawa.Config
@@ -47,7 +48,7 @@ fun Plugin.enableSleep() {
             // World is not sleeping
             .filter { it !in sleepingWorlds }
             // And is night time
-            .filter { it.nightTime }
+            .filter { it.isNightTime }
             // And happens on the over world
             .filter { it.environment == World.Environment.NORMAL }
             .forEach(this::checkWorldForSleeping)
@@ -73,7 +74,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     var sleepAnimationTaskId = -1
 
     // Someone is asleep, and we lack more people.
-    if (world.begunSleeping) {
+    if (world.beganSleeping) {
         val message = Placeholder
             .withContext(world)
             .parse(Config.Messages.ActionBarSleeping)
@@ -84,7 +85,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         }
     }
     // Everyone is asleep, and we have enough people
-    else if (world.everyoneSleeping) {
+    else if (world.isEveryoneSleeping) {
         val message = Placeholder
             .withContext(world)
             .parse(Config.Messages.ActionBarSleepingDone)
@@ -105,6 +106,10 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         world.sendMessageIf(sleepingMessage) {
             Config.Sleep.Chat.Enabled
         }
+
+        // Clear thunder and storm
+        world.isThundering = false
+        world.setStorm(false)
 
         sleepAnimationTaskId = bukkitTimerTask(this, 1, 1) {
             val time = world.time
@@ -127,6 +132,10 @@ private fun Plugin.checkWorldForSleeping(world: World) {
                 world.sendMessageIf(sleepingDoneMessage) {
                     Config.Sleep.Chat.Enabled
                 }
+
+                // Reset phantom statistics
+                world.players.forEach { it.setStatistic(Statistic.TIME_SINCE_REST, 0) }
+
                 // Finish
                 server.scheduler.cancelTask(sleepAnimationTaskId)
             }
