@@ -20,27 +20,18 @@
 package work.gavenda.yawa.sit
 
 import org.bukkit.Location
-import org.bukkit.entity.AbstractArrow
+import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Entity
-import org.bukkit.util.Vector
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerEntityDestroy
 
 /**
- * Spawns a chair entity at this location.
+ * Spawns an invisible armor stand entity at this location.
  * Used by the sit feature.
  */
 fun Location.spawnChairEntity(): Entity {
-    val arrow = world.spawnArrow(this, Vector(0, 1, 0), 0f, 0f).apply {
-        setGravity(false)
-        isInvulnerable = true
-        pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
+    return world.spawn(add(0.0, 0.4, 0.0), ArmorStand::class.java) {
+        it.setGravity(false)
+        it.isInvulnerable = true
+        it.isMarker = true
+        it.isVisible = false
     }
-
-    val destroyArrow = WrapperPlayServerEntityDestroy().apply {
-        writeEntityIds(intArrayOf(arrow.entityId))
-    }
-
-    world.players.forEach(destroyArrow::sendPacket)
-
-    return arrow
 }
