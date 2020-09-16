@@ -119,6 +119,7 @@ class YawaFeatureCommand : Command("yawa.feature") {
                 return
             }
             if (switch == FEATURE_SWITCH_ENABLE) {
+                // Enable in config first
                 Config.set("$feature.disabled", false)
 
                 featureEnableMap[feature]?.invoke().also {
@@ -127,11 +128,12 @@ class YawaFeatureCommand : Command("yawa.feature") {
                 }
             }
             if (switch == FEATURE_SWITCH_DISABLE) {
-                Config.set("$feature.disabled", true)
-
                 featureDisableMap[feature]?.invoke().also {
                     sender.sendMessage(Config.Messages.FeatureSetDisabled.translateColorCodes())
                     logger.info("Feature '$feature' has been disabled")
+
+                    // Disable in config last
+                    Config.set("$feature.disabled", true)
                 }
             }
         }
