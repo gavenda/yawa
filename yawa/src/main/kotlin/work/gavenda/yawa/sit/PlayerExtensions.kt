@@ -32,19 +32,31 @@ import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.translateColorCodes
 
 const val META_PLAYER_SITTING = "PlayerSitting"
+const val META_PLAYER_SITTING_BLOCK = "PlayerSittingBlock"
 const val MAX_SIT_DISTANCE = 2.0
 
 /**
  * The player's sitting state.
  * @return true if sitting, otherwise false
  */
-var Player.isSitting
+var Player.isSitting: Boolean
     get() = if (hasMetadata(META_PLAYER_SITTING)) {
         getMetadata(META_PLAYER_SITTING)
             .first { it.owningPlugin == Plugin.Instance }
             .asBoolean()
     } else false
     set(value) = setMetadata(META_PLAYER_SITTING, FixedMetadataValue(Plugin.Instance, value))
+
+/**
+ * The player's sitting block.
+ */
+var Player.sittingBlock: Block?
+    get() = if (hasMetadata(META_PLAYER_SITTING_BLOCK)) {
+        getMetadata(META_PLAYER_SITTING_BLOCK)
+            .first { it.owningPlugin == Plugin.Instance }
+                as Block
+    } else null
+    set(value) = setMetadata(META_PLAYER_SITTING_BLOCK, FixedMetadataValue(Plugin.Instance, value))
 
 /**
  * Checks if the player can currently sit at the given block.
@@ -116,7 +128,9 @@ fun Player.sit(block: Block) {
 
     teleportAsync(sitLocation)
     chairEntity.addPassenger(this)
+    sittingBlock = block
     block.sittingPlayer = this
+    block.isOccupied = true
     isSitting = true
 
     sendMessage(
@@ -134,6 +148,8 @@ fun Player.standUpFromSit() {
 
     leaveVehicle()
     chairEntity?.remove()
+    sittingBlock?.isOccupied = false
+    sittingBlock?.sittingPlayer = null
     isSneaking = false
     isSitting = false
 
