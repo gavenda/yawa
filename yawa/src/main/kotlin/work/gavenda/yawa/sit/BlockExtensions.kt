@@ -46,6 +46,6 @@ var Block.sittingPlayer: Player?
     get() = if (hasMetadata(META_BLOCK_SITTING_PLAYER)) {
         getMetadata(META_BLOCK_SITTING_PLAYER)
             .first { it.owningPlugin == Plugin.Instance }
-                as Player
+            .value() as Player
     } else null
     set(value) = setMetadata(META_BLOCK_SITTING_PLAYER, FixedMetadataValue(Plugin.Instance, value))
