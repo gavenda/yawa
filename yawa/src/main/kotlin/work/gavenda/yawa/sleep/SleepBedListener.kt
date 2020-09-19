@@ -25,7 +25,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
@@ -63,6 +62,7 @@ class SleepBedListener(
             sleepingWorlds.remove(world)
             return
         }
+        if (world.isDayTime) return
         if (world in sleepingWorlds) return
 
         val message = Placeholder
