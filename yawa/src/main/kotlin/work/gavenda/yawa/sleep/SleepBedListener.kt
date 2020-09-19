@@ -29,13 +29,13 @@ import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.logger
 
 /**
  * Sleep feature bed listener.
  */
 class SleepBedListener(
-    private val plugin: Plugin,
-    private val sleepingWorlds: Set<World>
+    private val sleepingWorlds: MutableSet<World>
 ) : Listener {
 
     @EventHandler(ignoreCancelled = true)
@@ -45,14 +45,12 @@ class SleepBedListener(
 
         if (event.bedEnterResult != PlayerBedEnterEvent.BedEnterResult.OK) return
 
-        plugin.server.scheduler.runTaskAsynchronously(plugin) { _ ->
-            val message = Placeholder
-                .withContext(player, world)
-                .parse(Config.Messages.PlayerEnterBed)
-                .translateColorCodes()
+        val message = Placeholder
+            .withContext(player, world)
+            .parse(Config.Messages.PlayerEnterBed)
+            .translateColorCodes()
 
-            world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
-        }
+        world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -60,16 +58,19 @@ class SleepBedListener(
         val world = event.bed.world
         val player = event.player
 
+        if (world in sleepingWorlds && world.isDayTime) {
+            logger.warn("World is currently on day time and player left bed, forcibly removing from sleeping worlds")
+            sleepingWorlds.remove(world)
+            return
+        }
         if (world in sleepingWorlds) return
 
-        plugin.server.scheduler.runTaskAsynchronously(plugin) { _ ->
-            val message = Placeholder
-                .withContext(player, world)
-                .parse(Config.Messages.PlayerLeftBed)
-                .translateColorCodes()
+        val message = Placeholder
+            .withContext(player, world)
+            .parse(Config.Messages.PlayerLeftBed)
+            .translateColorCodes()
 
-            world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
-        }
+        world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
     }
 
 }

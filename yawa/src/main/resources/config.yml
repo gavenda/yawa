@@ -60,6 +60,7 @@ login:
 
 afk:
   disabled: false
+  seconds: 120
   player-list-name: "&r[player-name] &eAFK"
   messages.enabled: false
 

@@ -122,6 +122,7 @@ object Config {
         var Disabled
             get() = config.getBoolean("afk.disabled")
             set(value) = config.set("afk.disabled", value)
+        val Seconds get() = config.getInt("afk.seconds")
         val PlayerListName get() = config.getString("afk.player-list-name")!!
         val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
     }

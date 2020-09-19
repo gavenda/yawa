@@ -48,7 +48,7 @@ fun Plugin.enableAfk() {
             val afkSeconds = TimeUnit.MILLISECONDS.toSeconds(afkDelta)
             val isNotAfk = !player.isAfk
 
-            if (isNotAfk && afkSeconds > 30) {
+            if (isNotAfk && afkSeconds > Config.Afk.Seconds) {
                 player.isAfk = true
 
                 val message = Placeholder

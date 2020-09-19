@@ -25,8 +25,10 @@ import org.bukkit.event.HandlerList
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.*
+import java.util.*
 
 private var sleepTaskId = -1
+private var sleepAnimationTaskIds = mutableMapOf<UUID, Int>()
 private val sleepingWorlds = mutableSetOf<World>()
 private lateinit var sleepBedListener: SleepBedListener
 
@@ -40,7 +42,7 @@ fun Plugin.enableSleep() {
     Placeholder.register(SleepPlaceholderProvider())
 
     // Event listeners
-    sleepBedListener = SleepBedListener(this, sleepingWorlds)
+    sleepBedListener = SleepBedListener(sleepingWorlds)
 
     // Tasks
     sleepTaskId = bukkitAsyncTimerTask(this, 0, 20) {
@@ -71,7 +73,7 @@ fun Plugin.disableSleep() {
 }
 
 private fun Plugin.checkWorldForSleeping(world: World) {
-    var sleepAnimationTaskId = -1
+    val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
 
     // Someone is asleep, and we lack more people.
     if (world.beganSleeping) {
@@ -111,7 +113,11 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         world.isThundering = false
         world.setStorm(false)
 
-        sleepAnimationTaskId = bukkitTimerTask(this, 1, 1) {
+        // Cancel existing task if exists
+        if (sleepAnimationTaskId > 0)
+            server.scheduler.cancelTask(sleepAnimationTaskId)
+
+        sleepAnimationTaskIds[world.uid] = bukkitTimerTask(this, 1, 1) {
             val time = world.time
             val dayTime = 1200
             val timeRate = 50
@@ -137,7 +143,10 @@ private fun Plugin.checkWorldForSleeping(world: World) {
                 world.players.forEach { it.setStatistic(Statistic.TIME_SINCE_REST, 0) }
 
                 // Finish
-                server.scheduler.cancelTask(sleepAnimationTaskId)
+                sleepAnimationTaskIds[world.uid]?.let { taskId ->
+                    server.scheduler.cancelTask(taskId)
+                    sleepAnimationTaskIds[world.uid] = -1
+                }
             }
             // Out of range, keep animating
             else {
