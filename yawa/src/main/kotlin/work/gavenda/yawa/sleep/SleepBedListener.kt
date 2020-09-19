@@ -19,7 +19,6 @@
 
 package work.gavenda.yawa.sleep
 
-import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
@@ -29,12 +28,13 @@ import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
 import work.gavenda.yawa.logger
+import java.util.*
 
 /**
  * Sleep feature bed listener.
  */
 class SleepBedListener(
-    private val sleepingWorlds: MutableSet<World>
+    private val sleepingWorlds: MutableSet<UUID>
 ) : Listener {
 
     @EventHandler(ignoreCancelled = true)
@@ -57,13 +57,7 @@ class SleepBedListener(
         val world = event.bed.world
         val player = event.player
 
-        if (world in sleepingWorlds && world.isDayTime) {
-            logger.warn("World is currently on day time and player left bed, forcibly removing from sleeping worlds")
-            sleepingWorlds.remove(world)
-            return
-        }
-        if (world.isDayTime) return
-        if (world in sleepingWorlds) return
+        if (world.uid in sleepingWorlds) return
 
         val message = Placeholder
             .withContext(player, world)

@@ -29,7 +29,7 @@ import java.util.*
 
 private var sleepTaskId = -1
 private var sleepAnimationTaskIds = mutableMapOf<UUID, Int>()
-private val sleepingWorlds = mutableSetOf<World>()
+private val sleepingWorlds = mutableSetOf<UUID>()
 private lateinit var sleepBedListener: SleepBedListener
 
 /**
@@ -48,7 +48,7 @@ fun Plugin.enableSleep() {
     sleepTaskId = bukkitAsyncTimerTask(this, 0, 20) {
         server.worlds.asSequence()
             // World is not sleeping
-            .filter { it !in sleepingWorlds }
+            .filter { it.uid !in sleepingWorlds }
             // And is night time
             .filter { it.isNightTime }
             // And happens on the over world
@@ -97,7 +97,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
             Config.Sleep.ActionBar.Enabled
         }
 
-        sleepingWorlds.add(world)
+        sleepingWorlds.add(world.uid)
 
         val sleepingMessage = Placeholder
             .withContext(world)
@@ -127,7 +127,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
             // Time within range, we have reached morning
             if (isMorning) {
                 // Remove world from set
-                sleepingWorlds.remove(world)
+                sleepingWorlds.remove(world.uid)
 
                 val sleepingDoneMessage = Placeholder
                     .withContext(world)
