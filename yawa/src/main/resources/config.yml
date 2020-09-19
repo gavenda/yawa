@@ -34,6 +34,7 @@ tab-list:
 # based on Harbor (https://github.com/nkomarn/Harbor)
 sleep:
   disabled: false
+  time-rate: 85
   messages:
     chat.enabled: true
     action-bar.enabled: true

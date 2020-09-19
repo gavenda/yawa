@@ -120,7 +120,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
         sleepAnimationTaskIds[world.uid] = bukkitTimerTask(this, 1, 1) {
             val time = world.time
             val dayTime = 1200
-            val timeRate = 50
+            val timeRate = Config.Sleep.TimeRate
             val timeStart = (dayTime - timeRate * 1.5).toInt()
             val isMorning = time in timeStart..dayTime
 
