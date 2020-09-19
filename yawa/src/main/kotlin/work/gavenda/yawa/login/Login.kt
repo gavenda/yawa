@@ -20,6 +20,7 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.async.AsyncListenerHandler
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
@@ -28,8 +29,8 @@ import java.security.KeyPair
 
 private val protocolManager = ProtocolLibrary.getProtocolManager()
 
-private lateinit var loginListener: LoginListener
-private lateinit var loginEncryptionListener: LoginEncryptionListener
+private lateinit var loginHandler: AsyncListenerHandler
+private lateinit var loginEncryptionHandler: AsyncListenerHandler
 
 val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
 
@@ -48,18 +49,15 @@ fun Plugin.enableLogin() {
         SchemaUtils.create(UserLoginSchema)
     }
 
-    loginListener = LoginListener(this)
-    loginEncryptionListener = LoginEncryptionListener(this)
-
-    protocolManager
+    loginHandler = protocolManager
         .asynchronousManager
-        .registerAsyncHandler(loginListener)
-        .start()
+        .registerAsyncHandler(LoginListener(this))
+        .apply { start() }
 
-    protocolManager
+    loginEncryptionHandler = protocolManager
         .asynchronousManager
-        .registerAsyncHandler(loginEncryptionListener)
-        .start()
+        .registerAsyncHandler(LoginEncryptionListener(this))
+        .apply { start() }
 }
 
 /**
@@ -69,17 +67,13 @@ fun Plugin.disableLogin() {
     if (Config.Login.Disabled) return
     if (server.onlineMode) return
 
-    try {
-        protocolManager
-            .asynchronousManager
-            .unregisterAsyncHandler(loginEncryptionListener)
+    protocolManager
+        .asynchronousManager
+        .unregisterAsyncHandler(loginHandler)
 
-        protocolManager
-            .asynchronousManager
-            .unregisterAsyncHandler(loginListener)
-    } catch (e: NullPointerException) {
-        slF4JLogger.warn("Unable to unregister handlers, perhaps plugin was reloaded")
-    }
+    protocolManager
+        .asynchronousManager
+        .unregisterAsyncHandler(loginEncryptionHandler)
 
     Session.invalidateAll()
 }
