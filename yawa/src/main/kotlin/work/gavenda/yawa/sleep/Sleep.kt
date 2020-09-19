@@ -109,10 +109,6 @@ private fun Plugin.checkWorldForSleeping(world: World) {
             Config.Sleep.Chat.Enabled
         }
 
-        // Clear thunder and storm
-        world.isThundering = false
-        world.setStorm(false)
-
         // Cancel existing task if exists
         if (sleepAnimationTaskId > 0)
             server.scheduler.cancelTask(sleepAnimationTaskId)
@@ -138,6 +134,10 @@ private fun Plugin.checkWorldForSleeping(world: World) {
                 world.sendMessageIf(sleepingDoneMessage) {
                     Config.Sleep.Chat.Enabled
                 }
+
+                // Clear thunder and storm
+                world.isThundering = false
+                world.setStorm(false)
 
                 // Reset phantom statistics
                 world.players.forEach { it.setStatistic(Statistic.TIME_SINCE_REST, 0) }
