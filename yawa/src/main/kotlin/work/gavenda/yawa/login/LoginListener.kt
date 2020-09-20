@@ -91,7 +91,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
                     val uuid = name.minecraftOfflineUuid()
 
                     // Try getting information from database
-                    val userLogin = UserLogin.findById(uuid)
+                    val userLogin = PlayerLogin.findById(uuid)
 
                     if (userLogin != null) {
                         logger.info("User information already exists")
@@ -144,7 +144,7 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
         // Remember unsecure login
         bukkitAsyncTask(plugin) {
             transaction {
-                val userLogin = UserLogin.findById(uuid) ?: UserLogin.new(uuid) {
+                val userLogin = PlayerLogin.findById(uuid) ?: PlayerLogin.new(uuid) {
                     name = playerName
                     premiumUuid = null
                 }

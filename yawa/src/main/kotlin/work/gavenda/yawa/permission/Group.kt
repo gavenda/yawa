@@ -25,19 +25,26 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.*
 
-/**
- * Represents a permission group.
- */
-class GroupPermission(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
-    companion object : UUIDEntityClass<GroupPermission>(GroupPermissionSchema)
+const val PERMISSION_DEFAULT_GROUP = "yawa:default"
 
-    var group by Group referencedOn GroupPermissionSchema.group
-    var permission by GroupPermissionSchema.permission
-    var enabled by GroupPermissionSchema.enabled
+/**
+ * Represents a group.
+ */
+class Group(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<Group>(GroupSchema) {
+        val DefaultGroupUuid: UUID = UUID.nameUUIDFromBytes(PERMISSION_DEFAULT_GROUP.toByteArray(Charsets.UTF_8))
+    }
+
+    var name by GroupSchema.name
+    var players by PlayerDb via GroupPlayerSchema
 }
 
-object GroupPermissionSchema : UUIDTable("yawa_group_permission", "uuid") {
+object GroupSchema : UUIDTable("yawa_group") {
+    val name = varchar("name", 50)
+}
+
+object GroupPlayerSchema : UUIDTable("yawa_group_player", "uuid") {
     val group = reference("group_uuid", GroupSchema)
-    val permission = text("permission")
-    val enabled = bool("enabled")
+    val player = reference("player_uuid", PlayerSchema)
+    override val primaryKey = PrimaryKey(group, player)
 }

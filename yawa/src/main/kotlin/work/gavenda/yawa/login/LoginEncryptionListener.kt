@@ -103,7 +103,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
 
                     // Remember encrypted connection
                     transaction {
-                        val userLogin = UserLogin.findById(uuid) ?: UserLogin.new(uuid) {
+                        val userLogin = PlayerLogin.findById(uuid) ?: PlayerLogin.new(uuid) {
                             name = profile.name
                             premiumUuid = profile.id
                         }
@@ -116,7 +116,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
                     receiveFakeStartPacket(player, profile.name)
                 } else {
                     transaction {
-                        val userLogin = UserLogin.findById(uuid)
+                        val userLogin = PlayerLogin.findById(uuid)
 
                         // Check if user has already logged in before and is a verified premium player
                         if (userLogin != null && userLogin.premium) {

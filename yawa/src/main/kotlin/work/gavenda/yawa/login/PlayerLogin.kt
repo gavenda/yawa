@@ -28,19 +28,19 @@ import java.util.*
 /**
  * Represents a user login.
  */
-class UserLogin(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
-    companion object : UUIDEntityClass<UserLogin>(UserLoginSchema)
+class PlayerLogin(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<PlayerLogin>(PlayerLoginSchema)
 
     val premium get() = premiumUuid != null
-    var premiumUuid by UserLoginSchema.premiumUuid
-    var name by UserLoginSchema.name
-    var lastLoginAddress by UserLoginSchema.lastLoginAddress
+    var premiumUuid by PlayerLoginSchema.premiumUuid
+    var name by PlayerLoginSchema.name
+    var lastLoginAddress by PlayerLoginSchema.lastLoginAddress
 }
 
 /**
  * Represents a user login schema that is created on the database.
  */
-object UserLoginSchema : UUIDTable("yawa_user_login", "uuid") {
+object PlayerLoginSchema : UUIDTable("yawa_player_login", "uuid") {
     val premiumUuid = uuid("premium_uuid").nullable()
     val name = varchar("name", 16)
     val lastLoginAddress = varchar("last_login_address", 15)

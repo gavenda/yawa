@@ -21,7 +21,7 @@ package work.gavenda.yawa.skin
 
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Plugin
+import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.applySkin
 import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES

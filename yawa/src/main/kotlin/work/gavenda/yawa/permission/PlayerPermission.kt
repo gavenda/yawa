@@ -19,14 +19,25 @@
 
 package work.gavenda.yawa.permission
 
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.*
 
 /**
- * Represents a user permission.
+ * Represents a player-specific permission.
  */
-data class UserPermission(
-    val uuid: UUID,
-    val userUUID: UUID,
-    val permission: String,
-    val enabled: Boolean
-)
+class PlayerPermission(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<PlayerPermission>(PlayerPermissionSchema)
+
+    var player by PlayerDb referencedOn PlayerPermissionSchema.player
+    var permission by PlayerPermissionSchema.permission
+    var enabled by PlayerPermissionSchema.enabled
+}
+
+object PlayerPermissionSchema : UUIDTable("yawa_player_permission", "uuid") {
+    val player = reference("player_uuid", PlayerSchema)
+    val permission = text("permission")
+    val enabled = bool("enabled")
+}

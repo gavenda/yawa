@@ -27,8 +27,8 @@ import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.bukkitTask
 import work.gavenda.yawa.api.translateColorCodes
@@ -36,11 +36,11 @@ import work.gavenda.yawa.api.translateColorCodes
 /**
  * Listens to a possible event of an ender dragon to be hit.
  */
-class EnderListener : Listener {
+class EnderListener(val plugin: Plugin) : Listener {
 
     private val teleportingPlayers = mutableSetOf<Player>()
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onEntityDamage(e: EntityDamageByEntityEvent) {
         val damager = e.damager
         val entity = e.entity
@@ -85,7 +85,7 @@ class EnderListener : Listener {
         }
 
         // Teleport to ender dragon after 5 seconds
-        bukkitTask(Plugin.Instance, 100) {
+        bukkitTask(plugin, 100) {
             players.forEach { player ->
                 // Teleport to damaging entity
                 player.teleportAsync(location).thenRun {

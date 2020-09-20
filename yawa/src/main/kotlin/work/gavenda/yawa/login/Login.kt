@@ -46,9 +46,10 @@ fun Plugin.enableLogin() {
 
     // Init tables if not created
     transaction {
-        SchemaUtils.create(UserLoginSchema)
+        SchemaUtils.create(PlayerLoginSchema)
     }
 
+    // Protocol handlers
     loginHandler = protocolManager
         .asynchronousManager
         .registerAsyncHandler(LoginListener(this))
@@ -67,6 +68,7 @@ fun Plugin.disableLogin() {
     if (Config.Login.Disabled) return
     if (server.onlineMode) return
 
+    // Protocol handlers
     protocolManager
         .asynchronousManager
         .unregisterAsyncHandler(loginHandler)
@@ -75,5 +77,6 @@ fun Plugin.disableLogin() {
         .asynchronousManager
         .unregisterAsyncHandler(loginEncryptionHandler)
 
+    // Invalidate session cache
     Session.invalidateAll()
 }

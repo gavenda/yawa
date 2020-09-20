@@ -17,58 +17,55 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.skin
+package work.gavenda.yawa.permission
 
 import org.bukkit.event.HandlerList
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.DisabledCommand
 import work.gavenda.yawa.Plugin
+import java.util.*
 
-private lateinit var skinListener: SkinListener
+
+private lateinit var permissionListener: PermissionListener
 
 /**
- * Enable skin feature.
+ * Enable permission feature.
  */
-fun Plugin.enableSkin() {
-    if (Config.Skin.Disabled) {
-        getCommand("skin")?.setExecutor(DisabledCommand)
-        return
-    }
+fun Plugin.enablePermission() {
+    if (Config.Permission.Disabled) return
 
     // Init tables if not created
     transaction {
-        SchemaUtils.create(PlayerTextureSchema)
+        SchemaUtils.create(
+            GroupSchema,
+            PlayerSchema,
+            GroupPlayerSchema,
+            GroupPermissionSchema,
+            PlayerPermissionSchema
+        )
+
+        // Create default group if it does not exist
+
+        Group.findById(Group.DefaultGroupUuid) ?: Group.new(Group.DefaultGroupUuid) {
+            name = PERMISSION_DEFAULT_GROUP
+            players = SizedCollection(listOf())
+        }
     }
 
     // Instantiate event listeners
-    skinListener = SkinListener(this)
+    permissionListener = PermissionListener(this)
     // Register event listeners
-    server.pluginManager.registerEvents(skinListener, this)
-
-    val skinCommand = SkinCommand().apply {
-        sub(SkinPlayerCommand(), "player")
-        sub(SkinResetCommand(), "reset")
-        sub(SkinUrlCommand(), "url")
-    }
-
-    getCommand("skin")?.setExecutor(skinCommand)
+    server.pluginManager.registerEvents(permissionListener, this)
 }
 
 /**
- * Disable skin feature.
- * @param reload set to true if reloading, defaults to false
+ * Disable permission feature.
  */
-fun Plugin.disableSkin(reload: Boolean = false) {
-    if (Config.Skin.Disabled) return
-
-    if (reload) {
-        getCommand("skin")?.setExecutor(DisabledCommand)
-    } else {
-        getCommand("skin")?.setExecutor(null)
-    }
+fun Plugin.disablePermission() {
+    if (Config.Permission.Disabled) return
 
     // Unregister event listeners
-    HandlerList.unregisterAll(skinListener)
+    HandlerList.unregisterAll(permissionListener)
 }

@@ -32,6 +32,8 @@ import work.gavenda.yawa.essentials.disableEssentials
 import work.gavenda.yawa.essentials.enableEssentials
 import work.gavenda.yawa.login.disableLogin
 import work.gavenda.yawa.login.enableLogin
+import work.gavenda.yawa.permission.disablePermission
+import work.gavenda.yawa.permission.enablePermission
 import work.gavenda.yawa.ping.disablePing
 import work.gavenda.yawa.ping.enablePing
 import work.gavenda.yawa.sit.disableSit
@@ -66,6 +68,7 @@ class Plugin : JavaPlugin() {
         // Init data source
         initDataSource()
         // Enable features
+        enablePermission()
         enableEssentials()
         enablePing()
         enableSkin()
@@ -94,6 +97,7 @@ class Plugin : JavaPlugin() {
         unregisterRootCommand()
 
         // Disable features
+        disablePermission()
         disableEssentials()
         disablePing()
         disableSkin()

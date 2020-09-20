@@ -237,5 +237,5 @@ fun Player.disconnect(reason: String = "") {
     // Send disconnect packet
     disconnectPacket.sendPacket(this)
     // Server cleanup
-    kickPlayer("Disconnected.")
+    kickPlayer("Disconnected")
 }

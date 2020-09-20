@@ -19,6 +19,9 @@
 
 package work.gavenda.yawa
 
+/**
+ * Plugin permissions.
+ */
 object Permission {
     const val RELOAD = "yawa.reload"
     const val FEATURE = "yawa.feature"

@@ -31,6 +31,8 @@ import work.gavenda.yawa.essentials.disableEssentials
 import work.gavenda.yawa.essentials.enableEssentials
 import work.gavenda.yawa.login.disableLogin
 import work.gavenda.yawa.login.enableLogin
+import work.gavenda.yawa.permission.disablePermission
+import work.gavenda.yawa.permission.enablePermission
 import work.gavenda.yawa.ping.disablePing
 import work.gavenda.yawa.ping.enablePing
 import work.gavenda.yawa.sit.disableSit
@@ -51,6 +53,7 @@ const val FEATURE_AFK = "afk"
 const val FEATURE_ESSENTIALS = "essentials"
 const val FEATURE_ENDER = "ender"
 const val FEATURE_LOGIN = "login"
+const val FEATURE_PERMISSION = "permission"
 const val FEATURE_PING = "ping"
 const val FEATURE_SIT = "sit"
 const val FEATURE_SKIN = "skin"
@@ -64,6 +67,7 @@ private val featureEnableMap = mapOf(
     FEATURE_ESSENTIALS to { Plugin.Instance.enableEssentials() },
     FEATURE_LOGIN to { Plugin.Instance.enableLogin() },
     FEATURE_PING to { Plugin.Instance.enablePing() },
+    FEATURE_PERMISSION to { Plugin.Instance.enablePermission() },
     FEATURE_SIT to { Plugin.Instance.enableSit() },
     FEATURE_SKIN to { Plugin.Instance.enableSkin() },
     FEATURE_SLEEP to { Plugin.Instance.enableSleep() },
@@ -77,6 +81,7 @@ private val featureDisableMap = mapOf(
     FEATURE_ESSENTIALS to { Plugin.Instance.disableEssentials() },
     FEATURE_LOGIN to { Plugin.Instance.disableLogin() },
     FEATURE_PING to { Plugin.Instance.disablePing() },
+    FEATURE_PERMISSION to { Plugin.Instance.disablePermission() },
     FEATURE_SIT to { Plugin.Instance.disableSit() },
     FEATURE_SKIN to { Plugin.Instance.disableSkin(true) },
     FEATURE_SLEEP to { Plugin.Instance.disableSleep() },

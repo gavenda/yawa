@@ -81,7 +81,7 @@ fun Plugin.enableAfk() {
             }
     }
 
-    // Register events
+    // Register event listeners
     server.pluginManager.registerEvents(afkListener, this)
 }
 

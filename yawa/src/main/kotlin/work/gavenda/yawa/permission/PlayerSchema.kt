@@ -17,14 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa
+package work.gavenda.yawa.permission
 
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.UUIDTable
 import java.util.*
 
 /**
- * Represents a group.
+ * Represents a player.
  */
-data class Group(
-    val uuid: UUID,
-    val name: String
-)
+class PlayerDb(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<PlayerDb>(PlayerSchema)
+
+    var name by PlayerSchema.name
+    var groups by Group via GroupPlayerSchema
+}
+
+object PlayerSchema : UUIDTable("yawa_player", "uuid") {
+    val name = varchar("name", 16)
+}

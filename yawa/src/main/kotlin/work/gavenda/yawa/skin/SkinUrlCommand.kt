@@ -24,6 +24,7 @@ import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Permission
+import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.*
 import work.gavenda.yawa.api.mineskin.MineSkinApi
 import work.gavenda.yawa.api.mineskin.MineSkinTexture

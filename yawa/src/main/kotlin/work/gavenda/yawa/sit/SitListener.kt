@@ -58,7 +58,7 @@ class SitListener : Listener {
         player.sit(block)
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     fun onPlayerTeleport(e: PlayerTeleportEvent) {
         val player: Player = e.player
         if (player.isSitting) {
@@ -66,7 +66,7 @@ class SitListener : Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val player: Player = event.player
         if (player.isSitting) {
@@ -74,7 +74,7 @@ class SitListener : Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     fun onPlayerDeath(e: PlayerDeathEvent) {
         val player: Player = e.entity
         if (player.isSitting) {
@@ -90,7 +90,7 @@ class SitListener : Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     fun onExitVehicle(e: EntityDismountEvent) {
         if (e.entity !is Player) return
         val player = e.entity as Player

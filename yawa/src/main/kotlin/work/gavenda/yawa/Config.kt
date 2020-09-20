@@ -26,7 +26,7 @@ import org.bukkit.configuration.file.FileConfiguration
  */
 object Config {
     /**
-     * Spigot plugin file configuration, should be possible to reassign. We want /reload to be smooth as possible.
+     * Plugin file configuration, should be possible to reassign. We want /reload to be smooth as possible.
      */
     private lateinit var config: FileConfiguration
 
@@ -40,7 +40,7 @@ object Config {
     }
 
     /**
-     * Keep alive configuration.
+     * Keep alive feature configuration.
      */
     object KeepAlive {
         var Disabled
@@ -50,7 +50,16 @@ object Config {
     }
 
     /**
-     * Tab list configuration.
+     * Permission feature configuration.
+     */
+    object Permission {
+        var Disabled
+            get() = config.getBoolean("permission.disabled")
+            set(value) = config.set("permission.disabled", value)
+    }
+
+    /**
+     * Tab list feature configuration.
      */
     object TabList {
         var Disabled
@@ -106,6 +115,9 @@ object Config {
         }
     }
 
+    /**
+     * Premium login feature configuration.
+     */
     object Login {
         var Disabled
             get() = config.getBoolean("login.disabled")
@@ -113,12 +125,18 @@ object Config {
         val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid")
     }
 
+    /**
+     * Sit feature configuration.
+     */
     object Sit {
         var Disabled
             get() = config.getBoolean("sit.disabled")
             set(value) = config.set("sit.disabled", value)
     }
 
+    /**
+     * Skin feature configuration.
+     */
     object Skin {
         var Disabled
             get() = config.getBoolean("skin.disabled")
@@ -130,6 +148,9 @@ object Config {
         }
     }
 
+    /**
+     * Afk feature configuration.
+     */
     object Afk {
         var Disabled
             get() = config.getBoolean("afk.disabled")

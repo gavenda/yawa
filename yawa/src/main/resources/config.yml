@@ -16,6 +16,10 @@ db:
   username: root
   password: ''
 
+# Permission feature configuration
+permission:
+  disabled: true
+
 # Essentials feature configuration
 essentials:
   disabled: false
@@ -62,7 +66,7 @@ skin:
 # Premium login configuration
 login:
   disabled: true
-  use-premium-uuid: false
+  use-premium-uuid: true
 
 afk:
   disabled: false

@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.*
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES

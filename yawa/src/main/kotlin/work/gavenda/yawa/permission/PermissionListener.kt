@@ -17,23 +17,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.skin
+package work.gavenda.yawa.permission
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.plugin.Plugin
+import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.api.applySkin
 import work.gavenda.yawa.api.bukkitAsyncTask
 
-/**
- * Applies skin on player login.
- */
-class SkinListener(val plugin: Plugin) : Listener {
+class PermissionListener(val plugin: Plugin) : Listener {
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerLogin(e: PlayerLoginEvent) {
         if (e.result != PlayerLoginEvent.Result.ALLOWED) return
 
@@ -41,15 +38,15 @@ class SkinListener(val plugin: Plugin) : Listener {
 
         bukkitAsyncTask(plugin) {
             transaction {
-                val playerTexture = PlayerTexture.findById(player.uniqueId)
-                if (playerTexture != null) {
-                    // Existing texture on database, apply
-                    player.applySkin(playerTexture.texture, playerTexture.signature)
-                    return@transaction
-                }
+                PlayerDb.findById(player.uniqueId) ?: PlayerDb.new(player.uniqueId) {
+                    val defaultGroup = Group.findById(Group.DefaultGroupUuid)
+                        ?: throw IllegalStateException("Default permission group does not exist in the database")
 
-                player.restoreSkin()
+                    name = player.name
+                    groups = SizedCollection(listOf(defaultGroup))
+                }
             }
         }
     }
+
 }
