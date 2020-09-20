@@ -56,6 +56,7 @@ const val FEATURE_SIT = "sit"
 const val FEATURE_SKIN = "skin"
 const val FEATURE_SLEEP = "sleep"
 const val FEATURE_TABLIST = "tab-list"
+const val FEATURE_KEEP_ALIVE = "keep-alive"
 
 private val featureEnableMap = mapOf(
     FEATURE_AFK to { Plugin.Instance.enableAfk() },
@@ -67,6 +68,7 @@ private val featureEnableMap = mapOf(
     FEATURE_SKIN to { Plugin.Instance.enableSkin() },
     FEATURE_SLEEP to { Plugin.Instance.enableSleep() },
     FEATURE_TABLIST to { Plugin.Instance.enableTabList() },
+    FEATURE_KEEP_ALIVE to { Plugin.Instance.adjustKeepAliveTimeout() },
 )
 
 private val featureDisableMap = mapOf(
@@ -79,6 +81,7 @@ private val featureDisableMap = mapOf(
     FEATURE_SKIN to { Plugin.Instance.disableSkin(true) },
     FEATURE_SLEEP to { Plugin.Instance.disableSleep() },
     FEATURE_TABLIST to { Plugin.Instance.disableTabList() },
+    FEATURE_KEEP_ALIVE to { Plugin.Instance.resetKeepAliveTimeout() },
 )
 
 private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
@@ -155,6 +158,8 @@ class YawaReloadCommand : Command("yawa.reload") {
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (args.isEmpty()) {
             Plugin.Instance.onDisable()
+            Plugin.Instance.reloadConfig()
+            Plugin.Instance.loadConfig()
             Plugin.Instance.onEnable()
             sender.sendMessage(Config.Messages.PluginReload.translateColorCodes())
             return

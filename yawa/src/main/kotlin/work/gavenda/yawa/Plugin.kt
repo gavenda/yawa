@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa
 
+import com.comphenix.protocol.utility.MinecraftReflection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.bukkit.plugin.java.JavaPlugin
@@ -41,6 +42,8 @@ import work.gavenda.yawa.sleep.disableSleep
 import work.gavenda.yawa.sleep.enableSleep
 import work.gavenda.yawa.tablist.disableTabList
 import work.gavenda.yawa.tablist.enableTabList
+import java.lang.reflect.Field
+import java.lang.reflect.Modifier
 
 /**
  * Yawa plugin entry point.
@@ -74,6 +77,7 @@ class Plugin : JavaPlugin() {
         enableSit()
         // Register root command
         registerRootCommand()
+        adjustKeepAliveTimeout()
 
         safeLoad = true
     }
@@ -84,6 +88,8 @@ class Plugin : JavaPlugin() {
             return
         }
 
+        // Reset keep alive timeout
+        resetKeepAliveTimeout()
         // Unregister root command
         unregisterRootCommand()
 
@@ -114,6 +120,37 @@ class Plugin : JavaPlugin() {
 
         // Use data source in Exposed
         Database.connect(dataSource)
+    }
+
+    fun resetKeepAliveTimeout() {
+        if (Config.KeepAlive.Disabled) return
+
+        // This is a paper plugin, resetting should also be paper-based
+        slF4JLogger.warn("Resetting keep alive timeout")
+
+        val longStr = System.getProperty("paper.playerconnection.keepalive") ?: "30"
+        val long = longStr.toLong()
+
+        adjustKeepAliveTimeout(long * 1000)
+    }
+
+    fun adjustKeepAliveTimeout(timeout: Long = Config.KeepAlive.Timeout * 1000) {
+        if (Config.KeepAlive.Disabled) return
+
+        slF4JLogger.warn("Adjusting keep alive timeout to $timeout ms")
+
+        val nmsPlayerConnection = MinecraftReflection.getPlayerConnectionClass()
+        val field = nmsPlayerConnection.getDeclaredField("KEEPALIVE_LIMIT").apply {
+            isAccessible = true
+        }
+
+        // Change final to non-final
+        Field::class.java.getDeclaredField("modifiers").apply {
+            isAccessible = true
+            setInt(field, field.modifiers and Modifier.FINAL.inv())
+        }
+
+        field.setLong(null, timeout)
     }
 
     fun loadConfig() {

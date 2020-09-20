@@ -111,7 +111,7 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
                         userLogin.lastLoginAddress = player.address.address.hostAddress
                     }
 
-                    logger.info("Connection encrypted for: ${session.name}")
+                    logger.info("Connection encrypted for player ${session.name}")
 
                     receiveFakeStartPacket(player, profile.name)
                 } else {

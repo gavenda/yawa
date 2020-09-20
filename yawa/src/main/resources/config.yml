@@ -24,6 +24,11 @@ essentials:
 ping:
   disabled: false
 
+# Keep alive override, should not be enabled unless you actually need it
+keep-alive:
+  disabled: true
+  timeout: 180
+
 # Tab List feature configuration
 tab-list:
   disabled: false

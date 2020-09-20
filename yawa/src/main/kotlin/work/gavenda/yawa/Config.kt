@@ -40,6 +40,16 @@ object Config {
     }
 
     /**
+     * Keep alive configuration.
+     */
+    object KeepAlive {
+        var Disabled
+            get() = config.getBoolean("keep-alive.disabled")
+            set(value) = config.set("keep-alive.disabled", value)
+        val Timeout get() = config.getLong("keep-alive.timeout")
+    }
+
+    /**
      * Tab list configuration.
      */
     object TabList {
