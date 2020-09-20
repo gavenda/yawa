@@ -23,6 +23,7 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.entity.EnderDragon
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -37,18 +38,32 @@ import work.gavenda.yawa.api.translateColorCodes
  */
 class EnderListener : Listener {
 
+    private val teleportingPlayers = mutableSetOf<Player>()
+
     @EventHandler
     fun onEntityDamage(e: EntityDamageByEntityEvent) {
-        // Damaging entity must be player
-        if (e.damager !is Player) return
-        // Damaged entity must be ender
-        if (e.entity !is EnderDragon) return
+        val damager = e.damager
+        val entity = e.entity
 
-        val location = e.damager.location
+        // Damaging entity must be player or projectile
+        if (damager !is Player && damager !is Projectile) return
+        // If a projectile, shooter should be a player
+        if (damager is Projectile && damager.shooter !is Player) return
+        // Damaged entity must be ender
+        if (entity !is EnderDragon) return
+
+        val damagingPlayer = if (damager is Projectile) {
+            (damager.shooter as Player)
+        } else e.damager
+
+        val location = damagingPlayer.location
+
         val players = Bukkit.getOnlinePlayers()
             .asSequence()
             // Don't include the damaging player
-            .filter { it != e.damager }
+            .filter { it != damagingPlayer }
+            // Don't include teleporting players
+            .filter { teleportingPlayers.contains(it).not() }
             // Don't include the dead
             .filter { it.isDead.not() }
             // Don't include others who are already in the end
@@ -65,19 +80,22 @@ class EnderListener : Listener {
                     .parse(Config.Messages.EnderBattleStart)
                     .translateColorCodes()
             )
+            // Mark as teleporting
+            teleportingPlayers.add(player)
         }
 
         // Teleport to ender dragon after 5 seconds
         bukkitTask(Plugin.Instance, 100) {
             players.forEach { player ->
                 // Teleport to damaging entity
-                player.teleportAsync(location).thenApply {
+                player.teleportAsync(location).thenRun {
                     player.sendMessage(
                         Placeholder
                             .withContext(player)
                             .parse(Config.Messages.EnderBattleTeleport)
                             .translateColorCodes()
                     )
+                    teleportingPlayers.remove(player)
                 }
             }
         }
