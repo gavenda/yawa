@@ -31,6 +31,7 @@ import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.bukkitTimerTask
 import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.logger
 
 const val META_PLAYER_SITTING = "PlayerSitting"
 const val META_PLAYER_SITTING_TASK_ID = "PlayerSittingTaskId"
@@ -150,8 +151,10 @@ fun Player.sit(block: Block) {
     sitTaskId = bukkitTimerTask(Plugin.Instance, 1000, 1000) {
         val oldChairEntity = vehicle
         val newChairEntity = oldChairEntity?.location?.spawnChairEntity()
+        isSitting = false
         newChairEntity?.addPassenger(this)
         oldChairEntity?.remove()
+        isSitting = true
     }
 
     sendMessage(
