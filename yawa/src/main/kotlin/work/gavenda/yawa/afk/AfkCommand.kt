@@ -22,12 +22,14 @@ package work.gavenda.yawa.afk
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.*
 
 class AfkCommand : Command("yawa.afk") {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return
+        if (sender.hasPermission(Permission.AFK).not()) return
 
         sender.isAfk = true
 

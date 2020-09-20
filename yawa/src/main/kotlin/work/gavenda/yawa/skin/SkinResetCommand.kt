@@ -23,11 +23,12 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.translateColorCodes
 
-class SkinResetCommand : Command("yawa.skin.reset") {
+class SkinResetCommand : Command(Permission.SKIN_RESET) {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return

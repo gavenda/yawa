@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.*
 import work.gavenda.yawa.api.mineskin.MineSkinApi
 import work.gavenda.yawa.api.mineskin.MineSkinTexture
@@ -34,7 +35,7 @@ import java.net.URISyntaxException
 /**
  * Applies a skin from a texture url.
  */
-class SkinUrlCommand : Command("yawa.skin.url") {
+class SkinUrlCommand : Command(Permission.SKIN_URL) {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return

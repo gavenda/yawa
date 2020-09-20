@@ -89,16 +89,19 @@ private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE
 /**
  * Plugin main command.
  */
-class YawaCommand : Command("yawa") {
-
-    private val helpList = HelpList()
-        .command("yawa", listOf(), "Shows this command list")
-        .command("yawa reload", listOf("<config>"), "Reloads the plugin")
-        .command("yawa feature", listOf("<feature>", "<enable|disable>"), "Enable or disable a feature")
-        .generateMessages()
+class YawaCommand : Command() {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
-        helpList.forEach(sender::sendMessage)
+        HelpList()
+            .command("yawa reload", listOf("<config>"), "Reloads the plugin", Permission.RELOAD)
+            .command(
+                "yawa feature",
+                listOf("<feature>", "<enable|disable>"),
+                "Enable or disable a feature",
+                Permission.FEATURE
+            )
+            .generateMessages(sender)
+            .forEach(sender::sendMessage)
     }
 
     override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
@@ -110,7 +113,7 @@ class YawaCommand : Command("yawa") {
 /**
  * Enable a feature.
  */
-class YawaFeatureCommand : Command("yawa.feature") {
+class YawaFeatureCommand : Command(Permission.FEATURE) {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (args.size == 2) {
@@ -154,7 +157,7 @@ class YawaFeatureCommand : Command("yawa.feature") {
 /**
  * Reloads the plugin.
  */
-class YawaReloadCommand : Command("yawa.reload") {
+class YawaReloadCommand : Command(Permission.RELOAD) {
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (args.isEmpty()) {
             Plugin.Instance.onDisable()

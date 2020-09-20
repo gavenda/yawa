@@ -22,6 +22,7 @@ package work.gavenda.yawa.afk
 import org.bukkit.event.HandlerList
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.DisabledCommand
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.Plugin
 import work.gavenda.yawa.api.*
 import java.util.concurrent.TimeUnit
@@ -43,39 +44,41 @@ fun Plugin.enableAfk() {
 
     // Tasks
     afkTaskId = bukkitTimerTask(this, 0, 20) {
-        server.onlinePlayers.forEach { player ->
-            val afkDelta = System.currentTimeMillis() - player.lastInteractionMillis
-            val afkSeconds = TimeUnit.MILLISECONDS.toSeconds(afkDelta)
-            val isNotAfk = !player.isAfk
+        server.onlinePlayers
+            .filter { it.hasPermission(Permission.AFK) }
+            .forEach { player ->
+                val afkDelta = System.currentTimeMillis() - player.lastInteractionMillis
+                val afkSeconds = TimeUnit.MILLISECONDS.toSeconds(afkDelta)
+                val isNotAfk = !player.isAfk
 
-            if (isNotAfk && afkSeconds > Config.Afk.Seconds) {
-                player.isAfk = true
+                if (isNotAfk && afkSeconds > Config.Afk.Seconds) {
+                    player.isAfk = true
 
-                val message = Placeholder
-                    .withContext(player)
-                    .parse(Config.Messages.AfkEntryMessage)
-                    .translateColorCodes()
-                val selfMessage = Placeholder
-                    .withContext(player)
-                    .parse(Config.Messages.PlayerAfkStart)
-                    .translateColorCodes()
-
-                player.world.sendMessageIf(message) {
-                    Config.Afk.MessageEnabled
-                }
-                player.sendMessage(selfMessage)
-            }
-
-            if (player.isAfk) {
-                player.setPlayerListName(
-                    Placeholder.withContext(player)
-                        .parse(Config.Afk.PlayerListName)
+                    val message = Placeholder
+                        .withContext(player)
+                        .parse(Config.Messages.AfkEntryMessage)
                         .translateColorCodes()
-                )
-            } else {
-                player.setPlayerListName(null)
+                    val selfMessage = Placeholder
+                        .withContext(player)
+                        .parse(Config.Messages.PlayerAfkStart)
+                        .translateColorCodes()
+
+                    player.world.sendMessageIf(message) {
+                        Config.Afk.MessageEnabled
+                    }
+                    player.sendMessage(selfMessage)
+                }
+
+                if (player.isAfk) {
+                    player.setPlayerListName(
+                        Placeholder.withContext(player)
+                            .parse(Config.Afk.PlayerListName)
+                            .translateColorCodes()
+                    )
+                } else {
+                    player.setPlayerListName(null)
+                }
             }
-        }
     }
 
     // Register events

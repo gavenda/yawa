@@ -25,10 +25,10 @@ import java.util.*
 import kotlin.collections.HashMap
 
 abstract class Command(private val permission: String = "") : TabExecutor {
-    private val subCommands: MutableMap<String, Command> = HashMap()
+    private val subCommands = mutableMapOf<String, Command>()
 
-    val subCommandKeys: Set<String>
-        get() = subCommands.keys
+    val subCommandKeys
+        get() = subCommands.keys.toSet()
 
     fun sub(command: Command, arg: String, vararg aliases: String): Command {
         subCommands[arg] = command

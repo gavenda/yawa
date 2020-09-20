@@ -30,19 +30,34 @@ commands:
     usage: /yawa
 
 permissions:
-  yawa:
-    default: op
+  yawa.*:
+    description: Gives access to all plugin commands.
+    children:
+      yawa.reload: true
+      yawa.feature: true
+      yawa.afk: true
+      yawa.skin.*: true
   yawa.reload:
+    description: Permission to reload the plugin.
     default: op
   yawa.feature:
+    description: Permission to toggle plugin features.
     default: op
   yawa.afk:
+    description: Permission to shown as away from keyboard.
     default: true
-  yawa.skin:
-    default: true
+  yawa.skin.*:
+    description: Gives access to all skin commands.
+    children:
+      yawa.skin.reset: true
+      yawa.skin.player: true
+      yawa.skin.url: true
   yawa.skin.reset:
+    description: Permission to reset your skin.
     default: true
   yawa.skin.player:
+    description: Permission to your skin from a premium player.
     default: true
   yawa.skin.url:
+    description: Permission to set your skin from a texture url.
     default: true

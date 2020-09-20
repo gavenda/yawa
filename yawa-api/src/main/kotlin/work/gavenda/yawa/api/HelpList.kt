@@ -19,6 +19,8 @@
 
 package work.gavenda.yawa.api
 
+import org.bukkit.command.CommandSender
+
 const val HELP_PAGE_SIZE = 9
 
 /**
@@ -26,23 +28,24 @@ const val HELP_PAGE_SIZE = 9
  */
 class HelpList {
 
-    data class Help(val text: String, val args: List<String>)
+    data class Help(val text: String, val args: List<String>, val permission: String)
 
     private val commandMap = mutableMapOf<String, Help>()
 
     /**
      * Add a command to this help list.
      */
-    fun command(name: String, args: List<String>, helpText: String): HelpList {
-        commandMap[name] = Help(helpText, args)
+    fun command(name: String, args: List<String>, helpText: String, permission: String = ""): HelpList {
+        commandMap[name] = Help(helpText, args, permission)
         return this
     }
 
     /**
      * Generates the help list.
+     * @param sender the command sender
      * @param page page number, defaults to 1.
      */
-    fun generate(page: Int = 1): String {
+    fun generate(sender: CommandSender, page: Int = 1): String {
         val sb = StringBuilder()
         val commands = commandMap.keys.chunked(HELP_PAGE_SIZE)
 
@@ -53,6 +56,9 @@ class HelpList {
 
         for (command in commandsPaged) {
             val help = commandMap.getValue(command)
+
+            // Sender must have permission
+            if (sender.hasPermission(help.permission).not()) continue
 
             // Gold color
             sb.append("&6")
@@ -82,10 +88,11 @@ class HelpList {
      *
      * Does `generate().split("\n")`.
      *
+     * @param sender the command sender
      * @param page page number, defaults to 1
      */
-    fun generateMessages(page: Int = 1): List<String> {
-        return generate(page).split("\n")
+    fun generateMessages(sender: CommandSender, page: Int = 1): List<String> {
+        return generate(sender, page).split("\n")
     }
 
 }

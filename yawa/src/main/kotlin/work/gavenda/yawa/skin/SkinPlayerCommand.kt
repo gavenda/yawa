@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.*
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.mojang.MojangApi
@@ -32,7 +33,7 @@ import work.gavenda.yawa.api.mojang.RateLimitException
 /**
  * Applies a skin from an existing minecraft account name.
  */
-class SkinPlayerCommand : Command("yawa.skin.player") {
+class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
 
     override fun execute(sender: CommandSender, args: Array<String>) {
         if (sender !is Player) return
