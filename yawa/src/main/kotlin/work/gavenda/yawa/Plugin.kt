@@ -22,6 +22,7 @@ package work.gavenda.yawa
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.disableAfk
@@ -54,6 +55,10 @@ class Plugin : JavaPlugin() {
 
     private var safeLoad = false
     private lateinit var dataSource: HikariDataSource
+    private val rootCommand = YawaCommand().apply {
+        sub(YawaReloadCommand(), "reload")
+        sub(YawaFeatureCommand(), "feature")
+    }
 
     companion object {
         lateinit var Instance: Plugin
@@ -162,15 +167,12 @@ class Plugin : JavaPlugin() {
     }
 
     private fun registerRootCommand() {
-        val rootCommand = YawaCommand().apply {
-            sub(YawaReloadCommand(), "reload")
-            sub(YawaFeatureCommand(), "feature")
-        }
-
+        server.pluginManager.registerEvents(rootCommand, this)
         getCommand("yawa")?.setExecutor(rootCommand)
     }
 
     private fun unregisterRootCommand() {
         getCommand("yawa")?.setExecutor(null)
+        HandlerList.unregisterAll(rootCommand)
     }
 }

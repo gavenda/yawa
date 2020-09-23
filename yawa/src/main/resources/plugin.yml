@@ -21,8 +21,11 @@ commands:
 
   skin:
     description: Changes your skin.
-    permission: yawa.skin
     usage: /skin
+
+  permission:
+    description: Change player/group permissions.
+    usage: /permission
 
   yawa:
     description: Plugin root command.
@@ -61,3 +64,14 @@ permissions:
   yawa.skin.url:
     description: Permission to set your skin from a texture url.
     default: true
+  yawa.permission.*:
+    description: Gives access to all permission commands.
+    children:
+      yawa.permission.player: true
+      yawa.permission.group: true
+  yawa.permission.player:
+    description: Permission to change a user permission.
+    default: op
+  yawa.permission.group:
+    description: Permission to change a group permission.
+    default: op

@@ -24,10 +24,11 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.*
+private val afkCommands = listOf("afk", "yawa:afk")
 
-class AfkCommand : Command("yawa.afk") {
+class AfkCommand : Command("yawa.afk", afkCommands) {
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
         if (sender.hasPermission(Permission.AFK).not()) return
 
@@ -48,8 +49,8 @@ class AfkCommand : Command("yawa.afk") {
         sender.sendMessage(selfMessage)
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return emptyList()
     }
 
 }

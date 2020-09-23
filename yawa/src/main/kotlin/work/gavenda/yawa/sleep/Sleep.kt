@@ -41,6 +41,12 @@ fun Plugin.enableSleep() {
     // Placeholders
     Placeholder.register(SleepPlaceholderProvider())
 
+    // Instantiate event listeners
+    sleepBedListener = SleepBedListener(sleepingWorlds)
+
+    // Register event listeners
+    server.pluginManager.registerEvents(sleepBedListener, this)
+
     // Tasks
     sleepTaskId = bukkitAsyncTimerTask(this, 0, 20) {
         server.worlds.asSequence()
@@ -53,10 +59,6 @@ fun Plugin.enableSleep() {
             .forEach(this::checkWorldForSleeping)
     }
 
-    // Instantiate event listeners
-    sleepBedListener = SleepBedListener(sleepingWorlds)
-    // Register event listeners
-    server.pluginManager.registerEvents(sleepBedListener, this)
 }
 
 /**
@@ -65,10 +67,11 @@ fun Plugin.enableSleep() {
 fun Plugin.disableSleep() {
     if (Config.Sleep.Disabled) return
 
-    // Unregister event listeners
-    HandlerList.unregisterAll(sleepBedListener)
     // Tasks
     server.scheduler.cancelTask(sleepTaskId)
+
+    // Unregister event listeners
+    HandlerList.unregisterAll(sleepBedListener)
 }
 
 private fun Plugin.checkWorldForSleeping(world: World) {

@@ -29,4 +29,6 @@ object Permission {
     const val SKIN_PLAYER = "yawa.skin.player"
     const val SKIN_RESET = "yawa.skin.reset"
     const val SKIN_URL = "yawa.skin.url"
+    const val PERMISSION_PLAYER = "yawa.permission.player"
+    const val PERMISSION_GROUP = "yawa.permission.group"
 }

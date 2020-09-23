@@ -25,9 +25,11 @@ import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 
-class SkinCommand : Command() {
+private val skinCommands = listOf("skin", "yawa:skin")
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+class SkinCommand : Command(commands = skinCommands) {
+
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
         HelpList()
@@ -38,7 +40,7 @@ class SkinCommand : Command() {
             .forEach(sender::sendMessage)
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return subCommandKeys.toList()
     }
 

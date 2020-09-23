@@ -30,7 +30,7 @@ import work.gavenda.yawa.api.translateColorCodes
 
 class SkinResetCommand : Command(Permission.SKIN_RESET) {
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
         sender.restoreSkin()
 
@@ -46,7 +46,7 @@ class SkinResetCommand : Command(Permission.SKIN_RESET) {
         )
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return emptyList()
     }
 }

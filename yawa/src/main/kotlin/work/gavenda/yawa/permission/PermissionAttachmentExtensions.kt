@@ -17,30 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sit
+package work.gavenda.yawa.permission
 
-import org.bukkit.event.HandlerList
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import org.bukkit.permissions.PermissionAttachment
 
-private val sitListener = SitListener()
-
-/**
- * Enable skin feature.
- */
-fun Plugin.enableSit() {
-    if (Config.Sit.Disabled) return
-
-    // Register event listeners
-    server.pluginManager.registerEvents(sitListener, this)
+private val pField = PermissionAttachment::class.java.getDeclaredField("permissions").apply {
+    isAccessible = true
 }
 
-/**
- * Disable sit feature
- */
-fun Plugin.disableSit() {
-    if (Config.Sit.Disabled) return
+@Suppress("UNCHECKED_CAST")
+fun PermissionAttachment.setPermissionsFromMap(values: Map<String, Boolean>) {
+    val permissionMap = pField.get(this) as MutableMap<String, Boolean>
+    permissionMap.putAll(values)
+}
 
-    // Unregister event listeners
-    HandlerList.unregisterAll(sitListener)
+@Suppress("UNCHECKED_CAST")
+fun PermissionAttachment.removeAll() {
+    val permissionMap = pField.get(this) as MutableMap<String, Boolean>
+    permissionMap.clear()
 }

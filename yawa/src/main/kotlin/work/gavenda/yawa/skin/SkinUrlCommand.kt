@@ -38,7 +38,7 @@ import java.net.URISyntaxException
  */
 class SkinUrlCommand : Command(Permission.SKIN_URL) {
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
         if (args.isNotEmpty()) {
@@ -107,11 +107,11 @@ class SkinUrlCommand : Command(Permission.SKIN_URL) {
         )
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> listOf("<url>")
             2 -> listOf("true")
-            else -> listOf()
+            else -> emptyList()
         }
     }
 }

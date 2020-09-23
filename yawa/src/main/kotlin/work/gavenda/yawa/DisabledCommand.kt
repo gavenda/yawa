@@ -24,11 +24,11 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.translateColorCodes
 
 object DisabledCommand : Command() {
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         sender.sendMessage(Config.Messages.FeatureDisabled.translateColorCodes())
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return emptyList()
     }
 }

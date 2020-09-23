@@ -19,12 +19,25 @@
 
 package work.gavenda.yawa.api
 
+import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import java.util.*
-import kotlin.collections.HashMap
 
-abstract class Command(private val permission: String = "") : TabExecutor {
+const val COMMAND_NO_PERMISSION = "&cYou do not have enough permissions to use this command"
+
+/**
+ * Represents a command.
+ * @param permission permission needed to execute the command,
+ * @param commands list of commands or aliases for this command, required for async tab completion
+ */
+abstract class Command(
+    private val permission: String = "",
+    private val commands: List<String> = listOf()
+) :
+    TabExecutor, Listener {
     private val subCommands = mutableMapOf<String, Command>()
 
     val subCommandKeys
@@ -44,28 +57,26 @@ abstract class Command(private val permission: String = "") : TabExecutor {
         label: String,
         args: Array<String>
     ): Boolean {
-        executeSubCommands(sender, this, args, cmd.permissionMessage)
+        executeSubCommands(sender, this, args.toList())
         return true
     }
 
     private fun executeSubCommands(
         sender: CommandSender,
         parent: Command,
-        args: Array<String>,
-        noPermMessage: String?
+        args: List<String>
     ) {
         for (arg in args) {
             val cmd = parent.subCommands[arg]
             if (cmd != null) {
-                executeSubCommands(sender, cmd, args.copyOfRange(1, args.size), noPermMessage)
+                executeSubCommands(sender, cmd, args.subList(1, args.size))
                 return
             }
         }
         if (!hasPermission(sender, parent)) {
-            if (noPermMessage != null) {
-                sender.sendMessage(noPermMessage)
-            }
-            return
+            sender.sendMessage(
+                COMMAND_NO_PERMISSION.translateColorCodes()
+            )
         }
         parent.execute(sender, args)
     }
@@ -76,14 +87,41 @@ abstract class Command(private val permission: String = "") : TabExecutor {
         label: String,
         args: Array<String>
     ): List<String>? {
-        return if (!hasPermission(sender, this)) null else tooltips(sender, this, args)
+        return if (!hasPermission(sender, this)) null else tooltips(sender, this, args.toList())
     }
 
-    private fun tooltips(sender: CommandSender, command: Command, args: Array<String>): List<String>? {
+    @EventHandler(ignoreCancelled = true)
+    fun onAsyncTabComplete(e: AsyncTabCompleteEvent) {
+        if (!e.isCommand) return
+
+        var buffer = e.buffer
+        if (buffer.isEmpty()) return
+
+        if (buffer[0] == '/') {
+            buffer = buffer.substring(1)
+        }
+
+        val firstSpace = buffer.indexOf(' ')
+        if (firstSpace < 0) return
+
+        val sender = e.sender
+        val commandArg = buffer.substring(0, firstSpace)
+
+        if (commands.contains(commandArg).not()) return
+
+        val args = buffer.split(' ').drop(1)
+
+        e.completions = if (!hasPermission(sender, this)) {
+            emptyList()
+        } else tooltips(sender, this, args)
+        e.isHandled = true
+    }
+
+    private fun tooltips(sender: CommandSender, command: Command, args: List<String>): List<String> {
         for (arg in args) {
             val cmd = command.subCommands[arg]
             if (cmd != null) {
-                return tooltips(sender, cmd, args.copyOfRange(1, args.size))
+                return tooltips(sender, cmd, args.subList(1, args.size))
             }
         }
         if (hasPermission(sender, command)) {
@@ -100,7 +138,7 @@ abstract class Command(private val permission: String = "") : TabExecutor {
             }
             return command.onTab(sender, args)
         }
-        return null
+        return listOf()
     }
 
     private fun hasPermission(sender: CommandSender, command: Command): Boolean {
@@ -108,6 +146,6 @@ abstract class Command(private val permission: String = "") : TabExecutor {
         else sender.hasPermission(command.permission)
     }
 
-    abstract fun execute(sender: CommandSender, args: Array<String>)
-    abstract fun onTab(sender: CommandSender, args: Array<String>): List<String>?
+    abstract fun execute(sender: CommandSender, args: List<String>)
+    abstract fun onTab(sender: CommandSender, args: List<String>): List<String>
 }

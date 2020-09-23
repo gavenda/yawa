@@ -22,9 +22,11 @@ package work.gavenda.yawa.api
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class PlaceholderCommand : Command("yawa.api.placeholder") {
+private val placeholderCommands = listOf("placeholders", "yawaapi:placeholders")
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) {
+
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
         Placeholder
@@ -35,8 +37,8 @@ class PlaceholderCommand : Command("yawa.api.placeholder") {
             }
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
-        return null
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return emptyList()
     }
 
 }

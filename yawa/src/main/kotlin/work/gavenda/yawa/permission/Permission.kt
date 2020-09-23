@@ -24,17 +24,23 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.DisabledCommand
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.Plugin
-import java.util.*
-
 
 private lateinit var permissionListener: PermissionListener
+private val permissionCommand = PermissionCommand().apply {
+    sub(PermissionPlayerCommand(), "player")
+    sub(PermissionGroupCommand(), "group")
+}
 
 /**
  * Enable permission feature.
  */
 fun Plugin.enablePermission() {
     if (Config.Permission.Disabled) return
+
+    slF4JLogger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
 
     // Init tables if not created
     transaction {
@@ -56,16 +62,40 @@ fun Plugin.enablePermission() {
 
     // Instantiate event listeners
     permissionListener = PermissionListener(this)
+
+    // In-case of reload lol
+    server.onlinePlayers.forEach {
+        it.permissionAttachment = it.addAttachment(this)
+        it.calculatePermissions()
+    }
+
+    // Register commands
+    getCommand("permission")?.setExecutor(permissionCommand)
+
     // Register event listeners
     server.pluginManager.registerEvents(permissionListener, this)
+    server.pluginManager.registerEvents(permissionCommand, this)
 }
 
 /**
  * Disable permission feature.
  */
-fun Plugin.disablePermission() {
+fun Plugin.disablePermission(reload: Boolean = false) {
     if (Config.Permission.Disabled) return
 
     // Unregister event listeners
+    HandlerList.unregisterAll(permissionCommand)
     HandlerList.unregisterAll(permissionListener)
+
+    // Disable command
+    if (reload) {
+        getCommand("permission")?.setExecutor(DisabledCommand)
+    } else {
+        getCommand("permission")?.setExecutor(null)
+    }
+
+    // Remove attachment
+    server.onlinePlayers.forEach {
+        it.removeAttachment()
+    }
 }

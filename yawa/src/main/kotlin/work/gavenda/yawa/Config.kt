@@ -175,6 +175,10 @@ object Config {
         val SleepingDone: List<String> get() = config.getStringList("messages.chat-sleeping-done")
         val PluginReload get() = config.getString("messages.plugin-reload")!!
         val PluginReloadConfig get() = config.getString("messages.plugin-reload-config")!!
+        val PermissionPlayerNotFound get() = config.getString("messages.permission-player-not-found")!!
+        val PermissionPlayerNotLoggedIn get() = config.getString("messages.permission-player-not-logged-in")!!
+        val PermissionGroupNotFound get() = config.getString("messages.permission-group-not-found")!!
+        val PermissionApplied get() = config.getString("messages.permission-applied")!!
         val FeatureDisabled get() = config.getString("messages.feature-disabled")!!
         val FeatureSetDisabled get() = config.getString("messages.feature-set-disabled")!!
         val FeatureSetEnabled get() = config.getString("messages.feature-set-enabled")!!

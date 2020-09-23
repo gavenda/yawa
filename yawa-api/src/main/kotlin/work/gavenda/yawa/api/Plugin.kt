@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.api
 
+import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import work.gavenda.yawa.api.providers.PlayerPlaceholderProvider
 import work.gavenda.yawa.api.providers.ServerPlaceholderProvider
@@ -33,6 +34,8 @@ class Plugin : JavaPlugin() {
         lateinit var Instance: Plugin
     }
 
+    private val placeholderCommand = PlaceholderCommand()
+
     override fun onEnable() {
         Instance = this
 
@@ -41,12 +44,14 @@ class Plugin : JavaPlugin() {
         Placeholder.register(WorldPlaceholderProvider())
         Placeholder.register(ServerPlaceholderProvider())
 
-        getCommand("placeholders")?.setExecutor(PlaceholderCommand())
+        server.pluginManager.registerEvents(placeholderCommand, this)
+        getCommand("placeholders")?.setExecutor(placeholderCommand)
     }
 
     override fun onDisable() {
         Placeholder.clear()
 
         getCommand("placeholders")?.setExecutor(null)
+        HandlerList.unregisterAll(placeholderCommand)
     }
 }

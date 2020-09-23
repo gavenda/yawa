@@ -31,7 +31,7 @@ import java.util.*
 class PlayerPermission(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
     companion object : UUIDEntityClass<PlayerPermission>(PlayerPermissionSchema)
 
-    var player by PlayerDb referencedOn PlayerPermissionSchema.player
+    var playerId by PlayerDb referencedOn PlayerPermissionSchema.player
     var permission by PlayerPermissionSchema.permission
     var enabled by PlayerPermissionSchema.enabled
 }

@@ -27,6 +27,11 @@ import work.gavenda.yawa.DisabledCommand
 import work.gavenda.yawa.Plugin
 
 private lateinit var skinListener: SkinListener
+private val skinCommand = SkinCommand().apply {
+    sub(SkinPlayerCommand(), "player")
+    sub(SkinResetCommand(), "reset")
+    sub(SkinUrlCommand(), "url")
+}
 
 /**
  * Enable skin feature.
@@ -44,16 +49,13 @@ fun Plugin.enableSkin() {
 
     // Instantiate event listeners
     skinListener = SkinListener(this)
+
+    // Register commands
+    getCommand("skin")?.setExecutor(skinCommand)
+
     // Register event listeners
     server.pluginManager.registerEvents(skinListener, this)
-
-    val skinCommand = SkinCommand().apply {
-        sub(SkinPlayerCommand(), "player")
-        sub(SkinResetCommand(), "reset")
-        sub(SkinUrlCommand(), "url")
-    }
-
-    getCommand("skin")?.setExecutor(skinCommand)
+    server.pluginManager.registerEvents(skinCommand, this)
 }
 
 /**
@@ -63,12 +65,15 @@ fun Plugin.enableSkin() {
 fun Plugin.disableSkin(reload: Boolean = false) {
     if (Config.Skin.Disabled) return
 
+    // Unregister event listeners
+    HandlerList.unregisterAll(skinListener)
+    HandlerList.unregisterAll(skinCommand)
+
+    // Disable command
     if (reload) {
         getCommand("skin")?.setExecutor(DisabledCommand)
     } else {
         getCommand("skin")?.setExecutor(null)
     }
 
-    // Unregister event listeners
-    HandlerList.unregisterAll(skinListener)
 }

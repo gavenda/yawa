@@ -54,6 +54,9 @@ class HelpList {
 
         val commandsPaged = commands[page - 1]
 
+        // No commands empty string
+        if (commandsPaged.isEmpty()) return ""
+
         for (command in commandsPaged) {
             val help = commandMap.getValue(command)
 
@@ -78,6 +81,9 @@ class HelpList {
             sb.append("\n")
         }
 
+        // We have reach here, return no permissions message
+        if (sb.isBlank()) return COMMAND_NO_PERMISSION.translateColorCodes()
+
         return sb.toString()
             .dropLast(1)
             .translateColorCodes()
@@ -92,7 +98,8 @@ class HelpList {
      * @param page page number, defaults to 1
      */
     fun generateMessages(sender: CommandSender, page: Int = 1): List<String> {
-        return generate(sender, page).split("\n")
+        val generated = generate(sender, page)
+        return if (generated.isBlank()) return emptyList() else generated.split("\n")
     }
 
 }

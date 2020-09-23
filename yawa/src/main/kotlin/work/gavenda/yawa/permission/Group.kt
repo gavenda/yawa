@@ -37,6 +37,16 @@ class Group(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
 
     var name by GroupSchema.name
     var players by PlayerDb via GroupPlayerSchema
+    val permissions by GroupPermission referrersOn GroupPermissionSchema.group
+}
+
+class GroupPlayer(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<GroupPlayer>(GroupPlayerSchema)
+
+    val group by Group referencedOn GroupPlayerSchema.group
+    val player by PlayerDb referencedOn GroupPlayerSchema.player
+    val groupId by GroupPlayerSchema.group
+    val playerId by GroupPlayerSchema.player
 }
 
 object GroupSchema : UUIDTable("yawa_group") {

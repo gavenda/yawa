@@ -90,13 +90,14 @@ private val featureDisableMap = mapOf(
 )
 
 private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
+private val yawaCommands = listOf("yawa", "yawa:yawa")
 
 /**
  * Plugin main command.
  */
-class YawaCommand : Command() {
+class YawaCommand : Command(commands = yawaCommands) {
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         HelpList()
             .command("yawa reload", listOf("<config>"), "Reloads the plugin", Permission.RELOAD)
             .command(
@@ -109,7 +110,7 @@ class YawaCommand : Command() {
             .forEach(sender::sendMessage)
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return subCommandKeys.toList()
     }
 
@@ -120,7 +121,7 @@ class YawaCommand : Command() {
  */
 class YawaFeatureCommand : Command(Permission.FEATURE) {
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (args.size == 2) {
             val feature = args[0]
             val switch = args[1]
@@ -150,11 +151,11 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
         }
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> featureEnableMap.keys.toList()
             2 -> featureSwitch
-            else -> listOf()
+            else -> emptyList()
         }
     }
 }
@@ -163,7 +164,7 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
  * Reloads the plugin.
  */
 class YawaReloadCommand : Command(Permission.RELOAD) {
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (args.isEmpty()) {
             Plugin.Instance.onDisable()
             Plugin.Instance.reloadConfig()
@@ -181,10 +182,10 @@ class YawaReloadCommand : Command(Permission.RELOAD) {
         }
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> listOf("config")
-            else -> listOf()
+            else -> emptyList()
         }
     }
 }

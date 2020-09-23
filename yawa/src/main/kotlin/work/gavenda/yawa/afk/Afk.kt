@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit
 
 private var afkTaskId = -1
 private val afkListener = AfkListener()
+private val afkCommand = AfkCommand()
 
 /**
  * Enable afk feature.
@@ -39,8 +40,12 @@ fun Plugin.enableAfk() {
         return
     }
 
-    // Command handler
-    getCommand("afk")?.setExecutor(AfkCommand())
+    // Register commands
+    getCommand("afk")?.setExecutor(afkCommand)
+
+    // Register event listeners
+    server.pluginManager.registerEvents(afkCommand, this)
+    server.pluginManager.registerEvents(afkListener, this)
 
     // Tasks
     afkTaskId = bukkitTimerTask(this, 0, 20) {
@@ -80,9 +85,6 @@ fun Plugin.enableAfk() {
                 }
             }
     }
-
-    // Register event listeners
-    server.pluginManager.registerEvents(afkListener, this)
 }
 
 /**
@@ -92,11 +94,12 @@ fun Plugin.enableAfk() {
 fun Plugin.disableAfk(reload: Boolean = false) {
     if (Config.Afk.Disabled) return
 
-    // Events
-    HandlerList.unregisterAll(afkListener)
     // Tasks
     server.scheduler.cancelTask(afkTaskId)
-    // Command handlers
+    // Unregister event listeners
+    HandlerList.unregisterAll(afkListener)
+    HandlerList.unregisterAll(afkCommand)
+    // Disable command
     if (reload) {
         getCommand("afk")?.setExecutor(DisabledCommand)
     } else {

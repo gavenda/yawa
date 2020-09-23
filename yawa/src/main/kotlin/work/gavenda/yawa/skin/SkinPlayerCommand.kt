@@ -36,7 +36,7 @@ import work.gavenda.yawa.api.mojang.RateLimitException
  */
 class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
 
-    override fun execute(sender: CommandSender, args: Array<String>) {
+    override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
         if (args.size == 1) {
@@ -96,10 +96,10 @@ class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
         )
     }
 
-    override fun onTab(sender: CommandSender, args: Array<String>): List<String>? {
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> listOf("<player>")
-            else -> listOf()
+            else -> emptyList()
         }
     }
 }

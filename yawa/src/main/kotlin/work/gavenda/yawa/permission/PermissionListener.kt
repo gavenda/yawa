@@ -22,18 +22,20 @@ package work.gavenda.yawa.permission
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerLoginEvent
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.Plugin
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.bukkitAsyncTask
 
+/**
+ * Listens to player join and quit events.
+ */
 class PermissionListener(val plugin: Plugin) : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun onPlayerLogin(e: PlayerLoginEvent) {
-        if (e.result != PlayerLoginEvent.Result.ALLOWED) return
-
+    fun onPlayerLogin(e: PlayerJoinEvent) {
         val player = e.player
 
         bukkitAsyncTask(plugin) {
@@ -46,7 +48,20 @@ class PermissionListener(val plugin: Plugin) : Listener {
                     groups = SizedCollection(listOf(defaultGroup))
                 }
             }
+
+            // Add attachment
+            player.permissionAttachment = player.addAttachment(plugin)
+            // Calculate
+            player.calculatePermissions()
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onPlayerQuit(e: PlayerQuitEvent) {
+        val player = e.player
+
+        // Remove attachment
+        player.removeAttachment()
     }
 
 }
