@@ -48,45 +48,32 @@ import work.gavenda.yawa.tablist.enableTabList
 const val FEATURE_SWITCH_ENABLE = "enable"
 const val FEATURE_SWITCH_DISABLE = "disable"
 
-// Features
-const val FEATURE_AFK = "afk"
-const val FEATURE_ESSENTIALS = "essentials"
-const val FEATURE_ENDER = "ender"
-const val FEATURE_LOGIN = "login"
-const val FEATURE_PERMISSION = "permission"
-const val FEATURE_PING = "ping"
-const val FEATURE_SIT = "sit"
-const val FEATURE_SKIN = "skin"
-const val FEATURE_SLEEP = "sleep"
-const val FEATURE_TABLIST = "tab-list"
-const val FEATURE_KEEP_ALIVE = "keep-alive"
-
 private val featureEnableMap = mapOf(
-    FEATURE_AFK to { Plugin.Instance.enableAfk() },
-    FEATURE_ENDER to { Plugin.Instance.enableEnder() },
-    FEATURE_ESSENTIALS to { Plugin.Instance.enableEssentials() },
-    FEATURE_LOGIN to { Plugin.Instance.enableLogin() },
-    FEATURE_PING to { Plugin.Instance.enablePing() },
-    FEATURE_PERMISSION to { Plugin.Instance.enablePermission() },
-    FEATURE_SIT to { Plugin.Instance.enableSit() },
-    FEATURE_SKIN to { Plugin.Instance.enableSkin() },
-    FEATURE_SLEEP to { Plugin.Instance.enableSleep() },
-    FEATURE_TABLIST to { Plugin.Instance.enableTabList() },
-    FEATURE_KEEP_ALIVE to { Plugin.Instance.adjustKeepAliveTimeout() },
+    Feature.AFK to { Plugin.Instance.enableAfk() },
+    Feature.ENDER to { Plugin.Instance.enableEnder() },
+    Feature.ESSENTIALS to { Plugin.Instance.enableEssentials() },
+    Feature.LOGIN to { Plugin.Instance.enableLogin() },
+    Feature.PING to { Plugin.Instance.enablePing() },
+    Feature.PERMISSION to { Plugin.Instance.enablePermission() },
+    Feature.SIT to { Plugin.Instance.enableSit() },
+    Feature.SKIN to { Plugin.Instance.enableSkin() },
+    Feature.SLEEP to { Plugin.Instance.enableSleep() },
+    Feature.TABLIST to { Plugin.Instance.enableTabList() },
+    Feature.KEEP_ALIVE to { Plugin.Instance.adjustKeepAliveTimeout() },
 )
 
 private val featureDisableMap = mapOf(
-    FEATURE_AFK to { Plugin.Instance.disableAfk(true) },
-    FEATURE_ENDER to { Plugin.Instance.disableEnder() },
-    FEATURE_ESSENTIALS to { Plugin.Instance.disableEssentials() },
-    FEATURE_LOGIN to { Plugin.Instance.disableLogin() },
-    FEATURE_PING to { Plugin.Instance.disablePing() },
-    FEATURE_PERMISSION to { Plugin.Instance.disablePermission() },
-    FEATURE_SIT to { Plugin.Instance.disableSit() },
-    FEATURE_SKIN to { Plugin.Instance.disableSkin(true) },
-    FEATURE_SLEEP to { Plugin.Instance.disableSleep() },
-    FEATURE_TABLIST to { Plugin.Instance.disableTabList() },
-    FEATURE_KEEP_ALIVE to { Plugin.Instance.resetKeepAliveTimeout() },
+    Feature.AFK to { Plugin.Instance.disableAfk(true) },
+    Feature.ENDER to { Plugin.Instance.disableEnder() },
+    Feature.ESSENTIALS to { Plugin.Instance.disableEssentials() },
+    Feature.LOGIN to { Plugin.Instance.disableLogin() },
+    Feature.PING to { Plugin.Instance.disablePing() },
+    Feature.PERMISSION to { Plugin.Instance.disablePermission() },
+    Feature.SIT to { Plugin.Instance.disableSit() },
+    Feature.SKIN to { Plugin.Instance.disableSkin(true) },
+    Feature.SLEEP to { Plugin.Instance.disableSleep() },
+    Feature.TABLIST to { Plugin.Instance.disableTabList() },
+    Feature.KEEP_ALIVE to { Plugin.Instance.resetKeepAliveTimeout() },
 )
 
 private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
@@ -117,7 +104,7 @@ class YawaCommand : Command(commands = yawaCommands) {
 }
 
 /**
- * Enable a feature.
+ * Enable or disable a feature.
  */
 class YawaFeatureCommand : Command(Permission.FEATURE) {
 

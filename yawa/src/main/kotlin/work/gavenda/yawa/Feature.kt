@@ -2,7 +2,7 @@
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
  * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
- *
+ *  
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,3 +18,20 @@
  */
 
 package work.gavenda.yawa
+
+/**
+ * Constants for features.
+ */
+object Feature {
+    const val AFK = "afk"
+    const val ESSENTIALS = "essentials"
+    const val ENDER = "ender"
+    const val LOGIN = "login"
+    const val PERMISSION = "permission"
+    const val PING = "ping"
+    const val SIT = "sit"
+    const val SKIN = "skin"
+    const val SLEEP = "sleep"
+    const val TABLIST = "tab-list"
+    const val KEEP_ALIVE = "keep-alive"
+}
