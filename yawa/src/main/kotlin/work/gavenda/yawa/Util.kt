@@ -17,11 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.exposed
+package work.gavenda.yawa
 
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.Bukkit
 
 /**
- * Placeholder, this plugin simply provides Exposed to the classpath.
+ * Easy access to the plugin instance.
  */
-class Plugin : JavaPlugin()
+val plugin get() = Plugin.Instance
+
+/**
+ * Easy access to bukkit's server instance.
+ */
+val server get() = Bukkit.getServer()
+
+/**
+ * Easy access to bukkit's scheduler.
+ */
+val scheduler get() = Bukkit.getScheduler()
+
+/**
+ * Easy access to bukkit's plugin manager.
+ */
+val pluginManager get() = Bukkit.getPluginManager()

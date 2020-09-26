@@ -19,6 +19,8 @@
 
 package work.gavenda.yawa
 
+import org.bukkit.Bukkit
+
 /**
  * Constants for features.
  */
@@ -34,4 +36,82 @@ object Feature {
     const val SLEEP = "sleep"
     const val TABLIST = "tab-list"
     const val KEEP_ALIVE = "keep-alive"
+}
+
+/**
+ * Represents a feature in the plugin.
+ */
+interface PluginFeature {
+
+    /**
+     * Return true if feature is disabled, otherwise false.
+     */
+    fun isDisabled(): Boolean
+
+    /**
+     * Enable this feature.
+     */
+    fun enable() {
+        if (isDisabled()) {
+            disableCommands()
+            return
+        }
+
+        registerPlaceholders()
+        registerEventListeners()
+        registerTasks()
+        enableCommands()
+    }
+
+    /**
+     * Disable this feature.
+     */
+    fun disable() {
+        if (isDisabled()) return
+
+        disableCommands()
+        unregisterTasks()
+        unregisterEventListeners()
+        unregisterPlaceholders()
+    }
+
+    /**
+     * Enable feature commands.
+     */
+    fun enableCommands() {}
+
+    /**
+     * Register feature placeholders.
+     */
+    fun registerPlaceholders() {}
+
+    /**
+     * Register feature event listeners.
+     */
+    fun registerEventListeners() {}
+
+    /**
+     * Register feature tasks.
+     */
+    fun registerTasks() {}
+
+    /**
+     * Disable feature commands.
+     */
+    fun disableCommands() {}
+
+    /**
+     * Unregister feature placeholders.
+     */
+    fun unregisterPlaceholders() {}
+
+    /**
+     * Unregister feature tasks.
+     */
+    fun unregisterTasks() {}
+
+    /**
+     * Unregister feature event listeners.
+     */
+    fun unregisterEventListeners() {}
 }

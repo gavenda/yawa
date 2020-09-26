@@ -20,8 +20,7 @@
 package work.gavenda.yawa
 
 import org.bukkit.command.CommandSender
-import work.gavenda.yawa.afk.disableAfk
-import work.gavenda.yawa.afk.enableAfk
+import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.translateColorCodes
@@ -49,7 +48,7 @@ const val FEATURE_SWITCH_ENABLE = "enable"
 const val FEATURE_SWITCH_DISABLE = "disable"
 
 private val featureEnableMap = mapOf(
-    Feature.AFK to { Plugin.Instance.enableAfk() },
+    Feature.AFK to { AfkFeature.enable() },
     Feature.ENDER to { Plugin.Instance.enableEnder() },
     Feature.ESSENTIALS to { Plugin.Instance.enableEssentials() },
     Feature.LOGIN to { Plugin.Instance.enableLogin() },
@@ -63,7 +62,7 @@ private val featureEnableMap = mapOf(
 )
 
 private val featureDisableMap = mapOf(
-    Feature.AFK to { Plugin.Instance.disableAfk(true) },
+    Feature.AFK to { AfkFeature.disable() },
     Feature.ENDER to { Plugin.Instance.disableEnder() },
     Feature.ESSENTIALS to { Plugin.Instance.disableEssentials() },
     Feature.LOGIN to { Plugin.Instance.disableLogin() },

@@ -23,10 +23,13 @@ import com.comphenix.protocol.utility.MinecraftReflection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.bukkit.event.HandlerList
+import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.plugin.java.JavaPluginLoader
 import org.jetbrains.exposed.sql.Database
-import work.gavenda.yawa.afk.disableAfk
-import work.gavenda.yawa.afk.enableAfk
+import work.gavenda.yawa.afk.AfkFeature
+import work.gavenda.yawa.api.Dependency
+import work.gavenda.yawa.api.DependencyManager
 import work.gavenda.yawa.ender.disableEnder
 import work.gavenda.yawa.ender.enableEnder
 import work.gavenda.yawa.essentials.disableEssentials
@@ -45,13 +48,23 @@ import work.gavenda.yawa.sleep.disableSleep
 import work.gavenda.yawa.sleep.enableSleep
 import work.gavenda.yawa.tablist.disableTabList
 import work.gavenda.yawa.tablist.enableTabList
+import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
 /**
  * Yawa plugin entry point.
  */
-class Plugin : JavaPlugin() {
+class Plugin : JavaPlugin {
+
+    // Multiple constructors for mock bukkit
+    constructor() : super()
+    constructor(
+        loader: JavaPluginLoader,
+        description: PluginDescriptionFile,
+        dataFolder: File,
+        file: File
+    ) : super(loader, description, dataFolder, file)
 
     private var safeLoad = false
     private lateinit var dataSource: HikariDataSource
@@ -62,6 +75,10 @@ class Plugin : JavaPlugin() {
 
     companion object {
         lateinit var Instance: Plugin
+    }
+
+    override fun onLoad() {
+        downloadDependencies()
     }
 
     override fun onEnable() {
@@ -77,7 +94,7 @@ class Plugin : JavaPlugin() {
         enableEssentials()
         enablePing()
         enableSkin()
-        enableAfk()
+        AfkFeature.enable()
         enableSleep()
         enableTabList()
         enableLogin()
@@ -106,7 +123,7 @@ class Plugin : JavaPlugin() {
         disableEssentials()
         disablePing()
         disableSkin()
-        disableAfk()
+        AfkFeature.disable()
         disableSleep()
         disableTabList()
         disableLogin()
@@ -160,6 +177,17 @@ class Plugin : JavaPlugin() {
         }
 
         field.setLong(null, timeout)
+    }
+
+    private fun downloadDependencies() {
+        val dependencies = listOf(
+            Dependency("com.zaxxer", "HikariCP", "3.4.5"),
+            Dependency("org.jetbrains.exposed", "exposed-core", "0.27.1"),
+            Dependency("org.jetbrains.exposed", "exposed-dao", "0.27.1"),
+            Dependency("org.jetbrains.exposed", "exposed-jdbc", "0.27.1"),
+        )
+
+        DependencyManager.loadDependencies(this, dependencies)
     }
 
     fun loadConfig() {

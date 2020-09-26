@@ -4,4 +4,3 @@ rootProject.name = "yawa"
 include("kotlin")
 include("yawa")
 include("yawa-api")
-include("exposed")

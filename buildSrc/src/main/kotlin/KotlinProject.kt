@@ -17,7 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
@@ -25,13 +24,9 @@ import org.gradle.kotlin.dsl.*
 /**
  * Configures the project as a shadowed Kotlin project.
  */
-fun Project.shadowedKotlinProject(archiveName: String) {
-    val shadowJar by tasks.existing(ShadowJar::class)
+fun Project.kotlinProject(archiveName: String) {
     val jar by tasks.existing(Jar::class)
-    val build = tasks.named("build")
-
     val sysProp = System.getProperties().toMap()
-
     val javaVersion = "${sysProp["java.version"]} ${sysProp["java.vendor"]} ${sysProp["java.vm.version"]}"
     val operatingSystem = "${sysProp["os.name"]} ${sysProp["os.arch"]} ${sysProp["os.version"]}"
 
@@ -54,13 +49,5 @@ fun Project.shadowedKotlinProject(archiveName: String) {
 
     dependencies {
         "implementation"(kotlin("stdlib-jdk8"))
-    }
-
-    shadowJar {
-        archiveFileName.set("$archiveName.${archiveExtension.get()}")
-    }
-
-    build {
-        dependsOn(shadowJar)
     }
 }

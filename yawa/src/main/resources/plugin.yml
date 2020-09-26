@@ -5,8 +5,6 @@ website: https://gavenda.work
 load: POSTWORLD
 depend:
   - Kotlin
-  - Exposed
-  - ProtocolLib
   - YawaAPI
 
 api-version: '1.16'

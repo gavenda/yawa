@@ -33,8 +33,16 @@ object Placeholder {
      * Register a placeholder provider.
      */
     fun register(provider: PlaceholderProvider) {
-        apiLogger.info("Registered placeholder provider: ${provider::class.qualifiedName}")
+        apiLogger.info("Registered placeholder: ${provider::class.qualifiedName}")
         providers.add(provider)
+    }
+
+    /**
+     * Unregister a placeholder provider.
+     */
+    fun unregister(provider: PlaceholderProvider) {
+        providers.remove(provider)
+        apiLogger.info("Unregistered placeholder: ${provider::class.qualifiedName}")
     }
 
     /**

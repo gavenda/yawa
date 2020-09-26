@@ -19,36 +19,18 @@
 
 package work.gavenda.yawa.afk
 
-import org.bukkit.event.HandlerList
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.DisabledCommand
 import work.gavenda.yawa.Permission
-import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.*
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.isAfk
+import work.gavenda.yawa.api.sendMessageIf
+import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.server
 import java.util.concurrent.TimeUnit
 
-private var afkTaskId = -1
-private val afkListener = AfkListener()
-private val afkCommand = AfkCommand()
+class AfkTask : Runnable {
 
-/**
- * Enable afk feature.
- */
-fun Plugin.enableAfk() {
-    if (Config.Afk.Disabled) {
-        getCommand("afk")?.setExecutor(DisabledCommand)
-        return
-    }
-
-    // Register commands
-    getCommand("afk")?.setExecutor(afkCommand)
-
-    // Register event listeners
-    server.pluginManager.registerEvents(afkCommand, this)
-    server.pluginManager.registerEvents(afkListener, this)
-
-    // Tasks
-    afkTaskId = bukkitTimerTask(this, 0, 20) {
+    override fun run() {
         server.onlinePlayers
             .filter { it.hasPermission(Permission.AFK) }
             .forEach { player ->
@@ -85,24 +67,5 @@ fun Plugin.enableAfk() {
                 }
             }
     }
-}
 
-/**
- * Disable afk feature.
- * @param reload set to true if reloading, defaults to false
- */
-fun Plugin.disableAfk(reload: Boolean = false) {
-    if (Config.Afk.Disabled) return
-
-    // Tasks
-    server.scheduler.cancelTask(afkTaskId)
-    // Unregister event listeners
-    HandlerList.unregisterAll(afkListener)
-    HandlerList.unregisterAll(afkCommand)
-    // Disable command
-    if (reload) {
-        getCommand("afk")?.setExecutor(DisabledCommand)
-    } else {
-        getCommand("afk")?.setExecutor(null)
-    }
 }

@@ -17,7 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.tasks.Jar
@@ -30,13 +29,12 @@ import org.gradle.language.jvm.tasks.ProcessResources
 @Suppress("UnstableApiUsage")
 fun Project.paperPlugin() {
     val processResources by tasks.existing(ProcessResources::class)
-    val shadowJar by tasks.existing(ShadowJar::class)
+    // val shadowJar by tasks.existing(ShadowJar::class)
     val jar by tasks.existing(Jar::class)
     val test by tasks.existing(Test::class)
 
     dependencies {
-        "compileOnly"(Library.PAPER)
-        "testImplementation"(Library.MOCKBUKKIT)
+        "implementation"(Library.PAPER)
         "testImplementation"(Library.JUNIT.API)
         "testRuntimeOnly"(Library.JUNIT.ENGINE)
     }
@@ -58,17 +56,17 @@ fun Project.paperPlugin() {
             expand(project.properties)
         }
     }
-
-    shadowJar {
-        dependencies {
-            // Remove Kotlin
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
-            exclude(dependency("org.jetbrains:annotations:.*"))
-        }
-    }
+//
+//    shadowJar {
+//        dependencies {
+//            // Remove Kotlin
+//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
+//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
+//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
+//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
+//            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
+//            exclude(dependency("org.jetbrains:annotations:.*"))
+//        }
+//    }
 
 }
