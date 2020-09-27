@@ -23,6 +23,7 @@ import github.scarsz.discordsrv.api.ListenerPriority
 import github.scarsz.discordsrv.api.Subscribe
 import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.api.translateColorCodes
 
 class DiscordSRVListener {
 
@@ -33,6 +34,7 @@ class DiscordSRVListener {
             Config.Chat.FormatMessageDiscord
                 .plus(e.message.contentDisplay)
                 .replace("[player-name]", author)
+                .translateColorCodes()
 
         e.processedMessage = formattedMessage
     }
