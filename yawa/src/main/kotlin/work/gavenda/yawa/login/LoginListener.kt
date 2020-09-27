@@ -36,6 +36,7 @@ import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.translateColorCodes
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
 import work.gavenda.yawa.logger
+import java.security.KeyPair
 import java.security.PublicKey
 import java.util.concurrent.TimeUnit
 
@@ -44,7 +45,10 @@ import java.util.concurrent.TimeUnit
  * Basically determines if you have paid for minecraft.
  */
 @Suppress("UnstableApiUsage")
-class LoginListener(plugin: Plugin) : PacketAdapter(
+class LoginListener(
+    plugin: Plugin,
+    private val keyPair: KeyPair
+) : PacketAdapter(
     params()
         .plugin(plugin)
         .types(PacketType.Login.Client.START)

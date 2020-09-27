@@ -19,43 +19,34 @@
 
 package work.gavenda.yawa.tablist
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.bukkitTimerTask
 import work.gavenda.yawa.api.translateColorCodes
 
-private var tabListTaskId = -1
+object TabListFeature : PluginFeature {
+    override val isDisabled get() = Config.TabList.Disabled
 
-/**
- * Enable tab list feature.
- */
-fun Yawa.enableTabList() {
-    if (Config.TabList.Disabled) return
+    private var tabListTaskId = -1
 
-    // Tasks
-    tabListTaskId = bukkitTimerTask(this, 0, 20) {
-        val onlinePlayers = server.onlinePlayers
+    override fun registerTasks() {
+        tabListTaskId = bukkitTimerTask(plugin, 0, 20) {
+            val onlinePlayers = server.onlinePlayers
 
-        for (player in onlinePlayers) {
-            player.playerListHeader = Placeholder
-                .withContext(player)
-                .parse(Config.TabList.Header)
-                .translateColorCodes()
-            player.playerListFooter = Placeholder
-                .withContext(player)
-                .parse(Config.TabList.Footer)
-                .translateColorCodes()
+            for (player in onlinePlayers) {
+                player.playerListHeader = Placeholder
+                    .withContext(player)
+                    .parse(Config.TabList.Header)
+                    .translateColorCodes()
+                player.playerListFooter = Placeholder
+                    .withContext(player)
+                    .parse(Config.TabList.Footer)
+                    .translateColorCodes()
+            }
         }
     }
-}
 
-/**
- * Disable tab list feature.
- */
-fun Yawa.disableTabList() {
-    if (Config.TabList.Disabled) return
-
-    // Tasks
-    server.scheduler.cancelTask(tabListTaskId)
+    override fun unregisterTasks() {
+        scheduler.cancelTask(tabListTaskId)
+    }
 }

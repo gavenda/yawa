@@ -17,45 +17,44 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.afk
+package work.gavenda.yawa.skin
 
-import org.bukkit.event.HandlerList
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 
-/**
- * Represents the afk feature.
- */
-object AfkFeature : PluginFeature {
+object SkinFeature : PluginFeature {
+    override val isDisabled get() = Config.Skin.Disabled
 
-    private var afkTaskId = -1
-    private val afkListener = AfkListener()
-    private val afkCommand = AfkCommand()
+    private val skinListener = SkinListener()
+    private val skinCommand = SkinCommand().apply {
+        sub(SkinPlayerCommand(), "player")
+        sub(SkinResetCommand(), "reset")
+        sub(SkinUrlCommand(), "url")
+    }
 
-    override val isDisabled get() = Config.Afk.Disabled
-
-    override fun registerTasks() {
-        afkTaskId = scheduler.runTaskTimer(plugin, AfkTask(), 0, 20).taskId
+    override fun createTables() {
+        transaction {
+            SchemaUtils.create(PlayerTextureSchema)
+        }
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.AFK)?.setExecutor(afkCommand)
+        plugin.getCommand(Command.SKIN)?.setExecutor(skinCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.AFK)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.SKIN)?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {
-        pluginManager.registerEvents(afkCommand, plugin)
-        pluginManager.registerEvents(afkListener, plugin)
-    }
-
-    override fun unregisterTasks() {
-        scheduler.cancelTask(afkTaskId)
+        pluginManager.registerEvents(skinListener)
+        pluginManager.registerEvents(skinCommand)
     }
 
     override fun unregisterEventListeners() {
-        HandlerList.unregisterAll(afkListener)
-        HandlerList.unregisterAll(afkCommand)
+        pluginManager.unregisterEvents(skinCommand)
+        pluginManager.unregisterEvents(skinListener)
     }
+
 }

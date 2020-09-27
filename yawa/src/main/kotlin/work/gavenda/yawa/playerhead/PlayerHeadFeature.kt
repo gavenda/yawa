@@ -17,30 +17,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sit
+package work.gavenda.yawa.playerhead
 
-import org.bukkit.event.HandlerList
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
+import work.gavenda.yawa.*
 
-private val sitListener = SitListener()
+object PlayerHeadFeature : PluginFeature {
 
-/**
- * Enable skin feature.
- */
-fun Yawa.enableSit() {
-    if (Config.Sit.Disabled) return
+    private val playerHeadListener = PlayerHeadListener()
 
-    // Register event listeners
-    server.pluginManager.registerEvents(sitListener, this)
-}
+    override val isDisabled get() = Config.PlayerHead.Disabled
 
-/**
- * Disable sit feature
- */
-fun Yawa.disableSit() {
-    if (Config.Sit.Disabled) return
+    override fun registerEventListeners() {
+        pluginManager.registerEvents(playerHeadListener)
+    }
 
-    // Unregister event listeners
-    HandlerList.unregisterAll(sitListener)
+    override fun unregisterEventListeners() {
+        pluginManager.unregisterEvents(playerHeadListener)
+    }
 }

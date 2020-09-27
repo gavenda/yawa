@@ -79,6 +79,15 @@ object Config {
     }
 
     /**
+     * Player head configuration.
+     */
+    object PlayerHead {
+        var Disabled
+            get() = config.getBoolean("player-head.disabled")
+            set(value) = config.set("player-head.disabled", value)
+    }
+
+    /**
      * Essentials feature configuration.
      */
     object Essentials {

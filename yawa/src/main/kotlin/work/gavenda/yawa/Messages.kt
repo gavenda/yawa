@@ -47,6 +47,7 @@ object Message {
     const val FeatureDisabled = "feature-disabled"
     const val FeatureSetDisabled = "feature-set-disabled"
     const val FeatureSetEnabled = "feature-set-enabled"
+    const val FeatureValueInvalid = "feature-value-invalid"
     const val SkinApplied = "skin-applied"
     const val SkinGenerate = "skin-generate"
     const val SkinReject = "skin-reject"

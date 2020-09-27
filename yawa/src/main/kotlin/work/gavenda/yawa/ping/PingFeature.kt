@@ -20,52 +20,30 @@
 package work.gavenda.yawa.ping
 
 import org.bukkit.scoreboard.DisplaySlot
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
-import work.gavenda.yawa.api.bukkitTimerTask
-import work.gavenda.yawa.api.latencyInMillis
-
-private var pingTaskId = -1
+import work.gavenda.yawa.*
+import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
 const val SB_CRITERIA = "dummy"
 const val SB_DISPLAY_NAME = "ms"
 
-/**
- * Enable ping feature.
- */
-fun Yawa.enablePing() {
-    if (Config.Ping.Disabled) return
+object PingFeature : PluginFeature {
+    override val isDisabled get() = Config.Ping.Disabled
 
-    // Create new scoreboard
-    val board = server.scoreboardManager.newScoreboard
-    val objective = board.registerNewObjective(SB_NAME, SB_CRITERIA, SB_DISPLAY_NAME).apply {
+    private var pingTaskId = -1
+    private val scoreboard = server.scoreboardManager.newScoreboard
+    private val objective = scoreboard.registerNewObjective(SB_NAME, SB_CRITERIA, SB_DISPLAY_NAME).apply {
         displaySlot = DisplaySlot.PLAYER_LIST
     }
 
-    // Tasks
-    pingTaskId = bukkitTimerTask(this, 0, 20) {
-        val onlinePlayers = server.onlinePlayers
+    override fun registerTasks() {
+        val pingTask = PingTask(scoreboard, objective)
+        val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
 
-        for (player in onlinePlayers) {
-            val ping = player.latencyInMillis
-
-            // Update latency
-            objective.getScore(player.name).apply {
-                score = ping
-            }
-
-            player.scoreboard = board
-        }
+        pingTaskId = scheduler.scheduleSyncRepeatingTask(plugin, pingTask, 0, secondsInTicks)
     }
-}
 
-/**
- * Disable ping feature.
- */
-fun Yawa.disablePing() {
-    if (Config.Ping.Disabled) return
-
-    // Tasks
-    server.scheduler.cancelTask(pingTaskId)
+    override fun unregisterTasks() {
+        scheduler.cancelTask(pingTaskId)
+    }
 }

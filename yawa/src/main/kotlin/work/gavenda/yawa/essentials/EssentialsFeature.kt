@@ -20,18 +20,8 @@
 package work.gavenda.yawa.essentials
 
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
+import work.gavenda.yawa.PluginFeature
 
-/**
- * Enable essentials feature.
- */
-fun Yawa.enableEssentials() {
-    if (Config.Essentials.Disabled) return
-}
-
-/**
- * Disable essentials feature.
- */
-fun Yawa.disableEssentials() {
-    if (Config.Essentials.Disabled) return
+object EssentialsFeature : PluginFeature {
+    override val isDisabled get() = Config.Essentials.Disabled
 }

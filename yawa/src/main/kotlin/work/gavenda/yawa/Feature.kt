@@ -29,6 +29,7 @@ object Feature {
     const val LOGIN = "login"
     const val PERMISSION = "permission"
     const val PING = "ping"
+    const val PLAYER_HEAD = "player-head"
     const val SIT = "sit"
     const val SKIN = "skin"
     const val SLEEP = "sleep"
@@ -55,6 +56,7 @@ interface PluginFeature {
             return
         }
 
+        createTables()
         registerPlaceholders()
         registerEventListeners()
         registerTasks()
@@ -72,6 +74,11 @@ interface PluginFeature {
         unregisterEventListeners()
         unregisterPlaceholders()
     }
+
+    /**
+     * Create feature tables.
+     */
+    fun createTables() {}
 
     /**
      * Enable feature commands.

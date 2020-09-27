@@ -17,26 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.ender
+package work.gavenda.yawa.sit
 
-import org.bukkit.entity.Player
 import work.gavenda.yawa.*
 
-/**
- * Represents the ender feature.
- */
-object EnderFeature : PluginFeature {
+object SitFeature : PluginFeature {
 
-    private val teleportingPlayers = mutableSetOf<Player>()
-    private val enderListener = EnderListener(teleportingPlayers)
+    override val isDisabled get() = Config.Sit.Disabled
 
-    override val isDisabled get() = Config.Ender.Disabled
+    private val sitListener = SitListener()
 
     override fun registerEventListeners() {
-        pluginManager.registerEvents(enderListener)
+        pluginManager.registerEvents(sitListener)
     }
 
     override fun unregisterEventListeners() {
-        pluginManager.unregisterEvents(enderListener)
+        pluginManager.unregisterEvents(sitListener)
     }
+
 }

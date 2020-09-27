@@ -37,6 +37,7 @@ import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.logger
 import java.io.IOException
 import java.security.GeneralSecurityException
+import java.security.KeyPair
 import java.util.*
 import javax.crypto.SecretKey
 
@@ -44,7 +45,10 @@ import javax.crypto.SecretKey
  * Listens to packet encryption requests and determine whether it is valid.
  * Basically checks if you are actually the owner of the said account.
  */
-class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
+class LoginEncryptionListener(
+    plugin: Plugin,
+    private val keyPair: KeyPair
+) : PacketAdapter(
     params()
         .plugin(plugin)
         .types(PacketType.Login.Client.ENCRYPTION_BEGIN)

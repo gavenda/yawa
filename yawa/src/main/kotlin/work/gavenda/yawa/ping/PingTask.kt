@@ -17,26 +17,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.ender
+package work.gavenda.yawa.ping
 
-import org.bukkit.entity.Player
-import work.gavenda.yawa.*
+import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.Scoreboard
+import work.gavenda.yawa.api.latencyInMillis
+import work.gavenda.yawa.server
 
-/**
- * Represents the ender feature.
- */
-object EnderFeature : PluginFeature {
+class PingTask(
+    private val scoreboard: Scoreboard,
+    private val objective: Objective
+) : Runnable {
+    override fun run() {
+        val onlinePlayers = server.onlinePlayers
 
-    private val teleportingPlayers = mutableSetOf<Player>()
-    private val enderListener = EnderListener(teleportingPlayers)
+        for (player in onlinePlayers) {
+            val ping = player.latencyInMillis
 
-    override val isDisabled get() = Config.Ender.Disabled
+            // Update latency
+            objective.getScore(player.name).apply {
+                score = ping
+            }
 
-    override fun registerEventListeners() {
-        pluginManager.registerEvents(enderListener)
-    }
-
-    override fun unregisterEventListeners() {
-        pluginManager.unregisterEvents(enderListener)
+            player.scoreboard = scoreboard
+        }
     }
 }

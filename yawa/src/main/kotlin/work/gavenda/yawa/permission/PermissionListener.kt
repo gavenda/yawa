@@ -24,15 +24,15 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.plugin.Plugin
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.bukkitAsyncTask
+import work.gavenda.yawa.plugin
 
 /**
  * Listens to player join and quit events.
  */
-class PermissionListener(val plugin: Plugin) : Listener {
+class PermissionListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerLogin(e: PlayerJoinEvent) {

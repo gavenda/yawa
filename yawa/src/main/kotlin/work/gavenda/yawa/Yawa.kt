@@ -31,22 +31,15 @@ import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Dependency
 import work.gavenda.yawa.api.DependencyManager
 import work.gavenda.yawa.ender.EnderFeature
-import work.gavenda.yawa.essentials.disableEssentials
-import work.gavenda.yawa.essentials.enableEssentials
-import work.gavenda.yawa.login.disableLogin
-import work.gavenda.yawa.login.enableLogin
-import work.gavenda.yawa.permission.disablePermission
-import work.gavenda.yawa.permission.enablePermission
-import work.gavenda.yawa.ping.disablePing
-import work.gavenda.yawa.ping.enablePing
-import work.gavenda.yawa.sit.disableSit
-import work.gavenda.yawa.sit.enableSit
-import work.gavenda.yawa.skin.disableSkin
-import work.gavenda.yawa.skin.enableSkin
-import work.gavenda.yawa.sleep.disableSleep
-import work.gavenda.yawa.sleep.enableSleep
-import work.gavenda.yawa.tablist.disableTabList
-import work.gavenda.yawa.tablist.enableTabList
+import work.gavenda.yawa.essentials.EssentialsFeature
+import work.gavenda.yawa.login.LoginFeature
+import work.gavenda.yawa.permission.PermissionFeature
+import work.gavenda.yawa.ping.PingFeature
+import work.gavenda.yawa.playerhead.PlayerHeadFeature
+import work.gavenda.yawa.sit.SitFeature
+import work.gavenda.yawa.skin.SkinFeature
+import work.gavenda.yawa.sleep.SleepFeature
+import work.gavenda.yawa.tablist.TabListFeature
 import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -90,16 +83,20 @@ class Yawa : JavaPlugin {
         // Init data source
         initDataSource()
         // Enable features
-        enablePermission()
-        enableEssentials()
-        enablePing()
-        enableSkin()
+
         AfkFeature.enable()
-        enableSleep()
-        enableTabList()
-        enableLogin()
         EnderFeature.enable()
-        enableSit()
+        EssentialsFeature.enable()
+        LoginFeature.enable()
+        PingFeature.enable()
+        PlayerHeadFeature.enable()
+        PermissionFeature.enable()
+        SitFeature.enable()
+        SkinFeature.enable()
+        SleepFeature.enable()
+        TabListFeature.enable()
+        adjustKeepAliveTimeout()
+
         // Register root command
         registerRootCommand()
         adjustKeepAliveTimeout()
@@ -119,16 +116,17 @@ class Yawa : JavaPlugin {
         unregisterRootCommand()
 
         // Disable features
-        disablePermission()
-        disableEssentials()
-        disablePing()
-        disableSkin()
         AfkFeature.disable()
-        disableSleep()
-        disableTabList()
-        disableLogin()
         EnderFeature.disable()
-        disableSit()
+        EssentialsFeature.disable()
+        LoginFeature.disable()
+        PingFeature.disable()
+        PlayerHeadFeature.disable()
+        PermissionFeature.disable()
+        SitFeature.disable()
+        SkinFeature.disable()
+        SleepFeature.disable()
+        TabListFeature.disable()
         // Close data source
         dataSource.close()
         // Safe load flag to false, in case of reloads

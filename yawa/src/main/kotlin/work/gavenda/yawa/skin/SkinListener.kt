@@ -23,15 +23,15 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLoginEvent
-import org.bukkit.plugin.Plugin
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.applySkin
 import work.gavenda.yawa.api.bukkitAsyncTask
+import work.gavenda.yawa.plugin
 
 /**
  * Applies skin on player login.
  */
-class SkinListener(val plugin: Plugin) : Listener {
+class SkinListener : Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     fun onPlayerLogin(e: PlayerLoginEvent) {

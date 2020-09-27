@@ -23,5 +23,7 @@ package work.gavenda.yawa
  * Plugin commands.
  */
 object Command {
+    const val SKIN = "skin"
     const val AFK = "afk"
+    const val PERMISSION = "permission"
 }
