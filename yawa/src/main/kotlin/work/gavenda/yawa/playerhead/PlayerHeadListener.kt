@@ -37,13 +37,12 @@ class PlayerHeadListener : Listener {
         if (victim !is Player) return
 
         // Create player head
-        val item = ItemStack(Material.SKELETON_SKULL)
+        val item = ItemStack(Material.PLAYER_HEAD)
         val skull = item.itemMeta as SkullMeta
-        skull.owningPlayer = victim
         skull.lore = listOf(
             "Trophy rewarded by yeeting ${victim.name} out of existence"
         )
-
+        skull.playerProfile = victim.playerProfile
         item.itemMeta = skull
 
         // Drop the item

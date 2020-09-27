@@ -9,6 +9,7 @@ paperPlugin()
 dependencies {
     implementation(kotlin("reflect"))
     // Data source
+    implementation(Library.VAULT)
     implementation(Library.HIKARICP)
     implementation(Library.PROTOCOL_LIB)
     implementation(Library.Exposed.CORE)

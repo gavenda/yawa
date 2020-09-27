@@ -28,6 +28,7 @@ object Version {
     const val PROTOCOL_LIB = "4.5.1"
     const val EXPOSED = "0.27.1"
     const val JUNIT_JUPITER = "5.6.2"
+    const val VAULT = "1.7"
 }
 
 object Library {
@@ -38,6 +39,7 @@ object Library {
     const val HIKARICP = "com.zaxxer:HikariCP:${Version.HIKARICP}"
     const val KODEIN = "org.kodein.di:kodein-di:${Version.KODEIN}"
     const val PROTOCOL_LIB = "com.comphenix.protocol:ProtocolLib:${Version.PROTOCOL_LIB}"
+    const val VAULT = "com.github.MilkBowl:VaultAPI:${Version.VAULT}"
 
     object JUNIT {
         const val API = "org.junit.jupiter:junit-jupiter-api:${Version.JUNIT_JUPITER}"
