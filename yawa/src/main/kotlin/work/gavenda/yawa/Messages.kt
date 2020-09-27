@@ -44,6 +44,7 @@ object Message {
     const val PermissionPlayerNotLoggedIn = "permission-player-not-logged-in"
     const val PermissionGroupNotFound = "permission-group-not-found"
     const val PermissionApplied = "permission-applied"
+    const val PlayerPingResponse = "player-ping-response"
     const val FeatureDisabled = "feature-disabled"
     const val FeatureSetDisabled = "feature-set-disabled"
     const val FeatureSetEnabled = "feature-set-enabled"

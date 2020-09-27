@@ -25,6 +25,10 @@ commands:
     description: Change player/group permissions.
     usage: /permission
 
+  ping:
+    description: Check your latency to the server.
+    usage: /ping
+
   yawa:
     description: Plugin root command.
     usage: /yawa
@@ -34,10 +38,14 @@ permissions:
     description: Gives access to all plugin commands.
     children:
       yawa.reload: true
+      yawa.ping: true
       yawa.feature: true
       yawa.afk: true
       yawa.permission.*: true
       yawa.skin.*: true
+  yawa.ping:
+    description: Permission to check your ping.
+    default: true
   yawa.reload:
     description: Permission to reload the plugin.
     default: op

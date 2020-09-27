@@ -21,6 +21,7 @@ package work.gavenda.yawa.ping
 
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.Placeholder
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
@@ -31,9 +32,29 @@ object PingFeature : PluginFeature {
     override val isDisabled get() = Config.Ping.Disabled
 
     private var pingTaskId = -1
+
+    private val pingCommand = PingCommand()
+    private val playerPingPlaceholder = PlayerPingPlaceholder()
+
     private val scoreboard = server.scoreboardManager.newScoreboard
     private val objective = scoreboard.registerNewObjective(SB_NAME, SB_CRITERIA, SB_DISPLAY_NAME).apply {
         displaySlot = DisplaySlot.PLAYER_LIST
+    }
+
+    override fun enableCommands() {
+        plugin.getCommand("ping")?.setExecutor(pingCommand)
+    }
+
+    override fun disableCommands() {
+        plugin.getCommand("ping")?.setExecutor(DisabledCommand)
+    }
+
+    override fun registerPlaceholders() {
+        Placeholder.register(playerPingPlaceholder)
+    }
+
+    override fun unregisterPlaceholders() {
+        Placeholder.unregister(playerPingPlaceholder)
     }
 
     override fun registerTasks() {
