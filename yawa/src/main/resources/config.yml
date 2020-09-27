@@ -28,6 +28,10 @@ essentials:
 ping:
   disabled: false
 
+# Player head feature configuration
+player-head:
+  disabled: false
+
 # Keep alive override, should not be enabled unless you actually need it
 keep-alive:
   disabled: true
