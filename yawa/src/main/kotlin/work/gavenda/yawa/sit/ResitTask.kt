@@ -17,24 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.tablist
+package work.gavenda.yawa.sit
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.PluginFeature
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
+import org.bukkit.entity.Player
 
-object TabListFeature : PluginFeature {
-    override val isDisabled get() = Config.TabList.Disabled
-
-    private var tabListTaskId = -1
-
-    override fun registerTasks() {
-        val tabListTask = TabListTask()
-        tabListTaskId = scheduler.runTaskTimer(plugin, tabListTask, 0, 20L).taskId
-    }
-
-    override fun unregisterTasks() {
-        scheduler.cancelTask(tabListTaskId)
+/**
+ * Resits the player.
+ */
+class ResitTask(
+    private val player: Player
+) : Runnable {
+    override fun run() {
+        val oldChairEntity = player.vehicle
+        val newChairEntity = oldChairEntity?.location?.spawnChairEntity()
+        player.isSitting = false
+        newChairEntity?.addPassenger(player)
+        oldChairEntity?.remove()
+        player.isSitting = true
     }
 }

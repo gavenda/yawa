@@ -25,8 +25,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLoginEvent
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.applySkin
-import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.plugin
+import work.gavenda.yawa.scheduler
 
 /**
  * Applies skin on player login.
@@ -39,7 +39,7 @@ class SkinListener : Listener {
 
         val player = e.player
 
-        bukkitAsyncTask(plugin) {
+        scheduler.runTaskAsynchronously(plugin) { _ ->
             transaction {
                 val playerTexture = PlayerTexture.findById(player.uniqueId)
                 if (playerTexture != null) {

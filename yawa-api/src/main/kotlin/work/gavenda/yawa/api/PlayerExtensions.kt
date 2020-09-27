@@ -103,17 +103,15 @@ val Player.previousGameMode: NativeGameMode
  * @param signature base64 string signature, if any
  */
 fun Player.applySkin(textureInfo: String, signature: String = "") {
-    bukkitTask(YawaAPI.Instance) {
-        val gameProfile = WrappedGameProfile.fromPlayer(this)
-        val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
+    val gameProfile = WrappedGameProfile.fromPlayer(this)
+    val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
 
-        // Clear and re-assign textures with valid signature
-        gameProfile.properties.clear()
-        gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
+    // Clear and re-assign textures with valid signature
+    gameProfile.properties.clear()
+    gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
 
-        if (!isDead) {
-            updateSkin()
-        }
+    if (!isDead) {
+        updateSkin()
     }
 }
 
@@ -180,11 +178,9 @@ fun Player.updateSkin() {
     }
 
     // Show update to other players
-    bukkitTask(YawaAPI.Instance) {
-        for (p in Bukkit.getOnlinePlayers()) {
-            p.hidePlayer(YawaAPI.Instance, this)
-            p.showPlayer(YawaAPI.Instance, this)
-        }
+    for (p in Bukkit.getOnlinePlayers()) {
+        p.hidePlayer(YawaAPI.Instance, this)
+        p.showPlayer(YawaAPI.Instance, this)
     }
 
     // Send self

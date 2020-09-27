@@ -21,16 +21,16 @@ package work.gavenda.yawa.skin
 
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.applySkin
-import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.mojang.MojangApi
+import work.gavenda.yawa.plugin
+import work.gavenda.yawa.scheduler
 
 /**
  * Restore player skin as it is found in Mojang servers.
  */
-fun Player.restoreSkin() = bukkitAsyncTask(Yawa.Instance) {
+fun Player.restoreSkin() = scheduler.runTaskAsynchronously(plugin) { _ ->
     val uuid = if (server.onlineMode) {
         uniqueId
     } else MojangApi.findUuidByName(name)

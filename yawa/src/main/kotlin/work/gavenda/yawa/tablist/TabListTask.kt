@@ -20,21 +20,23 @@
 package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.PluginFeature
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.server
 
-object TabListFeature : PluginFeature {
-    override val isDisabled get() = Config.TabList.Disabled
+class TabListTask : Runnable {
+    override fun run() {
+        val onlinePlayers = server.onlinePlayers
 
-    private var tabListTaskId = -1
-
-    override fun registerTasks() {
-        val tabListTask = TabListTask()
-        tabListTaskId = scheduler.runTaskTimer(plugin, tabListTask, 0, 20L).taskId
-    }
-
-    override fun unregisterTasks() {
-        scheduler.cancelTask(tabListTaskId)
+        for (player in onlinePlayers) {
+            player.playerListHeader = Placeholder
+                .withContext(player)
+                .parse(Config.TabList.Header)
+                .translateColorCodes()
+            player.playerListFooter = Placeholder
+                .withContext(player)
+                .parse(Config.TabList.Footer)
+                .translateColorCodes()
+        }
     }
 }
