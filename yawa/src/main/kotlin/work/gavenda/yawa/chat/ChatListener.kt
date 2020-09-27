@@ -17,15 +17,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa
+package work.gavenda.yawa.chat
 
-/**
- * Plugin commands.
- */
-object Command {
-    const val SKIN = "skin"
-    const val AFK = "afk"
-    const val PERMISSION = "permission"
-    const val WHISPER = "whisper"
-    const val REPLY = "reply"
+import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
+import org.bukkit.event.Listener
+import org.bukkit.event.player.AsyncPlayerChatEvent
+import work.gavenda.yawa.Config
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.translateColorCodes
+
+class ChatListener : Listener {
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    fun onPlayerChat(e: AsyncPlayerChatEvent) {
+        e.format = Placeholder
+            .withContext(e.player)
+            .parse(Config.Chat.FormatMessage)
+            .translateColorCodes()
+            .plus("%2\$s")
+    }
+
 }

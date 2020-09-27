@@ -17,15 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa
+package work.gavenda.yawa.chat
 
-/**
- * Plugin commands.
- */
-object Command {
-    const val SKIN = "skin"
-    const val AFK = "afk"
-    const val PERMISSION = "permission"
-    const val WHISPER = "whisper"
-    const val REPLY = "reply"
+import github.scarsz.discordsrv.api.ListenerPriority
+import github.scarsz.discordsrv.api.Subscribe
+import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent
+import work.gavenda.yawa.Config
+
+class DiscordSRVListener {
+
+    @Subscribe(priority = ListenerPriority.HIGHEST)
+    fun onDiscordMessagePostProcess(e: DiscordGuildMessagePostProcessEvent) {
+        val author = e.author.name
+        val formattedMessage =
+            Config.Chat.FormatMessageDiscord
+                .plus(e.message.contentDisplay)
+                .replace("[player-name]", author)
+
+        e.processedMessage = formattedMessage
+    }
+
 }

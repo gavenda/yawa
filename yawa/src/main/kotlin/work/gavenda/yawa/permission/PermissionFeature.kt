@@ -50,10 +50,7 @@ object PermissionFeature : PluginFeature {
 
     fun attachmentFor(uuid: UUID) = permissionAttachments[uuid]
 
-    override fun enable() {
-        super.enable()
-        if (isDisabled) return
-
+    override fun onEnable() {
         logger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
         permissionAttachments.clear()
 
@@ -62,7 +59,9 @@ object PermissionFeature : PluginFeature {
             attachTo(it)
             it.calculatePermissions()
         }
+    }
 
+    override fun registerHooks() {
         // Hook to vault
         if (isVaultEnabled) {
             vaultPermission = YawaVaultPermission()
@@ -71,16 +70,15 @@ object PermissionFeature : PluginFeature {
         }
     }
 
-    override fun disable() {
-        super.disable()
-        if (isDisabled) return
-
+    override fun unregisterHooks() {
         // Unhook from vault
         if (isVaultEnabled) {
             logger.info("Vault detected, unregistering permissions feature")
             server.servicesManager.unregister(vaultPermission)
         }
+    }
 
+    override fun onDisable() {
         server.onlinePlayers.forEach {
             it.removeAttachment()
         }

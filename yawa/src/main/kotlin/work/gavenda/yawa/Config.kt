@@ -176,6 +176,11 @@ object Config {
         var Disabled
             get() = config.getBoolean("chat.disabled")
             set(value) = config.set("chat.disabled", value)
+
+        val FormatMessage get() = config.getString("chat.format.message")!!
+        val FormatMessageTo get() = config.getString("chat.format.message-to")!!
+        val FormatMessageFrom get() = config.getString("chat.format.message-from")!!
+        val FormatMessageDiscord get() = config.getString("chat.format.message-discord")!!
     }
 
     /**

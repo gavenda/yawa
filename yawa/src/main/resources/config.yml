@@ -18,7 +18,7 @@ db:
 
 # Permission feature configuration
 permission:
-  disabled: true
+  disabled: false
 
 # Essentials feature configuration
 essentials:
@@ -77,3 +77,11 @@ afk:
   seconds: 120
   player-list-name: "&r[player-name] &eAFK"
   messages.enabled: false
+
+chat:
+  disabled: false
+  format:
+    message: "<[player-name]> &6»&r "
+    message-to: "&r<&d[player-name]&r> &7«&r "
+    message-from: "&r<&d[player-name]&r> &7»&r "
+    message-discord: "&r<&b[player-name]&r> &7»&r "

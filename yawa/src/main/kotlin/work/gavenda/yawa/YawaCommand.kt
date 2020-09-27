@@ -24,6 +24,7 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
+import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.login.LoginFeature
@@ -41,6 +42,7 @@ const val FEATURE_SWITCH_DISABLE = "disable"
 
 private val featureEnableMap = mapOf(
     Feature.AFK to { AfkFeature.enable() },
+    Feature.CHAT to { ChatFeature.enable() },
     Feature.ENDER to { EnderFeature.enable() },
     Feature.ESSENTIALS to { EssentialsFeature.enable() },
     Feature.LOGIN to { LoginFeature.enable() },
@@ -56,6 +58,7 @@ private val featureEnableMap = mapOf(
 
 private val featureDisableMap = mapOf(
     Feature.AFK to { AfkFeature.disable() },
+    Feature.CHAT to { ChatFeature.disable() },
     Feature.ENDER to { EnderFeature.disable() },
     Feature.ESSENTIALS to { EssentialsFeature.disable() },
     Feature.LOGIN to { LoginFeature.disable() },

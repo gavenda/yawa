@@ -17,15 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa
+package work.gavenda.yawa.chat
+
+import org.bukkit.entity.Player
+import org.bukkit.metadata.FixedMetadataValue
+import work.gavenda.yawa.Yawa
+
+const val META_PLAYER_LAST_WHISPER = "LastWhisperName"
 
 /**
- * Plugin commands.
+ * The name of the player who whispered this player last.
+ * @return name of player
  */
-object Command {
-    const val SKIN = "skin"
-    const val AFK = "afk"
-    const val PERMISSION = "permission"
-    const val WHISPER = "whisper"
-    const val REPLY = "reply"
-}
+var Player.lastWhisperPlayer: String
+    get() = if (hasMetadata(META_PLAYER_LAST_WHISPER)) {
+        getMetadata(META_PLAYER_LAST_WHISPER)
+            .first { it.owningPlugin == Yawa.Instance }
+            .asString()
+    } else ""
+    set(value) = setMetadata(META_PLAYER_LAST_WHISPER, FixedMetadataValue(Yawa.Instance, value))

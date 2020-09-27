@@ -19,27 +19,25 @@
 
 object Version {
     const val KOTLIN = "1.4.10"
-    const val KOTLINX_COROUTINES = "1.3.9"
     const val SPIGOT = "1.16.3-R0.1-SNAPSHOT"
     const val PAPER = "1.16.3-R0.1-SNAPSHOT"
     const val MOCKBUKKIT = "v1.16-SNAPSHOT"
     const val HIKARICP = "3.4.5"
-    const val KODEIN = "7.0.0"
     const val PROTOCOL_LIB = "4.5.1"
     const val EXPOSED = "0.27.1"
     const val JUNIT_JUPITER = "5.6.2"
     const val VAULT = "1.7"
+    const val DISCORDSRV = "1.19.1"
 }
 
 object Library {
-    const val KOTLINX_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLINX_COROUTINES}"
     const val SPIGOT = "org.spigotmc:spigot-api:${Version.SPIGOT}"
     const val PAPER = "com.destroystokyo.paper:paper-api:${Version.PAPER}"
     const val MOCKBUKKIT = "com.github.seeseemelk:MockBukkit:${Version.MOCKBUKKIT}"
     const val HIKARICP = "com.zaxxer:HikariCP:${Version.HIKARICP}"
-    const val KODEIN = "org.kodein.di:kodein-di:${Version.KODEIN}"
     const val PROTOCOL_LIB = "com.comphenix.protocol:ProtocolLib:${Version.PROTOCOL_LIB}"
     const val VAULT = "com.github.MilkBowl:VaultAPI:${Version.VAULT}"
+    const val DISCORDSRV = "com.discordsrv:discordsrv:${Version.DISCORDSRV}"
 
     object JUNIT {
         const val API = "org.junit.jupiter:junit-jupiter-api:${Version.JUNIT_JUPITER}"

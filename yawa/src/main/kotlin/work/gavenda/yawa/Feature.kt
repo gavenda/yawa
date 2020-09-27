@@ -24,6 +24,7 @@ package work.gavenda.yawa
  */
 object Feature {
     const val AFK = "afk"
+    const val CHAT = "chat"
     const val ESSENTIALS = "essentials"
     const val ENDER = "ender"
     const val LOGIN = "login"
@@ -57,10 +58,12 @@ interface PluginFeature {
         }
 
         createTables()
+        registerHooks()
         registerPlaceholders()
         registerEventListeners()
         registerTasks()
         enableCommands()
+        onEnable()
     }
 
     /**
@@ -69,11 +72,23 @@ interface PluginFeature {
     fun disable() {
         if (isDisabled) return
 
+        onDisable()
         disableCommands()
         unregisterTasks()
         unregisterEventListeners()
         unregisterPlaceholders()
+        unregisterHooks()
     }
+
+    /**
+     * Called when feature is enabled.
+     */
+    fun onEnable() {}
+
+    /**
+     * Called when feature is disabled.
+     */
+    fun onDisable() {}
 
     /**
      * Create feature tables.
@@ -84,6 +99,11 @@ interface PluginFeature {
      * Enable feature commands.
      */
     fun enableCommands() {}
+
+    /**
+     * Register plugin hooks.
+     */
+    fun registerHooks() {}
 
     /**
      * Register feature placeholders.
@@ -104,6 +124,11 @@ interface PluginFeature {
      * Disable feature commands.
      */
     fun disableCommands() {}
+
+    /**
+     * Register plugin hooks.
+     */
+    fun unregisterHooks() {}
 
     /**
      * Unregister feature placeholders.

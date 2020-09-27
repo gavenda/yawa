@@ -30,6 +30,7 @@ import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Dependency
 import work.gavenda.yawa.api.DependencyManager
+import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.login.LoginFeature
@@ -87,6 +88,7 @@ class Yawa : JavaPlugin {
         server.pluginManager.registerEvents(startupListener, this)
         // Enable features
         AfkFeature.enable()
+        ChatFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
         LoginFeature.enable()
@@ -118,6 +120,7 @@ class Yawa : JavaPlugin {
 
         // Disable features
         AfkFeature.disable()
+        ChatFeature.disable()
         EnderFeature.disable()
         EssentialsFeature.disable()
         LoginFeature.disable()

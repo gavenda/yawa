@@ -8,6 +8,8 @@ loadbefore:
 depend:
   - Kotlin
   - YawaAPI
+softdepend:
+  - DiscordSRV
 
 api-version: '1.16'
 version: ${project.version}
@@ -21,11 +23,11 @@ commands:
 
   skin:
     description: Changes your skin.
-    usage: /skin
+    usage: /skin <subcommands>
 
   permission:
     description: Change player/group permissions.
-    usage: /permission
+    usage: /permission <player|group> <permission> <enabled:true|false>
 
   ping:
     description: Check your latency to the server.
@@ -33,7 +35,17 @@ commands:
 
   yawa:
     description: Plugin root command.
-    usage: /yawa
+    usage: /yawa <subcommands>
+
+  whisper:
+    description: Send a whisper to a player.
+    usage: /whisper <player> <message>
+    aliases: [w]
+
+  reply:
+    description: Reply to a whisper from a player.
+    usage: /reply <message>
+    aliases: [r]
 
 permissions:
   yawa.*:
