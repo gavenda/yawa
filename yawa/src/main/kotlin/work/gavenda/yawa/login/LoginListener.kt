@@ -20,24 +20,17 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.google.common.util.concurrent.RateLimiter
-import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
-import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
-import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.api.disconnect
-import work.gavenda.yawa.api.mojang.MojangApi
-import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
 import work.gavenda.yawa.logger
+import work.gavenda.yawa.scheduler
 import java.security.KeyPair
-import java.security.PublicKey
 import java.util.concurrent.TimeUnit
 
 /**
@@ -56,9 +49,7 @@ class LoginListener(
 ) {
 
     private val nameRegex = Regex("^[0-z_]+\$")
-    private val serverId = ""
     private val rateLimiter = RateLimiter.create(200.0, 5, TimeUnit.MINUTES)
-    private val protocolManager = ProtocolLibrary.getProtocolManager()
 
     override fun onPacketReceiving(packetEvent: PacketEvent) {
         if (packetEvent.isCancelled) return
@@ -106,105 +97,13 @@ class LoginListener(
         // Delay processing
         packetEvent.asyncMarker.incrementProcessingDelay()
 
-        bukkitAsyncTask(plugin) {
-            transaction {
-                try {
-                    val uuid = name.minecraftOfflineUuid()
+        val loginConnectionTask = LoginConnectionTask(
+            packetEvent = packetEvent,
+            player = player,
+            name = name,
+            keyPair = keyPair
+        )
 
-                    // Try getting information from database
-                    val userLogin = PlayerLogin.findById(uuid)
-
-                    if (userLogin != null) {
-                        logger.info("User information already exists")
-                        if (userLogin.premium) {
-                            encryptConnection(packetEvent, player, name, keyPair.public)
-                        } else {
-                            unsecureConnection(player, name)
-                        }
-                    } else if (Session.hasPendingSession(player.address, name)) {
-                        logger.info("Pending session for $name")
-                        // Player has pending session, must have failed first premium attempt -> start an offline session
-                        unsecureConnection(player, name)
-                    } else {
-                        logger.info("Looking up premium uuid for player $name")
-                        // Contact Mojang API
-                        val premiumUuid = MojangApi.findUuidByName(name)
-
-                        if (premiumUuid != null) {
-                            logger.info("Premium uuid found")
-                            // Player is premium, encrypt connection
-                            encryptConnection(packetEvent, player, name, keyPair.public)
-                        } else {
-                            logger.info("Cannot find a premium uuid for player $name")
-                            // Player is not premium -> start an offline session
-                            unsecureConnection(player, name)
-                        }
-                    }
-                } catch (ex: RateLimitException) {
-                    logger.warn("Cannot retrieve premium uuid, we have been rate-limited by the Mojang API", ex)
-                } finally {
-                    protocolManager
-                        .asynchronousManager
-                        .signalPacketTransmission(packetEvent)
-                }
-            }
-        }
-    }
-
-    /**
-     * Begin an unsecure connection.
-     */
-    private fun unsecureConnection(player: Player, playerName: String) {
-        logger.info("Initiating unsecure connection for player $playerName")
-
-        val session = LoginSession(playerName, serverId, byteArrayOf())
-        Session.cache(player.address, session)
-
-        val uuid = playerName.minecraftOfflineUuid()
-
-        // Remember unsecure login
-        bukkitAsyncTask(plugin) {
-            transaction {
-                val userLogin = PlayerLogin.findById(uuid) ?: PlayerLogin.new(uuid) {
-                    name = playerName
-                    premiumUuid = null
-                }
-
-                userLogin.lastLoginAddress = player.address.address.hostAddress
-            }
-        }
-    }
-
-    /**
-     * Begin an encrypted connection.
-     */
-    private fun encryptConnection(packetEvent: PacketEvent, player: Player, name: String, publicKey: PublicKey) {
-        logger.info("Initiating secure connection for player $name")
-
-        val verifyToken = MinecraftEncryption.generateVerifyToken()
-
-        try {
-            val encryptionBegin = WrapperLoginServerEncryptionBegin().apply {
-                writeServerId(serverId)
-                writePublicKey(publicKey)
-                writeVerifyToken(verifyToken)
-            }
-            encryptionBegin.sendPacket(player)
-        } catch (ex: Exception) {
-            logger.warn("Cannot send encrypt connection. Falling back to unsecure login")
-            return
-        }
-
-        val session = LoginSession(name, serverId, verifyToken)
-
-        // Pending verification
-        Session.pending(player.address, name)
-        // Cache the session
-        Session.cache(player.address, session)
-
-        // Cancel only if the player has a paid account otherwise login as normal offline player
-        synchronized(packetEvent.asyncMarker.processingLock) {
-            packetEvent.isCancelled = true
-        }
+        scheduler.runTaskAsynchronously(plugin, loginConnectionTask)
     }
 }
