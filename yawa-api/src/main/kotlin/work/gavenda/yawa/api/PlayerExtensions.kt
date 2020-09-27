@@ -47,11 +47,11 @@ const val META_AFK = "Afk"
 var Player.isAfk: Boolean
     get() = if (hasMetadata(META_AFK)) {
         getMetadata(META_AFK)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == YawaAPI.Instance }
             .asBoolean()
     } else false
     set(value) {
-        setMetadata(META_AFK, FixedMetadataValue(Plugin.Instance, value))
+        setMetadata(META_AFK, FixedMetadataValue(YawaAPI.Instance, value))
     }
 
 /**
@@ -103,7 +103,7 @@ val Player.previousGameMode: NativeGameMode
  * @param signature base64 string signature, if any
  */
 fun Player.applySkin(textureInfo: String, signature: String = "") {
-    bukkitTask(Plugin.Instance) {
+    bukkitTask(YawaAPI.Instance) {
         val gameProfile = WrappedGameProfile.fromPlayer(this)
         val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
 
@@ -180,10 +180,10 @@ fun Player.updateSkin() {
     }
 
     // Show update to other players
-    bukkitTask(Plugin.Instance) {
+    bukkitTask(YawaAPI.Instance) {
         for (p in Bukkit.getOnlinePlayers()) {
-            p.hidePlayer(Plugin.Instance, this)
-            p.showPlayer(Plugin.Instance, this)
+            p.hidePlayer(YawaAPI.Instance, this)
+            p.showPlayer(YawaAPI.Instance, this)
         }
     }
 

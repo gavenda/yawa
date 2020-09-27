@@ -27,7 +27,6 @@ commands:
 
   yawa:
     description: Plugin root command.
-    permission: yawa
     usage: /yawa
 
 permissions:
@@ -37,6 +36,7 @@ permissions:
       yawa.reload: true
       yawa.feature: true
       yawa.afk: true
+      yawa.permission.*: true
       yawa.skin.*: true
   yawa.reload:
     description: Permission to reload the plugin.

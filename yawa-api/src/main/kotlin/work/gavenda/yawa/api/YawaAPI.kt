@@ -28,10 +28,10 @@ import work.gavenda.yawa.api.providers.WorldPlaceholderProvider
 /**
  * Yawa API plugin entry point.
  */
-class Plugin : JavaPlugin() {
+class YawaAPI : JavaPlugin() {
 
     companion object {
-        lateinit var Instance: Plugin
+        lateinit var Instance: YawaAPI
     }
 
     private val placeholderCommand = PlaceholderCommand()

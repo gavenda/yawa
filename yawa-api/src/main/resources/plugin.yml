@@ -9,7 +9,7 @@ depend:
 
 api-version: '1.16'
 version: ${project.version}
-main: work.gavenda.yawa.api.Plugin
+main: work.gavenda.yawa.api.YawaAPI
 
 commands:
   placeholders:
@@ -18,5 +18,9 @@ commands:
     usage: /placeholders
 
 permissions:
+  yawa.api.*:
+    description: Gives access to all plugin commands.
+    children:
+      yawa.api.placeholder: true
   yawa.api.placeholder:
     default: op
