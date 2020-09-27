@@ -45,7 +45,6 @@ import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
-
 /**
  * Yawa plugin entry point.
  */
@@ -98,7 +97,6 @@ class Yawa : JavaPlugin {
         SkinFeature.enable()
         SleepFeature.enable()
         TabListFeature.enable()
-        adjustKeepAliveTimeout()
 
         // Register root command
         registerRootCommand()
