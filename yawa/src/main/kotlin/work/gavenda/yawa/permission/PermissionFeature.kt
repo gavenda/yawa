@@ -19,28 +19,39 @@
 
 package work.gavenda.yawa.permission
 
+import org.bukkit.entity.Player
+import org.bukkit.permissions.PermissionAttachment
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
+import java.util.*
 
 object PermissionFeature : PluginFeature {
     override val isDisabled get() = Config.Permission.Disabled
 
+    private val permissionAttachments = mutableMapOf<UUID, PermissionAttachment>()
     private val permissionListener = PermissionListener()
     private val permissionCommand = PermissionCommand().apply {
         sub(PermissionPlayerCommand(), "player")
         sub(PermissionGroupCommand(), "group")
     }
 
+    fun attachTo(player: Player) {
+        permissionAttachments[player.uniqueId] = player.addAttachment(plugin)
+    }
+    fun attachmentFor(uuid: UUID) = permissionAttachments[uuid]
+
     override fun enable() {
         logger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
 
         super.enable()
 
+        permissionAttachments.clear()
+
         // In-case of reload lol
         server.onlinePlayers.forEach {
-            it.permissionAttachment = it.addAttachment(plugin)
+            attachTo(it)
             it.calculatePermissions()
         }
     }

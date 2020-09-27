@@ -38,6 +38,9 @@ class PermissionListener : Listener {
     fun onPlayerLogin(e: PlayerJoinEvent) {
         val player = e.player
 
+        // Add attachment
+        PermissionFeature.attachTo(player)
+
         bukkitAsyncTask(plugin) {
             transaction {
                 PlayerDb.findById(player.uniqueId) ?: PlayerDb.new(player.uniqueId) {
@@ -49,8 +52,6 @@ class PermissionListener : Listener {
                 }
             }
 
-            // Add attachment
-            player.permissionAttachment = player.addAttachment(plugin)
             // Calculate
             player.calculatePermissions()
         }

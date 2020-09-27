@@ -21,44 +21,30 @@ package work.gavenda.yawa.permission
 
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.bukkit.metadata.FixedMetadataValue
-import org.bukkit.permissions.PermissionAttachment
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.logger
 
-const val META_PLAYER_PERMISSION_ATTACHMENT = "PlayerPermissionAttachment"
-
-/**
- * Returns the attached permission from this plugin.
- */
-var Player.permissionAttachment: PermissionAttachment?
-    get() = if (hasMetadata(META_PLAYER_PERMISSION_ATTACHMENT)) {
-        getMetadata(META_PLAYER_PERMISSION_ATTACHMENT)
-            .first { it.owningPlugin == Yawa.Instance }
-            .value() as PermissionAttachment
-    } else null
-    set(value) {
-        if (hasMetadata(META_PLAYER_PERMISSION_ATTACHMENT)) return
-        setMetadata(META_PLAYER_PERMISSION_ATTACHMENT, FixedMetadataValue(Yawa.Instance, value))
-    }
-
 /**
  * Removes the assigned player attachment from this object
  */
 fun Player.removeAttachment() {
-    val attachment = permissionAttachment ?: return
+    val attachment = PermissionFeature.attachmentFor(uniqueId)
+
+    if (attachment == null) {
+        logger.warn("Cannot remove permissions, permission attachment is not set")
+        return
+    }
 
     removeAttachment(attachment)
-    permissionAttachment = null
 }
 
 /**
  * Calculate player permissions.
  */
 fun Player.calculatePermissions() = bukkitAsyncTask(Yawa.Instance) {
-    val attachment = permissionAttachment
+    val attachment = PermissionFeature.attachmentFor(uniqueId)
 
     if (attachment == null) {
         logger.warn("Cannot calculate permissions, permission attachment is not set")
