@@ -29,7 +29,7 @@ class StartupListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onServerLoad(e: ServerLoadEvent) {
-        if(e.type != ServerLoadEvent.LoadType.STARTUP) return
+        if (e.type != ServerLoadEvent.LoadType.STARTUP) return
 
         logger.info("Enabling post-startup features")
 
