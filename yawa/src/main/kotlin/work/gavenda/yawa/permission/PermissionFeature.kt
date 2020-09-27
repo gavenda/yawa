@@ -19,16 +19,21 @@
 
 package work.gavenda.yawa.permission
 
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.entity.Player
 import org.bukkit.permissions.PermissionAttachment
+import org.bukkit.plugin.ServicePriority
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
+import work.gavenda.yawa.permission.vault.YawaVaultPermission
 import java.util.*
 
 object PermissionFeature : PluginFeature {
     override val isDisabled get() = Config.Permission.Disabled
+
+    private val isVaultEnabled get() = pluginManager.getPlugin("Vault") != null
 
     private val permissionAttachments = mutableMapOf<UUID, PermissionAttachment>()
     private val permissionListener = PermissionListener()
@@ -37,16 +42,19 @@ object PermissionFeature : PluginFeature {
         sub(PermissionGroupCommand(), "group")
     }
 
+    private lateinit var vaultPermission: YawaVaultPermission
+
     fun attachTo(player: Player) {
         permissionAttachments[player.uniqueId] = player.addAttachment(plugin)
     }
+
     fun attachmentFor(uuid: UUID) = permissionAttachments[uuid]
 
     override fun enable() {
-        logger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
-
         super.enable()
+        if (isDisabled) return
 
+        logger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
         permissionAttachments.clear()
 
         // In-case of reload lol
@@ -54,10 +62,24 @@ object PermissionFeature : PluginFeature {
             attachTo(it)
             it.calculatePermissions()
         }
+
+        // Hook to vault
+        if (isVaultEnabled) {
+            vaultPermission = YawaVaultPermission()
+            logger.info("Vault detected, registering permissions feature")
+            server.servicesManager.register(Permission::class.java, vaultPermission, plugin, ServicePriority.Normal)
+        }
     }
 
     override fun disable() {
         super.disable()
+        if (isDisabled) return
+
+        // Unhook from vault
+        if (isVaultEnabled) {
+            logger.info("Vault detected, unregistering permissions feature")
+            server.servicesManager.unregister(vaultPermission)
+        }
 
         server.onlinePlayers.forEach {
             it.removeAttachment()

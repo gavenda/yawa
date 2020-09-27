@@ -59,6 +59,7 @@ class Yawa : JavaPlugin {
         file: File
     ) : super(loader, description, dataFolder, file)
 
+    private val startupListener = StartupListener()
     private var safeLoad = false
     private lateinit var dataSource: HikariDataSource
     private val rootCommand = YawaCommand().apply {
@@ -82,13 +83,13 @@ class Yawa : JavaPlugin {
         loadConfig()
         // Init data source
         initDataSource()
+        // Listen to POST-server startup, required for some features
+        server.pluginManager.registerEvents(startupListener, this)
         // Enable features
-
         AfkFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
         LoginFeature.enable()
-        PingFeature.enable()
         PlayerHeadFeature.enable()
         PermissionFeature.enable()
         SitFeature.enable()
@@ -127,6 +128,8 @@ class Yawa : JavaPlugin {
         SkinFeature.disable()
         SleepFeature.disable()
         TabListFeature.disable()
+        // Unregister startup listener
+        HandlerList.unregisterAll(startupListener)
         // Close data source
         dataSource.close()
         // Safe load flag to false, in case of reloads

@@ -35,7 +35,7 @@ import work.gavenda.yawa.plugin
 class PermissionListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun onPlayerLogin(e: PlayerJoinEvent) {
+    fun onPlayerJoin(e: PlayerJoinEvent) {
         val player = e.player
 
         // Add attachment

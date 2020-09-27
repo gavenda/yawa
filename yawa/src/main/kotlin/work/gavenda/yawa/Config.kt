@@ -170,6 +170,15 @@ object Config {
     }
 
     /**
+     * Chat feature configuration.
+     */
+    object Chat {
+        var Disabled
+            get() = config.getBoolean("chat.disabled")
+            set(value) = config.set("chat.disabled", value)
+    }
+
+    /**
      * Load plugin configuration.
      */
     fun load(configuration: FileConfiguration) {

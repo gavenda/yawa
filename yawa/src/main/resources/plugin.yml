@@ -2,12 +2,12 @@ name: Yawa
 description: All in one plugin for any of my personally hosted minecraft servers. Most of its code bases are taken from popular plugins.
 author: Gavenda
 website: https://gavenda.work
-load: POSTWORLD
+load: STARTUP
+loadbefore:
+  - Vault
 depend:
   - Kotlin
   - YawaAPI
-softdepend:
-  - Vault
 
 api-version: '1.16'
 version: ${project.version}

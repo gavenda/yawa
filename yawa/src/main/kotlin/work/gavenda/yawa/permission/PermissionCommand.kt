@@ -27,8 +27,6 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.bukkitAsyncTask
-import work.gavenda.yawa.login.PlayerLogin
-import work.gavenda.yawa.login.PlayerLoginSchema
 
 private val permissionCommands = listOf("permission", "yawa:permission")
 
@@ -66,11 +64,8 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
             val enabledArg = args[2].toBoolean()
 
             transaction {
-                // Check if login feature is enabled, then use premium uuid, otherwise, standard bukkit lookup
-                val uniqueId = if (Config.Login.Disabled.not() && Config.Login.UsePremiumUuid) {
-                    PlayerLogin.find { PlayerLoginSchema.name eq nameArg }
-                        .firstOrNull()?.premiumUuid
-                } else Bukkit.getPlayerUniqueId(nameArg)
+                val uniqueId = PlayerDb.find { PlayerSchema.name eq nameArg }
+                    .firstOrNull()?.id?.value
 
                 if (uniqueId == null) {
                     sender.sendMessageUsingKey(Message.PermissionPlayerNotFound)

@@ -38,14 +38,16 @@ object LoginFeature : PluginFeature {
     private lateinit var loginEncryptionHandler: AsyncListenerHandler
 
     override fun enable() {
+        super.enable()
+        if (isDisabled) return
         if (server.onlineMode) {
             logger.warn("Server is in online mode, rendering this feature useless")
             return
         }
-        super.enable()
     }
 
     override fun disable() {
+        if (isDisabled) return
         if (server.onlineMode) return
         super.disable()
     }
