@@ -30,8 +30,7 @@ import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Dependency
 import work.gavenda.yawa.api.DependencyManager
-import work.gavenda.yawa.ender.disableEnder
-import work.gavenda.yawa.ender.enableEnder
+import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.disableEssentials
 import work.gavenda.yawa.essentials.enableEssentials
 import work.gavenda.yawa.login.disableLogin
@@ -52,10 +51,11 @@ import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
+
 /**
  * Yawa plugin entry point.
  */
-class Plugin : JavaPlugin {
+class Yawa : JavaPlugin {
 
     // Multiple constructors for mock bukkit
     constructor() : super()
@@ -74,7 +74,7 @@ class Plugin : JavaPlugin {
     }
 
     companion object {
-        lateinit var Instance: Plugin
+        lateinit var Instance: Yawa
     }
 
     override fun onLoad() {
@@ -98,7 +98,7 @@ class Plugin : JavaPlugin {
         enableSleep()
         enableTabList()
         enableLogin()
-        enableEnder()
+        EnderFeature.enable()
         enableSit()
         // Register root command
         registerRootCommand()
@@ -127,7 +127,7 @@ class Plugin : JavaPlugin {
         disableSleep()
         disableTabList()
         disableLogin()
-        disableEnder()
+        EnderFeature.disable()
         disableSit()
         // Close data source
         dataSource.close()

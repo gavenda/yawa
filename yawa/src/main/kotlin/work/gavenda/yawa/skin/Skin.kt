@@ -24,7 +24,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.DisabledCommand
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 
 private lateinit var skinListener: SkinListener
 private val skinCommand = SkinCommand().apply {
@@ -36,7 +36,7 @@ private val skinCommand = SkinCommand().apply {
 /**
  * Enable skin feature.
  */
-fun Plugin.enableSkin() {
+fun Yawa.enableSkin() {
     if (Config.Skin.Disabled) {
         getCommand("skin")?.setExecutor(DisabledCommand)
         return
@@ -62,7 +62,7 @@ fun Plugin.enableSkin() {
  * Disable skin feature.
  * @param reload set to true if reloading, defaults to false
  */
-fun Plugin.disableSkin(reload: Boolean = false) {
+fun Yawa.disableSkin(reload: Boolean = false) {
     if (Config.Skin.Disabled) return
 
     // Unregister event listeners

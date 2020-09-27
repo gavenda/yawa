@@ -22,11 +22,10 @@ package work.gavenda.yawa.skin
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Config
+import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.sendMessageUsingKey
 
 class SkinResetCommand : Command(Permission.SKIN_RESET) {
 
@@ -38,12 +37,7 @@ class SkinResetCommand : Command(Permission.SKIN_RESET) {
             PlayerTexture.findById(sender.uniqueId)?.delete()
         }
 
-        sender.sendMessage(
-            Placeholder
-                .withContext(sender)
-                .parse(Config.Messages.SkinReset)
-                .translateColorCodes()
-        )
+        sender.sendMessageUsingKey(Message.SkinReset)
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

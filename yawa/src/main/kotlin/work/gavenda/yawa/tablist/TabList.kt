@@ -20,7 +20,7 @@
 package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.bukkitTimerTask
 import work.gavenda.yawa.api.translateColorCodes
@@ -30,7 +30,7 @@ private var tabListTaskId = -1
 /**
  * Enable tab list feature.
  */
-fun Plugin.enableTabList() {
+fun Yawa.enableTabList() {
     if (Config.TabList.Disabled) return
 
     // Tasks
@@ -53,7 +53,7 @@ fun Plugin.enableTabList() {
 /**
  * Disable tab list feature.
  */
-fun Plugin.disableTabList() {
+fun Yawa.disableTabList() {
     if (Config.TabList.Disabled) return
 
     // Tasks

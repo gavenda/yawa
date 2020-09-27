@@ -17,30 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sit
-
-import org.bukkit.event.HandlerList
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
-
-private val sitListener = SitListener()
+package work.gavenda.yawa
 
 /**
- * Enable skin feature.
+ * Plugin commands.
  */
-fun Yawa.enableSit() {
-    if (Config.Sit.Disabled) return
-
-    // Register event listeners
-    server.pluginManager.registerEvents(sitListener, this)
-}
-
-/**
- * Disable sit feature
- */
-fun Yawa.disableSit() {
-    if (Config.Sit.Disabled) return
-
-    // Unregister event listeners
-    HandlerList.unregisterAll(sitListener)
+object Command {
+    const val AFK = "afk"
 }

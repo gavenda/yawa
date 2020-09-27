@@ -22,7 +22,7 @@ package work.gavenda.yawa.sit
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 
 const val META_BLOCK_OCCUPIED = "BlockOccupied"
 const val META_BLOCK_SITTING_PLAYER = "BlockSittingPlayer"
@@ -34,10 +34,10 @@ const val META_BLOCK_SITTING_PLAYER = "BlockSittingPlayer"
 var Block.isOccupied
     get() = if (hasMetadata(META_BLOCK_OCCUPIED)) {
         getMetadata(META_BLOCK_OCCUPIED)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .asBoolean()
     } else false
-    set(value) = setMetadata(META_BLOCK_OCCUPIED, FixedMetadataValue(Plugin.Instance, value))
+    set(value) = setMetadata(META_BLOCK_OCCUPIED, FixedMetadataValue(Yawa.Instance, value))
 
 /**
  * Returns the sitting player, will be null if there is no one.
@@ -45,7 +45,7 @@ var Block.isOccupied
 var Block.sittingPlayer: Player?
     get() = if (hasMetadata(META_BLOCK_SITTING_PLAYER)) {
         getMetadata(META_BLOCK_SITTING_PLAYER)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .value() as Player
     } else null
-    set(value) = setMetadata(META_BLOCK_SITTING_PLAYER, FixedMetadataValue(Plugin.Instance, value))
+    set(value) = setMetadata(META_BLOCK_SITTING_PLAYER, FixedMetadataValue(Yawa.Instance, value))

@@ -21,7 +21,7 @@ package work.gavenda.yawa.ping
 
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.bukkitTimerTask
 import work.gavenda.yawa.api.latencyInMillis
 
@@ -34,7 +34,7 @@ const val SB_DISPLAY_NAME = "ms"
 /**
  * Enable ping feature.
  */
-fun Plugin.enablePing() {
+fun Yawa.enablePing() {
     if (Config.Ping.Disabled) return
 
     // Create new scoreboard
@@ -63,7 +63,7 @@ fun Plugin.enablePing() {
 /**
  * Disable ping feature.
  */
-fun Plugin.disablePing() {
+fun Yawa.disablePing() {
     if (Config.Ping.Disabled) return
 
     // Tasks

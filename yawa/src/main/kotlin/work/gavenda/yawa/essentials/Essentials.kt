@@ -20,18 +20,18 @@
 package work.gavenda.yawa.essentials
 
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 
 /**
  * Enable essentials feature.
  */
-fun Plugin.enableEssentials() {
+fun Yawa.enableEssentials() {
     if (Config.Essentials.Disabled) return
 }
 
 /**
  * Disable essentials feature.
  */
-fun Plugin.disableEssentials() {
+fun Yawa.disableEssentials() {
     if (Config.Essentials.Disabled) return
 }

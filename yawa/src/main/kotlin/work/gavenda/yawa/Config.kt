@@ -160,47 +160,6 @@ object Config {
         val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
     }
 
-    object Messages {
-        val AfkEntryMessage get() = config.getString("messages.afk-entry")!!
-        val AfkLeaveMessage get() = config.getString("messages.afk-leave")!!
-        val ActionBarSleeping get() = config.getString("messages.action-bar-sleeping")!!
-        val ActionBarSleepingDone get() = config.getString("messages.action-bar-sleeping-done")!!
-        val PlayerAfkStart get() = config.getString("messages.player-afk-start")!!
-        val PlayerAfkEnd get() = config.getString("messages.player-afk-end")!!
-        val PlayerEnterBed get() = config.getString("messages.player-enter-bed")!!
-        val PlayerLeftBed get() = config.getString("messages.player-left-bed")!!
-        val PlayerSitStart get() = config.getString("messages.player-sit-start")!!
-        val PlayerSitEnd get() = config.getString("messages.player-sit-end")!!
-        val Sleeping: List<String> get() = config.getStringList("messages.chat-sleeping")
-        val SleepingDone: List<String> get() = config.getStringList("messages.chat-sleeping-done")
-        val PluginReload get() = config.getString("messages.plugin-reload")!!
-        val PluginReloadConfig get() = config.getString("messages.plugin-reload-config")!!
-        val PermissionPlayerNotFound get() = config.getString("messages.permission-player-not-found")!!
-        val PermissionPlayerNotLoggedIn get() = config.getString("messages.permission-player-not-logged-in")!!
-        val PermissionGroupNotFound get() = config.getString("messages.permission-group-not-found")!!
-        val PermissionApplied get() = config.getString("messages.permission-applied")!!
-        val FeatureDisabled get() = config.getString("messages.feature-disabled")!!
-        val FeatureSetDisabled get() = config.getString("messages.feature-set-disabled")!!
-        val FeatureSetEnabled get() = config.getString("messages.feature-set-enabled")!!
-        val SkinApplied get() = config.getString("messages.skin-applied")!!
-        val SkinGenerate get() = config.getString("messages.skin-generate")!!
-        val SkinReject get() = config.getString("messages.skin-reject")!!
-        val SkinRetrieve get() = config.getString("messages.skin-retrieve")!!
-        val SkinNotFound get() = config.getString("messages.skin-not-found")!!
-        val SkinRateLimit get() = config.getString("messages.skin-rate-limit")!!
-        val SkinReset get() = config.getString("messages.skin-reset")!!
-        val EnderBattleStart get() = config.getString("messages.ender-battle-start")!!
-        val EnderBattleTeleport get() = config.getString("messages.ender-battle-teleport")!!
-        val LoginInvalidSession get() = config.getString("messages.login-invalid-session")!!
-        val LoginInvalidSessionRetry get() = config.getString("messages.login-invalid-session-retry")!!
-        val LoginInvalidRequest get() = config.getString("messages.login-invalid-request")!!
-        val LoginInvalidToken get() = config.getString("messages.login-invalid-token")!!
-        val LoginNameIllegal get() = config.getString("messages.login-name-illegal")!!
-        val LoginNameShort get() = config.getString("messages.login-name-short")!!
-        val LoginNameLong get() = config.getString("messages.login-name-long")!!
-        val LoginError get() = config.getString("messages.login-error")!!
-    }
-
     /**
      * Load plugin configuration.
      */
@@ -215,7 +174,7 @@ object Config {
      */
     fun set(path: String, value: Any) {
         config.set(path, value)
-        Plugin.Instance.saveConfig()
+        Yawa.Instance.saveConfig()
     }
 
 }

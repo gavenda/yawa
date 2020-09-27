@@ -27,9 +27,11 @@ import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Message
+import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.*
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.logger
@@ -60,7 +62,12 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
 
         val session = Session.find(player.address)
         if (session == null) {
-            player.disconnect(Config.Messages.LoginInvalidRequest.translateColorCodes())
+            player.disconnect(
+                Messages
+                    .forPlayer(player)
+                    .get(Message.LoginInvalidRequest)
+                    .translateColorCodes()
+            )
             logger.warn("Attempted to send encryption response at an invalid state")
             return
         }
@@ -69,7 +76,12 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
             val loginKey = try {
                 MinecraftEncryption.decryptSharedKey(keyPair.private, sharedSecret)
             } catch (ex: GeneralSecurityException) {
-                player.disconnect(Config.Messages.LoginError.translateColorCodes())
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginError)
+                        .translateColorCodes()
+                )
                 logger.error("Cannot decrypt received contents", ex)
                 return@bukkitAsyncTask
             }
@@ -79,13 +91,23 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
 
             if (tokenVerified.not()) {
                 logger.warn("Unable to verify token")
-                player.disconnect(Config.Messages.LoginInvalidToken.translateColorCodes())
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginInvalidToken)
+                        .translateColorCodes()
+                )
                 return@bukkitAsyncTask
             }
 
             if (encryptionEnabled.not()) {
                 logger.warn("Unable to enable encryption")
-                player.disconnect(Config.Messages.LoginInvalidToken.translateColorCodes())
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginInvalidToken)
+                        .translateColorCodes()
+                )
                 return@bukkitAsyncTask
             }
 
@@ -121,16 +143,31 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
                         // Check if user has already logged in before and is a verified premium player
                         if (userLogin != null && userLogin.premium) {
                             // Then invalid session
-                            player.disconnect(Config.Messages.LoginInvalidSession.translateColorCodes())
+                            player.disconnect(
+                                Messages
+                                    .forPlayer(player)
+                                    .get(Message.LoginInvalidSession)
+                                    .translateColorCodes()
+                            )
                         } else {
                             // Not logged in before, tell them to reconnect
-                            player.disconnect(Config.Messages.LoginInvalidSessionRetry.translateColorCodes())
+                            player.disconnect(
+                                Messages
+                                    .forPlayer(player)
+                                    .get(Message.LoginInvalidSessionRetry)
+                                    .translateColorCodes()
+                            )
                         }
                     }
 
                 }
             } catch (ex: IOException) {
-                player.disconnect(Config.Messages.LoginInvalidToken.translateColorCodes())
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginInvalidToken)
+                        .translateColorCodes()
+                )
                 logger.error("Cannot connect to session server", ex)
             }
 
@@ -203,7 +240,12 @@ class LoginEncryptionListener(plugin: Plugin) : PacketAdapter(
         } catch (ex: Exception) {
             logger.warn("Failed to fake a new start packet")
             // Cancel the event in order to prevent the server receiving an invalid packet
-            player.disconnect(Config.Messages.LoginInvalidToken.translateColorCodes())
+            player.disconnect(
+                Messages
+                    .forPlayer(player)
+                    .get(Message.LoginInvalidToken)
+                    .translateColorCodes()
+            )
         }
     }
 }

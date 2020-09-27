@@ -23,8 +23,10 @@ import org.bukkit.Statistic
 import org.bukkit.World
 import org.bukkit.event.HandlerList
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Message
+import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.*
+import work.gavenda.yawa.parseWithDefaultLocale
 import java.util.*
 
 private var sleepTaskId = -1
@@ -35,7 +37,7 @@ private lateinit var sleepBedListener: SleepBedListener
 /**
  * Enable sleep feature.
  */
-fun Plugin.enableSleep() {
+fun Yawa.enableSleep() {
     if (Config.Sleep.Disabled) return
 
     // Placeholders
@@ -64,7 +66,7 @@ fun Plugin.enableSleep() {
 /**
  * Disable sleep feature.
  */
-fun Plugin.disableSleep() {
+fun Yawa.disableSleep() {
     if (Config.Sleep.Disabled) return
 
     // Tasks
@@ -74,14 +76,14 @@ fun Plugin.disableSleep() {
     HandlerList.unregisterAll(sleepBedListener)
 }
 
-private fun Plugin.checkWorldForSleeping(world: World) {
+private fun Yawa.checkWorldForSleeping(world: World) {
     val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
 
     // Someone is asleep, and we lack more people.
     if (world.beganSleeping) {
         val message = Placeholder
             .withContext(world)
-            .parse(Config.Messages.ActionBarSleeping)
+            .parseWithDefaultLocale(Message.ActionBarSleeping)
             .translateColorCodes()
 
         world.sendActionBarIf(message) {
@@ -92,7 +94,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
     else if (world.isEveryoneSleeping) {
         val message = Placeholder
             .withContext(world)
-            .parse(Config.Messages.ActionBarSleepingDone)
+            .parseWithDefaultLocale(Message.ActionBarSleepingDone)
             .translateColorCodes()
 
         world.sendActionBarIf(message) {
@@ -103,7 +105,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
 
         val sleepingMessage = Placeholder
             .withContext(world)
-            .parse(Config.Messages.Sleeping.random())
+            .parseWithDefaultLocale(Message.Sleeping)
             .translateColorCodes()
 
         // Broadcast everyone sleeping
@@ -129,7 +131,7 @@ private fun Plugin.checkWorldForSleeping(world: World) {
 
                 val sleepingDoneMessage = Placeholder
                     .withContext(world)
-                    .parse(Config.Messages.SleepingDone.random())
+                    .parseWithDefaultLocale(Message.SleepingDone)
                     .translateColorCodes()
 
                 // Broadcast successful sleep

@@ -9,7 +9,7 @@ depend:
 
 api-version: '1.16'
 version: ${project.version}
-main: work.gavenda.yawa.Plugin
+main: work.gavenda.yawa.Yawa
 
 commands:
   afk:

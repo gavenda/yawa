@@ -26,12 +26,10 @@ import org.bukkit.block.data.type.Slab
 import org.bukkit.block.data.type.Stairs
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
-import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.Message
+import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.bukkitTimerTask
-import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.logger
+import work.gavenda.yawa.sendMessageUsingKey
 
 const val META_PLAYER_SITTING = "PlayerSitting"
 const val META_PLAYER_SITTING_TASK_ID = "PlayerSittingTaskId"
@@ -45,10 +43,10 @@ const val MAX_SIT_DISTANCE = 2.0
 var Player.isSitting: Boolean
     get() = if (hasMetadata(META_PLAYER_SITTING)) {
         getMetadata(META_PLAYER_SITTING)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .asBoolean()
     } else false
-    set(value) = setMetadata(META_PLAYER_SITTING, FixedMetadataValue(Plugin.Instance, value))
+    set(value) = setMetadata(META_PLAYER_SITTING, FixedMetadataValue(Yawa.Instance, value))
 
 /**
  * The player's sitting block.
@@ -56,10 +54,10 @@ var Player.isSitting: Boolean
 var Player.sittingBlock: Block?
     get() = if (hasMetadata(META_PLAYER_SITTING_BLOCK)) {
         getMetadata(META_PLAYER_SITTING_BLOCK)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .value() as Block
     } else null
-    set(value) = setMetadata(META_PLAYER_SITTING_BLOCK, FixedMetadataValue(Plugin.Instance, value))
+    set(value) = setMetadata(META_PLAYER_SITTING_BLOCK, FixedMetadataValue(Yawa.Instance, value))
 
 /**
  * The player's sitting task.
@@ -67,10 +65,10 @@ var Player.sittingBlock: Block?
 var Player.sitTaskId: Int
     get() = if (hasMetadata(META_PLAYER_SITTING_TASK_ID)) {
         getMetadata(META_PLAYER_SITTING_TASK_ID)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .asInt()
     } else -1
-    set(value) = setMetadata(META_PLAYER_SITTING_TASK_ID, FixedMetadataValue(Plugin.Instance, value))
+    set(value) = setMetadata(META_PLAYER_SITTING_TASK_ID, FixedMetadataValue(Yawa.Instance, value))
 
 /**
  * Checks if the player can currently sit at the given block.
@@ -148,7 +146,7 @@ fun Player.sit(block: Block) {
     isSitting = true
 
     // Resit before arrow de-spawns
-    sitTaskId = bukkitTimerTask(Plugin.Instance, 1000, 1000) {
+    sitTaskId = bukkitTimerTask(Yawa.Instance, 1000, 1000) {
         val oldChairEntity = vehicle
         val newChairEntity = oldChairEntity?.location?.spawnChairEntity()
         isSitting = false
@@ -157,11 +155,7 @@ fun Player.sit(block: Block) {
         isSitting = true
     }
 
-    sendMessage(
-        Placeholder.withContext(this)
-            .parse(Config.Messages.PlayerSitStart)
-            .translateColorCodes()
-    )
+    sendMessageUsingKey(Message.PlayerSitStart)
 }
 
 /**
@@ -181,9 +175,5 @@ fun Player.standUpFromSit() {
     server.scheduler.cancelTask(sitTaskId)
     sitTaskId = -1
 
-    sendMessage(
-        Placeholder.withContext(this)
-            .parse(Config.Messages.PlayerSitEnd)
-            .translateColorCodes()
-    )
+    sendMessageUsingKey(Message.PlayerSitEnd)
 }

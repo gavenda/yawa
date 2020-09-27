@@ -17,30 +17,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sit
+package work.gavenda.yawa.ender
 
-import org.bukkit.event.HandlerList
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
+import org.bukkit.Location
+import org.bukkit.entity.Player
+import work.gavenda.yawa.Message
+import work.gavenda.yawa.sendMessageUsingKey
 
-private val sitListener = SitListener()
-
-/**
- * Enable skin feature.
- */
-fun Yawa.enableSit() {
-    if (Config.Sit.Disabled) return
-
-    // Register event listeners
-    server.pluginManager.registerEvents(sitListener, this)
-}
-
-/**
- * Disable sit feature
- */
-fun Yawa.disableSit() {
-    if (Config.Sit.Disabled) return
-
-    // Unregister event listeners
-    HandlerList.unregisterAll(sitListener)
+class EnderTeleportTask(
+    private val players: Sequence<Player>,
+    private val teleportingPlayers: MutableSet<Player>,
+    private val location: Location
+) : Runnable {
+    override fun run() {
+        players.forEach { player ->
+            // Teleport to damaging entity
+            player.teleportAsync(location).thenRun {
+                player.sendMessageUsingKey(Message.EnderBattleTeleport)
+                teleportingPlayers.remove(player)
+            }
+        }
+    }
 }

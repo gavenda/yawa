@@ -19,8 +19,6 @@
 
 package work.gavenda.yawa
 
-import org.bukkit.Bukkit
-
 /**
  * Constants for features.
  */
@@ -46,13 +44,13 @@ interface PluginFeature {
     /**
      * Return true if feature is disabled, otherwise false.
      */
-    fun isDisabled(): Boolean
+    val isDisabled: Boolean
 
     /**
      * Enable this feature.
      */
     fun enable() {
-        if (isDisabled()) {
+        if (isDisabled) {
             disableCommands()
             return
         }
@@ -67,7 +65,7 @@ interface PluginFeature {
      * Disable this feature.
      */
     fun disable() {
-        if (isDisabled()) return
+        if (isDisabled) return
 
         disableCommands()
         unregisterTasks()

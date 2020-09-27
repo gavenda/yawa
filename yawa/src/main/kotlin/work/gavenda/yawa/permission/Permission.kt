@@ -25,8 +25,7 @@ import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.DisabledCommand
-import work.gavenda.yawa.Permission
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 
 private lateinit var permissionListener: PermissionListener
 private val permissionCommand = PermissionCommand().apply {
@@ -37,7 +36,7 @@ private val permissionCommand = PermissionCommand().apply {
 /**
  * Enable permission feature.
  */
-fun Plugin.enablePermission() {
+fun Yawa.enablePermission() {
     if (Config.Permission.Disabled) return
 
     slF4JLogger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
@@ -80,7 +79,7 @@ fun Plugin.enablePermission() {
 /**
  * Disable permission feature.
  */
-fun Plugin.disablePermission(reload: Boolean = false) {
+fun Yawa.disablePermission(reload: Boolean = false) {
     if (Config.Permission.Disabled) return
 
     // Unregister event listeners

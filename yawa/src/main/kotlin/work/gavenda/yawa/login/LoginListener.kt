@@ -25,13 +25,15 @@ import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Message
+import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
+import work.gavenda.yawa.api.translateColorCodes
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
 import work.gavenda.yawa.logger
 import java.security.PublicKey
@@ -64,17 +66,32 @@ class LoginListener(plugin: Plugin) : PacketAdapter(
 
         // Validate name
         if (name.length < 3) {
-            player.disconnect(Config.Messages.LoginNameShort)
+            player.disconnect(
+                Messages
+                    .forPlayer(player)
+                    .get(Message.LoginNameShort)
+                    .translateColorCodes()
+            )
             logger.warn("Disconnected player '$name' due to invalid name")
             return
         }
         if (name.length > 16) {
-            player.disconnect(Config.Messages.LoginNameLong)
+            player.disconnect(
+                Messages
+                    .forPlayer(player)
+                    .get(Message.LoginNameLong)
+                    .translateColorCodes()
+            )
             logger.warn("Disconnected player '$name' due to invalid name")
             return
         }
         if (nameRegex.matches(name).not()) {
-            player.disconnect(Config.Messages.LoginNameIllegal)
+            player.disconnect(
+                Messages
+                    .forPlayer(player)
+                    .get(Message.LoginNameIllegal)
+                    .translateColorCodes()
+            )
             logger.warn("Disconnected player '$name' due to invalid name")
             return
         }

@@ -19,13 +19,11 @@
 
 package work.gavenda.yawa.afk
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Permission
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.server
 import java.util.concurrent.TimeUnit
 
 class AfkTask : Runnable {
@@ -43,17 +41,13 @@ class AfkTask : Runnable {
 
                     val message = Placeholder
                         .withContext(player)
-                        .parse(Config.Messages.AfkEntryMessage)
-                        .translateColorCodes()
-                    val selfMessage = Placeholder
-                        .withContext(player)
-                        .parse(Config.Messages.PlayerAfkStart)
+                        .parseWithLocale(player, Message.AfkEntryMessage)
                         .translateColorCodes()
 
                     player.world.sendMessageIf(message) {
                         Config.Afk.MessageEnabled
                     }
-                    player.sendMessage(selfMessage)
+                    player.sendMessageUsingKey(Message.PlayerAfkStart)
                 }
 
                 if (player.isAfk) {

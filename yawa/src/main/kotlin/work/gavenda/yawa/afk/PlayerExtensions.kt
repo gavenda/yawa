@@ -21,8 +21,7 @@ package work.gavenda.yawa.afk
 
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.sendMessageIf
@@ -37,10 +36,10 @@ const val META_PLAYER_AFK_LAST = "AfkLast"
 var Player.lastInteractionMillis: Long
     get() = if (hasMetadata(META_PLAYER_AFK_LAST)) {
         getMetadata(META_PLAYER_AFK_LAST)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .asLong()
     } else System.currentTimeMillis()
-    set(value) = setMetadata(META_PLAYER_AFK_LAST, FixedMetadataValue(Plugin.Instance, value))
+    set(value) = setMetadata(META_PLAYER_AFK_LAST, FixedMetadataValue(Yawa.Instance, value))
 
 /**
  * Fires a player interaction.
@@ -51,18 +50,14 @@ fun Player.doInteract() {
 
         val message = Placeholder
             .withContext(this)
-            .parse(Config.Messages.AfkLeaveMessage)
-            .translateColorCodes()
-        val selfMessage = Placeholder
-            .withContext(this)
-            .parse(Config.Messages.PlayerAfkEnd)
+            .parseWithLocale(this, Message.AfkLeaveMessage)
             .translateColorCodes()
 
         world.sendMessageIf(message) {
             Config.Afk.MessageEnabled
         }
 
-        sendMessage(selfMessage)
+        sendMessageUsingKey(Message.PlayerAfkEnd)
     }
 
     lastInteractionMillis = System.currentTimeMillis()
@@ -72,5 +67,5 @@ fun Player.doInteract() {
  * Clears the last interaction.
  */
 fun Player.clearLastInteract() {
-    removeMetadata(META_PLAYER_AFK_LAST, Plugin.Instance)
+    removeMetadata(META_PLAYER_AFK_LAST, Yawa.Instance)
 }

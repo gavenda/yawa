@@ -19,30 +19,21 @@
 
 package work.gavenda.yawa.ender
 
-import org.bukkit.event.HandlerList
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import org.bukkit.entity.Player
+import work.gavenda.yawa.*
 
-private lateinit var enderListener: EnderListener
+object EnderFeature : PluginFeature {
 
-/**
- * Enable Ender dragon battle feature, forces everyone fight the Ender dragon together.
- */
-fun Plugin.enableEnder() {
-    if (Config.Ender.Disabled) return
+    private val teleportingPlayers = mutableSetOf<Player>()
+    private val enderListener = EnderListener(teleportingPlayers)
 
-    // Instantiate event listeners
-    enderListener = EnderListener(this)
-    // Register event listeners
-    server.pluginManager.registerEvents(enderListener, this)
-}
+    override val isDisabled get() = Config.Ender.Disabled
 
-/**
- * Disable Ender dragon battle feature.
- */
-fun Plugin.disableEnder() {
-    if (Config.Ender.Disabled) return
+    override fun registerEventListeners() {
+        pluginManager.registerEvents(enderListener)
+    }
 
-    // Unregister event listeners
-    HandlerList.unregisterAll(enderListener)
+    override fun unregisterEventListeners() {
+        pluginManager.unregisterEvents(enderListener)
+    }
 }

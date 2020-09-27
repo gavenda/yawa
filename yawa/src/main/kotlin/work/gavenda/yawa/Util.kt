@@ -20,11 +20,21 @@
 package work.gavenda.yawa
 
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
+import org.bukkit.event.HandlerList
+import org.bukkit.event.Listener
+import org.bukkit.plugin.PluginManager
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.PlaceholderContext
+import work.gavenda.yawa.api.translateColorCodes
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Easy access to the plugin instance.
  */
-val plugin get() = Plugin.Instance
+val plugin get() = Yawa.Instance
 
 /**
  * Easy access to bukkit's server instance.
@@ -40,3 +50,77 @@ val scheduler get() = Bukkit.getScheduler()
  * Easy access to bukkit's plugin manager.
  */
 val pluginManager get() = Bukkit.getPluginManager()
+
+/**
+ * Convert time unit into minecraft ticks.
+ */
+fun TimeUnit.toTicks(d: Long): Long {
+    return when (this) {
+        TimeUnit.SECONDS -> d * 20L
+        TimeUnit.MILLISECONDS -> TimeUnit.MILLISECONDS.toSeconds(d) * 20L
+        TimeUnit.MINUTES -> TimeUnit.MINUTES.toSeconds(d) * 20L
+        TimeUnit.HOURS -> TimeUnit.HOURS.toSeconds(d) * 20L
+        TimeUnit.DAYS -> TimeUnit.DAYS.toSeconds(d) * 20L
+        TimeUnit.MICROSECONDS -> TimeUnit.MICROSECONDS.toSeconds(d) * 20L
+        TimeUnit.NANOSECONDS -> TimeUnit.NANOSECONDS.toSeconds(d) * 20L
+        else -> throw AbstractMethodError()
+    }
+}
+
+/**
+ * Convenience method for register events, but only for this plugin.
+ */
+fun PluginManager.registerEvents(listener: Listener) {
+    registerEvents(listener, plugin)
+}
+
+/**
+ * This should be within plugin manager, but they didn't. Hence a convenience method so we don't always lookup the docs.
+ * For the kotlin compiler, this should be unnecessary so we suppress the warning.
+ */
+@Suppress("unused")
+fun PluginManager.unregisterEvents(listener: Listener) {
+    HandlerList.unregisterAll(listener)
+}
+
+/**
+ * Extend placeholder context to parse for a player locale.
+ */
+fun PlaceholderContext.parseWithLocale(player: Player, key: String): String {
+    return parse(
+        Messages
+            .forPlayer(player)
+            .get(key)
+    )
+}
+
+/**
+ * Extend placeholder context to parse for the server's default locale.
+ */
+fun PlaceholderContext.parseWithDefaultLocale(key: String): String {
+    return parse(
+        Messages
+            .useDefault()
+            .get(key)
+    )
+}
+
+/**
+ * Utility function for sending a message with locale and placeholder support depending on context.
+ */
+fun CommandSender.sendMessageUsingKey(key: String) {
+    if (this is Player) {
+        sendMessage(
+            Placeholder
+                .withContext(this)
+                .parseWithLocale(this, key)
+                .translateColorCodes()
+        )
+    } else {
+        sendMessage(
+            Messages.useDefault()
+                .get(key)
+                .translateColorCodes()
+        )
+    }
+}

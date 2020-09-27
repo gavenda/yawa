@@ -24,7 +24,7 @@ import com.comphenix.protocol.async.AsyncListenerHandler
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 import java.security.KeyPair
 
 private val protocolManager = ProtocolLibrary.getProtocolManager()
@@ -37,7 +37,7 @@ val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
 /**
  * Enable premium login feature.
  */
-fun Plugin.enableLogin() {
+fun Yawa.enableLogin() {
     if (Config.Login.Disabled) return
     if (server.onlineMode) {
         slF4JLogger.warn("Server is in online mode, rendering this feature useless")
@@ -64,7 +64,7 @@ fun Plugin.enableLogin() {
 /**
  * Disable premium login feature.
  */
-fun Plugin.disableLogin() {
+fun Yawa.disableLogin() {
     if (Config.Login.Disabled) return
     if (server.onlineMode) return
 

@@ -22,14 +22,17 @@ package work.gavenda.yawa.skin
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
-import work.gavenda.yawa.api.*
+import work.gavenda.yawa.Yawa
+import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.applySkin
+import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.MojangProfileProperty
 import work.gavenda.yawa.api.mojang.RateLimitException
+import work.gavenda.yawa.sendMessageUsingKey
 
 /**
  * Applies a skin from an existing minecraft account name.
@@ -42,14 +45,9 @@ class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
         if (args.size == 1) {
             val name = args[0]
 
-            sender.sendMessage(
-                Placeholder
-                    .withContext(sender)
-                    .parse(Config.Messages.SkinRetrieve)
-                    .translateColorCodes()
-            )
+            sender.sendMessageUsingKey(Message.SkinRetrieve)
 
-            bukkitAsyncTask(Plugin.Instance) {
+            bukkitAsyncTask(Yawa.Instance) {
                 try {
                     val uuid = MojangApi.findUuidByName(name)
                     if (uuid != null) {
@@ -59,20 +57,10 @@ class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
                                 ?.let { texture -> applyAndSaveSkin(sender, texture) }
                         }
                     } else {
-                        sender.sendMessage(
-                            Placeholder
-                                .withContext(sender)
-                                .parse(Config.Messages.SkinNotFound)
-                                .translateColorCodes()
-                        )
+                        sender.sendMessageUsingKey(Message.SkinNotFound)
                     }
                 } catch (e: RateLimitException) {
-                    sender.sendMessage(
-                        Placeholder
-                            .withContext(sender)
-                            .parse(Config.Messages.SkinRateLimit)
-                            .translateColorCodes()
-                    )
+                    sender.sendMessageUsingKey(Message.SkinRateLimit)
                 }
             }
         }
@@ -88,12 +76,7 @@ class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
             playerTexture.signature = texture.signature
         }
 
-        player.sendMessage(
-            Placeholder
-                .withContext(player)
-                .parse(Config.Messages.SkinApplied)
-                .translateColorCodes()
-        )
+        player.sendMessageUsingKey(Message.SkinApplied)
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

@@ -24,7 +24,7 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.permissions.PermissionAttachment
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.api.bukkitAsyncTask
 import work.gavenda.yawa.logger
 
@@ -36,12 +36,12 @@ const val META_PLAYER_PERMISSION_ATTACHMENT = "PlayerPermissionAttachment"
 var Player.permissionAttachment: PermissionAttachment?
     get() = if (hasMetadata(META_PLAYER_PERMISSION_ATTACHMENT)) {
         getMetadata(META_PLAYER_PERMISSION_ATTACHMENT)
-            .first { it.owningPlugin == Plugin.Instance }
+            .first { it.owningPlugin == Yawa.Instance }
             .value() as PermissionAttachment
     } else null
     set(value) {
         if (hasMetadata(META_PLAYER_PERMISSION_ATTACHMENT)) return
-        setMetadata(META_PLAYER_PERMISSION_ATTACHMENT, FixedMetadataValue(Plugin.Instance, value))
+        setMetadata(META_PLAYER_PERMISSION_ATTACHMENT, FixedMetadataValue(Yawa.Instance, value))
     }
 
 /**
@@ -57,7 +57,7 @@ fun Player.removeAttachment() {
 /**
  * Calculate player permissions.
  */
-fun Player.calculatePermissions() = bukkitAsyncTask(Plugin.Instance) {
+fun Player.calculatePermissions() = bukkitAsyncTask(Yawa.Instance) {
     val attachment = permissionAttachment
 
     if (attachment == null) {

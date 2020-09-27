@@ -24,10 +24,11 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.logger
+import work.gavenda.yawa.parseWithLocale
 import java.util.*
 
 /**
@@ -46,7 +47,7 @@ class SleepBedListener(
 
         val message = Placeholder
             .withContext(player, world)
-            .parse(Config.Messages.PlayerEnterBed)
+            .parseWithLocale(player, Message.PlayerEnterBed)
             .translateColorCodes()
 
         world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
@@ -61,7 +62,7 @@ class SleepBedListener(
 
         val message = Placeholder
             .withContext(player, world)
-            .parse(Config.Messages.PlayerLeftBed)
+            .parseWithLocale(player, Message.PlayerLeftBed)
             .translateColorCodes()
 
         world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }

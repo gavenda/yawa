@@ -29,15 +29,14 @@ import java.util.*
 const val COMMAND_NO_PERMISSION = "&cYou do not have enough permissions to use this command"
 
 /**
- * Represents a command.
+ * Represents a command executor.
  * @param permission permission needed to execute the command,
  * @param commands list of commands or aliases for this command, required for async tab completion
  */
 abstract class Command(
     private val permission: String = "",
     private val commands: List<String> = listOf()
-) :
-    TabExecutor, Listener {
+) : TabExecutor, Listener {
     private val subCommands = mutableMapOf<String, Command>()
 
     val subCommandKeys

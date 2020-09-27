@@ -20,12 +20,11 @@
 package work.gavenda.yawa
 
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.ender.disableEnder
-import work.gavenda.yawa.ender.enableEnder
+import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.disableEssentials
 import work.gavenda.yawa.essentials.enableEssentials
 import work.gavenda.yawa.login.disableLogin
@@ -49,30 +48,30 @@ const val FEATURE_SWITCH_DISABLE = "disable"
 
 private val featureEnableMap = mapOf(
     Feature.AFK to { AfkFeature.enable() },
-    Feature.ENDER to { Plugin.Instance.enableEnder() },
-    Feature.ESSENTIALS to { Plugin.Instance.enableEssentials() },
-    Feature.LOGIN to { Plugin.Instance.enableLogin() },
-    Feature.PING to { Plugin.Instance.enablePing() },
-    Feature.PERMISSION to { Plugin.Instance.enablePermission() },
-    Feature.SIT to { Plugin.Instance.enableSit() },
-    Feature.SKIN to { Plugin.Instance.enableSkin() },
-    Feature.SLEEP to { Plugin.Instance.enableSleep() },
-    Feature.TABLIST to { Plugin.Instance.enableTabList() },
-    Feature.KEEP_ALIVE to { Plugin.Instance.adjustKeepAliveTimeout() },
+    Feature.ENDER to { EnderFeature.enable() },
+    Feature.ESSENTIALS to { Yawa.Instance.enableEssentials() },
+    Feature.LOGIN to { Yawa.Instance.enableLogin() },
+    Feature.PING to { Yawa.Instance.enablePing() },
+    Feature.PERMISSION to { Yawa.Instance.enablePermission() },
+    Feature.SIT to { Yawa.Instance.enableSit() },
+    Feature.SKIN to { Yawa.Instance.enableSkin() },
+    Feature.SLEEP to { Yawa.Instance.enableSleep() },
+    Feature.TABLIST to { Yawa.Instance.enableTabList() },
+    Feature.KEEP_ALIVE to { Yawa.Instance.adjustKeepAliveTimeout() },
 )
 
 private val featureDisableMap = mapOf(
     Feature.AFK to { AfkFeature.disable() },
-    Feature.ENDER to { Plugin.Instance.disableEnder() },
-    Feature.ESSENTIALS to { Plugin.Instance.disableEssentials() },
-    Feature.LOGIN to { Plugin.Instance.disableLogin() },
-    Feature.PING to { Plugin.Instance.disablePing() },
-    Feature.PERMISSION to { Plugin.Instance.disablePermission() },
-    Feature.SIT to { Plugin.Instance.disableSit() },
-    Feature.SKIN to { Plugin.Instance.disableSkin(true) },
-    Feature.SLEEP to { Plugin.Instance.disableSleep() },
-    Feature.TABLIST to { Plugin.Instance.disableTabList() },
-    Feature.KEEP_ALIVE to { Plugin.Instance.resetKeepAliveTimeout() },
+    Feature.ENDER to { EnderFeature.disable() },
+    Feature.ESSENTIALS to { Yawa.Instance.disableEssentials() },
+    Feature.LOGIN to { Yawa.Instance.disableLogin() },
+    Feature.PING to { Yawa.Instance.disablePing() },
+    Feature.PERMISSION to { Yawa.Instance.disablePermission() },
+    Feature.SIT to { Yawa.Instance.disableSit() },
+    Feature.SKIN to { Yawa.Instance.disableSkin(true) },
+    Feature.SLEEP to { Yawa.Instance.disableSleep() },
+    Feature.TABLIST to { Yawa.Instance.disableTabList() },
+    Feature.KEEP_ALIVE to { Yawa.Instance.resetKeepAliveTimeout() },
 )
 
 private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
@@ -117,22 +116,30 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
                 return
             }
             if (switch == FEATURE_SWITCH_ENABLE) {
+                val enableFeature = featureEnableMap[feature] ?: return
+
                 // Enable in config first
                 Config.set("$feature.disabled", false)
 
-                featureEnableMap[feature]?.invoke().also {
-                    sender.sendMessage(Config.Messages.FeatureSetEnabled.translateColorCodes())
-                    logger.info("Feature '$feature' has been enabled")
-                }
+                enableFeature()
+
+                sender.sendMessageUsingKey(Message.FeatureSetEnabled)
+                logger.info("Feature '$feature' has been enabled")
             }
             if (switch == FEATURE_SWITCH_DISABLE) {
-                featureDisableMap[feature]?.invoke().also {
-                    sender.sendMessage(Config.Messages.FeatureSetDisabled.translateColorCodes())
-                    logger.info("Feature '$feature' has been disabled")
+                val disableFeature = featureDisableMap[feature] ?: return
 
-                    // Disable in config last
-                    Config.set("$feature.disabled", true)
-                }
+                disableFeature()
+
+                sender.sendMessageUsingKey(Message.FeatureSetDisabled)
+                logger.info("Feature '$feature' has been disabled")
+
+                // Disable in config last
+                Config.set("$feature.disabled", true)
+            }
+
+            if (sender is Player) {
+                sender.updateCommands()
             }
         }
     }
@@ -152,19 +159,20 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
 class YawaReloadCommand : Command(Permission.RELOAD) {
     override fun execute(sender: CommandSender, args: List<String>) {
         if (args.isEmpty()) {
-            Plugin.Instance.onDisable()
-            Plugin.Instance.reloadConfig()
-            Plugin.Instance.loadConfig()
-            Plugin.Instance.onEnable()
-            sender.sendMessage(Config.Messages.PluginReload.translateColorCodes())
+            Yawa.Instance.onDisable()
+            Yawa.Instance.reloadConfig()
+            Yawa.Instance.loadConfig()
+            Yawa.Instance.onEnable()
+
+            sender.sendMessageUsingKey(Message.PluginReload)
             return
         }
 
         if (args[0] == "config") {
-            Plugin.Instance.reloadConfig()
-            Plugin.Instance.loadConfig()
+            Yawa.Instance.reloadConfig()
+            Yawa.Instance.loadConfig()
 
-            sender.sendMessage(Config.Messages.PluginReloadConfig.translateColorCodes())
+            sender.sendMessageUsingKey(Message.PluginReloadConfig)
         }
     }
 

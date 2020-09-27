@@ -21,11 +21,10 @@ package work.gavenda.yawa
 
 import org.bukkit.command.CommandSender
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.translateColorCodes
 
 object DisabledCommand : Command() {
     override fun execute(sender: CommandSender, args: List<String>) {
-        sender.sendMessage(Config.Messages.FeatureDisabled.translateColorCodes())
+        sender.sendMessageUsingKey(Message.FeatureDisabled)
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

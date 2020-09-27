@@ -27,18 +27,15 @@ import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.plugin.Plugin
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.bukkitTask
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Listens to a possible event of an ender dragon to be hit.
  */
-class EnderListener(val plugin: Plugin) : Listener {
-
-    private val teleportingPlayers = mutableSetOf<Player>()
+class EnderListener(
+    private val teleportingPlayers: MutableSet<Player>
+) : Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onEntityDamage(e: EntityDamageByEntityEvent) {
@@ -74,31 +71,16 @@ class EnderListener(val plugin: Plugin) : Listener {
 
         players.forEach { player ->
             // Tell everyone
-            player.sendMessage(
-                Placeholder
-                    .withContext(player)
-                    .parse(Config.Messages.EnderBattleStart)
-                    .translateColorCodes()
-            )
+            player.sendMessageUsingKey(Message.EnderBattleStart)
             // Mark as teleporting
             teleportingPlayers.add(player)
         }
 
         // Teleport to ender dragon after 5 seconds
-        bukkitTask(plugin, 100) {
-            players.forEach { player ->
-                // Teleport to damaging entity
-                player.teleportAsync(location).thenRun {
-                    player.sendMessage(
-                        Placeholder
-                            .withContext(player)
-                            .parse(Config.Messages.EnderBattleTeleport)
-                            .translateColorCodes()
-                    )
-                    teleportingPlayers.remove(player)
-                }
-            }
-        }
+        val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
+        val enderTeleportTask = EnderTeleportTask(players, teleportingPlayers, location)
+
+        scheduler.runTaskLater(plugin, enderTeleportTask, secondsInTicks)
     }
 
 }

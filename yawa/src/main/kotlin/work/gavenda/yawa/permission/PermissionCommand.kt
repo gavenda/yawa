@@ -23,14 +23,10 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Permission
-import work.gavenda.yawa.Plugin
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.bukkitAsyncTask
-import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.logger
 import work.gavenda.yawa.login.PlayerLogin
 import work.gavenda.yawa.login.PlayerLoginSchema
 
@@ -63,7 +59,7 @@ class PermissionCommand : Command(commands = permissionCommands) {
 
 class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
 
-    override fun execute(sender: CommandSender, args: List<String>) = bukkitAsyncTask(Plugin.Instance) {
+    override fun execute(sender: CommandSender, args: List<String>) = bukkitAsyncTask(Yawa.Instance) {
         if (args.size == 3) {
             val nameArg = args[0]
             val permissionArg = args[1]
@@ -77,10 +73,7 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
                 } else Bukkit.getPlayerUniqueId(nameArg)
 
                 if (uniqueId == null) {
-                    sender.sendMessage(
-                        Config.Messages.PermissionPlayerNotFound
-                            .translateColorCodes()
-                    )
+                    sender.sendMessageUsingKey(Message.PermissionPlayerNotFound)
                     return@transaction
                 }
 
@@ -89,10 +82,7 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
                 val playerDb = PlayerDb.findById(uniqueId)
 
                 if (playerDb == null) {
-                    sender.sendMessage(
-                        Config.Messages.PermissionPlayerNotLoggedIn
-                            .translateColorCodes()
-                    )
+                    sender.sendMessageUsingKey(Message.PermissionPlayerNotLoggedIn)
                     return@transaction
                 }
 
@@ -111,10 +101,7 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
 
                 player?.calculatePermissions()
 
-                sender.sendMessage(
-                    Config.Messages.PermissionApplied
-                        .translateColorCodes()
-                )
+                sender.sendMessageUsingKey(Message.PermissionApplied)
             }
         }
     }
@@ -144,10 +131,7 @@ class PermissionGroupCommand : Command(Permission.PERMISSION_GROUP) {
                 val foundGroup = Group.find { GroupSchema.name eq groupNameArg }.firstOrNull()
 
                 if (foundGroup == null) {
-                    sender.sendMessage(
-                        Config.Messages.PermissionGroupNotFound
-                            .translateColorCodes()
-                    )
+                    sender.sendMessageUsingKey(Message.PermissionGroupNotFound)
                     return@transaction
                 }
 
@@ -167,10 +151,7 @@ class PermissionGroupCommand : Command(Permission.PERMISSION_GROUP) {
                     player?.calculatePermissions()
                 }
 
-                sender.sendMessage(
-                    Config.Messages.PermissionApplied
-                        .translateColorCodes()
-                )
+                sender.sendMessageUsingKey(Message.PermissionApplied)
             }
         }
     }
