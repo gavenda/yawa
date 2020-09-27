@@ -23,9 +23,7 @@ import com.comphenix.protocol.utility.MinecraftReflection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.bukkit.event.HandlerList
-import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.plugin.java.JavaPluginLoader
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Dependency
@@ -41,23 +39,13 @@ import work.gavenda.yawa.sit.SitFeature
 import work.gavenda.yawa.skin.SkinFeature
 import work.gavenda.yawa.sleep.SleepFeature
 import work.gavenda.yawa.tablist.TabListFeature
-import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
 /**
  * Yawa plugin entry point.
  */
-class Yawa : JavaPlugin {
-
-    // Multiple constructors for mock bukkit
-    constructor() : super()
-    constructor(
-        loader: JavaPluginLoader,
-        description: PluginDescriptionFile,
-        dataFolder: File,
-        file: File
-    ) : super(loader, description, dataFolder, file)
+class Yawa : JavaPlugin() {
 
     private val startupListener = StartupListener()
     private var safeLoad = false
