@@ -40,7 +40,7 @@ commands:
   whisper:
     description: Send a whisper to a player.
     usage: /whisper <player> <message>
-    aliases: [w]
+    aliases: [w, msg, tell]
 
   reply:
     description: Reply to a whisper from a player.

@@ -30,7 +30,7 @@ import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
 
 class WhisperCommand : Command(
-    commands = listOf("whisper", "yawa:whisper", "w")
+    commands = listOf("whisper", "yawa:whisper", "w", "msg", "tell")
 ) {
 
     override fun execute(sender: CommandSender, args: List<String>) {
