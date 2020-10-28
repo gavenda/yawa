@@ -229,12 +229,15 @@ var Player.spoofedUuid: UUID
  * Disconnect the player using a packet.
  */
 fun Player.disconnect(reason: String = "") {
-    apiLogger.info("Packet disconnect: $reason")
-    val disconnectPacket = WrapperLoginServerDisconnect().apply {
-        writeReason(WrappedChatComponent.fromText(reason))
+    // Must use main thread
+    Bukkit.getScheduler().runTask(YawaAPI.Instance) { _ ->
+        apiLogger.info("Packet disconnect: $reason")
+        val disconnectPacket = WrapperLoginServerDisconnect().apply {
+            writeReason(WrappedChatComponent.fromText(reason))
+        }
+        // Send disconnect packet
+        disconnectPacket.sendPacket(this)
+        // Server cleanup
+        kickPlayer("Disconnected")
     }
-    // Send disconnect packet
-    disconnectPacket.sendPacket(this)
-    // Server cleanup
-    kickPlayer("Disconnected")
 }
