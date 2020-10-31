@@ -68,6 +68,7 @@ object Message {
     const val LoginNameLong = "login-name-long"
     const val LoginError = "login-error"
     const val SleepKickMessage = "sleep-kick"
+    const val SleepKickMessageBroadcast = "sleep-kick-broadcast"
 }
 
 /**

@@ -21,10 +21,7 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.World
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.sendActionBarIf
-import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.*
 import java.util.*
 import kotlin.math.ceil
 
@@ -57,8 +54,8 @@ class SleepCheckTask(
             }
             // Sleeping @ 75%
             world.sleepingPlayers.size > sleepRequired -> {
-                // Less than 5 seconds, increment counter
-                if (kickSeconds < 5) {
+                // Less than 30 seconds, increment counter
+                if (kickSeconds < 30) {
                     kickSeconds += 1
                     return
                 }
@@ -67,8 +64,14 @@ class SleepCheckTask(
                 world.awakePlayers.forEach {
                     val kickMessage = Messages.forPlayer(it)
                         .get(Message.SleepKickMessage)
+                        .translateColorCodes()
+                    val kickMessageBroadcast = Placeholder
+                        .withContext(it)
+                        .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
+                        .translateColorCodes()
 
                     it.kickPlayer(kickMessage)
+                    world.sendMessage(kickMessageBroadcast)
                 }
             }
             // Everyone is asleep, and we have enough people
