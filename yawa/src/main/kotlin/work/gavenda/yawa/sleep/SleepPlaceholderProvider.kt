@@ -30,7 +30,7 @@ class SleepPlaceholderProvider : PlaceholderProvider {
 
     override fun provide(player: Player?, world: World?): Map<String, String> {
         return mapOf(
-            "world-sleeping" to world?.sleeping?.size.toString(),
+            "world-sleeping" to world?.sleepingPlayers?.size.toString(),
             "world-sleeping-needed" to world?.sleepingNeeded.toString()
         )
     }

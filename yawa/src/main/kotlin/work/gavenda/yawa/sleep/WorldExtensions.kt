@@ -31,24 +31,30 @@ val World.isNightTime get(): Boolean = time > 12950 || time < 23950
 /**
  * Returns all sleeping players in this world.
  */
-val World.sleeping
+val World.sleepingPlayers
     get(): List<Player> = players.filter { it.isSleeping }
+
+/**
+ * Returns awake players in this world.
+ */
+val World.awakePlayers
+    get(): List<Player> = players.filter { it.isSleeping.not() }
 
 /**
  * Actual needed players that are sleeping to pass the night.
  */
 val World.sleepingNeeded
     get(): Int {
-        val neededUnsafe = players.size - sleeping.size
+        val neededUnsafe = players.size - sleepingPlayers.size
         return max(0, neededUnsafe)
     }
 
 /**
  * Returns true if any player begins to sleep.
  */
-val World.beganSleeping get(): Boolean = sleeping.isNotEmpty() && sleepingNeeded > 0
+val World.beganSleeping get(): Boolean = sleepingPlayers.isNotEmpty() && sleepingNeeded > 0
 
 /**
  * Returns true if every player is in bed.
  */
-val World.isEveryoneSleeping get(): Boolean = sleepingNeeded == 0 && sleeping.isNotEmpty()
+val World.isEveryoneSleeping get(): Boolean = sleepingNeeded == 0 && sleepingPlayers.isNotEmpty()

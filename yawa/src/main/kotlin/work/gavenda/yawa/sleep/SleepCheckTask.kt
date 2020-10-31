@@ -26,6 +26,7 @@ import work.gavenda.yawa.api.sendActionBarIf
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Checks per world if there are people beginning to sleep.
@@ -35,51 +36,77 @@ class SleepCheckTask(
     private val sleepingWorlds: MutableSet<UUID>
 ) : Runnable {
 
+    // Kick seconds should increment per tick (1 second)
+    private var kickSeconds = 0
+
     private fun checkWorld(world: World) {
         val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
+        val sleepRequired = ceil(world.players.size * 0.75).toInt()
 
         // Someone is asleep, and we lack more people.
-        if (world.beganSleeping) {
-            val message = Placeholder
-                .withContext(world)
-                .parseWithDefaultLocale(Message.ActionBarSleeping)
-                .translateColorCodes()
+        when {
+            world.beganSleeping -> {
+                val message = Placeholder
+                    .withContext(world)
+                    .parseWithDefaultLocale(Message.ActionBarSleeping)
+                    .translateColorCodes()
 
-            world.sendActionBarIf(message) {
-                Config.Sleep.ActionBar.Enabled
+                world.sendActionBarIf(message) {
+                    Config.Sleep.ActionBar.Enabled
+                }
             }
-        }
-        // Everyone is asleep, and we have enough people
-        else if (world.isEveryoneSleeping) {
-            val message = Placeholder
-                .withContext(world)
-                .parseWithDefaultLocale(Message.ActionBarSleepingDone)
-                .translateColorCodes()
+            // Sleeping @ 75%
+            world.sleepingPlayers.size > sleepRequired -> {
+                // Less than 5 seconds, increment counter
+                if (kickSeconds < 5) {
+                    kickSeconds += 1
+                    return
+                }
 
-            world.sendActionBarIf(message) {
-                Config.Sleep.ActionBar.Enabled
+                // Kick awake players
+                world.awakePlayers.forEach {
+                    val kickMessage = Messages.forPlayer(it)
+                        .get(Message.SleepKickMessage)
+
+                    it.kickPlayer(kickMessage)
+                }
             }
+            // Everyone is asleep, and we have enough people
+            world.isEveryoneSleeping -> {
+                val message = Placeholder
+                    .withContext(world)
+                    .parseWithDefaultLocale(Message.ActionBarSleepingDone)
+                    .translateColorCodes()
 
-            sleepingWorlds.add(world.uid)
+                world.sendActionBarIf(message) {
+                    Config.Sleep.ActionBar.Enabled
+                }
 
-            val sleepingMessage = Placeholder
-                .withContext(world)
-                .parseWithDefaultLocale(Message.Sleeping)
-                .translateColorCodes()
+                sleepingWorlds.add(world.uid)
 
-            // Broadcast everyone sleeping
-            world.sendMessageIf(sleepingMessage) {
-                Config.Sleep.Chat.Enabled
+                val sleepingMessage = Placeholder
+                    .withContext(world)
+                    .parseWithDefaultLocale(Message.Sleeping)
+                    .translateColorCodes()
+
+                // Broadcast everyone sleeping
+                world.sendMessageIf(sleepingMessage) {
+                    Config.Sleep.Chat.Enabled
+                }
+
+                // Cancel existing task if exists
+                if (sleepAnimationTaskId > 0)
+                    scheduler.cancelTask(sleepAnimationTaskId)
+
+                val sleepAnimationTask = SleepAnimationTask(world, sleepAnimationTaskIds, sleepingWorlds)
+
+                // Begin sleep animation
+                sleepAnimationTaskIds[world.uid] = scheduler.runTaskTimer(plugin, sleepAnimationTask, 1, 1).taskId
             }
-
-            // Cancel existing task if exists
-            if (sleepAnimationTaskId > 0)
-                scheduler.cancelTask(sleepAnimationTaskId)
-
-            val sleepAnimationTask = SleepAnimationTask(world, sleepAnimationTaskIds, sleepingWorlds)
-
-            // Begin sleep animation
-            sleepAnimationTaskIds[world.uid] = scheduler.runTaskTimer(plugin, sleepAnimationTask, 1, 1).taskId
+            else -> {
+                // Reset kick seconds
+                kickSeconds = 0
+            }
         }
     }
 
