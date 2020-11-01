@@ -29,7 +29,7 @@ class DiscordSRVListener {
 
     @Subscribe(priority = ListenerPriority.HIGHEST)
     fun onDiscordMessagePostProcess(e: DiscordGuildMessagePostProcessEvent) {
-        val author = e.author.name
+        val author = e.member.effectiveName
         val formattedMessage =
             Config.Chat.FormatMessageDiscord
                 .plus(e.message.contentDisplay)

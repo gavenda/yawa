@@ -54,8 +54,8 @@ class SleepCheckTask(
             }
             // Sleeping @ 75%
             world.sleepingPlayers.size > sleepRequired -> {
-                // Less than 30 seconds, increment counter
-                if (kickSeconds < 30) {
+                // Less than 15 seconds, increment counter
+                if (kickSeconds < 15) {
                     kickSeconds += 1
                     return
                 }
