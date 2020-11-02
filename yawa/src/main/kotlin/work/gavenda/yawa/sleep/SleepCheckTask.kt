@@ -23,6 +23,7 @@ import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.*
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.ceil
 
 /**
@@ -34,7 +35,7 @@ class SleepCheckTask(
 ) : Runnable {
 
     // Kick seconds should increment per tick (1 second)
-    private var kickSeconds = 0
+    private var kickSeconds = AtomicInteger()
 
     private fun checkWorld(world: World) {
         val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
@@ -55,8 +56,7 @@ class SleepCheckTask(
                 // Sleeping @ 50%
                 if(world.sleepingPlayers.size >= sleepRequired) {
                     // Less than 15 seconds, increment counter
-                    if (kickSeconds < 15) {
-                        kickSeconds += 1
+                    if (kickSeconds.incrementAndGet() < 15) {
                         return
                     }
 
@@ -108,7 +108,7 @@ class SleepCheckTask(
                 sleepAnimationTaskIds[world.uid] = scheduler.runTaskTimer(plugin, sleepAnimationTask, 1, 1).taskId
 
                 // Reset kick seconds
-                kickSeconds = 0
+                kickSeconds.lazySet(0)
             }
         }
     }
