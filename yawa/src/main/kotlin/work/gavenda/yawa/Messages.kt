@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa
 
+import com.comphenix.protocol.injector.server.TemporaryPlayer
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -123,7 +124,9 @@ class MessagesDefaultContext : MessagesContext {
  * @param player the player to get messages from
  */
 class MessagesPlayerContext(player: Player) : MessagesContext {
-    private val locale = Locale(player.locale)
+    private val locale = if(player is TemporaryPlayer) {
+        Locale.getDefault()
+    } else Locale(player.locale)
     private val messages = ResourceBundle.getBundle("i18n.messages", locale)
 
     /**
