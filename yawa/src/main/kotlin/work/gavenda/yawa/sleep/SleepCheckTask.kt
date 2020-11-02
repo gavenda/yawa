@@ -38,7 +38,7 @@ class SleepCheckTask(
 
     private fun checkWorld(world: World) {
         val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
-        val sleepRequired = ceil(world.players.size * 0.75).toInt()
+        val sleepRequired = world.players.size / 2
 
         // Someone is asleep, and we lack more people.
         when {
@@ -52,8 +52,8 @@ class SleepCheckTask(
                     Config.Sleep.ActionBar.Enabled
                 }
 
-                // Sleeping @ 75%
-                if(world.sleepingPlayers.size > sleepRequired) {
+                // Sleeping @ 50%
+                if(world.sleepingPlayers.size >= sleepRequired) {
                     // Less than 15 seconds, increment counter
                     if (kickSeconds < 15) {
                         kickSeconds += 1
