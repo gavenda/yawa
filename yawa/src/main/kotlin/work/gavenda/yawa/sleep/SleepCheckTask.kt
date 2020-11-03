@@ -24,7 +24,6 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
-import kotlin.math.ceil
 
 /**
  * Checks per world if there are people beginning to sleep.
@@ -54,24 +53,26 @@ class SleepCheckTask(
                 }
 
                 // Sleeping @ 50%
-                if(world.sleepingPlayers.size >= sleepRequired) {
+                if (world.sleepingPlayers.size >= sleepRequired) {
                     // Less than 15 seconds, increment counter
                     if (kickSeconds.incrementAndGet() < 15) {
                         return
                     }
 
-                    // Kick awake players
-                    world.awakePlayers.forEach {
-                        val kickMessage = Messages.forPlayer(it)
-                            .get(Message.SleepKickMessage)
-                            .translateColorCodes()
-                        val kickMessageBroadcast = Placeholder
-                            .withContext(it)
-                            .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
-                            .translateColorCodes()
+                    scheduler.runTask(plugin) { _ ->
+                        // Kick awake players
+                        world.awakePlayers.forEach {
+                            val kickMessage = Messages.forPlayer(it)
+                                .get(Message.SleepKickMessage)
+                                .translateColorCodes()
+                            val kickMessageBroadcast = Placeholder
+                                .withContext(it)
+                                .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
+                                .translateColorCodes()
 
-                        it.kickPlayer(kickMessage)
-                        world.sendMessage(kickMessageBroadcast)
+                            it.kickPlayer(kickMessage)
+                            world.sendMessage(kickMessageBroadcast)
+                        }
                     }
                 }
             }
