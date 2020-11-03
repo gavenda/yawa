@@ -111,6 +111,10 @@ class SleepCheckTask(
                 // Reset kick seconds
                 kickSeconds.lazySet(0)
             }
+            else -> {
+                // Reset kick seconds
+                kickSeconds.lazySet(0)
+            }
         }
     }
 
