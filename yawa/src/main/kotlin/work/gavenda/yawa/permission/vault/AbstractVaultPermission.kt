@@ -62,26 +62,26 @@ abstract class AbstractVaultPermission : Permission() {
     }
 
     // methods subclasses are expected to implement
-    abstract fun lookupUuid(player: String): UUID
-    abstract fun lookupGroupUuid(group: String): UUID
-    abstract fun userHasPermission(uuid: UUID, permission: String): Boolean
-    abstract fun userAddPermission(uuid: UUID, permission: String): Boolean
-    abstract fun userRemovePermission(uuid: UUID, permission: String): Boolean
-    abstract fun userInGroup(uuid: UUID, group: UUID): Boolean
-    abstract fun userAddGroup(uuid: UUID, group: UUID): Boolean
-    abstract fun userRemoveGroup(uuid: UUID, group: UUID): Boolean
-    abstract fun userGetGroups(uuid: UUID): Array<String>
-    abstract fun userGetPrimaryGroup(uuid: UUID): String
-    abstract fun groupHasPermission(group: UUID, permission: String): Boolean
-    abstract fun groupAddPermission(group: UUID, permission: String): Boolean
-    abstract fun groupRemovePermission(group: UUID, permission: String): Boolean
+    abstract fun lookupUuid(playerId: String): UUID
+    abstract fun lookupGroupUuid(groupId: String): UUID
+    abstract fun playerHasPermission(playerId: UUID, permission: String): Boolean
+    abstract fun playerAddPermission(playerId: UUID, permission: String): Boolean
+    abstract fun playerRemovePermission(playerId: UUID, permission: String): Boolean
+    abstract fun playerInGroup(playerId: UUID, groupId: UUID): Boolean
+    abstract fun playerAddGroup(playerId: UUID, groupId: UUID): Boolean
+    abstract fun playerRemoveGroup(playerId: UUID, groupId: UUID): Boolean
+    abstract fun findPlayerGroups(playerId: UUID): Array<String>
+    abstract fun findPlayerPrimaryGroup(playerId: UUID): String
+    abstract fun groupHasPermission(groupId: UUID, permission: String): Boolean
+    abstract fun groupAddPermission(groupId: UUID, permission: String): Boolean
+    abstract fun groupRemovePermission(groupId: UUID, permission: String): Boolean
 
     override fun has(world: String, player: String, permission: String): Boolean {
-        return userHasPermission(lookupUuid(player), permission)
+        return playerHasPermission(lookupUuid(player), permission)
     }
 
     override fun has(world: World, player: String, permission: String): Boolean {
-        return userHasPermission(lookupUuid(player), permission)
+        return playerHasPermission(lookupUuid(player), permission)
     }
 
     override fun has(player: Player, permission: String): Boolean {
@@ -89,15 +89,15 @@ abstract class AbstractVaultPermission : Permission() {
     }
 
     override fun playerHas(world: String, player: String, permission: String): Boolean {
-        return userHasPermission(lookupUuid(player), permission)
+        return playerHasPermission(lookupUuid(player), permission)
     }
 
     override fun playerHas(world: World, player: String, permission: String): Boolean {
-        return userHasPermission(lookupUuid(player), permission)
+        return playerHasPermission(lookupUuid(player), permission)
     }
 
     override fun playerHas(world: String, player: OfflinePlayer, permission: String): Boolean {
-        return userHasPermission(player.uniqueId, permission)
+        return playerHasPermission(player.uniqueId, permission)
     }
 
     override fun playerHas(player: Player, permission: String): Boolean {
@@ -105,35 +105,35 @@ abstract class AbstractVaultPermission : Permission() {
     }
 
     override fun playerAdd(world: String, player: String, permission: String): Boolean {
-        return userAddPermission(lookupUuid(player), permission)
+        return playerAddPermission(lookupUuid(player), permission)
     }
 
     override fun playerAdd(world: World, player: String, permission: String): Boolean {
-        return userAddPermission(lookupUuid(player), permission)
+        return playerAddPermission(lookupUuid(player), permission)
     }
 
     override fun playerAdd(world: String, player: OfflinePlayer, permission: String): Boolean {
-        return userAddPermission(player.uniqueId, permission)
+        return playerAddPermission(player.uniqueId, permission)
     }
 
     override fun playerAdd(player: Player, permission: String): Boolean {
-        return userAddPermission(player.uniqueId, permission)
+        return playerAddPermission(player.uniqueId, permission)
     }
 
     override fun playerRemove(world: String, player: String, permission: String): Boolean {
-        return userRemovePermission(lookupUuid(player), permission)
+        return playerRemovePermission(lookupUuid(player), permission)
     }
 
     override fun playerRemove(world: String, player: OfflinePlayer, permission: String): Boolean {
-        return userRemovePermission(player.uniqueId, permission)
+        return playerRemovePermission(player.uniqueId, permission)
     }
 
     override fun playerRemove(world: World, player: String, permission: String): Boolean {
-        return userRemovePermission(lookupUuid(player), permission)
+        return playerRemovePermission(lookupUuid(player), permission)
     }
 
     override fun playerRemove(player: Player, permission: String): Boolean {
-        return userRemovePermission(player.uniqueId, permission)
+        return playerRemovePermission(player.uniqueId, permission)
     }
 
     override fun groupHas(world: String, group: String, permission: String): Boolean {
@@ -161,83 +161,83 @@ abstract class AbstractVaultPermission : Permission() {
     }
 
     override fun playerInGroup(world: String, player: String, group: String): Boolean {
-        return userInGroup(lookupUuid(player), lookupGroupUuid(group))
+        return playerInGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
     override fun playerInGroup(world: World, player: String, group: String): Boolean {
-        return userInGroup(lookupUuid(player), lookupGroupUuid(group))
+        return playerInGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
     override fun playerInGroup(world: String, player: OfflinePlayer, group: String): Boolean {
-        return userInGroup(player.uniqueId, lookupGroupUuid(group))
+        return playerInGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
     override fun playerInGroup(player: Player, group: String): Boolean {
-        return userInGroup(player.uniqueId, lookupGroupUuid(group))
+        return playerInGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
     override fun playerAddGroup(world: String, player: String, group: String): Boolean {
-        return userAddGroup(lookupUuid(player), lookupGroupUuid(group))
+        return playerAddGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
     override fun playerAddGroup(world: World, player: String, group: String): Boolean {
-        return userAddGroup(lookupUuid(player), lookupGroupUuid(group))
+        return playerAddGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
     override fun playerAddGroup(world: String, player: OfflinePlayer, group: String): Boolean {
-        return userAddGroup(player.uniqueId, lookupGroupUuid(group))
+        return playerAddGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
     override fun playerAddGroup(player: Player, group: String): Boolean {
-        return userAddGroup(player.uniqueId, lookupGroupUuid(group))
+        return playerAddGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
     override fun playerRemoveGroup(world: String, player: String, group: String): Boolean {
-        return userRemoveGroup(lookupUuid(player), lookupGroupUuid(group))
+        return playerRemoveGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
     override fun playerRemoveGroup(world: World, player: String, group: String): Boolean {
-        return userRemoveGroup(lookupUuid(player), lookupGroupUuid(group))
+        return playerRemoveGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
     override fun playerRemoveGroup(world: String, player: OfflinePlayer, group: String): Boolean {
-        return userRemoveGroup(player.uniqueId, lookupGroupUuid(group))
+        return playerRemoveGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
     override fun playerRemoveGroup(player: Player, group: String): Boolean {
-        return userRemoveGroup(player.uniqueId, lookupGroupUuid(group))
+        return playerRemoveGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
     override fun getPlayerGroups(world: String, player: String): Array<String> {
-        return userGetGroups(lookupUuid(player))
+        return findPlayerGroups(lookupUuid(player))
     }
 
     override fun getPlayerGroups(world: World, player: String): Array<String> {
-        return userGetGroups(lookupUuid(player))
+        return findPlayerGroups(lookupUuid(player))
     }
 
     override fun getPlayerGroups(world: String, player: OfflinePlayer): Array<String> {
-        return userGetGroups(player.uniqueId)
+        return findPlayerGroups(player.uniqueId)
     }
 
     override fun getPlayerGroups(player: Player): Array<String> {
-        return userGetGroups(player.uniqueId)
+        return findPlayerGroups(player.uniqueId)
     }
 
     override fun getPrimaryGroup(world: String, player: String): String {
-        return userGetPrimaryGroup(lookupUuid(player))
+        return findPlayerPrimaryGroup(lookupUuid(player))
     }
 
     override fun getPrimaryGroup(world: World, player: String): String {
-        return userGetPrimaryGroup(lookupUuid(player))
+        return findPlayerPrimaryGroup(lookupUuid(player))
     }
 
     override fun getPrimaryGroup(world: String, player: OfflinePlayer): String {
-        return userGetPrimaryGroup(player.uniqueId)
+        return findPlayerPrimaryGroup(player.uniqueId)
     }
 
     override fun getPrimaryGroup(player: Player): String {
-        return userGetPrimaryGroup(player.uniqueId)
+        return findPlayerPrimaryGroup(player.uniqueId)
     }
 
     init {

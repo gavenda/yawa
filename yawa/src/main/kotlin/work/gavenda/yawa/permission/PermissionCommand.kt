@@ -26,6 +26,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
+import java.util.*
 
 private val permissionCommands = listOf("permission", "yawa:permission")
 
@@ -120,6 +121,7 @@ class PermissionGroupCommand : Command(Permission.PERMISSION_GROUP) {
             val groupNameArg = args[0]
             val permissionArg = args[1]
             val enabledArg = args[2].toBoolean()
+            val playerIds = mutableListOf<UUID>()
 
             transaction {
                 val foundGroup = Group.find { GroupSchema.name eq groupNameArg }.firstOrNull()
@@ -140,13 +142,17 @@ class PermissionGroupCommand : Command(Permission.PERMISSION_GROUP) {
                 }
 
                 foundGroup.players.forEach {
-                    // Calculate permissions if exists
-                    val player = Bukkit.getPlayer(it.id.value)
-                    player?.calculatePermissions()
+                    playerIds.add(it.id.value)
                 }
-
-                sender.sendMessageUsingKey(Message.PermissionApplied)
             }
+
+            playerIds.forEach {
+                // Calculate permissions if exists
+                val player = Bukkit.getPlayer(it)
+                player?.calculatePermissions()
+            }
+
+            sender.sendMessageUsingKey(Message.PermissionApplied)
         }
     }
 
