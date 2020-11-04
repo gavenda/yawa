@@ -125,7 +125,7 @@ class LoginConnectionTask(
             }
             encryptionBegin.sendPacket(player)
         } catch (ex: Exception) {
-            logger.warn("Cannot send encrypt connection. Falling back to unsecure login")
+            logger.warn("Cannot send encrypt connection. Falling back to unsecure login", ex)
             return
         }
 

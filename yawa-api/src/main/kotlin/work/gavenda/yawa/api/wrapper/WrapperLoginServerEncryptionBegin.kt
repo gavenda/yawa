@@ -20,7 +20,9 @@ package work.gavenda.yawa.api.wrapper
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
+import work.gavenda.yawa.api.apiLogger
 import java.security.PublicKey
+import java.util.*
 
 class WrapperLoginServerEncryptionBegin : AbstractPacket(PacketContainer(type), type) {
 
@@ -41,7 +43,7 @@ class WrapperLoginServerEncryptionBegin : AbstractPacket(PacketContainer(type), 
      * @param publicKey the public key
      */
     fun writePublicKey(publicKey: PublicKey) {
-        handle.getSpecificModifier(PublicKey::class.java).write(0, publicKey)
+        handle.byteArrays.write(0, publicKey.encoded)
     }
 
     /**
@@ -49,7 +51,7 @@ class WrapperLoginServerEncryptionBegin : AbstractPacket(PacketContainer(type), 
      * @param value new value
      */
     fun writeVerifyToken(value: ByteArray) {
-        handle.byteArrays.write(0, value)
+        handle.byteArrays.write(1, value)
     }
 
     companion object {

@@ -23,6 +23,7 @@ import java.math.BigInteger
 import java.security.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 /**
@@ -30,7 +31,7 @@ import javax.crypto.spec.SecretKeySpec
  */
 object MinecraftEncryption {
 
-    private val secureRandom = SecureRandom()
+    val secureRandom = SecureRandom()
     private const val verifyTokenLength = 4
     private const val keyPairAlgorithm = "RSA"
 
@@ -97,4 +98,12 @@ object MinecraftEncryption {
             init(Cipher.DECRYPT_MODE, key)
         }.doFinal(data)
 
+    /**
+     * Returns the given key as a cipher.
+     * @param mode cipher mode
+     * @param key secret key
+     */
+    fun asCipher(mode: Int, key: SecretKey): Cipher = Cipher.getInstance("AES/CFB8/NoPadding").apply {
+        init(mode, key, IvParameterSpec(key.encoded))
+    }
 }

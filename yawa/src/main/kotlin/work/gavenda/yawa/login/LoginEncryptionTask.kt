@@ -40,6 +40,7 @@ import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
 import java.util.*
+import javax.crypto.Cipher
 import javax.crypto.SecretKey
 
 /**
@@ -194,10 +195,13 @@ class LoginEncryptionTask(
         try {
             val encryptMethod = FuzzyReflection
                 .fromObject(player.networkManager)
-                .getMethodByParameters("a", SecretKey::class.java)
+                .getMethodByParameters("a", Cipher::class.java, Cipher::class.java)
+
+            val decryptCipher = MinecraftEncryption.asCipher(Cipher.DECRYPT_MODE, loginKey)
+            val encryptCipher = MinecraftEncryption.asCipher(Cipher.ENCRYPT_MODE, loginKey)
 
             // Encrypt/decrypt following packets
-            encryptMethod.invoke(player.networkManager, loginKey)
+            encryptMethod.invoke(player.networkManager, decryptCipher, encryptCipher)
         } catch (ex: Exception) {
             logger.error("Cannot enable encryption", ex)
             return false
