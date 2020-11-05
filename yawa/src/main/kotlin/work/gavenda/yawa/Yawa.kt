@@ -48,6 +48,7 @@ import java.lang.reflect.Modifier
 class Yawa : JavaPlugin() {
 
     private val startupListener = StartupListener()
+    private val godListener = GodListener()
     private var safeLoad = false
     private lateinit var dataSource: HikariDataSource
     private val rootCommand = YawaCommand().apply {
@@ -73,6 +74,8 @@ class Yawa : JavaPlugin() {
         initDataSource()
         // Listen to POST-server startup, required for some features
         server.pluginManager.registerEvents(startupListener, this)
+        // For FUN obviously
+        server.pluginManager.registerEvents(godListener, this)
         // Enable features
         AfkFeature.enable()
         ChatFeature.enable()
@@ -118,6 +121,7 @@ class Yawa : JavaPlugin() {
         SleepFeature.disable()
         TabListFeature.disable()
         // Unregister startup listener
+        HandlerList.unregisterAll(godListener)
         HandlerList.unregisterAll(startupListener)
         // Close data source
         dataSource.close()
