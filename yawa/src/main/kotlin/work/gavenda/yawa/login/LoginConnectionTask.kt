@@ -19,7 +19,6 @@
 
 package work.gavenda.yawa.login
 
-import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketEvent
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -27,6 +26,7 @@ import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
 import work.gavenda.yawa.logger
+import work.gavenda.yawa.protocolManager
 import java.security.KeyPair
 import java.security.PublicKey
 
@@ -41,7 +41,6 @@ class LoginConnectionTask(
 ) : Runnable {
 
     private val serverId = ""
-    private val protocolManager = ProtocolLibrary.getProtocolManager()
 
     override fun run() {
         try {

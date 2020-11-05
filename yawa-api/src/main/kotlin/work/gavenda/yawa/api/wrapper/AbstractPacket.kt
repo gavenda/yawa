@@ -51,6 +51,8 @@ import java.lang.reflect.InvocationTargetException
  */
 abstract class AbstractPacket(val handle: PacketContainer, type: PacketType) {
 
+    val protocolManager = ProtocolLibrary.getProtocolManager()
+
     /**
      * Send the current packet to the given receiver.
      * @param receiver the receiver
@@ -58,12 +60,23 @@ abstract class AbstractPacket(val handle: PacketContainer, type: PacketType) {
      */
     fun sendPacket(receiver: Player) {
         try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(
-                receiver,
-                handle
-            )
+            protocolManager.sendServerPacket(receiver, handle)
         } catch (e: InvocationTargetException) {
             throw RuntimeException("Cannot send packet.", e)
+        }
+    }
+
+    /**
+     * Simulate receiving the current packet from the given sender.
+     *
+     * @param sender - the sender.
+     * @throws RuntimeException if the packet cannot be received.
+     */
+    fun receivePacket(sender: Player) {
+        try {
+            protocolManager.recieveClientPacket(sender, handle)
+        } catch (e: Exception) {
+            throw RuntimeException("Cannot receive packet.", e)
         }
     }
 

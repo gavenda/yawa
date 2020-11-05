@@ -124,7 +124,7 @@ class MessagesDefaultContext : MessagesContext {
  * @param player the player to get messages from
  */
 class MessagesPlayerContext(player: Player) : MessagesContext {
-    private val locale = if(player is TemporaryPlayer) {
+    private val locale = if (player is TemporaryPlayer) {
         Locale.getDefault()
     } else Locale(player.locale)
     private val messages = ResourceBundle.getBundle("i18n.messages", locale)

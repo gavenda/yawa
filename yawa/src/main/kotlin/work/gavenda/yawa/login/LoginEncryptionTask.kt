@@ -20,22 +20,18 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Message
-import work.gavenda.yawa.Messages
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
 import work.gavenda.yawa.api.spoofedUuid
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.logger
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
@@ -54,8 +50,6 @@ class LoginEncryptionTask(
     private val encryptedVerifyToken: ByteArray,
     private val sharedSecret: ByteArray
 ) : Runnable {
-
-    private val protocolManager = ProtocolLibrary.getProtocolManager()
 
     override fun run() {
         val loginKey = try {

@@ -19,12 +19,16 @@
 
 package work.gavenda.yawa
 
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
 import org.bukkit.Bukkit
+import org.bukkit.Server
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
+import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.PlaceholderContext
 import work.gavenda.yawa.api.translateColorCodes
@@ -39,17 +43,22 @@ val plugin get() = Yawa.Instance
 /**
  * Easy access to bukkit's server instance.
  */
-val server get() = Bukkit.getServer()
+val server: Server get() = Bukkit.getServer()
 
 /**
  * Easy access to bukkit's scheduler.
  */
-val scheduler get() = Bukkit.getScheduler()
+val scheduler: BukkitScheduler get() = Bukkit.getScheduler()
 
 /**
  * Easy access to bukkit's plugin manager.
  */
-val pluginManager get() = Bukkit.getPluginManager()
+val pluginManager: PluginManager get() = Bukkit.getPluginManager()
+
+/**
+ * Easy access to ProtocolLib protocol manager.
+ */
+val protocolManager: ProtocolManager get() = ProtocolLibrary.getProtocolManager()
 
 /**
  * Convert time unit into minecraft ticks.

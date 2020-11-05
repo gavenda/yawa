@@ -19,7 +19,6 @@
 
 package work.gavenda.yawa.login
 
-import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.async.AsyncListenerHandler
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -32,7 +31,6 @@ import java.security.KeyPair
 object LoginFeature : PluginFeature {
     override val isDisabled get() = Config.Login.Disabled
 
-    private val protocolManager = ProtocolLibrary.getProtocolManager()
     private val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
     private lateinit var loginHandler: AsyncListenerHandler
     private lateinit var loginEncryptionHandler: AsyncListenerHandler

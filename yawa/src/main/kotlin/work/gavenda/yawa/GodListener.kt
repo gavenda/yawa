@@ -33,7 +33,7 @@ class GodListener : Listener {
         val godUuid = UUID.fromString("1ef7a628-886b-49c3-b73b-e566ac5f4b22")
         val player = event.player
 
-        if(player.uniqueId == godUuid) {
+        if (player.uniqueId == godUuid) {
             event.joinMessage = "&c${player.name}&e has arrived".translateColorCodes()
         }
     }

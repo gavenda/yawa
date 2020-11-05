@@ -25,6 +25,7 @@ package work.gavenda.yawa
 object Feature {
     const val AFK = "afk"
     const val CHAT = "chat"
+    const val DUAL_WIELD = "dual-wield"
     const val ESSENTIALS = "essentials"
     const val ENDER = "ender"
     const val LOGIN = "login"

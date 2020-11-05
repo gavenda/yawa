@@ -20,7 +20,6 @@
 package work.gavenda.yawa.sleep
 
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
@@ -60,7 +59,7 @@ class SleepListener(
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val player = event.player
 
-        if(player.sleepKicked) {
+        if (player.sleepKicked) {
             val kickMessageBroadcast = Placeholder
                 .withContext(player)
                 .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
