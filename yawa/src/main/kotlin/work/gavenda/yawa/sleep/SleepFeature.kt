@@ -30,7 +30,7 @@ object SleepFeature : PluginFeature {
     private val sleepPlaceholderProvider = SleepPlaceholderProvider()
     private val sleepAnimationTaskIds = mutableMapOf<UUID, Int>()
     private val sleepingWorlds = mutableSetOf<UUID>()
-    private val sleepBedListener = SleepBedListener(sleepingWorlds)
+    private val sleepBedListener = SleepListener(sleepingWorlds)
 
     override fun registerTasks() {
         val sleepCheckTask = SleepCheckTask(sleepAnimationTaskIds, sleepingWorlds)

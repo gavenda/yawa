@@ -65,13 +65,9 @@ class SleepCheckTask(
                             val kickMessage = Messages.forPlayer(it)
                                 .get(Message.SleepKickMessage)
                                 .translateColorCodes()
-                            val kickMessageBroadcast = Placeholder
-                                .withContext(it)
-                                .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
-                                .translateColorCodes()
 
+                            it.sleepKicked = true
                             it.kickPlayer(kickMessage)
-                            world.sendMessage(kickMessageBroadcast)
                         }
                     }
                 }

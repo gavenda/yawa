@@ -20,21 +20,24 @@
 package work.gavenda.yawa.sleep
 
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.parseWithDefaultLocale
 import work.gavenda.yawa.parseWithLocale
 import java.util.*
 
 /**
  * Sleep feature bed listener.
  */
-class SleepBedListener(
+class SleepListener(
     private val sleepingWorlds: MutableSet<UUID>
 ) : Listener {
 
@@ -51,6 +54,21 @@ class SleepBedListener(
             .translateColorCodes()
 
         world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+        val player = event.player
+
+        if(player.sleepKicked) {
+            val kickMessageBroadcast = Placeholder
+                .withContext(player)
+                .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
+                .translateColorCodes()
+
+            event.quitMessage = kickMessageBroadcast
+            player.sleepKicked = false
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
