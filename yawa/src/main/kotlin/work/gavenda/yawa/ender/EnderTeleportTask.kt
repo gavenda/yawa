@@ -23,18 +23,19 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.sendMessageUsingKey
+import java.util.*
 
 class EnderTeleportTask(
-    private val players: Sequence<Player>,
-    private val teleportingPlayers: MutableSet<Player>,
+    private val teleportingPlayers: Queue<Player>,
     private val location: Location
 ) : Runnable {
     override fun run() {
-        players.forEach { player ->
+        while(teleportingPlayers.isNotEmpty()) {
+            val player = teleportingPlayers.remove()
+
             // Teleport to damaging entity
             player.teleportAsync(location).thenRun {
                 player.sendMessageUsingKey(Message.EnderBattleTeleport)
-                teleportingPlayers.remove(player)
             }
         }
     }

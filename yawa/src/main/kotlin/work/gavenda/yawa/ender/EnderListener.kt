@@ -28,13 +28,14 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import work.gavenda.yawa.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
  * Listens to a possible event of an ender dragon to be hit.
  */
 class EnderListener(
-    private val teleportingPlayers: MutableSet<Player>
+    private val teleportingPlayers: Queue<Player>
 ) : Listener {
 
     @EventHandler(ignoreCancelled = true)
@@ -70,15 +71,15 @@ class EnderListener(
         if (players.none()) return
 
         players.forEach { player ->
-            // Tell everyone
-            player.sendMessageUsingKey(Message.EnderBattleStart)
-            // Mark as teleporting
-            teleportingPlayers.add(player)
+            if (teleportingPlayers.contains(player).not()) {
+                teleportingPlayers.offer(player)
+                player.sendMessageUsingKey(Message.EnderBattleStart)
+            }
         }
 
         // Teleport to ender dragon after 5 seconds
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
-        val enderTeleportTask = EnderTeleportTask(players, teleportingPlayers, location)
+        val enderTeleportTask = EnderTeleportTask(teleportingPlayers, location)
 
         scheduler.runTaskLater(plugin, enderTeleportTask, secondsInTicks)
     }

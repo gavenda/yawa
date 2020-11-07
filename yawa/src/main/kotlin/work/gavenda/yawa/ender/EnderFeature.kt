@@ -21,13 +21,14 @@ package work.gavenda.yawa.ender
 
 import org.bukkit.entity.Player
 import work.gavenda.yawa.*
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * Represents the ender feature.
  */
 object EnderFeature : PluginFeature {
 
-    private val teleportingPlayers = mutableSetOf<Player>()
+    private val teleportingPlayers = ConcurrentLinkedQueue<Player>()
     private val enderListener = EnderListener(teleportingPlayers)
 
     override val isDisabled get() = Config.Ender.Disabled
