@@ -34,7 +34,7 @@ class GodListener : Listener {
         val player = event.player
 
         if (player.uniqueId == godUuid) {
-            event.joinMessage = "&c${player.name}&e has arrived".translateColorCodes()
+            event.joinMessage = "&6${player.name}&e joined the game".translateColorCodes()
         }
     }
 
