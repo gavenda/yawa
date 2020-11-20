@@ -28,6 +28,7 @@ object Feature {
     const val DUAL_WIELD = "dual-wield"
     const val ESSENTIALS = "essentials"
     const val ENDER = "ender"
+    const val IMAGE_UPLOAD = "img-up"
     const val LOGIN = "login"
     const val PERMISSION = "permission"
     const val PING = "ping"

@@ -27,6 +27,7 @@ import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
+import work.gavenda.yawa.imgup.ImageUploadFeature
 import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.permission.PermissionFeature
 import work.gavenda.yawa.ping.PingFeature
@@ -45,6 +46,7 @@ private val featureEnableMap = mapOf(
     Feature.CHAT to { ChatFeature.enable() },
     Feature.ENDER to { EnderFeature.enable() },
     Feature.ESSENTIALS to { EssentialsFeature.enable() },
+    Feature.IMAGE_UPLOAD to { ImageUploadFeature.enable() },
     Feature.LOGIN to { LoginFeature.enable() },
     Feature.PING to { PingFeature.enable() },
     Feature.PLAYER_HEAD to { PlayerHeadFeature.enable() },
@@ -61,6 +63,7 @@ private val featureDisableMap = mapOf(
     Feature.CHAT to { ChatFeature.disable() },
     Feature.ENDER to { EnderFeature.disable() },
     Feature.ESSENTIALS to { EssentialsFeature.disable() },
+    Feature.IMAGE_UPLOAD to { ImageUploadFeature.disable() },
     Feature.LOGIN to { LoginFeature.disable() },
     Feature.PING to { PingFeature.disable() },
     Feature.PLAYER_HEAD to { PlayerHeadFeature.disable() },
@@ -105,40 +108,40 @@ class YawaCommand : Command(commands = yawaCommands) {
 class YawaFeatureCommand : Command(Permission.FEATURE) {
 
     override fun execute(sender: CommandSender, args: List<String>) {
-        if (args.size == 2) {
-            val feature = args[0]
-            val switch = args[1]
+        if (args.size != 2) return
 
-            if (featureSwitch.contains(switch).not()) {
-                sender.sendMessageUsingKey(Message.FeatureValueInvalid)
-                return
-            }
-            if (switch == FEATURE_SWITCH_ENABLE) {
-                val enableFeature = featureEnableMap[feature] ?: return
+        val feature = args[0]
+        val switch = args[1]
 
-                // Enable in config first
-                Config.set("$feature.disabled", false)
+        if (featureSwitch.contains(switch).not()) {
+            sender.sendMessageUsingKey(Message.FeatureValueInvalid)
+            return
+        }
+        if (switch == FEATURE_SWITCH_ENABLE) {
+            val enableFeature = featureEnableMap[feature] ?: return
 
-                enableFeature()
+            // Enable in config first
+            Config.set("$feature.disabled", false)
 
-                sender.sendMessageUsingKey(Message.FeatureSetEnabled)
-                logger.info("Feature '$feature' has been enabled")
-            }
-            if (switch == FEATURE_SWITCH_DISABLE) {
-                val disableFeature = featureDisableMap[feature] ?: return
+            enableFeature()
 
-                disableFeature()
+            sender.sendMessageUsingKey(Message.FeatureSetEnabled)
+            logger.info("Feature '$feature' has been enabled")
+        }
+        if (switch == FEATURE_SWITCH_DISABLE) {
+            val disableFeature = featureDisableMap[feature] ?: return
 
-                sender.sendMessageUsingKey(Message.FeatureSetDisabled)
-                logger.info("Feature '$feature' has been disabled")
+            disableFeature()
 
-                // Disable in config last
-                Config.set("$feature.disabled", true)
-            }
+            sender.sendMessageUsingKey(Message.FeatureSetDisabled)
+            logger.info("Feature '$feature' has been disabled")
 
-            if (sender is Player) {
-                sender.updateCommands()
-            }
+            // Disable in config last
+            Config.set("$feature.disabled", true)
+        }
+
+        if (sender is Player) {
+            sender.updateCommands()
         }
     }
 
@@ -156,21 +159,23 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
  */
 class YawaReloadCommand : Command(Permission.RELOAD) {
     override fun execute(sender: CommandSender, args: List<String>) {
-        if (args.isEmpty()) {
-            Yawa.Instance.onDisable()
-            Yawa.Instance.reloadConfig()
-            Yawa.Instance.loadConfig()
-            Yawa.Instance.onEnable()
+        when(args.size) {
+            1 -> {
+                if (args[0] == "config") {
+                    Yawa.Instance.reloadConfig()
+                    Yawa.Instance.loadConfig()
 
-            sender.sendMessageUsingKey(Message.PluginReload)
-            return
-        }
+                    sender.sendMessageUsingKey(Message.PluginReloadConfig)
+                }
+            }
+            else -> {
+                Yawa.Instance.onDisable()
+                Yawa.Instance.reloadConfig()
+                Yawa.Instance.loadConfig()
+                Yawa.Instance.onEnable()
 
-        if (args[0] == "config") {
-            Yawa.Instance.reloadConfig()
-            Yawa.Instance.loadConfig()
-
-            sender.sendMessageUsingKey(Message.PluginReloadConfig)
+                sender.sendMessageUsingKey(Message.PluginReload)
+            }
         }
     }
 

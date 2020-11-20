@@ -70,6 +70,10 @@ object Message {
     const val LoginError = "login-error"
     const val SleepKickMessage = "sleep-kick"
     const val SleepKickMessageBroadcast = "sleep-kick-broadcast"
+    const val ImageUploadInvalid = "image-upload-invalid"
+    const val ImageUploadError = "image-upload-error"
+    const val ImageUploadSuccess = "image-upload-success"
+    const val ImageUploadBegin = "image-upload-begin"
 }
 
 /**

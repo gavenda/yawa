@@ -32,6 +32,10 @@ import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.PlaceholderContext
 import work.gavenda.yawa.api.translateColorCodes
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
+import java.nio.channels.Channels
 import java.util.concurrent.TimeUnit
 
 
@@ -112,6 +116,27 @@ fun PlaceholderContext.parseWithDefaultLocale(key: String): String {
             .useDefault()
             .get(key)
     )
+}
+
+/**
+ * Downloads the URL to the following file.
+ * @param file the file location to download into
+ * @return total bytes transferred
+ */
+fun URL.downloadTo(file: File): Long {
+    val readableByteChannel = Channels.newChannel(openStream())
+    val fileOutputStream = FileOutputStream(file)
+    val fileChannel = fileOutputStream.channel
+
+    var bytesTransferred = 0L
+    var availableBytes: Long
+
+    do {
+        availableBytes = fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
+        bytesTransferred += availableBytes
+    } while (availableBytes > 0)
+
+    return bytesTransferred
 }
 
 /**

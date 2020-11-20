@@ -26,6 +26,7 @@ object Permission {
     const val RELOAD = "yawa.reload"
     const val FEATURE = "yawa.feature"
     const val AFK = "yawa.afk"
+    const val IMAGE_UPLOAD = "yawa.img-up"
     const val SKIN_PLAYER = "yawa.skin.player"
     const val SKIN_RESET = "yawa.skin.reset"
     const val SKIN_URL = "yawa.skin.url"

@@ -21,6 +21,11 @@ commands:
     permission: yawa.afk
     usage: /afk
 
+  imgup:
+    description: Uploads an image for use in CustomImages plugin
+    permission: yawa.img-up
+    usage: /imgup <url> <file-name>
+
   skin:
     description: Changes your skin.
     usage: /skin <subcommands>
@@ -55,8 +60,12 @@ permissions:
       yawa.ping: true
       yawa.feature: true
       yawa.afk: true
+      yawa.img-up: true
       yawa.permission.*: true
       yawa.skin.*: true
+  yawa.img-up:
+    description: Permission to upload images for the CustomImages plugin
+    default: true
   yawa.ping:
     description: Permission to check your ping.
     default: true

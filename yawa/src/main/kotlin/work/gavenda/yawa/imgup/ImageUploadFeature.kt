@@ -17,16 +17,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa
+package work.gavenda.yawa.imgup
 
-/**
- * Plugin commands.
- */
-object Command {
-    const val SKIN = "skin"
-    const val AFK = "afk"
-    const val PERMISSION = "permission"
-    const val WHISPER = "whisper"
-    const val REPLY = "reply"
-    const val IMAGE_UPLOAD = "imgup"
+import work.gavenda.yawa.*
+
+object ImageUploadFeature : PluginFeature {
+    override val isDisabled: Boolean
+        get() = Config.ImageUpload.Disabled
+
+    private val imageUploadCommand = ImageUploadCommand()
+
+    override fun enableCommands() {
+        plugin.getCommand(Command.IMAGE_UPLOAD)?.setExecutor(imageUploadCommand)
+    }
+
+    override fun disableCommands() {
+        plugin.getCommand(Command.IMAGE_UPLOAD)?.setExecutor(DisabledCommand)
+    }
 }

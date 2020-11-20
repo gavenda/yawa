@@ -184,6 +184,15 @@ object Config {
     }
 
     /**
+     * Image upload feature configuration.
+     */
+    object ImageUpload {
+        var Disabled
+            get() = config.getBoolean("image-upload.disabled")
+            set(value) = config.set("image-upload.disabled", value)
+    }
+
+    /**
      * Load plugin configuration.
      */
     fun load(configuration: FileConfiguration) {
