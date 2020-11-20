@@ -91,6 +91,9 @@ fun Player.calculatePermissions() {
             attachment.removeAll()
             attachment.setPermissionsFromMap(groupPermissions)
             attachment.setPermissionsFromMap(playerPermissions)
+
+            logger.info("Effective permissions: ${attachment.permissions}")
+
             // Recalculate
             recalculatePermissions()
             updateCommands()
