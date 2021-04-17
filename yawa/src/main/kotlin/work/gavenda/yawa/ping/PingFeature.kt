@@ -22,6 +22,7 @@ package work.gavenda.yawa.ping
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.toTextComponent
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
@@ -37,7 +38,11 @@ object PingFeature : PluginFeature {
     private val playerPingPlaceholder = PlayerPingPlaceholder()
 
     private val scoreboard = server.scoreboardManager.newScoreboard
-    private val objective = scoreboard.registerNewObjective(SB_NAME, SB_CRITERIA, SB_DISPLAY_NAME).apply {
+    private val objective = scoreboard.registerNewObjective(
+        SB_NAME,
+        SB_CRITERIA,
+        SB_DISPLAY_NAME.toTextComponent()
+    ).apply {
         displaySlot = DisplaySlot.PLAYER_LIST
     }
 

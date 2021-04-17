@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
+import work.gavenda.yawa.api.toTextComponent
 import work.gavenda.yawa.api.translateColorCodes
 import java.util.*
 
@@ -34,7 +35,9 @@ class GodListener : Listener {
         val player = event.player
 
         if (player.uniqueId == godUuid) {
-            event.joinMessage = "&6${player.name}&e joined the game".translateColorCodes()
+            event.joinMessage(
+                "&6${player.name}&e joined the game".toTextComponent()
+            )
         }
     }
 

@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.sleep
 
+import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.PlaceholderProvider
@@ -33,5 +34,9 @@ class SleepPlaceholderProvider : PlaceholderProvider {
             "world-sleeping" to world?.sleepingPlayers?.size.toString(),
             "world-sleeping-needed" to world?.sleepingNeeded.toString()
         )
+    }
+
+    override fun provideComponent(player: Player?, world: World?): Map<String, Component?> {
+        return mapOf()
     }
 }

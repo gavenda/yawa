@@ -21,10 +21,7 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.World
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.sendActionBarIf
-import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -67,10 +64,10 @@ class SleepCheckTask(
                         world.awakePlayers.forEach {
                             val kickMessage = Messages.forPlayer(it)
                                 .get(Message.SleepKickMessage)
-                                .translateColorCodes()
+                                .toTextComponent()
 
                             it.sleepKicked = true
-                            it.kickPlayer(kickMessage)
+                            it.kick(kickMessage)
                         }
                     }
                 }

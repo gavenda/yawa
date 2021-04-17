@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.entity.Player
 
@@ -129,4 +130,9 @@ interface PlaceholderProvider {
      * Provide a placeholder.
      */
     fun provide(player: Player?, world: World?): Map<String, String?>
+
+    /**
+     * Provide a placeholder component.
+     */
+    fun provideComponent(player: Player?, world: World?): Map<String, Component?>
 }

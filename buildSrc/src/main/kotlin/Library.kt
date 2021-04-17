@@ -18,9 +18,9 @@
  */
 
 object Version {
-    const val KOTLIN = "1.4.10"
-    const val SPIGOT = "1.16.4-R0.1-SNAPSHOT"
-    const val PAPER = "1.16.4-R0.1-SNAPSHOT"
+    const val KOTLIN = "1.4.30"
+    const val SPIGOT = "1.16.5-R0.1-SNAPSHOT"
+    const val PAPER = "1.16.5-R0.1-SNAPSHOT"
     const val MOCKBUKKIT = "v1.16-SNAPSHOT"
     const val HIKARICP = "3.4.5"
     const val PROTOCOL_LIB = "4.5.1"

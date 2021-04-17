@@ -30,6 +30,7 @@ import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
@@ -238,6 +239,6 @@ fun Player.disconnect(reason: String = "") {
         // Send disconnect packet
         disconnectPacket.sendPacket(this)
         // Server cleanup
-        kickPlayer("Disconnected")
+        kick(Component.text("Disconnected"))
     }
 }

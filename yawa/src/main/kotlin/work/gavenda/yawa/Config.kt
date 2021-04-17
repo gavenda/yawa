@@ -192,6 +192,12 @@ object Config {
             set(value) = config.set("image-upload.disabled", value)
     }
 
+    object Notify {
+        var Disabled
+            get() = config.getBoolean("notify.disabled", false)
+            set(value) = config.set("notify.disabled", value)
+    }
+
     /**
      * Load plugin configuration.
      */

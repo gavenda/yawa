@@ -21,6 +21,7 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
+import net.kyori.adventure.text.Component
 import org.bukkit.World
 
 /**
@@ -41,7 +42,7 @@ val World.debugMode: Boolean
  * @param message message to broadcast
  */
 fun World.sendMessage(message: String) {
-    players.forEach { it.sendMessage(message) }
+    players.forEach { it.sendMessage(message.toTextComponent()) }
 }
 
 /**
@@ -49,7 +50,7 @@ fun World.sendMessage(message: String) {
  * @param text text to broadcast
  */
 fun World.sendActionBar(text: String) {
-    players.forEach { it.sendActionBar(text) }
+    players.forEach { it.sendActionBar(text.toTextComponent()) }
 }
 
 /**

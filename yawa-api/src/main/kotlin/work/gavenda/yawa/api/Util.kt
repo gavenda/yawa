@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.text.Component
 import org.bukkit.ChatColor
 import java.io.File
 import java.io.FileInputStream
@@ -32,6 +33,10 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter
  */
 fun String.translateColorCodes(altCharCode: Char = '&'): String {
     return ChatColor.translateAlternateColorCodes(altCharCode, this)
+}
+
+fun String.toTextComponent(altCharCode: Char = '&'): Component {
+    return Component.text(ChatColor.translateAlternateColorCodes(altCharCode, this))
 }
 
 /**

@@ -21,7 +21,7 @@ package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.toTextComponent
 import work.gavenda.yawa.server
 
 class TabListTask : Runnable {
@@ -29,14 +29,18 @@ class TabListTask : Runnable {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {
-            player.playerListHeader = Placeholder
-                .withContext(player)
-                .parse(Config.TabList.Header)
-                .translateColorCodes()
-            player.playerListFooter = Placeholder
-                .withContext(player)
-                .parse(Config.TabList.Footer)
-                .translateColorCodes()
+            player.sendPlayerListHeader(
+                Placeholder
+                    .withContext(player)
+                    .parse(Config.TabList.Header)
+                    .toTextComponent()
+            )
+            player.sendPlayerListFooter(
+                Placeholder
+                    .withContext(player)
+                    .parse(Config.TabList.Footer)
+                    .toTextComponent()
+            )
         }
     }
 }
