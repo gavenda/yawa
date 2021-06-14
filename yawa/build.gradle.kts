@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlinProject("Yawa")
-paperPlugin()
+spigotPlugin()
 
 dependencies {
     // Runtime JAR files in the classpath should have the same version. These files were found in the classpath

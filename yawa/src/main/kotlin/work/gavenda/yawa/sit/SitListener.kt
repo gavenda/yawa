@@ -42,7 +42,8 @@ class SitListener : Listener {
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val player = e.player
         if (player.location.y.isNaN()) {
-            player.teleportAsync(player.world.spawnLocation)
+            // player.teleportAsync(player.world.spawnLocation)
+            player.teleport(player.world.spawnLocation)
         }
     }
 

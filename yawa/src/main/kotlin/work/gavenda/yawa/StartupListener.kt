@@ -31,7 +31,7 @@ class StartupListener : Listener {
     fun onServerLoad(e: ServerLoadEvent) {
         if (e.type != ServerLoadEvent.LoadType.STARTUP) return
 
-        logger.info("Enabling post-startup features")
+        yawaLogger.info("Enabling post-startup features")
 
         // Enable POST-startup features
         PingFeature.enable()

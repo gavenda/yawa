@@ -126,7 +126,7 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
             enableFeature()
 
             sender.sendMessageUsingKey(Message.FeatureSetEnabled)
-            logger.info("Feature '$feature' has been enabled")
+            yawaLogger.info("Feature '$feature' has been enabled")
         }
         if (switch == FEATURE_SWITCH_DISABLE) {
             val disableFeature = featureDisableMap[feature] ?: return
@@ -134,7 +134,7 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
             disableFeature()
 
             sender.sendMessageUsingKey(Message.FeatureSetDisabled)
-            logger.info("Feature '$feature' has been disabled")
+            yawaLogger.info("Feature '$feature' has been disabled")
 
             // Disable in config last
             Config.set("$feature.disabled", true)

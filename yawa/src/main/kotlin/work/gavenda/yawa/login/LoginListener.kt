@@ -28,7 +28,7 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.logger
+import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.scheduler
 import java.security.KeyPair
 import java.util.concurrent.TimeUnit
@@ -67,7 +67,7 @@ class LoginListener(
                     .get(Message.LoginNameShort)
                     .translateColorCodes()
             )
-            logger.warn("Disconnected player '$name' due to invalid name")
+            yawaLogger.warn("Disconnected player '$name' due to invalid name")
             return
         }
         if (name.length > 16) {
@@ -77,7 +77,7 @@ class LoginListener(
                     .get(Message.LoginNameLong)
                     .translateColorCodes()
             )
-            logger.warn("Disconnected player '$name' due to invalid name")
+            yawaLogger.warn("Disconnected player '$name' due to invalid name")
             return
         }
         if (nameRegex.matches(name).not()) {
@@ -87,12 +87,12 @@ class LoginListener(
                     .get(Message.LoginNameIllegal)
                     .translateColorCodes()
             )
-            logger.warn("Disconnected player '$name' due to invalid name")
+            yawaLogger.warn("Disconnected player '$name' due to invalid name")
             return
         }
 
         // Remove old data every time on a new login in order to keep the session only for one person
-        Session.invalidate(player.address)
+        Session.invalidate(player.address!!)
 
         // Delay processing
         packetEvent.asyncMarker.incrementProcessingDelay()

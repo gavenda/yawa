@@ -48,13 +48,10 @@ class AfkTask : Runnable {
                 }
 
                 if (player.isAfk) {
-                    player.playerListName(
-                        Placeholder.withContext(player)
-                            .parse(Config.Afk.PlayerListName)
-                            .toTextComponent()
-                    )
+                    player.setPlayerListName(Placeholder.withContext(player)
+                        .parse(Config.Afk.PlayerListName))
                 } else {
-                    player.playerListName(null)
+                    player.setPlayerListName(null)
                 }
             }
     }

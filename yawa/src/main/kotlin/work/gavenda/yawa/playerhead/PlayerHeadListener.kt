@@ -40,10 +40,11 @@ class PlayerHeadListener : Listener {
         // Create player head
         val item = ItemStack(Material.PLAYER_HEAD)
         val skull = item.itemMeta as SkullMeta
-        skull.lore(listOf(
-            "Trophy rewarded by yeeting ${victim.name} out of existence".toTextComponent()
+
+        skull.owningPlayer = victim
+        skull.lore = (listOf(
+            "Trophy rewarded by yeeting ${victim.name} out of existence"
         ))
-        skull.playerProfile = victim.playerProfile
         item.itemMeta = skull
 
         // Drop the item

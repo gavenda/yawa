@@ -39,7 +39,7 @@ object LoginFeature : PluginFeature {
         super.enable()
         if (isDisabled) return
         if (server.onlineMode) {
-            logger.warn("Server is in online mode, rendering this feature useless")
+            yawaLogger.warn("Server is in online mode, rendering this feature useless")
             return
         }
     }

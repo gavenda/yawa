@@ -136,7 +136,8 @@ fun Player.sit(block: Block) {
 
     val chairEntity = sitLocation.spawnChairEntity()
 
-    teleportAsync(sitLocation)
+    //teleportAsync(sitLocation)
+    teleport(sitLocation)
     chairEntity.addPassenger(this)
     sittingBlock = block
     block.sittingPlayer = this

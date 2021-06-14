@@ -100,7 +100,7 @@ class Yawa : JavaPlugin() {
 
     override fun onDisable() {
         if (!safeLoad) {
-            slF4JLogger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
+            yawaLogger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
             return
         }
 
@@ -149,7 +149,7 @@ class Yawa : JavaPlugin() {
         if (Config.KeepAlive.Disabled) return
 
         // This is a paper plugin, resetting should also be paper-based
-        slF4JLogger.warn("Resetting keep alive timeout")
+        yawaLogger.warn("Resetting keep alive timeout")
 
         val longStr = System.getProperty("paper.playerconnection.keepalive") ?: "30"
         val long = longStr.toLong()
@@ -160,7 +160,7 @@ class Yawa : JavaPlugin() {
     fun adjustKeepAliveTimeout(timeout: Long = Config.KeepAlive.Timeout * 1000) {
         if (Config.KeepAlive.Disabled) return
 
-        slF4JLogger.warn("Adjusting keep alive timeout to $timeout ms")
+        yawaLogger.warn("Adjusting keep alive timeout to $timeout ms")
 
         val nmsPlayerConnection = MinecraftReflection.getPlayerConnectionClass()
         val field = nmsPlayerConnection.getDeclaredField("KEEPALIVE_LIMIT").apply {

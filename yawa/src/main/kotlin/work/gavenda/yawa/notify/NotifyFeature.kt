@@ -17,28 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.tablist
+package work.gavenda.yawa.notify
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.toTextComponent
-import work.gavenda.yawa.server
+import work.gavenda.yawa.*
 
-class TabListTask : Runnable {
-    override fun run() {
-        val onlinePlayers = server.onlinePlayers
+/**
+ * Represents the notify feature.
+ */
+object NotifyFeature : PluginFeature {
+    
+    private val itemListener = ItemListener()
 
-        for (player in onlinePlayers) {
-            player.playerListHeader = (
-                Placeholder
-                    .withContext(player)
-                    .parse(Config.TabList.Header)
-            )
-            player.playerListFooter = (
-                Placeholder
-                    .withContext(player)
-                    .parse(Config.TabList.Footer)
-            )
-        }
+    override val isDisabled get() = Config.Login.Disabled
+
+    override fun registerEventListeners() {
+        pluginManager.registerEvents(itemListener)
+    }
+
+    override fun unregisterEventListeners() {
+        pluginManager.unregisterEvents(itemListener)
     }
 }

@@ -72,7 +72,7 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
                     return@transaction
                 }
 
-                logger.info("UUID of player $nameArg is $uniqueId")
+                yawaLogger.info("UUID of player $nameArg is $uniqueId")
 
                 val playerDb = PlayerDb.findById(uniqueId)
 

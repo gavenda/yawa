@@ -17,28 +17,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.tablist
+package work.gavenda.yawa.notify
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.toTextComponent
-import work.gavenda.yawa.server
+import org.bukkit.Bukkit
+import org.bukkit.World
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import work.gavenda.yawa.*
 
-class TabListTask : Runnable {
-    override fun run() {
-        val onlinePlayers = server.onlinePlayers
-
-        for (player in onlinePlayers) {
-            player.playerListHeader = (
-                Placeholder
-                    .withContext(player)
-                    .parse(Config.TabList.Header)
-            )
-            player.playerListFooter = (
-                Placeholder
-                    .withContext(player)
-                    .parse(Config.TabList.Footer)
-            )
-        }
-    }
+/**
+ * Listens to a possible event of an ender dragon to be hit.
+ */
+class ItemListener : Listener {
+    
 }

@@ -19,10 +19,10 @@
 
 package work.gavenda.yawa.api
 
-import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
+// import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
-import org.bukkit.event.EventHandler
+// import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import java.util.*
 
@@ -89,32 +89,32 @@ abstract class Command(
         return if (!hasPermission(sender, this)) null else tooltips(sender, this, args.toList())
     }
 
-    @EventHandler(ignoreCancelled = true)
-    fun onAsyncTabComplete(e: AsyncTabCompleteEvent) {
-        if (!e.isCommand) return
-
-        var buffer = e.buffer
-        if (buffer.isEmpty()) return
-
-        if (buffer[0] == '/') {
-            buffer = buffer.substring(1)
-        }
-
-        val firstSpace = buffer.indexOf(' ')
-        if (firstSpace < 0) return
-
-        val sender = e.sender
-        val commandArg = buffer.substring(0, firstSpace)
-
-        if (commands.contains(commandArg).not()) return
-
-        val args = buffer.split(' ').drop(1)
-
-        e.completions = if (!hasPermission(sender, this)) {
-            emptyList()
-        } else tooltips(sender, this, args)
-        e.isHandled = true
-    }
+//    @EventHandler(ignoreCancelled = true)
+//    fun onAsyncTabComplete(e: AsyncTabCompleteEvent) {
+//        if (!e.isCommand) return
+//
+//        var buffer = e.buffer
+//        if (buffer.isEmpty()) return
+//
+//        if (buffer[0] == '/') {
+//            buffer = buffer.substring(1)
+//        }
+//
+//        val firstSpace = buffer.indexOf(' ')
+//        if (firstSpace < 0) return
+//
+//        val sender = e.sender
+//        val commandArg = buffer.substring(0, firstSpace)
+//
+//        if (commands.contains(commandArg).not()) return
+//
+//        val args = buffer.split(' ').drop(1)
+//
+//        e.completions = if (!hasPermission(sender, this)) {
+//            emptyList()
+//        } else tooltips(sender, this, args)
+//        e.isHandled = true
+//    }
 
     private fun tooltips(sender: CommandSender, command: Command, args: List<String>): List<String> {
         for (arg in args) {

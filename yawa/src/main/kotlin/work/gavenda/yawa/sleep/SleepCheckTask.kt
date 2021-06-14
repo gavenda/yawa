@@ -64,10 +64,9 @@ class SleepCheckTask(
                         world.awakePlayers.forEach {
                             val kickMessage = Messages.forPlayer(it)
                                 .get(Message.SleepKickMessage)
-                                .toTextComponent()
 
                             it.sleepKicked = true
-                            it.kick(kickMessage)
+                            it.kickPlayer(kickMessage)
                         }
                     }
                 }

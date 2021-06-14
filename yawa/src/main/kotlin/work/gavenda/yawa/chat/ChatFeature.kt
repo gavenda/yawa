@@ -45,7 +45,7 @@ object ChatFeature : PluginFeature {
 
     override fun registerHooks() {
         if (isDiscordSRVEnabled) {
-            logger.info("DiscordSRV detected, attaching message post processor")
+            yawaLogger.info("DiscordSRV detected, attaching message post processor")
 
             discordSRVListener = DiscordSRVListener()
             DiscordSRV.api.subscribe(discordSRVListener)
@@ -54,7 +54,7 @@ object ChatFeature : PluginFeature {
 
     override fun unregisterHooks() {
         if (isDiscordSRVEnabled) {
-            logger.info("DiscordSRV detected, detaching message post processor")
+            yawaLogger.info("DiscordSRV detected, detaching message post processor")
 
             DiscordSRV.api.unsubscribe(discordSRVListener)
         }

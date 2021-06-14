@@ -22,7 +22,7 @@ package work.gavenda.yawa.permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.logger
+import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
@@ -33,7 +33,7 @@ fun Player.removeAttachment() {
     val attachment = PermissionFeature.attachmentFor(uniqueId)
 
     if (attachment == null) {
-        logger.warn("Cannot remove permissions, permission attachment is not set")
+        yawaLogger.warn("Cannot remove permissions, permission attachment is not set")
         return
     }
 
@@ -47,7 +47,7 @@ fun Player.calculatePermissions() {
     val attachment = PermissionFeature.attachmentFor(uniqueId)
 
     if (attachment == null) {
-        logger.warn("Cannot calculate permissions, permission attachment is not set")
+        yawaLogger.warn("Cannot calculate permissions, permission attachment is not set")
         return
     }
 
@@ -92,7 +92,7 @@ fun Player.calculatePermissions() {
             attachment.setPermissionsFromMap(groupPermissions)
             attachment.setPermissionsFromMap(playerPermissions)
 
-            logger.info("Effective permissions: ${attachment.permissions}")
+            yawaLogger.info("Effective permissions: ${attachment.permissions}")
 
             // Recalculate
             recalculatePermissions()
