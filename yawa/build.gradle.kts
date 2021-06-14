@@ -9,10 +9,10 @@ spigotPlugin()
 dependencies {
     // Runtime JAR files in the classpath should have the same version. These files were found in the classpath
     // Yes it is to fix the above
-    implementation(kotlin("reflect"))
+    compileOnly(kotlin("reflect"))
 
     // Implement our own api
-    implementation(project(":yawa-api"))
+    compileOnly(project(":yawa-api"))
 
     // Data source
     implementation(Library.HIKARICP)

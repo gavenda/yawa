@@ -31,8 +31,7 @@ allprojects {
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
-            useIR = true
+            jvmTarget = "13"
         }
     }
 }

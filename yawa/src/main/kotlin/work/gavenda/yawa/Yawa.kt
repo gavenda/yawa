@@ -26,8 +26,6 @@ import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
-import work.gavenda.yawa.api.Dependency
-import work.gavenda.yawa.api.DependencyManager
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
@@ -59,10 +57,6 @@ class Yawa : JavaPlugin() {
 
     companion object {
         lateinit var Instance: Yawa
-    }
-
-    override fun onLoad() {
-        downloadDependencies()
     }
 
     override fun onEnable() {
@@ -174,17 +168,6 @@ class Yawa : JavaPlugin() {
         }
 
         field.setLong(null, timeout)
-    }
-
-    private fun downloadDependencies() {
-        val dependencies = listOf(
-            Dependency("com.zaxxer", "HikariCP", "3.4.5"),
-            Dependency("org.jetbrains.exposed", "exposed-core", "0.27.1"),
-            Dependency("org.jetbrains.exposed", "exposed-dao", "0.27.1"),
-            Dependency("org.jetbrains.exposed", "exposed-jdbc", "0.27.1"),
-        )
-
-        DependencyManager.loadDependencies(this, dependencies)
     }
 
     fun loadConfig() {

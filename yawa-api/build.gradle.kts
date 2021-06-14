@@ -7,5 +7,5 @@ kotlinProject("YawaAPI")
 spigotPlugin()
 
 dependencies {
-    implementation(Library.PROTOCOL_LIB)
+    compileOnly(Library.PROTOCOL_LIB)
 }
