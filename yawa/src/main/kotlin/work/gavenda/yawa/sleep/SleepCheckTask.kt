@@ -55,7 +55,7 @@ class SleepCheckTask(
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
                     // Less than 15 seconds, increment counter
-                    if (kickSeconds.incrementAndGet() < 15) {
+                    if (kickSeconds.incrementAndGet() < Config.Sleep.SleepSeconds) {
                         return
                     }
 

@@ -114,6 +114,7 @@ object Config {
             set(value) = config.set("sleep.disabled", value)
 
         val TimeRate = config.getInt("sleep.time-rate")
+        val SleepSeconds = config.getInt("sleep.kick-seconds")
 
         object ActionBar {
             val Enabled get() = config.getBoolean("sleep.messages.action-bar.enabled")

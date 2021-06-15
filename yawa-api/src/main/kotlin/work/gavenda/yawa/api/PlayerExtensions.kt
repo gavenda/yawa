@@ -72,7 +72,7 @@ val Player.previousGameMode: NativeGameMode
             val entityPlayerClass: Class<*> = MinecraftReflection.getEntityPlayerClass()
             val playerInteractManager: Class<*> = MinecraftReflection.getMinecraftClass("PlayerInteractManager")
             val localHandleMethod = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
-            val localInteractionField = entityPlayerClass.getDeclaredField("playerInteractManager")
+            val localInteractionField = entityPlayerClass.getDeclaredField("d")
             localInteractionField.isAccessible = true
             val localGameMode = playerInteractManager.getDeclaredField("e")
             localGameMode.isAccessible = true
@@ -149,10 +149,11 @@ fun Player.updateSkin() {
         writeData(listOf(playerInfoData))
     }
     val respawn = WrapperPlayServerRespawn().apply {
-        // writeResourceKey(world)
+        writeResourceKey(world)
         writeDimension(world.environment.id)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
-        writePreviousGameMode(previousGameMode)
+        // TODO actual previous game mode
+        writePreviousGameMode(NativeGameMode.fromBukkit(gameMode))
         writeSeed(world.seed)
         writeIsDebug(world.debugMode)
         writeIsWorldFlat(world.worldType == WorldType.FLAT)
@@ -165,7 +166,7 @@ fun Player.updateSkin() {
         writeZ(location.z)
         writeYaw(location.yaw)
         writePitch(location.pitch)
-        writeFlags(emptySet())
+        // writeFlags(emptySet())
         writeOnGround(isOnGround)
     }
     val slot = WrapperPlayServerHeldItemSlot().apply {

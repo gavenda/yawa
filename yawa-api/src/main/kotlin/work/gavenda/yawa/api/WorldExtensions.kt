@@ -33,7 +33,7 @@ import org.bukkit.World
 val World.debugMode: Boolean
     get() {
         val nmsWorldClass: Class<*> = MinecraftReflection.getNmsWorldClass()
-        val localDebugWorld = nmsWorldClass.getDeclaredField("debugWorld").apply {
+        val localDebugWorld = nmsWorldClass.getDeclaredField("A").apply {
             isAccessible = true
         }
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
