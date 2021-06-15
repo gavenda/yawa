@@ -46,6 +46,9 @@ import com.comphenix.protocol.reflect.StructureModifier
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.EnumWrappers
 
+/**
+ * @since Minecraft 1.17
+ */
 class WrapperPlayServerPosition : AbstractPacket(PacketContainer(type), type) {
     /**
      * Write X.
@@ -85,6 +88,14 @@ class WrapperPlayServerPosition : AbstractPacket(PacketContainer(type), type) {
      */
     fun writePitch(value: Float) {
         handle.float.write(1, value)
+    }
+
+    /**
+     * Write on ground.
+     * @param value new value
+     */
+    fun writeOnGround(value: Boolean) {
+        handle.booleans.write(0, value)
     }
 
     enum class PlayerTeleportFlag {

@@ -59,17 +59,8 @@ var Player.isAfk: Boolean
  */
 val Player.latencyInMillis: Int
     get() {
-        try {
-            val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
-            val entityPlayer = getHandle.invoke(this)
-            val ping = entityPlayer.javaClass.getDeclaredField("ping")
-
-            return ping.getInt(entityPlayer)
-        } catch (e: Exception) {
-            apiLogger.error("Error retrieving latency: ${e.message}")
-        }
-
-        return 0
+        val bukkitPlayer = Bukkit.getPlayer(uniqueId)
+        return bukkitPlayer?.ping ?: 0
     }
 
 /**
@@ -158,7 +149,7 @@ fun Player.updateSkin() {
         writeData(listOf(playerInfoData))
     }
     val respawn = WrapperPlayServerRespawn().apply {
-        writeResourceKey(world)
+        // writeResourceKey(world)
         writeDimension(world.environment.id)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
         writePreviousGameMode(previousGameMode)
@@ -175,6 +166,7 @@ fun Player.updateSkin() {
         writeYaw(location.yaw)
         writePitch(location.pitch)
         writeFlags(emptySet())
+        writeOnGround(isOnGround)
     }
     val slot = WrapperPlayServerHeldItemSlot().apply {
         writeSlot(inventory.heldItemSlot)

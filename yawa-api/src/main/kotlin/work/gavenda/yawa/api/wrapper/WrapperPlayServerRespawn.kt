@@ -73,6 +73,10 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
         resourceMod.write(resourceMod.size() - 1, resourceKey)
     }
 
+    fun writeWorldName(world: World) {
+
+    }
+
     /**
      * Write dimension.
      * @param value new value

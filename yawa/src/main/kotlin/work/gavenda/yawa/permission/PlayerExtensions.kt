@@ -95,8 +95,10 @@ fun Player.calculatePermissions() {
             yawaLogger.info("Effective permissions: ${attachment.permissions}")
 
             // Recalculate
-            recalculatePermissions()
-            updateCommands()
+            scheduler.runTask(plugin) { _ ->
+                recalculatePermissions()
+                updateCommands()
+            }
         }
     }
 }
