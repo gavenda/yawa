@@ -132,6 +132,7 @@ object Config {
             get() = config.getBoolean("login.disabled")
             set(value) = config.set("login.disabled", value)
         val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid")
+        val StrictNames get() = config.getBoolean("login.strict-names", false)
     }
 
     /**

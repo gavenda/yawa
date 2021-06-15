@@ -24,12 +24,9 @@ import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.plugin.Plugin
-import work.gavenda.yawa.Message
-import work.gavenda.yawa.Messages
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.yawaLogger
-import work.gavenda.yawa.scheduler
 import java.security.KeyPair
 import java.util.concurrent.TimeUnit
 
@@ -59,36 +56,39 @@ class LoginListener(
         val name = packet.gameProfiles.read(0).name
         val player = packetEvent.player
 
-        // Validate name
-        if (name.length < 3) {
-            player.disconnect(
-                Messages
-                    .forPlayer(player)
-                    .get(Message.LoginNameShort)
-                    .translateColorCodes()
-            )
-            yawaLogger.warn("Disconnected player '$name' due to invalid name")
-            return
-        }
-        if (name.length > 16) {
-            player.disconnect(
-                Messages
-                    .forPlayer(player)
-                    .get(Message.LoginNameLong)
-                    .translateColorCodes()
-            )
-            yawaLogger.warn("Disconnected player '$name' due to invalid name")
-            return
-        }
-        if (nameRegex.matches(name).not()) {
-            player.disconnect(
-                Messages
-                    .forPlayer(player)
-                    .get(Message.LoginNameIllegal)
-                    .translateColorCodes()
-            )
-            yawaLogger.warn("Disconnected player '$name' due to invalid name")
-            return
+        // Use mojang name check
+        if(Config.Login.StrictNames) {
+            // Validate name
+            if (name.length < 3) {
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginNameShort)
+                        .translateColorCodes()
+                )
+                yawaLogger.warn("Disconnected player '$name' due to invalid name")
+                return
+            }
+            if (name.length > 16) {
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginNameLong)
+                        .translateColorCodes()
+                )
+                yawaLogger.warn("Disconnected player '$name' due to invalid name")
+                return
+            }
+            if (nameRegex.matches(name).not()) {
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginNameIllegal)
+                        .translateColorCodes()
+                )
+                yawaLogger.warn("Disconnected player '$name' due to invalid name")
+                return
+            }
         }
 
         // Remove old data every time on a new login in order to keep the session only for one person

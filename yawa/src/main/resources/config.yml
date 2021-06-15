@@ -73,8 +73,9 @@ skin:
 
 # Premium login configuration
 login:
-  disabled: true
+  disabled: false
   use-premium-uuid: true
+  strict-names: false
 
 afk:
   disabled: false

@@ -56,6 +56,7 @@ class AfkListener : Listener {
         e.player.doInteract()
     }
 
+    // TODO Paper Release
 //    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 //    fun onPlayerChat(e: AsyncChatEvent) {
 //        e.player.doInteract()
