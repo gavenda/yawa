@@ -52,6 +52,7 @@ tab-list:
 sleep:
   disabled: false
   time-rate: 85
+  kick-seconds: 15
   messages:
     chat.enabled: true
     action-bar.enabled: true

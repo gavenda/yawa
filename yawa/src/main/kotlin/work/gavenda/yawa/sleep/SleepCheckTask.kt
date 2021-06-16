@@ -54,16 +54,18 @@ class SleepCheckTask(
 
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
-                    // Less than 15 seconds, increment counter
-                    if (kickSeconds.incrementAndGet() < Config.Sleep.SleepSeconds) {
+                    // Less than configured seconds, increment counter
+                    if (kickSeconds.incrementAndGet() < Config.Sleep.KickSeconds) {
                         return
                     }
 
                     scheduler.runTask(plugin) { _ ->
                         // Kick awake players
                         world.awakePlayers.forEach {
-                            val kickMessage = Messages.forPlayer(it)
-                                .get(Message.SleepKickMessage)
+                            val kickMessage = Placeholder
+                                .withContext(it)
+                                .parseWithDefaultLocale(Message.SleepKickMessage)
+                                .translateColorCodes()
 
                             it.sleepKicked = true
                             it.kickPlayer(kickMessage)

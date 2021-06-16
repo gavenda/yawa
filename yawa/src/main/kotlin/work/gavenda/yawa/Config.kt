@@ -34,9 +34,9 @@ object Config {
      * Database configuration.
      */
     object Database {
-        val JdbcUrl get() = config.getString("db.jdbc-url")
-        val Username get() = config.getString("db.username")
-        val Password get() = config.getString("db.password")
+        val JdbcUrl get() = config.getString("db.jdbc-url", "jdbc:sqlite:plugins/Yawa/yawa.db")
+        val Username get() = config.getString("db.username", "root")
+        val Password get() = config.getString("db.password", "")
     }
 
     /**
@@ -44,9 +44,9 @@ object Config {
      */
     object KeepAlive {
         var Disabled
-            get() = config.getBoolean("keep-alive.disabled")
+            get() = config.getBoolean("keep-alive.disabled", false)
             set(value) = config.set("keep-alive.disabled", value)
-        val Timeout get() = config.getLong("keep-alive.timeout")
+        val Timeout get() = config.getLong("keep-alive.timeout", 180)
     }
 
     /**
@@ -54,7 +54,7 @@ object Config {
      */
     object Permission {
         var Disabled
-            get() = config.getBoolean("permission.disabled")
+            get() = config.getBoolean("permission.disabled", false)
             set(value) = config.set("permission.disabled", value)
     }
 
@@ -63,10 +63,10 @@ object Config {
      */
     object TabList {
         var Disabled
-            get() = config.getBoolean("tab-list.disabled")
+            get() = config.getBoolean("tab-list.disabled", false)
             set(value) = config.set("tab-list.disabled", value)
-        val Header get() = config.getString("tab-list.header")!!
-        val Footer get() = config.getString("tab-list.footer")!!
+        val Header get() = config.getString("tab-list.header", "&6Yawaland")
+        val Footer get() = config.getString("tab-list.footer", "[server-player-count] / [server-player-max]")
     }
 
     /**
@@ -74,7 +74,7 @@ object Config {
      */
     object Ender {
         var Disabled
-            get() = config.getBoolean("ender.disabled")
+            get() = config.getBoolean("ender.disabled", false)
             set(value) = config.set("ender.disabled", value)
     }
 
@@ -83,7 +83,7 @@ object Config {
      */
     object PlayerHead {
         var Disabled
-            get() = config.getBoolean("player-head.disabled")
+            get() = config.getBoolean("player-head.disabled", false)
             set(value) = config.set("player-head.disabled", value)
     }
 
@@ -92,7 +92,7 @@ object Config {
      */
     object Essentials {
         var Disabled
-            get() = config.getBoolean("essentials.disabled")
+            get() = config.getBoolean("essentials.disabled", false)
             set(value) = config.set("essentials.disabled", value)
     }
 
@@ -101,7 +101,7 @@ object Config {
      */
     object Ping {
         var Disabled
-            get() = config.getBoolean("ping.disabled")
+            get() = config.getBoolean("ping.disabled", false)
             set(value) = config.set("ping.disabled", value)
     }
 
@@ -110,11 +110,11 @@ object Config {
      */
     object Sleep {
         var Disabled
-            get() = config.getBoolean("sleep.disabled")
+            get() = config.getBoolean("sleep.disabled", false)
             set(value) = config.set("sleep.disabled", value)
 
         val TimeRate = config.getInt("sleep.time-rate")
-        val SleepSeconds = config.getInt("sleep.kick-seconds")
+        val KickSeconds = config.getInt("sleep.kick-seconds")
 
         object ActionBar {
             val Enabled get() = config.getBoolean("sleep.messages.action-bar.enabled")
@@ -130,7 +130,7 @@ object Config {
      */
     object Login {
         var Disabled
-            get() = config.getBoolean("login.disabled")
+            get() = config.getBoolean("login.disabled", false)
             set(value) = config.set("login.disabled", value)
         val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid")
         val StrictNames get() = config.getBoolean("login.strict-names", false)
@@ -141,7 +141,7 @@ object Config {
      */
     object Sit {
         var Disabled
-            get() = config.getBoolean("sit.disabled")
+            get() = config.getBoolean("sit.disabled", false)
             set(value) = config.set("sit.disabled", value)
     }
 
@@ -150,7 +150,7 @@ object Config {
      */
     object Skin {
         var Disabled
-            get() = config.getBoolean("skin.disabled")
+            get() = config.getBoolean("skin.disabled", false)
             set(value) = config.set("skin.disabled", value)
 
         object DefaultTexture {
@@ -164,7 +164,7 @@ object Config {
      */
     object Afk {
         var Disabled
-            get() = config.getBoolean("afk.disabled")
+            get() = config.getBoolean("afk.disabled", false)
             set(value) = config.set("afk.disabled", value)
         val Seconds get() = config.getInt("afk.seconds")
         val PlayerListName get() = config.getString("afk.player-list-name")!!
@@ -176,7 +176,7 @@ object Config {
      */
     object Chat {
         var Disabled
-            get() = config.getBoolean("chat.disabled")
+            get() = config.getBoolean("chat.disabled", false)
             set(value) = config.set("chat.disabled", value)
 
         val FormatMessage get() = config.getString("chat.format.message")!!
@@ -190,7 +190,7 @@ object Config {
      */
     object ImageUpload {
         var Disabled
-            get() = config.getBoolean("image-upload.disabled")
+            get() = config.getBoolean("image-upload.disabled", false)
             set(value) = config.set("image-upload.disabled", value)
     }
 
@@ -198,6 +198,12 @@ object Config {
         var Disabled
             get() = config.getBoolean("notify.disabled", false)
             set(value) = config.set("notify.disabled", value)
+    }
+
+    object Portal {
+        var Disabled
+            get() = config.getBoolean("portal.disabled", false)
+            set(value) = config.set("portal.disabled", value)
     }
 
     /**
