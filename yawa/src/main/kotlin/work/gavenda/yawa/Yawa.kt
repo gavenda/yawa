@@ -26,8 +26,6 @@ import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
-import work.gavenda.yawa.api.Dependency
-import work.gavenda.yawa.api.DependencyManager
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
@@ -59,10 +57,6 @@ class Yawa : JavaPlugin() {
 
     companion object {
         lateinit var Instance: Yawa
-    }
-
-    override fun onLoad() {
-        downloadDependencies()
     }
 
     override fun onEnable() {
@@ -100,7 +94,7 @@ class Yawa : JavaPlugin() {
 
     override fun onDisable() {
         if (!safeLoad) {
-            slF4JLogger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
+            yawaLogger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
             return
         }
 
@@ -149,7 +143,7 @@ class Yawa : JavaPlugin() {
         if (Config.KeepAlive.Disabled) return
 
         // This is a paper plugin, resetting should also be paper-based
-        slF4JLogger.warn("Resetting keep alive timeout")
+        yawaLogger.warn("Resetting keep alive timeout")
 
         val longStr = System.getProperty("paper.playerconnection.keepalive") ?: "30"
         val long = longStr.toLong()
@@ -160,7 +154,7 @@ class Yawa : JavaPlugin() {
     fun adjustKeepAliveTimeout(timeout: Long = Config.KeepAlive.Timeout * 1000) {
         if (Config.KeepAlive.Disabled) return
 
-        slF4JLogger.warn("Adjusting keep alive timeout to $timeout ms")
+        yawaLogger.warn("Adjusting keep alive timeout to $timeout ms")
 
         val nmsPlayerConnection = MinecraftReflection.getPlayerConnectionClass()
         val field = nmsPlayerConnection.getDeclaredField("KEEPALIVE_LIMIT").apply {
@@ -174,17 +168,6 @@ class Yawa : JavaPlugin() {
         }
 
         field.setLong(null, timeout)
-    }
-
-    private fun downloadDependencies() {
-        val dependencies = listOf(
-            Dependency("com.zaxxer", "HikariCP", "3.4.5"),
-            Dependency("org.jetbrains.exposed", "exposed-core", "0.27.1"),
-            Dependency("org.jetbrains.exposed", "exposed-dao", "0.27.1"),
-            Dependency("org.jetbrains.exposed", "exposed-jdbc", "0.27.1"),
-        )
-
-        DependencyManager.loadDependencies(this, dependencies)
     }
 
     fun loadConfig() {

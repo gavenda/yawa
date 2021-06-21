@@ -46,6 +46,9 @@ import com.comphenix.protocol.reflect.StructureModifier
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.EnumWrappers
 
+/**
+ * @since Minecraft 1.17
+ */
 class WrapperPlayServerPosition : AbstractPacket(PacketContainer(type), type) {
     /**
      * Write X.
@@ -87,30 +90,38 @@ class WrapperPlayServerPosition : AbstractPacket(PacketContainer(type), type) {
         handle.float.write(1, value)
     }
 
-    enum class PlayerTeleportFlag {
-        X, Y, Z, Y_ROT, X_ROT
-    }
-
-    private val flagsModifier: StructureModifier<Set<PlayerTeleportFlag>>
-        get() = handle.getSets(
-            EnumWrappers.getGenericConverter(flagsClass, PlayerTeleportFlag::class.java)
-        )
-
     /**
-     * Write flags.
+     * Write on ground.
      * @param value new value
      */
-    fun writeFlags(value: Set<PlayerTeleportFlag>) {
-        flagsModifier.write(0, value)
+    fun writeOnGround(value: Boolean) {
+        handle.booleans.write(0, value)
     }
+
+//    enum class PlayerTeleportFlag {
+//        X, Y, Z, Y_ROT, X_ROT
+//    }
+//
+//    private val flagsModifier: StructureModifier<Set<PlayerTeleportFlag>>
+//        get() = handle.getSets(
+//            EnumWrappers.getGenericConverter(flagsClass, PlayerTeleportFlag::class.java)
+//        )
+//
+//    /**
+//     * Write flags.
+//     * @param value new value
+//     */
+//    fun writeFlags(value: Set<PlayerTeleportFlag>) {
+//        flagsModifier.write(0, value)
+//    }
 
     companion object {
         val type: PacketType = PacketType.Play.Server.POSITION
-        private val flagsClass = MinecraftReflection
-            .getMinecraftClass(
-                "EnumPlayerTeleportFlags",
-                "PacketPlayOutPosition\$EnumPlayerTeleportFlags"
-            )
+//        private val flagsClass = MinecraftReflection
+//            .getMinecraftClass(
+//                "EnumPlayerTeleportFlags",
+//                "PacketPlayOutPosition\$EnumPlayerTeleportFlags"
+//            )
     }
 
     init {

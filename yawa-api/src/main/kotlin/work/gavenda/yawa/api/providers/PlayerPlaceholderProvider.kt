@@ -31,14 +31,13 @@ class PlayerPlaceholderProvider : PlaceholderProvider {
 
     override fun provide(player: Player?, world: World?): Map<String, String?> {
         return mapOf(
-            "player-name" to player?.name
+            "player-name" to player?.name,
+            "player-display-name" to player?.displayName
         )
     }
 
     override fun provideComponent(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf(
-            "player-display-name" to player?.displayName()
-        )
+        return mapOf()
     }
 
 }

@@ -30,7 +30,7 @@ import work.gavenda.yawa.api.PlaceholderProvider
 class WorldPlaceholderProvider : PlaceholderProvider {
     override fun provide(player: Player?, world: World?): Map<String, String?> {
         return mapOf(
-            "world-player-count" to world?.playerCount.toString(),
+            "world-player-count" to world?.players?.size.toString(),
         )
     }
 

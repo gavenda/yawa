@@ -4,8 +4,8 @@ plugins {
 }
 
 kotlinProject("YawaAPI")
-paperPlugin()
+spigotPlugin()
 
 dependencies {
-    implementation(Library.PROTOCOL_LIB)
+    compileOnly(Library.PROTOCOL_LIB)
 }

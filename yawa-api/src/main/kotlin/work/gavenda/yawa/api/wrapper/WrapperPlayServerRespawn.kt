@@ -62,10 +62,10 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
     fun writeResourceKey(world: World) {
         val nmsWorld = BukkitConverters.getWorldConverter().getGeneric(world)
         val nmsWorldClass = MinecraftReflection.getNmsWorldClass()
-        val localWorldKey = nmsWorldClass.getDeclaredField("dimensionKey").apply {
+        val localWorldKey = nmsWorldClass.getDeclaredField("G").apply {
             isAccessible = true
         }
-        val resourceKeyClass = MinecraftReflection.getMinecraftClass("ResourceKey")
+        val resourceKeyClass = MinecraftReflection.getMinecraftLibraryClass("net.minecraft.resources.ResourceKey")
         val resourceKey = localWorldKey.get(nmsWorld)
         val resourceMod = handle.getSpecificModifier(resourceKeyClass) as StructureModifier<Any>
 

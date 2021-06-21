@@ -51,7 +51,7 @@ object PermissionFeature : PluginFeature {
     fun attachmentFor(uuid: UUID) = permissionAttachments[uuid]
 
     override fun onEnable() {
-        logger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
+        yawaLogger.warn("Permissions feature is enabled, please use LuckPerms if you're going for scale")
         permissionAttachments.clear()
 
         // In-case of reload lol
@@ -65,7 +65,7 @@ object PermissionFeature : PluginFeature {
         // Hook to vault
         if (isVaultEnabled) {
             vaultPermission = YawaVaultPermission()
-            logger.info("Vault detected, registering permissions feature")
+            yawaLogger.info("Vault detected, registering permissions feature")
             server.servicesManager.register(Permission::class.java, vaultPermission, plugin, ServicePriority.Normal)
         }
     }
@@ -73,7 +73,7 @@ object PermissionFeature : PluginFeature {
     override fun unregisterHooks() {
         // Unhook from vault
         if (isVaultEnabled) {
-            logger.info("Vault detected, unregistering permissions feature")
+            yawaLogger.info("Vault detected, unregistering permissions feature")
             server.servicesManager.unregister(vaultPermission)
         }
     }

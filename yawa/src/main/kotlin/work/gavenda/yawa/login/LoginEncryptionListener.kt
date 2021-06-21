@@ -27,7 +27,7 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.logger
+import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.scheduler
 import java.security.KeyPair
 
@@ -52,7 +52,7 @@ class LoginEncryptionListener(
 
         packetEvent.asyncMarker.incrementProcessingDelay()
 
-        val session = Session.find(player.address)
+        val session = Session.find(player.address!!)
         if (session == null) {
             player.disconnect(
                 Messages
@@ -60,7 +60,7 @@ class LoginEncryptionListener(
                     .get(Message.LoginInvalidRequest)
                     .translateColorCodes()
             )
-            logger.warn("Attempted to send encryption response at an invalid state")
+            yawaLogger.warn("Attempted to send encryption response at an invalid state")
             return
         }
 

@@ -29,7 +29,7 @@ import org.bukkit.util.Vector
  * Used by the sit feature.
  */
 fun Location.spawnChairEntity(): Entity {
-    return world.spawnArrow(this, Vector(0, 1, 0), 0f, 0f).apply {
+    return world!!.spawnArrow(this, Vector(0, 1, 0), 0f, 0f).apply {
         setGravity(false)
         isInvulnerable = true
         pickupStatus = AbstractArrow.PickupStatus.DISALLOWED

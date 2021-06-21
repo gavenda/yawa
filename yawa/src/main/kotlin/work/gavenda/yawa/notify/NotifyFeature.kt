@@ -17,28 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sleep
+package work.gavenda.yawa.notify
 
-import net.kyori.adventure.text.Component
-import org.bukkit.World
-import org.bukkit.entity.Player
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.PlaceholderProvider
+import work.gavenda.yawa.*
 
 /**
- * Providers placeholders for the sleep feature.
+ * Represents the notify feature.
  */
-class SleepPlaceholderProvider : PlaceholderProvider {
+object NotifyFeature : PluginFeature {
+    
+    private val itemListener = ItemListener()
 
-    override fun provide(player: Player?, world: World?): Map<String, String> {
-        return mapOf(
-            "world-sleeping" to world?.sleepingPlayers?.size.toString(),
-            "world-sleeping-needed" to world?.sleepingNeeded.toString(),
-            "sleep-kick-seconds" to Config.Sleep.KickSeconds.toString()
-        )
+    override val isDisabled get() = Config.Login.Disabled
+
+    override fun registerEventListeners() {
+        pluginManager.registerEvents(itemListener)
     }
 
-    override fun provideComponent(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf()
+    override fun unregisterEventListeners() {
+        pluginManager.unregisterEvents(itemListener)
     }
 }

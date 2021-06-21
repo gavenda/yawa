@@ -52,6 +52,7 @@ tab-list:
 sleep:
   disabled: false
   time-rate: 85
+  kick-seconds: 15
   messages:
     chat.enabled: true
     action-bar.enabled: true
@@ -67,14 +68,16 @@ sit:
 # Skin feature configuration
 skin:
   disabled: false
+  kick-seconds: 60
   default-texture:
     value: "ewogICJ0aW1lc3RhbXAiIDogMTU5OTcxNzAyNzM1NCwKICAicHJvZmlsZUlkIiA6ICIwYTMyZGNkNDkxMjI0Zjc0OTdmYmM3MzJkOGVlZTJkYyIsCiAgInByb2ZpbGVOYW1lIiA6ICJCYXNpY0hlbnJ5XyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xNjNmNzBiYzcxOGIzZGIyNmMyZTI4OTVhYmUzMmIyYWFjNWQyZDczNWFiMzI0MTcxNmViZGQyM2VmZWQyNDI2IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
     signature: "I+Go6MfWxFRgVXITUN8aZQUfULZL1qM6IWoTZsZBYu3q5QXe21mUDdjCCNAJWJjDD35TVfdYD1zbenauEbPw0lqzKQV7eftxQ/A2eandKZRT/qWIjDSElo+GlTGr4nDa8g4OdM1BeknoqDTeINWKvf4izDidABFtglPNpmLVKpzIM8FrXxNDDu7Y6DSBy0239Vj6NTWxPCoOhnz816OkvuFW0+It6si5oqqTmffmZ1Cs8qmrJ6+6EcWB7W+r2/qFI2oRRvogZ28IK1g6XZkSJ3S5Ra04ZN87dnRs58Ow+sN3eJVj8FAvJAOg8HLoN4ThRRDPhrbelYFb60VYdG/AjYugMZc9/CJ3D51EqvLuJzw/Z1bqWEmSjCgIkHpD0ZK9SPxrmcP0+mYtq3mQolwtR9RuNvjvXiaMTFFza8Fnd/MO/DPAe4XbbNlRZlMINgfy/T9v83p6aM3OGVD5yNHQ/cWxHac8Fjzck/Fdj9D13PKK7hozmEoU023qWj0Z88rlUfXRl7gSNfwrGxDjlC2KQ+Jl8/siqfaau8SiQw3Z5liZAdWCab562XWzvCJwNgzfulcUK9g8Fh52pGm90KMZZloscu8ZKlGzjwe1KNE6wmf5hzhbyYmhs/pxrNZEawPCx+QuKc1MObTkNS26P6UdaDcOBlgmSZOVLmr+MqWwa3I="
 
 # Premium login configuration
 login:
-  disabled: true
+  disabled: false
   use-premium-uuid: true
+  strict-names: false
 
 afk:
   disabled: false

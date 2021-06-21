@@ -22,6 +22,8 @@ package work.gavenda.yawa.api
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
 import net.kyori.adventure.text.Component
+import net.md_5.bungee.api.ChatMessageType
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.World
 
 /**
@@ -31,7 +33,7 @@ import org.bukkit.World
 val World.debugMode: Boolean
     get() {
         val nmsWorldClass: Class<*> = MinecraftReflection.getNmsWorldClass()
-        val localDebugWorld = nmsWorldClass.getDeclaredField("debugWorld").apply {
+        val localDebugWorld = nmsWorldClass.getDeclaredField("A").apply {
             isAccessible = true
         }
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
@@ -42,7 +44,7 @@ val World.debugMode: Boolean
  * @param message message to broadcast
  */
 fun World.sendMessage(message: String) {
-    players.forEach { it.sendMessage(message.toTextComponent()) }
+    players.forEach { it.sendMessage(message) }
 }
 
 /**
@@ -50,7 +52,7 @@ fun World.sendMessage(message: String) {
  * @param text text to broadcast
  */
 fun World.sendActionBar(text: String) {
-    players.forEach { it.sendActionBar(text.toTextComponent()) }
+    players.forEach { it.spigot().sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(text)) }
 }
 
 /**

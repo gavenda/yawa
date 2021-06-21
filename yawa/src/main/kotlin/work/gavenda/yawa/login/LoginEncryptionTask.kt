@@ -61,7 +61,7 @@ class LoginEncryptionTask(
                     .get(Message.LoginError)
                     .translateColorCodes()
             )
-            logger.error("Cannot decrypt received contents", ex)
+            yawaLogger.error("Cannot decrypt received contents", ex)
             return
         }
 
@@ -69,7 +69,7 @@ class LoginEncryptionTask(
         val encryptionEnabled = enableEncryption(player, loginKey)
 
         if (tokenVerified.not()) {
-            logger.warn("Unable to verify token")
+            yawaLogger.warn("Unable to verify token")
             player.disconnect(
                 Messages
                     .forPlayer(player)
@@ -80,7 +80,7 @@ class LoginEncryptionTask(
         }
 
         if (encryptionEnabled.not()) {
-            logger.warn("Unable to enable encryption")
+            yawaLogger.warn("Unable to enable encryption")
             player.disconnect(
                 Messages
                     .forPlayer(player)
@@ -93,7 +93,7 @@ class LoginEncryptionTask(
         val serverId = MinecraftEncryption.generateServerIdHash(session.serverId, loginKey, keyPair.public)
         val socketAddress = player.address
         try {
-            val address = socketAddress.address
+            val address = socketAddress!!.address
             val profile = MojangApi.hasJoined(session.name, serverId, address)
             val uuid = session.name.minecraftOfflineUuid()
 
@@ -109,10 +109,10 @@ class LoginEncryptionTask(
                         premiumUuid = profile.id
                     }
 
-                    userLogin.lastLoginAddress = player.address.address.hostAddress
+                    userLogin.lastLoginAddress = player.address!!.address.hostAddress
                 }
 
-                logger.info("Connection encrypted for player ${session.name}")
+                yawaLogger.info("Connection encrypted for player ${session.name}")
 
                 receiveFakeStartPacket(player, profile.name)
             } else {
@@ -147,7 +147,7 @@ class LoginEncryptionTask(
                     .get(Message.LoginInvalidToken)
                     .translateColorCodes()
             )
-            logger.error("Cannot connect to session server", ex)
+            yawaLogger.error("Cannot connect to session server", ex)
         }
 
         // This is a fake packet; it shouldn't be send to the server
@@ -176,7 +176,7 @@ class LoginEncryptionTask(
                 return true
             }
         } catch (ex: Exception) {
-            logger.error("Cannot decrypt received contents", ex)
+            yawaLogger.error("Cannot decrypt received contents", ex)
         }
         return false
     }
@@ -197,7 +197,7 @@ class LoginEncryptionTask(
             // Encrypt/decrypt following packets
             encryptMethod.invoke(player.networkManager, decryptCipher, encryptCipher)
         } catch (ex: Exception) {
-            logger.error("Cannot enable encryption", ex)
+            yawaLogger.error("Cannot enable encryption", ex)
             return false
         }
         return true
@@ -219,7 +219,7 @@ class LoginEncryptionTask(
             // We don't want to handle our own packets so ignore filters
             protocolManager.recieveClientPacket(player, startPacket, false)
         } catch (ex: Exception) {
-            logger.warn("Failed to fake a new start packet")
+            yawaLogger.warn("Failed to fake a new start packet")
             // Cancel the event in order to prevent the server receiving an invalid packet
             player.disconnect(
                 Messages

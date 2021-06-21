@@ -67,7 +67,7 @@ class SkinUrlCommand : Command(Permission.SKIN_URL) {
     }
 
     private fun reject(player: Player) {
-        logger.warn("${player.name} sent an invalid url.")
+        yawaLogger.warn("${player.name} sent an invalid url.")
         player.sendMessageUsingKey(Message.SkinReject)
     }
 

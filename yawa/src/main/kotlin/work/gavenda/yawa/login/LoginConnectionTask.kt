@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
-import work.gavenda.yawa.logger
+import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.protocolManager
 import java.security.KeyPair
 import java.security.PublicKey
@@ -52,33 +52,33 @@ class LoginConnectionTask(
             }
 
             if (userLogin != null) {
-                logger.info("User information already exists")
+                yawaLogger.info("User information already exists")
                 if (userLogin.premium) {
                     encryptConnection(packetEvent, player, name, keyPair.public)
                 } else {
                     unsecureConnection(player, name)
                 }
-            } else if (Session.hasPendingSession(player.address, name)) {
-                logger.info("Pending session for $name")
+            } else if (Session.hasPendingSession(player.address!!, name)) {
+                yawaLogger.info("Pending session for $name")
                 // Player has pending session, must have failed first premium attempt -> start an offline session
                 unsecureConnection(player, name)
             } else {
-                logger.info("Looking up premium uuid for player $name")
+                yawaLogger.info("Looking up premium uuid for player $name")
                 // Contact Mojang API
                 val premiumUuid = MojangApi.findUuidByName(name)
 
                 if (premiumUuid != null) {
-                    logger.info("Premium uuid found")
+                    yawaLogger.info("Premium uuid found")
                     // Player is premium, encrypt connection
                     encryptConnection(packetEvent, player, name, keyPair.public)
                 } else {
-                    logger.info("Cannot find a premium uuid for player $name")
+                    yawaLogger.info("Cannot find a premium uuid for player $name")
                     // Player is not premium -> start an offline session
                     unsecureConnection(player, name)
                 }
             }
         } catch (ex: RateLimitException) {
-            logger.warn("Cannot retrieve premium uuid, we have been rate-limited by the Mojang API", ex)
+            yawaLogger.warn("Cannot retrieve premium uuid, we have been rate-limited by the Mojang API", ex)
         } finally {
             protocolManager
                 .asynchronousManager
@@ -90,10 +90,10 @@ class LoginConnectionTask(
      * Begin an unsecure connection.
      */
     private fun unsecureConnection(player: Player, playerName: String) {
-        logger.info("Initiating unsecure connection for player $playerName")
+        yawaLogger.info("Initiating unsecure connection for player $playerName")
 
         val session = LoginSession(playerName, serverId, byteArrayOf())
-        Session.cache(player.address, session)
+        Session.cache(player.address!!, session)
 
         val uuid = playerName.minecraftOfflineUuid()
 
@@ -104,7 +104,7 @@ class LoginConnectionTask(
                 premiumUuid = null
             }
 
-            userLogin.lastLoginAddress = player.address.address.hostAddress
+            userLogin.lastLoginAddress = player.address!!.address.hostAddress
         }
     }
 
@@ -112,7 +112,7 @@ class LoginConnectionTask(
      * Begin an encrypted connection.
      */
     private fun encryptConnection(packetEvent: PacketEvent, player: Player, name: String, publicKey: PublicKey) {
-        logger.info("Initiating secure connection for player $name")
+        yawaLogger.info("Initiating secure connection for player $name")
 
         val verifyToken = MinecraftEncryption.generateVerifyToken()
 
@@ -124,16 +124,16 @@ class LoginConnectionTask(
             }
             encryptionBegin.sendPacket(player)
         } catch (ex: Exception) {
-            logger.warn("Cannot send encrypt connection. Falling back to unsecure login", ex)
+            yawaLogger.warn("Cannot send encrypt connection. Falling back to unsecure login", ex)
             return
         }
 
         val session = LoginSession(name, serverId, verifyToken)
 
         // Pending verification
-        Session.pending(player.address, name)
+        Session.pending(player.address!!, name)
         // Cache the session
-        Session.cache(player.address, session)
+        Session.cache(player.address!!, session)
 
         // Cancel only if the player has a paid account otherwise login as normal offline player
         synchronized(packetEvent.asyncMarker.processingLock) {

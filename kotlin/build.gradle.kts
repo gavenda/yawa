@@ -10,7 +10,7 @@ kotlinProject("Kotlin")
 // Manually set the server plugin api, since this basically is a provider for Kotlin
 dependencies {
     implementation(kotlin("reflect"))
-    compileOnly(Library.PAPER)
+    compileOnly(Library.SPIGOT)
 }
 
 // Also manual process of resources instead of using utilities from buildSrc

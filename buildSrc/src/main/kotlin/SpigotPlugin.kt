@@ -30,7 +30,7 @@ import org.gradle.language.jvm.tasks.ProcessResources
 @Suppress("UnstableApiUsage")
 fun Project.spigotPlugin() {
     val processResources by tasks.existing(ProcessResources::class)
-    // val shadowJar by tasks.existing(ShadowJar::class)
+     val shadowJar by tasks.existing(ShadowJar::class)
     val jar by tasks.existing(Jar::class)
     val test by tasks.existing(Test::class)
 
@@ -60,16 +60,16 @@ fun Project.spigotPlugin() {
             expand(project.properties)
         }
     }
-//
-//    shadowJar {
-//        dependencies {
-//            // Remove Kotlin
-//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
-//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
-//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
-//            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
-//            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
-//            exclude(dependency("org.jetbrains:annotations:.*"))
-//        }
-//    }
+
+    shadowJar {
+        dependencies {
+            // Remove Kotlin
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
+            exclude(dependency("org.jetbrains:annotations:.*"))
+        }
+    }
 }

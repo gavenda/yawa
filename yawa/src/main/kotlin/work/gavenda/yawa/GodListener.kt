@@ -35,9 +35,7 @@ class GodListener : Listener {
         val player = event.player
 
         if (player.uniqueId == godUuid) {
-            event.joinMessage(
-                "&6${player.name}&e joined the game".toTextComponent()
-            )
+            event.joinMessage = "&6${player.name}&e joined the game".translateColorCodes()
         }
     }
 

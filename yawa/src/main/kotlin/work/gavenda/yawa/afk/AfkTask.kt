@@ -20,7 +20,10 @@
 package work.gavenda.yawa.afk
 
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.*
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.isAfk
+import work.gavenda.yawa.api.sendMessageIf
+import work.gavenda.yawa.api.translateColorCodes
 import java.util.concurrent.TimeUnit
 
 class AfkTask : Runnable {
@@ -48,13 +51,13 @@ class AfkTask : Runnable {
                 }
 
                 if (player.isAfk) {
-                    player.playerListName(
+                    player.setPlayerListName(
                         Placeholder.withContext(player)
                             .parse(Config.Afk.PlayerListName)
-                            .toTextComponent()
+                            .translateColorCodes()
                     )
                 } else {
-                    player.playerListName(null)
+                    player.setPlayerListName(null)
                 }
             }
     }
