@@ -34,9 +34,9 @@ object Config {
      * Database configuration.
      */
     object Database {
-        val JdbcUrl get() = config.getString("db.jdbc-url", "jdbc:sqlite:plugins/Yawa/yawa.db")
-        val Username get() = config.getString("db.username", "root")
-        val Password get() = config.getString("db.password", "")
+        val JdbcUrl get() = config.getString("db.jdbc-url", "jdbc:sqlite:plugins/Yawa/yawa.db")!!
+        val Username get() = config.getString("db.username", "root")!!
+        val Password get() = config.getString("db.password", "")!!
     }
 
     /**
@@ -65,8 +65,8 @@ object Config {
         var Disabled
             get() = config.getBoolean("tab-list.disabled", false)
             set(value) = config.set("tab-list.disabled", value)
-        val Header get() = config.getString("tab-list.header", "&6Yawaland")
-        val Footer get() = config.getString("tab-list.footer", "[server-player-count] / [server-player-max]")
+        val Header get() = config.getString("tab-list.header", )!!
+        val Footer get() = config.getString("tab-list.footer", )!!
     }
 
     /**

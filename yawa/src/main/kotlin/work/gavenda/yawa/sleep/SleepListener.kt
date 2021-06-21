@@ -64,6 +64,7 @@ class SleepListener(
             val kickMessageBroadcast = Placeholder
                 .withContext(player)
                 .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
+                .translateColorCodes()
 
             event.quitMessage = kickMessageBroadcast
             player.sleepKicked = false
