@@ -89,6 +89,8 @@ class PlaceholderContext(
             .map { it.provide(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
+            .filter { entry -> entry.value != null }
+
         return MiniMessage.get()
             .parse(text, placeholders)
     }
@@ -101,6 +103,7 @@ class PlaceholderContext(
             .map { it.provide(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
+            .filter { entry -> entry.value != null }
 
         return placeholders.map { entry ->
             val placeholder = entry.key
@@ -110,7 +113,7 @@ class PlaceholderContext(
                 .append(Component.text(placeholder))
                 .append(Component.text("]", NamedTextColor.GREEN))
                 .append(Component.text(" » ", NamedTextColor.YELLOW))
-                .append(Component.text(value ?: ""))
+                .append(Component.text(value ?: "", NamedTextColor.WHITE))
         }
     }
 
