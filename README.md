@@ -21,4 +21,3 @@ All code is licensed under [GNU GPL](LICENSE).
 - [Harbor](https://github.com/nkomarn/Harbor) - MIT
 - [FastLogin](https://github.com/games647/FastLogin) - MIT
 - [Chairs](https://github.com/Shevchik/Chairs) - GPLv3
-- [DependencyLoader](https://github.com/Sxtanna/dependency-loader) - Apache
