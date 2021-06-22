@@ -1,7 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-val shadowJar by tasks.existing(ShadowJar::class)
-
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
@@ -11,9 +7,8 @@ kotlinProject("YawaAPI")
 spigotPlugin()
 
 dependencies {
+    implementation(Library.KYORI)
+    implementation(Library.KYORI_BUKKIT)
+    implementation(Library.KYORI_MINIMESSAGE)
     compileOnly(Library.PROTOCOL_LIB)
-}
-
-shadowJar {
-    relocate("net.kyori", "work.gavenda.yawa.api.lib.kyori")
 }

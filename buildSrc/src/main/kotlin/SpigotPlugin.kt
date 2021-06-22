@@ -36,9 +36,6 @@ fun Project.spigotPlugin() {
 
     dependencies {
         "compileOnly"(Library.SPIGOT)
-        "implementation"(Library.KYORI)
-        "implementation"(Library.KYORI_BUKKIT)
-        "implementation"(Library.KYORI_MINIMESSAGE)
         "implementation"(Library.SLF4J)
         "testImplementation"(Library.MOCKBUKKIT)
         "testImplementation"(Library.JUNIT.API)

@@ -1,7 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-val shadowJar by tasks.existing(ShadowJar::class)
-
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
@@ -25,14 +21,12 @@ dependencies {
     compileOnly(Library.VAULT)
     compileOnly(Library.DISCORDSRV)
     compileOnly(Library.PROTOCOL_LIB)
+    compileOnly(Library.KYORI)
+    compileOnly(Library.KYORI_BUKKIT)
+    compileOnly(Library.KYORI_MINIMESSAGE)
 
     // Exposed
     implementation(Library.Exposed.CORE)
     implementation(Library.Exposed.DAO)
     implementation(Library.Exposed.JDBC)
-}
-
-shadowJar {
-    relocate("com.zaxxer.hikari", "work.gavenda.yawa.lib.hikari")
-    relocate("net.kyori", "work.gavenda.yawa.lib.kyori")
 }
