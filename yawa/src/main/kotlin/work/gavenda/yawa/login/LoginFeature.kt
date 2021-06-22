@@ -20,6 +20,7 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.async.AsyncListenerHandler
+import org.bukkit.event.HandlerList
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
@@ -32,6 +33,7 @@ object LoginFeature : PluginFeature {
     override val isDisabled get() = Config.Login.Disabled
 
     private val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
+    private val premiumListener = PremiumListener()
     private lateinit var loginHandler: AsyncListenerHandler
     private lateinit var loginEncryptionHandler: AsyncListenerHandler
 
@@ -66,6 +68,7 @@ object LoginFeature : PluginFeature {
             .registerAsyncHandler(LoginEncryptionListener(plugin, keyPair))
             .apply { start() }
 
+        pluginManager.registerEvents(premiumListener)
     }
 
     override fun unregisterEventListeners() {
@@ -79,6 +82,7 @@ object LoginFeature : PluginFeature {
 
         // Invalidate session cache
         Session.invalidateAll()
+        HandlerList.unregisterAll(premiumListener)
     }
 
 }

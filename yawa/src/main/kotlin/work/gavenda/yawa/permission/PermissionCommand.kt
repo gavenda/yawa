@@ -26,6 +26,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
+import work.gavenda.yawa.api.asAudience
 import java.util.*
 
 private val permissionCommands = listOf("permission", "yawa:permission")
@@ -46,8 +47,8 @@ class PermissionCommand : Command(commands = permissionCommands) {
                 "Assign a permission to a group",
                 Permission.PERMISSION_GROUP
             )
-            .generateMessages(sender)
-            .forEach(sender::sendMessage)
+            .generate(sender)
+            .forEach(sender.asAudience()::sendMessage)
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

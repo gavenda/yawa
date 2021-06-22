@@ -20,6 +20,8 @@
 package work.gavenda.yawa.api
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.World
 import org.bukkit.entity.Player
 
@@ -82,41 +84,33 @@ class PlaceholderContext(
      * Parses the text with the appropriate registered placeholders.
      * @param text text to parse
      */
-    fun parse(text: String): String {
+    fun parse(text: String): Component {
         val placeholders = providers
             .map { it.provide(player, world) }
             .flatMap { it.entries }
-            .map { it.key to it.value }
-            .toMap()
-
-        var parsed = text
-
-        placeholders.forEach { entry ->
-            val placeholder = entry.key
-            val value = entry.value
-            if (value != null) {
-                parsed = parsed.replace("[${placeholder}]", value)
-            }
-        }
-
-        return parsed
+            .associate { it.key to it.value }
+        return MiniMessage.get()
+            .parse(text, placeholders)
     }
 
     /**
      * Returns this placeholder as a help list.
      */
-    fun asHelpList(): List<String> {
+    fun asHelpList(): List<Component> {
         val placeholders = providers
             .map { it.provide(player, world) }
             .flatMap { it.entries }
-            .map { it.key to it.value }
-            .toMap()
+            .associate { it.key to it.value }
 
         return placeholders.map { entry ->
             val placeholder = entry.key
             val value = entry.value
 
-            "&a[&r$placeholder&a]&r &e» &r$value"
+            Component.text("[", NamedTextColor.GREEN)
+                .append(Component.text(placeholder))
+                .append(Component.text("]", NamedTextColor.GREEN))
+                .append(Component.text(" » ", NamedTextColor.YELLOW))
+                .append(Component.text(value ?: ""))
         }
     }
 
@@ -130,9 +124,4 @@ interface PlaceholderProvider {
      * Provide a placeholder.
      */
     fun provide(player: Player?, world: World?): Map<String, String?>
-
-    /**
-     * Provide a placeholder component.
-     */
-    fun provideComponent(player: Player?, world: World?): Map<String, Component?>
 }

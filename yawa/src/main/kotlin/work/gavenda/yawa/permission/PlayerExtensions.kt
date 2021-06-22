@@ -22,9 +22,9 @@ package work.gavenda.yawa.permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
+import work.gavenda.yawa.yawaLogger
 
 /**
  * Removes the assigned player attachment from this object

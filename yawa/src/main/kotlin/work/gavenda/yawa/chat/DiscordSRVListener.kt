@@ -22,21 +22,23 @@ package work.gavenda.yawa.chat
 import github.scarsz.discordsrv.api.ListenerPriority
 import github.scarsz.discordsrv.api.Subscribe
 import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent
+import net.kyori.adventure.text.minimessage.MiniMessage
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.toLegacyText
 
 class DiscordSRVListener {
 
     @Subscribe(priority = ListenerPriority.HIGHEST)
     fun onDiscordMessagePostProcess(e: DiscordGuildMessagePostProcessEvent) {
         val author = e.member.effectiveName
-        val formattedMessage =
+        val miniMessage = MiniMessage.get()
+        val message =
             Config.Chat.FormatMessageDiscord
                 .plus(e.message.contentDisplay)
-                .replace("[player-name]", author)
-                .translateColorCodes()
 
-        e.processedMessage = formattedMessage
+        val formattedMessage = miniMessage.parse(message, "player-name", author)
+
+        e.processedMessage = formattedMessage.toLegacyText()
     }
 
 }

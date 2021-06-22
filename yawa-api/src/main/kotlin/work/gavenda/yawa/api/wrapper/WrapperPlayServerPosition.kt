@@ -42,9 +42,6 @@ package work.gavenda.yawa.api.wrapper
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
-import com.comphenix.protocol.reflect.StructureModifier
-import com.comphenix.protocol.utility.MinecraftReflection
-import com.comphenix.protocol.wrappers.EnumWrappers
 
 /**
  * @since Minecraft 1.17

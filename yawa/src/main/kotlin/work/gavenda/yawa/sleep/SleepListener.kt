@@ -28,8 +28,7 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.toTextComponent
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.toLegacyText
 import work.gavenda.yawa.parseWithDefaultLocale
 import work.gavenda.yawa.parseWithLocale
 import java.util.*
@@ -51,7 +50,6 @@ class SleepListener(
         val message = Placeholder
             .withContext(player, world)
             .parseWithLocale(player, Message.PlayerEnterBed)
-            .translateColorCodes()
 
         world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
     }
@@ -64,9 +62,8 @@ class SleepListener(
             val kickMessageBroadcast = Placeholder
                 .withContext(player)
                 .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
-                .translateColorCodes()
 
-            event.quitMessage = kickMessageBroadcast
+            event.quitMessage = kickMessageBroadcast.toLegacyText()
             player.sleepKicked = false
         }
     }
@@ -81,7 +78,6 @@ class SleepListener(
         val message = Placeholder
             .withContext(player, world)
             .parseWithLocale(player, Message.PlayerLeftBed)
-            .translateColorCodes()
 
         world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
     }

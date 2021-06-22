@@ -21,9 +21,9 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
+import net.kyori.adventure.audience.Audience
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
-import net.md_5.bungee.api.ChatMessageType
-import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.World
 
 /**
@@ -39,20 +39,24 @@ val World.debugMode: Boolean
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
     }
 
+fun World.asAudience(): Audience {
+    return YawaAPI.Adventure.world(Key.key("world", name))
+}
+
 /**
  * Send a message to all players in this world.
  * @param message message to broadcast
  */
-fun World.sendMessage(message: String) {
-    players.forEach { it.sendMessage(message) }
+fun World.sendMessage(message: Component) {
+    asAudience().sendMessage(message)
 }
 
 /**
  * Send an action bar to all players in this world.
  * @param text text to broadcast
  */
-fun World.sendActionBar(text: String) {
-    players.forEach { it.spigot().sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(text)) }
+fun World.sendActionBar(text: Component) {
+    asAudience().sendActionBar(text)
 }
 
 /**
@@ -60,7 +64,7 @@ fun World.sendActionBar(text: String) {
  * @param message  message to broadcast
  * @param condition condition if allowed to broadcast
  */
-fun World.sendMessageIf(message: String, condition: () -> Boolean) {
+fun World.sendMessageIf(message: Component, condition: () -> Boolean) {
     if (!condition()) return
     sendMessage(message)
 }
@@ -70,7 +74,7 @@ fun World.sendMessageIf(message: String, condition: () -> Boolean) {
  * @param text text to broadcast
  * @param condition condition if allowed to broadcast
  */
-fun World.sendActionBarIf(text: String, condition: () -> Boolean) {
+fun World.sendActionBarIf(text: Component, condition: () -> Boolean) {
     if (!condition()) return
     sendActionBar(text)
 }

@@ -25,8 +25,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
-import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.protocolManager
+import work.gavenda.yawa.yawaLogger
 import java.security.KeyPair
 import java.security.PublicKey
 

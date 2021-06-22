@@ -25,7 +25,7 @@ import work.gavenda.yawa.*
  * Represents the notify feature.
  */
 object NotifyFeature : PluginFeature {
-    
+
     private val itemListener = ItemListener()
 
     override val isDisabled get() = Config.Login.Disabled

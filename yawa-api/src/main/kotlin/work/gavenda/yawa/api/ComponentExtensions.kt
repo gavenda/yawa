@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ * Copyright (C) 2021 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +17,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sleep
+package work.gavenda.yawa.api
 
-import org.bukkit.World
-import org.bukkit.entity.Player
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.PlaceholderProvider
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import org.bukkit.ChatColor
 
 /**
- * Providers placeholders for the sleep feature.
+ * Utility to convert component to legacy text.
  */
-class SleepPlaceholderProvider : PlaceholderProvider {
-
-    override fun provide(player: Player?, world: World?): Map<String, String> {
-        return mapOf(
-            "world-sleeping" to world?.sleepingPlayers?.size.toString(),
-            "world-sleeping-needed" to world?.sleepingNeeded.toString(),
-            "sleep-kick-seconds" to Config.Sleep.KickSeconds.toString()
-        )
-    }
+fun Component.toLegacyText(): String {
+    return ChatColor.translateAlternateColorCodes('&',  LegacyComponentSerializer.legacyAmpersand().serialize(this))
 }

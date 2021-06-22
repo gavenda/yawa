@@ -30,10 +30,11 @@ class EnderTeleportTask(
     private val location: Location
 ) : Runnable {
     override fun run() {
-        while(teleportingPlayers.isNotEmpty()) {
+        while (teleportingPlayers.isNotEmpty()) {
             val player = teleportingPlayers.remove()
 
             // Teleport to damaging entity
+            // TODO paper release
 //            player.teleportAsync(location).thenRun {
 //                player.sendMessageUsingKey(Message.EnderBattleTeleport)
 //            }

@@ -65,8 +65,8 @@ object Config {
         var Disabled
             get() = config.getBoolean("tab-list.disabled", false)
             set(value) = config.set("tab-list.disabled", value)
-        val Header get() = config.getString("tab-list.header", )!!
-        val Footer get() = config.getString("tab-list.footer", )!!
+        val Header get() = config.getString("tab-list.header")!!
+        val Footer get() = config.getString("tab-list.footer")!!
     }
 
     /**

@@ -25,7 +25,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.toLegacyText
 
 class ChatListener : Listener {
 
@@ -34,7 +34,7 @@ class ChatListener : Listener {
         e.format = Placeholder
             .withContext(e.player)
             .parse(Config.Chat.FormatMessage)
-            .translateColorCodes()
+            .toLegacyText()
             .plus("%2\$s")
     }
 

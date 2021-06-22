@@ -22,7 +22,6 @@ package work.gavenda.yawa.ping
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.toTextComponent
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"

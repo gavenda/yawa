@@ -19,15 +19,11 @@
 
 package work.gavenda.yawa.notify
 
-import org.bukkit.Bukkit
-import org.bukkit.World
-import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import work.gavenda.yawa.*
 
 /**
  * Listens to a possible event of an ender dragon to be hit.
  */
 class ItemListener : Listener {
-    
+
 }

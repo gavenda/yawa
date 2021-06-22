@@ -27,7 +27,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
-import work.gavenda.yawa.api.toTextComponent
 
 class PlayerHeadListener : Listener {
 

@@ -31,7 +31,7 @@ import javax.crypto.spec.SecretKeySpec
  */
 object MinecraftEncryption {
 
-    val secureRandom = SecureRandom()
+    private val secureRandom = SecureRandom()
     private const val verifyTokenLength = 4
     private const val keyPairAlgorithm = "RSA"
 

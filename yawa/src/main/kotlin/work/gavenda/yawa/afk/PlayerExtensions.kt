@@ -25,7 +25,6 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.translateColorCodes
 
 const val META_PLAYER_AFK_LAST = "AfkLast"
 
@@ -51,7 +50,6 @@ fun Player.doInteract() {
         val message = Placeholder
             .withContext(this)
             .parseWithLocale(this, Message.AfkLeaveMessage)
-            .translateColorCodes()
 
         world.sendMessageIf(message) {
             Config.Afk.MessageEnabled

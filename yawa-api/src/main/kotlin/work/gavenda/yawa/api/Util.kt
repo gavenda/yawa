@@ -19,25 +19,8 @@
 
 package work.gavenda.yawa.api
 
-import net.kyori.adventure.text.Component
-import org.bukkit.ChatColor
-import java.io.File
-import java.io.FileInputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import java.security.MessageDigest
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter
-
-/**
- * Translate this string with colors with a default alternate char code of '&'.
- */
-fun String.translateColorCodes(altCharCode: Char = '&'): String {
-    return ChatColor.translateAlternateColorCodes(altCharCode, this)
-}
-
-fun String.toTextComponent(altCharCode: Char = '&'): Component {
-    return Component.text(ChatColor.translateAlternateColorCodes(altCharCode, this))
-}
 
 /**
  * Returns the response in text of the [URL] using an HTTP GET request.
@@ -63,25 +46,3 @@ fun URL.asHttpConnection(): HttpURLConnection {
     return openConnection() as HttpURLConnection
 }
 
-/**
- * Returns the sha-1 hash of this file.
- */
-fun File.sha1(): String {
-    val digest = MessageDigest.getInstance("SHA-1")
-    val fileInputStream = FileInputStream(this)
-    var n = 0
-    val buffer = ByteArray(8192)
-    while (n != -1) {
-        n = fileInputStream.read(buffer)
-        if (n > 0) digest.update(buffer, 0, n)
-    }
-
-    return HexBinaryAdapter().marshal(digest.digest())
-}
-
-/**
- * Fixes a URL if it doesn't end with a '/'.
- */
-fun String.fixUrl(): String {
-    return if (this.isEmpty() || this.endsWith("/")) this else "$this/"
-}

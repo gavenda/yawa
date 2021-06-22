@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import work.gavenda.yawa.api.providers.PlayerPlaceholderProvider
@@ -32,12 +33,14 @@ class YawaAPI : JavaPlugin() {
 
     companion object {
         lateinit var Instance: YawaAPI
+        lateinit var Adventure: BukkitAudiences
     }
 
     private val placeholderCommand = PlaceholderCommand()
 
     override fun onEnable() {
         Instance = this
+        Adventure = BukkitAudiences.create(this)
 
         // Register placeholders
         Placeholder.register(PlayerPlaceholderProvider())
@@ -50,6 +53,7 @@ class YawaAPI : JavaPlugin() {
 
     override fun onDisable() {
         Placeholder.clear()
+        Adventure.close()
 
         getCommand("placeholders")?.setExecutor(null)
         HandlerList.unregisterAll(placeholderCommand)

@@ -44,8 +44,8 @@ keep-alive:
 # Tab List feature configuration
 tab-list:
   disabled: false
-  header: "&6Yawaland"
-  footer: "[server-player-count] / [server-player-max]"
+  header: "<gold>Yawaland</gold>"
+  footer: "<server-player-count> / <server-player-max>"
 
 # Sleep - Configure how we pass the night, defaults to desired values.
 # based on Harbor (https://github.com/nkomarn/Harbor)
@@ -82,13 +82,14 @@ login:
 afk:
   disabled: false
   seconds: 120
-  player-list-name: "&r[player-name] &eAFK"
+  player-list-name: "<player-name> <yellow>AFK</yellow>"
   messages.enabled: false
 
 chat:
   disabled: false
   format:
-    message: "<[player-name]> &6»&r "
-    message-to: "&r<&d[player-name]&r> &7«&r "
-    message-from: "&r<&d[player-name]&r> &7»&r "
-    message-discord: "&r<&b[player-name]&r> &7»&r "
+    message: "[<player-name>] <gold>»</gold> "
+    message-to: "[<light_purple><player-name></light_purple>] <gray>«</gray> "
+    message-from: "[<light_purple><player-name></light_purple>] <gray>»</gray> "
+    message-discord: "[<aqua><player-name></aqua>] <gray>»</gray> "
+

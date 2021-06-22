@@ -31,7 +31,6 @@ import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
 import work.gavenda.yawa.api.spoofedUuid
-import work.gavenda.yawa.api.translateColorCodes
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
@@ -59,7 +58,6 @@ class LoginEncryptionTask(
                 Messages
                     .forPlayer(player)
                     .get(Message.LoginError)
-                    .translateColorCodes()
             )
             yawaLogger.error("Cannot decrypt received contents", ex)
             return
@@ -74,7 +72,6 @@ class LoginEncryptionTask(
                 Messages
                     .forPlayer(player)
                     .get(Message.LoginInvalidToken)
-                    .translateColorCodes()
             )
             return
         }
@@ -85,7 +82,6 @@ class LoginEncryptionTask(
                 Messages
                     .forPlayer(player)
                     .get(Message.LoginInvalidToken)
-                    .translateColorCodes()
             )
             return
         }
@@ -126,7 +122,6 @@ class LoginEncryptionTask(
                             Messages
                                 .forPlayer(player)
                                 .get(Message.LoginInvalidSession)
-                                .translateColorCodes()
                         )
                     } else {
                         // Not logged in before, tell them to reconnect
@@ -134,7 +129,6 @@ class LoginEncryptionTask(
                             Messages
                                 .forPlayer(player)
                                 .get(Message.LoginInvalidSessionRetry)
-                                .translateColorCodes()
                         )
                     }
                 }
@@ -145,7 +139,6 @@ class LoginEncryptionTask(
                 Messages
                     .forPlayer(player)
                     .get(Message.LoginInvalidToken)
-                    .translateColorCodes()
             )
             yawaLogger.error("Cannot connect to session server", ex)
         }
@@ -225,7 +218,6 @@ class LoginEncryptionTask(
                 Messages
                     .forPlayer(player)
                     .get(Message.LoginInvalidToken)
-                    .translateColorCodes()
             )
         }
     }

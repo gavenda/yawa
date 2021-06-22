@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ * Copyright (C) 2021 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.sleep
+package work.gavenda.yawa.login
 
-import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.PlaceholderProvider
+import org.bukkit.metadata.FixedMetadataValue
+import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.api.META_VERIFIED
+import work.gavenda.yawa.api.YawaAPI
 
 /**
- * Providers placeholders for the sleep feature.
+ * Verified state.
+ * @return true if verified player (legit minecraft)
  */
-class SleepPlaceholderProvider : PlaceholderProvider {
+val Player.isVerified: Boolean
+    get() = transaction {
+        val uuid = name.minecraftOfflineUuid()
+        val login = PlayerLogin.findById(uuid) ?: return@transaction false
 
-    override fun provide(player: Player?, world: World?): Map<String, String> {
-        return mapOf(
-            "world-sleeping" to world?.sleepingPlayers?.size.toString(),
-            "world-sleeping-needed" to world?.sleepingNeeded.toString(),
-            "sleep-kick-seconds" to Config.Sleep.KickSeconds.toString()
-        )
+        return@transaction login.premium
     }
-}
+

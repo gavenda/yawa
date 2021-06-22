@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ * Copyright (C) 2021 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.api.mineskin
+package work.gavenda.yawa.api
 
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import java.net.URI
+import net.kyori.adventure.audience.Audience
+import org.bukkit.command.CommandSender
 
-class MineSkinApiTest {
-
-    @Test
-    @DisplayName("Test MineSkin API")
-    fun testMineSkinApi() {
-        val url =
-            URI("https://www.minecraftskins.com/uploads/skins/2020/09/06/-cute-girl---recolor-contest-entry--15222439.png")
-        assertDoesNotThrow {
-            MineSkinApi.generateTexture(url, true)
-        }
-    }
-
+/**
+ * Return as an [Audience].
+ */
+fun CommandSender.asAudience(): Audience {
+    return YawaAPI.Adventure.sender(this)
 }

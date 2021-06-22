@@ -23,7 +23,7 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.toLegacyText
 import java.util.concurrent.TimeUnit
 
 class AfkTask : Runnable {
@@ -42,7 +42,6 @@ class AfkTask : Runnable {
                     val message = Placeholder
                         .withContext(player)
                         .parseWithLocale(player, Message.AfkEntryMessage)
-                        .translateColorCodes()
 
                     player.world.sendMessageIf(message) {
                         Config.Afk.MessageEnabled
@@ -54,7 +53,7 @@ class AfkTask : Runnable {
                     player.setPlayerListName(
                         Placeholder.withContext(player)
                             .parse(Config.Afk.PlayerListName)
-                            .translateColorCodes()
+                            .toLegacyText()
                     )
                 } else {
                     player.setPlayerListName(null)

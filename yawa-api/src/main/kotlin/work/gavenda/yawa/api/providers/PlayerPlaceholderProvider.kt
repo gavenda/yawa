@@ -19,7 +19,6 @@
 
 package work.gavenda.yawa.api.providers
 
-import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.PlaceholderProvider
@@ -34,10 +33,6 @@ class PlayerPlaceholderProvider : PlaceholderProvider {
             "player-name" to player?.name,
             "player-display-name" to player?.displayName
         )
-    }
-
-    override fun provideComponent(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf()
     }
 
 }

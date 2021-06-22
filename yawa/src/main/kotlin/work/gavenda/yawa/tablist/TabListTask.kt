@@ -21,8 +21,7 @@ package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.toTextComponent
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.toLegacyText
 import work.gavenda.yawa.server
 
 class TabListTask : Runnable {
@@ -34,12 +33,12 @@ class TabListTask : Runnable {
                 Placeholder
                     .withContext(player)
                     .parse(Config.TabList.Header)
-                    .translateColorCodes()
+                    .toLegacyText()
             player.playerListFooter =
                 Placeholder
                     .withContext(player)
                     .parse(Config.TabList.Footer)
-                    .translateColorCodes()
+                    .toLegacyText()
         }
     }
 }

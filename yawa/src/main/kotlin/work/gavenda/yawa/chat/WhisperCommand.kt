@@ -19,13 +19,14 @@
 
 package work.gavenda.yawa.chat
 
+import net.kyori.adventure.text.Component
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
 
@@ -47,15 +48,13 @@ class WhisperCommand : Command(
 
         val messageTo = Placeholder.withContext(target)
             .parse(Config.Chat.FormatMessageTo)
-            .plus(message)
-            .translateColorCodes()
+            .append(Component.text(message))
         val messageFrom = Placeholder.withContext(sender)
             .parse(Config.Chat.FormatMessageFrom)
-            .plus(message)
-            .translateColorCodes()
+            .append(Component.text(message))
 
-        sender.sendMessage(messageTo)
-        target.sendMessage(messageFrom)
+        sender.asAudience().sendMessage(messageTo)
+        target.asAudience().sendMessage(messageFrom)
         target.lastWhisperPlayer = sender.name
     }
 

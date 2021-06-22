@@ -21,7 +21,10 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.World
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.*
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.sendActionBarIf
+import work.gavenda.yawa.api.sendMessageIf
+import work.gavenda.yawa.api.toLegacyText
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -46,7 +49,6 @@ class SleepCheckTask(
                 val message = Placeholder
                     .withContext(world)
                     .parseWithDefaultLocale(Message.ActionBarSleeping)
-                    .translateColorCodes()
 
                 world.sendActionBarIf(message) {
                     Config.Sleep.ActionBar.Enabled
@@ -65,10 +67,9 @@ class SleepCheckTask(
                             val kickMessage = Placeholder
                                 .withContext(it)
                                 .parseWithDefaultLocale(Message.SleepKickMessage)
-                                .translateColorCodes()
 
                             it.sleepKicked = true
-                            it.kickPlayer(kickMessage)
+                            it.kickPlayer(kickMessage.toLegacyText())
                         }
                     }
                 }
@@ -78,7 +79,6 @@ class SleepCheckTask(
                 val message = Placeholder
                     .withContext(world)
                     .parseWithDefaultLocale(Message.ActionBarSleepingDone)
-                    .translateColorCodes()
 
                 world.sendActionBarIf(message) {
                     Config.Sleep.ActionBar.Enabled
@@ -89,7 +89,6 @@ class SleepCheckTask(
                 val sleepingMessage = Placeholder
                     .withContext(world)
                     .parseWithDefaultLocale(Message.Sleeping)
-                    .translateColorCodes()
 
                 // Broadcast everyone sleeping
                 world.sendMessageIf(sleepingMessage) {

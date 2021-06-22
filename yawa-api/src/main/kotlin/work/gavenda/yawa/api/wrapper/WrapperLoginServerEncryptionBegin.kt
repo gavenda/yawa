@@ -20,9 +20,7 @@ package work.gavenda.yawa.api.wrapper
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
-import work.gavenda.yawa.api.apiLogger
 import java.security.PublicKey
-import java.util.*
 
 class WrapperLoginServerEncryptionBegin : AbstractPacket(PacketContainer(type), type) {
 

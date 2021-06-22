@@ -20,7 +20,7 @@
 object Version {
     const val KOTLIN = "1.5.10"
     const val SPIGOT = "1.17-R0.1-SNAPSHOT"
-    const val PAPER = "1.16.5-R0.1-SNAPSHOT"
+    const val PAPER = "1.17-R0.1-SNAPSHOT"
     const val MOCKBUKKIT = "v1.16-SNAPSHOT"
     const val HIKARICP = "3.4.5"
     const val PROTOCOL_LIB = "4.5.1"
@@ -28,7 +28,9 @@ object Version {
     const val JUNIT_JUPITER = "5.6.2"
     const val VAULT = "1.7"
     const val DISCORDSRV = "1.19.1"
-    const val KYORI = "4.8.0"
+    const val KYORI = "4.8.1"
+    const val KYORI_PLATFORM = "4.0.0-SNAPSHOT"
+    const val KYORI_MINIMESSAGE = "4.1.0-SNAPSHOT"
     const val SLF4J = "1.7.30"
 }
 
@@ -41,6 +43,8 @@ object Library {
     const val VAULT = "com.github.MilkBowl:VaultAPI:${Version.VAULT}"
     const val DISCORDSRV = "com.discordsrv:discordsrv:${Version.DISCORDSRV}"
     const val KYORI = "net.kyori:adventure-api:${Version.KYORI}"
+    const val KYORI_BUKKIT = "net.kyori:adventure-platform-bukkit:${Version.KYORI_PLATFORM}"
+    const val KYORI_MINIMESSAGE = "net.kyori:adventure-text-minimessage:${Version.KYORI_MINIMESSAGE}"
     const val SLF4J = "org.slf4j:slf4j-jdk14:${Version.SLF4J}"
 
     object JUNIT {

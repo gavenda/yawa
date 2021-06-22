@@ -30,6 +30,7 @@ import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
+import net.kyori.adventure.audience.Audience
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
@@ -39,6 +40,7 @@ import work.gavenda.yawa.api.wrapper.*
 import java.util.*
 
 const val META_AFK = "Afk"
+const val META_VERIFIED = "Verified"
 
 /**
  * AFK state.
@@ -68,25 +70,16 @@ val Player.latencyInMillis: Int
  */
 val Player.previousGameMode: NativeGameMode
     get() {
-        try {
-            val entityPlayerClass: Class<*> = MinecraftReflection.getEntityPlayerClass()
-            val playerInteractManager: Class<*> = MinecraftReflection.getMinecraftClass("PlayerInteractManager")
-            val localHandleMethod = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
-            val localInteractionField = entityPlayerClass.getDeclaredField("d")
-            localInteractionField.isAccessible = true
-            val localGameMode = playerInteractManager.getDeclaredField("e")
-            localGameMode.isAccessible = true
-
-            val nmsPlayer: Any = localHandleMethod.invoke(this)
-            val interactionManager: Any = localInteractionField.get(nmsPlayer)
-            val gameMode = localGameMode.get(interactionManager) as Enum<*>
-            return NativeGameMode.valueOf(gameMode.name)
-        } catch (e: Exception) {
-            apiLogger.error("Error retrieving previous game mode", e.message)
-        }
-
+        // TODO actual previous game mode
         return NativeGameMode.fromBukkit(gameMode)
     }
+
+/**
+ * Return as an [Audience].
+ */
+fun Player.asAudience(): Audience {
+    return YawaAPI.Adventure.player(this)
+}
 
 /**
  * Applies a skin to this player and immediately reflects the changes in-game.
@@ -152,8 +145,7 @@ fun Player.updateSkin() {
         writeResourceKey(world)
         writeDimension(world.environment.id)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
-        // TODO actual previous game mode
-        writePreviousGameMode(NativeGameMode.fromBukkit(gameMode))
+        writePreviousGameMode(previousGameMode)
         writeSeed(world.seed)
         writeIsDebug(world.debugMode)
         writeIsWorldFlat(world.worldType == WorldType.FLAT)
@@ -166,7 +158,6 @@ fun Player.updateSkin() {
         writeZ(location.z)
         writeYaw(location.yaw)
         writePitch(location.pitch)
-        // writeFlags(emptySet())
         writeOnGround(isOnGround)
     }
     val slot = WrapperPlayServerHeldItemSlot().apply {

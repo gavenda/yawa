@@ -19,6 +19,8 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
 
 const val HELP_PAGE_SIZE = 9
@@ -45,17 +47,17 @@ class HelpList {
      * @param sender the command sender
      * @param page page number, defaults to 1.
      */
-    fun generate(sender: CommandSender, page: Int = 1): String {
-        val sb = StringBuilder()
+    fun generate(sender: CommandSender, page: Int = 1): List<Component> {
+        val generatedList = mutableListOf<Component>()
         val commands = commandMap.keys.chunked(HELP_PAGE_SIZE)
 
-        if (page == 0) return ""
-        if (page > commands.size) return ""
+        if (page == 0) return emptyList()
+        if (page > commands.size) return emptyList()
 
         val commandsPaged = commands[page - 1]
 
         // No commands empty string
-        if (commandsPaged.isEmpty()) return ""
+        if (commandsPaged.isEmpty()) return emptyList()
 
         for (command in commandsPaged) {
             val help = commandMap.getValue(command)
@@ -63,43 +65,25 @@ class HelpList {
             // Sender must have permission
             if (sender.hasPermission(help.permission).not()) continue
 
-            // Gold color
-            sb.append("&6")
-            sb.append("/")
-            sb.append(command)
-            sb.append(" ")
-            // Reset color
-            sb.append("&r")
+            var component = Component.text("/", NamedTextColor.GOLD)
+                .append(Component.text(command, NamedTextColor.WHITE))
+                .append(Component.text(" "))
 
             for (arg in help.args) {
-                sb.append(arg)
-                sb.append(" ")
+                component = component.append(Component.text(arg))
+                    .append(Component.text(" "))
             }
 
-            sb.append("&e» &r")
-            sb.append(help.text)
-            sb.append("\n")
+            component = component.append(Component.text("» ", NamedTextColor.YELLOW))
+                .append(Component.text(help.text, NamedTextColor.WHITE))
+
+            generatedList.add(component)
         }
 
         // We have reach here, return no permissions message
-        if (sb.isBlank()) return COMMAND_NO_PERMISSION.translateColorCodes()
+        if (generatedList.isEmpty()) return listOf(COMMAND_NO_PERMISSION)
 
-        return sb.toString()
-            .dropLast(1)
-            .translateColorCodes()
-    }
-
-    /**
-     * Generates the help list enclosing the messages in a list.
-     *
-     * Does `generate().split("\n")`.
-     *
-     * @param sender the command sender
-     * @param page page number, defaults to 1
-     */
-    fun generateMessages(sender: CommandSender, page: Int = 1): List<String> {
-        val generated = generate(sender, page)
-        return if (generated.isBlank()) return emptyList() else generated.split("\n")
+        return generatedList
     }
 
 }

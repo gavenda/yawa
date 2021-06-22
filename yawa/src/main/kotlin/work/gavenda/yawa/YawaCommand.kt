@@ -24,6 +24,7 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
+import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
@@ -92,8 +93,8 @@ class YawaCommand : Command(commands = yawaCommands) {
                 "Enable or disable a feature",
                 Permission.FEATURE
             )
-            .generateMessages(sender)
-            .forEach(sender::sendMessage)
+            .generate(sender)
+            .forEach(sender.asAudience()::sendMessage)
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
@@ -159,7 +160,7 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
  */
 class YawaReloadCommand : Command(Permission.RELOAD) {
     override fun execute(sender: CommandSender, args: List<String>) {
-        when(args.size) {
+        when (args.size) {
             1 -> {
                 if (args[0] == "config") {
                     Yawa.Instance.reloadConfig()

@@ -42,6 +42,7 @@ class SitListener : Listener {
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val player = e.player
         if (player.location.y.isNaN()) {
+            // TODO paper release
             // player.teleportAsync(player.world.spawnLocation)
             player.teleport(player.world.spawnLocation)
         }

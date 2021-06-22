@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (C) 2020 Gavenda <gavenda@disroot.org>
+ * Copyright (C) 2021 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,25 +17,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa
+package work.gavenda.yawa.login
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import work.gavenda.yawa.api.toTextComponent
-import work.gavenda.yawa.api.translateColorCodes
-import java.util.*
+import work.gavenda.yawa.api.asAudience
+import work.gavenda.yawa.server
 
-class GodListener : Listener {
+class PremiumListener : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        val godUuid = UUID.fromString("1ef7a628-886b-49c3-b73b-e566ac5f4b22")
         val player = event.player
 
-        if (player.uniqueId == godUuid) {
-            event.joinMessage = "&6${player.name}&e joined the game".translateColorCodes()
+        if (player.isVerified) {
+            event.joinMessage = null
+
+            val hover = HoverEvent.showText(
+                Component.text("Verified Mojang Account", NamedTextColor.GREEN)
+            )
+
+            val message = Component.text(player.name, NamedTextColor.GOLD)
+                .hoverEvent(hover)
+                .append(Component.text(" joined the game", NamedTextColor.YELLOW))
+
+            val onlinePlayers = server.onlinePlayers
+
+            for (onlinePlayer in onlinePlayers) {
+                onlinePlayer.asAudience().sendMessage(message)
+            }
         }
     }
 

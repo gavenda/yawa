@@ -19,7 +19,6 @@
 
 package work.gavenda.yawa.ping
 
-import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.PlaceholderProvider
@@ -30,9 +29,5 @@ class PlayerPingPlaceholder : PlaceholderProvider {
         return mapOf(
             "player-ping" to player?.latencyInMillis.toString()
         )
-    }
-
-    override fun provideComponent(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf()
     }
 }

@@ -26,7 +26,6 @@ import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
-import work.gavenda.yawa.api.translateColorCodes
 import java.security.KeyPair
 import java.util.concurrent.TimeUnit
 
@@ -57,14 +56,13 @@ class LoginListener(
         val player = packetEvent.player
 
         // Use mojang name check
-        if(Config.Login.StrictNames) {
+        if (Config.Login.StrictNames) {
             // Validate name
             if (name.length < 3) {
                 player.disconnect(
                     Messages
                         .forPlayer(player)
                         .get(Message.LoginNameShort)
-                        .translateColorCodes()
                 )
                 yawaLogger.warn("Disconnected player '$name' due to invalid name")
                 return
@@ -74,7 +72,6 @@ class LoginListener(
                     Messages
                         .forPlayer(player)
                         .get(Message.LoginNameLong)
-                        .translateColorCodes()
                 )
                 yawaLogger.warn("Disconnected player '$name' due to invalid name")
                 return
@@ -84,7 +81,6 @@ class LoginListener(
                     Messages
                         .forPlayer(player)
                         .get(Message.LoginNameIllegal)
-                        .translateColorCodes()
                 )
                 yawaLogger.warn("Disconnected player '$name' due to invalid name")
                 return

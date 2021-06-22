@@ -21,6 +21,8 @@ package work.gavenda.yawa
 
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.CommandSender
@@ -31,7 +33,7 @@ import org.bukkit.plugin.PluginManager
 import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.PlaceholderContext
-import work.gavenda.yawa.api.translateColorCodes
+import work.gavenda.yawa.api.asAudience
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -99,7 +101,7 @@ fun PluginManager.unregisterEvents(listener: Listener) {
 /**
  * Extend placeholder context to parse for a player locale.
  */
-fun PlaceholderContext.parseWithLocale(player: Player, key: String): String {
+fun PlaceholderContext.parseWithLocale(player: Player, key: String): Component {
     return parse(
         Messages
             .forPlayer(player)
@@ -110,7 +112,7 @@ fun PlaceholderContext.parseWithLocale(player: Player, key: String): String {
 /**
  * Extend placeholder context to parse for the server's default locale.
  */
-fun PlaceholderContext.parseWithDefaultLocale(key: String): String {
+fun PlaceholderContext.parseWithDefaultLocale(key: String): Component {
     return parse(
         Messages
             .useDefault()
@@ -144,17 +146,18 @@ fun URL.downloadTo(file: File): Long {
  */
 fun CommandSender.sendMessageUsingKey(key: String) {
     if (this is Player) {
-        sendMessage(
-            Placeholder
-                .withContext(this)
-                .parseWithLocale(this, key)
-                .translateColorCodes()
-        )
+        asAudience()
+            .sendMessage(
+                Placeholder
+                    .withContext(this)
+                    .parseWithLocale(this, key)
+            )
     } else {
-        sendMessage(
+        val miniMessage = MiniMessage.get()
+        val message = miniMessage.parse(
             Messages.useDefault()
                 .get(key)
-                .translateColorCodes()
         )
+        asAudience().sendMessage(message)
     }
 }

@@ -20,13 +20,15 @@
 package work.gavenda.yawa.api
 
 // import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent
+// import org.bukkit.event.EventHandler
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
-// import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import java.util.*
 
-const val COMMAND_NO_PERMISSION = "&cYou do not have enough permissions to use this command"
+const val TEXT_NO_PERMISSION = "You do not have enough permissions to use this command"
+val COMMAND_NO_PERMISSION = Component.text(TEXT_NO_PERMISSION, NamedTextColor.GOLD)
 
 /**
  * Represents a command executor.
@@ -73,9 +75,8 @@ abstract class Command(
             }
         }
         if (!hasPermission(sender, parent)) {
-            sender.sendMessage(
-                COMMAND_NO_PERMISSION.translateColorCodes()
-            )
+            sender.asAudience()
+                .sendMessage(COMMAND_NO_PERMISSION)
         }
         parent.execute(sender, args)
     }

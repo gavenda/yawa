@@ -26,9 +26,8 @@ import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.disconnect
-import work.gavenda.yawa.api.translateColorCodes
-import work.gavenda.yawa.yawaLogger
 import work.gavenda.yawa.scheduler
+import work.gavenda.yawa.yawaLogger
 import java.security.KeyPair
 
 /**
@@ -58,7 +57,6 @@ class LoginEncryptionListener(
                 Messages
                     .forPlayer(player)
                     .get(Message.LoginInvalidRequest)
-                    .translateColorCodes()
             )
             yawaLogger.warn("Attempted to send encryption response at an invalid state")
             return
