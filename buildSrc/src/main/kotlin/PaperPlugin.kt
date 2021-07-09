@@ -35,9 +35,7 @@ fun Project.paperPlugin() {
     val test by tasks.existing(Test::class)
 
     dependencies {
-        "implementation"(Library.PAPER)
-        "testImplementation"(Library.JUNIT.API)
-        "testRuntimeOnly"(Library.JUNIT.ENGINE)
+        "compileOnly"(Library.PAPER)
     }
 
     jar {
@@ -67,6 +65,16 @@ fun Project.paperPlugin() {
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
             exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
             exclude(dependency("org.jetbrains:annotations:.*"))
+            // Remove Kyori
+            exclude(dependency("net.kyori:adventure-api:.*"))
+            exclude(dependency("net.kyori:adventure-key:.*"))
+            exclude(dependency("net.kyori:adventure-nbt:.*"))
+            exclude(dependency("net.kyori:adventure-platform-api:.*"))
+            exclude(dependency("net.kyori:adventure-platform-bukkit:.*"))
+            exclude(dependency("net.kyori:serializer-bungeecord:.*"))
+            exclude(dependency("net.kyori:serializer-craftbukkit:.*"))
+            exclude(dependency("net.kyori:examination-api:.*"))
+            exclude(dependency("net.kyori:examination-string:.*"))
         }
     }
 

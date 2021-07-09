@@ -34,12 +34,9 @@ class EnderTeleportTask(
             val player = teleportingPlayers.remove()
 
             // Teleport to damaging entity
-            // TODO paper release
-//            player.teleportAsync(location).thenRun {
-//                player.sendMessageUsingKey(Message.EnderBattleTeleport)
-//            }
-            player.teleport(location)
-            player.sendMessageUsingKey(Message.EnderBattleTeleport)
+            player.teleportAsync(location).thenRun {
+                player.sendMessageUsingKey(Message.EnderBattleTeleport)
+            }
         }
     }
 }

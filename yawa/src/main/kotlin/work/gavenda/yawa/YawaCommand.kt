@@ -24,7 +24,6 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
@@ -94,7 +93,7 @@ class YawaCommand : Command(commands = yawaCommands) {
                 Permission.FEATURE
             )
             .generate(sender)
-            .forEach(sender.asAudience()::sendMessage)
+            .forEach(sender::sendMessage)
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

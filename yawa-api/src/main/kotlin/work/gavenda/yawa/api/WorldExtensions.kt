@@ -39,26 +39,6 @@ val World.debugMode: Boolean
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
     }
 
-fun World.asAudience(): Audience {
-    return YawaAPI.Adventure.world(Key.key("world", name))
-}
-
-/**
- * Send a message to all players in this world.
- * @param message message to broadcast
- */
-fun World.sendMessage(message: Component) {
-    asAudience().sendMessage(message)
-}
-
-/**
- * Send an action bar to all players in this world.
- * @param text text to broadcast
- */
-fun World.sendActionBar(text: Component) {
-    asAudience().sendActionBar(text)
-}
-
 /**
  * Send a message to all players in this world.
  * @param message  message to broadcast

@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlinProject("Yawa")
-spigotPlugin()
+paperPlugin()
 
 dependencies {
     // Runtime JAR files in the classpath should have the same version. These files were found in the classpath
@@ -21,9 +21,6 @@ dependencies {
     compileOnly(Library.VAULT)
     compileOnly(Library.DISCORDSRV)
     compileOnly(Library.PROTOCOL_LIB)
-    compileOnly(Library.KYORI)
-    compileOnly(Library.KYORI_BUKKIT)
-    compileOnly(Library.KYORI_MINIMESSAGE)
 
     // Exposed
     implementation(Library.Exposed.CORE)

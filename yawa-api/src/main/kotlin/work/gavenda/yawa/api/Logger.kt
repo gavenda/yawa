@@ -19,10 +19,9 @@
 
 package work.gavenda.yawa.api
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.apache.logging.log4j.LogManager
 
 /**
  * Logger for the entire api.
  */
-val apiLogger: Logger = LoggerFactory.getLogger("YawaAPI")
+val apiLogger = LogManager.getLogger("YawaAPI")

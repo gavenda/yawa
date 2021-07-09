@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.playerhead
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -41,8 +42,8 @@ class PlayerHeadListener : Listener {
         val skull = item.itemMeta as SkullMeta
 
         skull.owningPlayer = victim
-        skull.lore = (listOf(
-            "Trophy rewarded by yeeting ${victim.name} out of existence"
+        skull.lore(listOf(
+            Component.text("Trophy rewarded by yeeting ${victim.name} out of existence")
         ))
         item.itemMeta = skull
 

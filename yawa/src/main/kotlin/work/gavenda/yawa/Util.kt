@@ -22,7 +22,6 @@ package work.gavenda.yawa
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.CommandSender
@@ -33,7 +32,7 @@ import org.bukkit.plugin.PluginManager
 import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.PlaceholderContext
-import work.gavenda.yawa.api.asAudience
+import work.gavenda.yawa.api.YawaAPI
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -146,18 +145,17 @@ fun URL.downloadTo(file: File): Long {
  */
 fun CommandSender.sendMessageUsingKey(key: String) {
     if (this is Player) {
-        asAudience()
-            .sendMessage(
+            sendMessage(
                 Placeholder
                     .withContext(this)
                     .parseWithLocale(this, key)
             )
     } else {
-        val miniMessage = MiniMessage.get()
+        val miniMessage = YawaAPI.MiniMessage
         val message = miniMessage.parse(
             Messages.useDefault()
                 .get(key)
         )
-        asAudience().sendMessage(message)
+        sendMessage(message)
     }
 }

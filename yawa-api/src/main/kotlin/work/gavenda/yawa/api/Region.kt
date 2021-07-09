@@ -50,7 +50,7 @@ data class BlockVector(
  * Checks if the location is within the region.
  * @param region the region to check
  */
-inline fun Location.within(region: Region): Boolean {
+fun Location.within(region: Region): Boolean {
     val min = region.min
     val max = region.max
 

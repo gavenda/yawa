@@ -31,7 +31,6 @@ import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.imgup.ImageUploadFeature
 import work.gavenda.yawa.login.LoginFeature
-import work.gavenda.yawa.login.PremiumListener
 import work.gavenda.yawa.permission.PermissionFeature
 import work.gavenda.yawa.ping.PingFeature
 import work.gavenda.yawa.playerhead.PlayerHeadFeature

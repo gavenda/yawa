@@ -37,9 +37,6 @@ fun Project.spigotPlugin() {
     dependencies {
         "compileOnly"(Library.SPIGOT)
         "implementation"(Library.SLF4J)
-        "testImplementation"(Library.MOCKBUKKIT)
-        "testImplementation"(Library.JUNIT.API)
-        "testRuntimeOnly"(Library.JUNIT.ENGINE)
     }
 
     jar {

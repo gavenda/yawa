@@ -22,9 +22,8 @@ package work.gavenda.yawa.chat
 import github.scarsz.discordsrv.api.ListenerPriority
 import github.scarsz.discordsrv.api.Subscribe
 import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent
-import net.kyori.adventure.text.minimessage.MiniMessage
+import github.scarsz.discordsrv.dependencies.kyori.adventure.text.minimessage.MiniMessage
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.toLegacyText
 
 class DiscordSRVListener {
 
@@ -37,8 +36,7 @@ class DiscordSRVListener {
                 .plus(e.message.contentDisplay)
 
         val formattedMessage = miniMessage.parse(message, "player-name", author)
-
-        e.processedMessage = formattedMessage.toLegacyText()
+        e.minecraftMessage = formattedMessage
     }
 
 }

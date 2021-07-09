@@ -33,8 +33,7 @@ class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) 
             .withContext(sender, sender.world)
             .asHelpList()
             .forEach {
-                sender.asAudience()
-                    .sendMessage(it)
+                sender.sendMessage(it)
             }
     }
 

@@ -28,7 +28,6 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.toLegacyText
 import work.gavenda.yawa.parseWithDefaultLocale
 import work.gavenda.yawa.parseWithLocale
 import java.util.*
@@ -63,7 +62,7 @@ class SleepListener(
                 .withContext(player)
                 .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
 
-            event.quitMessage = kickMessageBroadcast.toLegacyText()
+            event.quitMessage(kickMessageBroadcast)
             player.sleepKicked = false
         }
     }

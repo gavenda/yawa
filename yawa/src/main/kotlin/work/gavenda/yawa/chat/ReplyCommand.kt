@@ -26,7 +26,6 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
 
@@ -52,8 +51,8 @@ class ReplyCommand : Command(
             .parse(Config.Chat.FormatMessageFrom)
             .append(Component.text(message))
 
-        sender.asAudience().sendMessage(messageTo)
-        target.asAudience().sendMessage(messageFrom)
+        sender.sendMessage(messageTo)
+        target.sendMessage(messageFrom)
         target.lastWhisperPlayer = sender.name
     }
 

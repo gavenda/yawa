@@ -130,7 +130,7 @@ class MessagesDefaultContext : MessagesContext {
 class MessagesPlayerContext(player: Player) : MessagesContext {
     private val locale = if (player is TemporaryPlayer) {
         Locale.getDefault()
-    } else Locale.forLanguageTag(player.locale)
+    } else player.locale()
     private val messages = ResourceBundle.getBundle("i18n.messages", locale)
 
     /**

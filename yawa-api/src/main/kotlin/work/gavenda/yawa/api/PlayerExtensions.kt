@@ -30,7 +30,8 @@ import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
-import net.kyori.adventure.audience.Audience
+import com.destroystokyo.paper.profile.ProfileProperty
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
@@ -73,13 +74,6 @@ val Player.previousGameMode: NativeGameMode
         // TODO actual previous game mode
         return NativeGameMode.fromBukkit(gameMode)
     }
-
-/**
- * Return as an [Audience].
- */
-fun Player.asAudience(): Audience {
-    return YawaAPI.Adventure.player(this)
-}
 
 /**
  * Applies a skin to this player and immediately reflects the changes in-game.
@@ -222,6 +216,6 @@ fun Player.disconnect(reason: String = "") {
         // Send disconnect packet
         disconnectPacket.sendPacket(this)
         // Server cleanup
-        kickPlayer("Disconnected")
+        kick(Component.text("Disconnected"))
     }
 }

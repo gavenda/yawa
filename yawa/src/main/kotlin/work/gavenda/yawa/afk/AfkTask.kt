@@ -23,7 +23,6 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.toLegacyText
 import java.util.concurrent.TimeUnit
 
 class AfkTask : Runnable {
@@ -50,13 +49,12 @@ class AfkTask : Runnable {
                 }
 
                 if (player.isAfk) {
-                    player.setPlayerListName(
+                    player.playerListName(
                         Placeholder.withContext(player)
                             .parse(Config.Afk.PlayerListName)
-                            .toLegacyText()
                     )
                 } else {
-                    player.setPlayerListName(null)
+                    player.playerListName(null)
                 }
             }
     }

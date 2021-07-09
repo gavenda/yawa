@@ -26,8 +26,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import work.gavenda.yawa.api.asAudience
-import work.gavenda.yawa.server
+import org.bukkit.event.player.PlayerQuitEvent
 
 class PremiumListener : Listener {
 
@@ -36,8 +35,6 @@ class PremiumListener : Listener {
         val player = event.player
 
         if (player.isVerified) {
-            event.joinMessage = null
-
             val hover = HoverEvent.showText(
                 Component.text("Verified Mojang Account", NamedTextColor.GREEN)
             )
@@ -46,11 +43,24 @@ class PremiumListener : Listener {
                 .hoverEvent(hover)
                 .append(Component.text(" joined the game", NamedTextColor.YELLOW))
 
-            val onlinePlayers = server.onlinePlayers
+            event.joinMessage(message)
+        }
+    }
 
-            for (onlinePlayer in onlinePlayers) {
-                onlinePlayer.asAudience().sendMessage(message)
-            }
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+        val player = event.player
+
+        if (player.isVerified) {
+            val hover = HoverEvent.showText(
+                Component.text("Verified Mojang Account", NamedTextColor.GREEN)
+            )
+
+            val message = Component.text(player.name, NamedTextColor.GOLD)
+                .hoverEvent(hover)
+                .append(Component.text(" left the game", NamedTextColor.YELLOW))
+
+            event.quitMessage(message)
         }
     }
 

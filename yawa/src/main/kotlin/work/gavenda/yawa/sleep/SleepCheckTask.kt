@@ -24,7 +24,6 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendActionBarIf
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.api.toLegacyText
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -69,7 +68,7 @@ class SleepCheckTask(
                                 .parseWithDefaultLocale(Message.SleepKickMessage)
 
                             it.sleepKicked = true
-                            it.kickPlayer(kickMessage.toLegacyText())
+                            it.kick(kickMessage)
                         }
                     }
                 }

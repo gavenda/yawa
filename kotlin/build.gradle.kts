@@ -9,8 +9,9 @@ kotlinProject("Kotlin")
 
 // Manually set the server plugin api, since this basically is a provider for Kotlin
 dependencies {
+    implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    compileOnly(Library.SPIGOT)
+    compileOnly(Library.PAPER)
 }
 
 // Also manual process of resources instead of using utilities from buildSrc

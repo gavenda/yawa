@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.ping
 
+import net.kyori.adventure.text.Component
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
@@ -36,11 +37,11 @@ object PingFeature : PluginFeature {
     private val pingCommand = PingCommand()
     private val playerPingPlaceholder = PlayerPingPlaceholder()
 
-    private val scoreboard = server.scoreboardManager!!.newScoreboard
+    private val scoreboard = server.scoreboardManager.newScoreboard
     private val objective = scoreboard.registerNewObjective(
         SB_NAME,
         SB_CRITERIA,
-        SB_DISPLAY_NAME
+        Component.text(SB_DISPLAY_NAME)
     ).apply {
         displaySlot = DisplaySlot.PLAYER_LIST
     }

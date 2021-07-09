@@ -20,12 +20,12 @@ allprojects {
     version = "1.0.0-SNAPSHOT-$gitHash"
 
     repositories {
-        jcenter()
-        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots")
         maven("https://papermc.io/repo/repository/maven-public")
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots")
         maven("https://repo.dmulloy2.net/nexus/repository/public")
         maven("https://nexus.scarsz.me/content/groups/public")
         maven("https://nexus.vankka.dev/repository/maven-public")
+        maven("https://m2.dv8tion.net/releases")
         maven("https://jitpack.io")
     }
 

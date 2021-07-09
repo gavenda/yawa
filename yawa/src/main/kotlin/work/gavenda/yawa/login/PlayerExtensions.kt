@@ -20,10 +20,7 @@
 package work.gavenda.yawa.login
 
 import org.bukkit.entity.Player
-import org.bukkit.metadata.FixedMetadataValue
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.api.META_VERIFIED
-import work.gavenda.yawa.api.YawaAPI
 
 /**
  * Verified state.

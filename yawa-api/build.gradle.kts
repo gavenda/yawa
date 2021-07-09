@@ -4,11 +4,10 @@ plugins {
 }
 
 kotlinProject("YawaAPI")
-spigotPlugin()
+paperPlugin()
 
 dependencies {
-    implementation(Library.KYORI)
-    implementation(Library.KYORI_BUKKIT)
     implementation(Library.KYORI_MINIMESSAGE)
+    compileOnly("org.apache.logging.log4j:log4j-api:2.14.1")
     compileOnly(Library.PROTOCOL_LIB)
 }

@@ -51,7 +51,7 @@ fun Project.kotlinProject(archiveName: String) {
     }
 
     dependencies {
-        "implementation"(kotlin("stdlib-jdk8"))
+        "compileOnly"(kotlin("stdlib-jdk8"))
     }
 
     shadowJar {

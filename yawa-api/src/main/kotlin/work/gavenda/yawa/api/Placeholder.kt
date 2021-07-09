@@ -91,7 +91,7 @@ class PlaceholderContext(
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
 
-        return MiniMessage.get()
+        return YawaAPI.MiniMessage
             .parse(text, placeholders)
     }
 
