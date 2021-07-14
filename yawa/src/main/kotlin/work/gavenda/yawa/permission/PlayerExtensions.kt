@@ -25,7 +25,7 @@ import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
-import work.gavenda.yawa.yawaLogger
+import work.gavenda.yawa.logger
 
 /**
  * Removes the assigned player attachment from this object
@@ -34,7 +34,7 @@ fun Player.removeAttachment() {
     val attachment = PermissionFeature.attachmentFor(uniqueId)
 
     if (attachment == null) {
-        yawaLogger.warn("Cannot remove permissions, permission attachment is not set")
+        logger.warn("Cannot remove permissions, permission attachment is not set")
         return
     }
 
@@ -48,7 +48,7 @@ fun Player.calculatePermissions() {
     val attachment = PermissionFeature.attachmentFor(uniqueId)
 
     if (attachment == null) {
-        yawaLogger.warn("Cannot calculate permissions, permission attachment is not set")
+        logger.warn("Cannot calculate permissions, permission attachment is not set")
         return
     }
 
@@ -93,7 +93,7 @@ fun Player.calculatePermissions() {
             attachment.setPermissionsFromMap(groupPermissions)
             attachment.setPermissionsFromMap(playerPermissions)
 
-            yawaLogger.info("Effective permissions: ${attachment.permissions}")
+            logger.info("Effective permissions: ${attachment.permissions}")
 
             // Recalculate
             scheduler.runTask(plugin) { _ ->

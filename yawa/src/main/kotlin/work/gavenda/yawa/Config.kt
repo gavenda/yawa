@@ -207,6 +207,12 @@ object Config {
             set(value) = config.set("portal.disabled", value)
     }
 
+    object Chunk {
+        var Disabled
+            get() = config.getBoolean("chunk.disabled", false)
+            set(value) = config.set("chunk.disabled", value)
+    }
+
     /**
      * Load plugin configuration.
      */

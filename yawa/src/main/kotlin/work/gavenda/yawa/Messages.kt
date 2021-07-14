@@ -75,6 +75,9 @@ object Message {
     const val ImageUploadError = "image-upload-error"
     const val ImageUploadSuccess = "image-upload-success"
     const val ImageUploadBegin = "image-upload-begin"
+    const val ChunkAlreadyMarked = "chunk-already-marked"
+    const val ChunkMarked = "chunk-marked"
+    const val ChunkUnmarked = "chunk-unmarked"
 }
 
 /**

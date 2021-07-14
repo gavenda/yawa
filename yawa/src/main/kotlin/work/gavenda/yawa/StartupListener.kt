@@ -24,6 +24,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerLoadEvent
+import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.ping.PingFeature
 
 class StartupListener : Listener {
@@ -32,10 +33,11 @@ class StartupListener : Listener {
     fun onServerLoad(e: ServerLoadEvent) {
         if (e.type != ServerLoadEvent.LoadType.STARTUP) return
 
-        yawaLogger.info("Enabling post-startup features")
+        logger.info("Enabling post-startup features")
 
         // Enable POST-startup features
         PingFeature.enable()
+        ChunkFeature.enable()
     }
 
 }

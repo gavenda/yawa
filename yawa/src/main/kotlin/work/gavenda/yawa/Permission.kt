@@ -33,4 +33,6 @@ object Permission {
     const val SKIN_URL = "yawa.skin.url"
     const val PERMISSION_PLAYER = "yawa.permission.player"
     const val PERMISSION_GROUP = "yawa.permission.group"
+    const val CHUNK_MARK = "yawa.chunk.mark"
+    const val CHUNK_UNMARK = "yawa.chunk.unmark"
 }

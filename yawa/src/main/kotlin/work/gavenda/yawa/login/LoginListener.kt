@@ -65,7 +65,7 @@ class LoginListener(
                         .forPlayer(player)
                         .get(Message.LoginNameShort)
                 )
-                yawaLogger.warn("Disconnected player '$name' due to invalid name")
+                logger.warn("Disconnected player '$name' due to invalid name")
                 return
             }
             if (name.length > 16) {
@@ -74,7 +74,7 @@ class LoginListener(
                         .forPlayer(player)
                         .get(Message.LoginNameLong)
                 )
-                yawaLogger.warn("Disconnected player '$name' due to invalid name")
+                logger.warn("Disconnected player '$name' due to invalid name")
                 return
             }
             if (nameRegex.matches(name).not()) {
@@ -83,7 +83,7 @@ class LoginListener(
                         .forPlayer(player)
                         .get(Message.LoginNameIllegal)
                 )
-                yawaLogger.warn("Disconnected player '$name' due to invalid name")
+                logger.warn("Disconnected player '$name' due to invalid name")
                 return
             }
         }

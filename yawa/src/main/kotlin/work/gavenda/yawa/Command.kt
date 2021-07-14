@@ -30,4 +30,6 @@ object Command {
     const val WHISPER = "whisper"
     const val REPLY = "reply"
     const val IMAGE_UPLOAD = "imgup"
+    const val CHUNK = "chunk"
+    const val ROOT = "yawa"
 }

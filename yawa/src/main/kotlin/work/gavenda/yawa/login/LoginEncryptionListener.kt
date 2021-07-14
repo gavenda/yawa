@@ -28,7 +28,7 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.scheduler
-import work.gavenda.yawa.yawaLogger
+import work.gavenda.yawa.logger
 import java.security.KeyPair
 
 /**
@@ -59,7 +59,7 @@ class LoginEncryptionListener(
                     .forPlayer(player)
                     .get(Message.LoginInvalidRequest)
             )
-            yawaLogger.warn("Attempted to send encryption response at an invalid state")
+            logger.warn("Attempted to send encryption response at an invalid state")
             return
         }
 

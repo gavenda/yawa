@@ -28,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.chat.ChatFeature
+import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.imgup.ImageUploadFeature
@@ -92,7 +93,7 @@ class Yawa : JavaPlugin() {
 
     override fun onDisable() {
         if (!safeLoad) {
-            yawaLogger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
+            work.gavenda.yawa.logger.warn("Plugin was not able to start safely, restarting your server might be best. Please check your configuration.")
             return
         }
 
@@ -115,6 +116,7 @@ class Yawa : JavaPlugin() {
         SkinFeature.disable()
         SleepFeature.disable()
         TabListFeature.disable()
+        ChunkFeature.disable()
         // Unregister startup listener
         HandlerList.unregisterAll(startupListener)
         // Close data source
@@ -140,7 +142,7 @@ class Yawa : JavaPlugin() {
         if (Config.KeepAlive.Disabled) return
 
         // This is a paper plugin, resetting should also be paper-based
-        yawaLogger.warn("Resetting keep alive timeout")
+        work.gavenda.yawa.logger.warn("Resetting keep alive timeout")
 
         val longStr = System.getProperty("paper.playerconnection.keepalive") ?: "30"
         val long = longStr.toLong()
@@ -151,7 +153,7 @@ class Yawa : JavaPlugin() {
     fun adjustKeepAliveTimeout(timeout: Long = Config.KeepAlive.Timeout * 1000) {
         if (Config.KeepAlive.Disabled) return
 
-        yawaLogger.warn("Adjusting keep alive timeout to $timeout ms")
+        work.gavenda.yawa.logger.warn("Adjusting keep alive timeout to $timeout ms")
 
         val nmsPlayerConnection = MinecraftReflection.getPlayerConnectionClass()
         val field = nmsPlayerConnection.getDeclaredField("KEEPALIVE_LIMIT").apply {
@@ -173,11 +175,11 @@ class Yawa : JavaPlugin() {
 
     private fun registerRootCommand() {
         server.pluginManager.registerEvents(rootCommand, this)
-        getCommand("yawa")?.setExecutor(rootCommand)
+        getCommand(Command.ROOT)?.setExecutor(rootCommand)
     }
 
     private fun unregisterRootCommand() {
-        getCommand("yawa")?.setExecutor(null)
+        getCommand(Command.ROOT)?.setExecutor(null)
         HandlerList.unregisterAll(rootCommand)
     }
 }

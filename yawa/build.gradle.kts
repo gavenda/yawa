@@ -23,11 +23,18 @@ dependencies {
     compileOnly(Library.VAULT)
     compileOnly(Library.DISCORDSRV)
     compileOnly(Library.PROTOCOL_LIB)
-
+    compileOnly(Library.LOG4J2)
+    
     // Exposed
-    implementation(Library.Exposed.CORE)
-    implementation(Library.Exposed.DAO)
-    implementation(Library.Exposed.JDBC)
+    implementation(Library.Exposed.CORE) {
+        exclude(group = "org.jetbrains.kotlin")
+    }
+    implementation(Library.Exposed.DAO) {
+        exclude(group = "org.jetbrains.kotlin")
+    }
+    implementation(Library.Exposed.JDBC) {
+        exclude(group = "org.jetbrains.kotlin")
+    }
 }
 
 tasks.shadowJar {

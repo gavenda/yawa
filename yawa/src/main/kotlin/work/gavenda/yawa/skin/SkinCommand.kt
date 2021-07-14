@@ -26,9 +26,9 @@ import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 
-private val skinCommands = listOf("skin", "yawa:skin")
-
-class SkinCommand : Command(commands = skinCommands) {
+class SkinCommand : Command(
+    commands = listOf("skin", "yawa:skin")
+) {
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return

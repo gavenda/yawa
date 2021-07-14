@@ -10,6 +10,6 @@ deployablePlugin()
 
 dependencies {
     implementation(Library.KYORI_MINIMESSAGE)
-    compileOnly("org.apache.logging.log4j:log4j-api:2.14.1")
+    compileOnly(Library.LOG4J2)
     compileOnly(Library.PROTOCOL_LIB)
 }

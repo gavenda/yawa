@@ -52,6 +52,10 @@ commands:
     usage: /reply <message>
     aliases: [r]
 
+  chunk:
+    description: Manages the current chunk.
+    usage: /chunk
+
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.
@@ -103,4 +107,15 @@ permissions:
     default: op
   yawa.permission.group:
     description: Permission to change a group permission.
+    default: op
+  yawa.chunk.*:
+    description: Gives access to all chunk commands.
+    children:
+      yawa.chunk.mark: true
+      yawa.chunk.unmark: true
+  yawa.chunk.mark:
+    description: Permission to mark a chunk as always loaded.
+    default: op
+  yawa.chunk.unmark:
+    description: Permission to unmark a chunk as always loaded.
     default: op
