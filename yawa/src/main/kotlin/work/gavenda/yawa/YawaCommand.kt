@@ -93,7 +93,7 @@ class YawaCommand : Command(commands = yawaCommands) {
                 Permission.FEATURE
             )
             .generate(sender)
-            .forEach(sender::sendMessage)
+            .forEach { sender.sendMessage(it)}
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

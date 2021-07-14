@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.ender
 
+import io.papermc.lib.PaperLib
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Message
@@ -34,7 +35,7 @@ class EnderTeleportTask(
             val player = teleportingPlayers.remove()
 
             // Teleport to damaging entity
-            player.teleportAsync(location).thenRun {
+            PaperLib.teleportAsync(player, location).thenRun {
                 player.sendMessageUsingKey(Message.EnderBattleTeleport)
             }
         }

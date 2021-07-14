@@ -29,13 +29,14 @@ import org.gradle.language.jvm.tasks.ProcessResources
  */
 @Suppress("UnstableApiUsage")
 fun Project.paperPlugin() {
-    val processResources by tasks.existing(ProcessResources::class)
     val shadowJar by tasks.existing(ShadowJar::class)
+    val processResources by tasks.existing(ProcessResources::class)
     val jar by tasks.existing(Jar::class)
     val test by tasks.existing(Test::class)
 
     dependencies {
         "compileOnly"(Library.PAPER)
+        "implementation"(Library.PAPER_LIB)
     }
 
     jar {
@@ -57,6 +58,9 @@ fun Project.paperPlugin() {
     }
 
     shadowJar {
+        val projectPackage = project.group
+
+        // Exclude dependencies
         dependencies {
             // Remove Kotlin
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
@@ -76,6 +80,8 @@ fun Project.paperPlugin() {
             exclude(dependency("net.kyori:examination-api:.*"))
             exclude(dependency("net.kyori:examination-string:.*"))
         }
-    }
 
+        // Relocate internal libraries
+        relocate("io.papermc.lib", "$projectPackage.paperlib")
+    }
 }

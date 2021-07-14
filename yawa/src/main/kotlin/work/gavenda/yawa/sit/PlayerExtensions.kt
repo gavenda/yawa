@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.sit
 
+import io.papermc.lib.PaperLib
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
@@ -136,21 +137,21 @@ fun Player.sit(block: Block) {
 
     val chairEntity = sitLocation.spawnChairEntity()
 
-    //teleportAsync(sitLocation)
-    teleport(sitLocation)
-    chairEntity.addPassenger(this)
-    sittingBlock = block
-    block.sittingPlayer = this
-    block.isOccupied = true
-    isSitting = true
+    PaperLib.teleportAsync(this, sitLocation).thenRun {
+        chairEntity.addPassenger(this)
+        sittingBlock = block
+        block.sittingPlayer = this
+        block.isOccupied = true
+        isSitting = true
 
-    // Resit before arrow de-spawns
-    val resitTask = ResitTask(this)
-    val secondsInTicks = TimeUnit.SECONDS.toTicks(50)
+        // Resit before arrow de-spawns
+        val resitTask = ResitTask(this)
+        val secondsInTicks = TimeUnit.SECONDS.toTicks(50)
 
-    sitTaskId = scheduler.runTaskTimer(plugin, resitTask, secondsInTicks, secondsInTicks).taskId
+        sitTaskId = scheduler.runTaskTimer(plugin, resitTask, secondsInTicks, secondsInTicks).taskId
 
-    sendMessageUsingKey(Message.PlayerSitStart)
+        sendMessageUsingKey(Message.PlayerSitStart)
+    }
 }
 
 /**

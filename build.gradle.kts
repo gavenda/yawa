@@ -35,38 +35,3 @@ allprojects {
         }
     }
 }
-
-subprojects {
-    tasks.register<Copy>("copyArtifacts") {
-        val srcDir = file("$buildDir/libs")
-        val distDir = file("$rootDir/build/libs")
-
-        from(srcDir)
-        into(distDir)
-    }
-
-    tasks.register<Copy>("copyLicense") {
-        val srcDir = file("$rootDir/LICENSE")
-        val distDir = file("$buildDir/resources/main/META-INF/")
-
-        from(srcDir)
-        into(distDir)
-    }
-
-    tasks.register<Copy>("deployPlugin") {
-        dependsOn("build")
-
-        val srcDir = file("$rootDir/build/libs")
-        val distDir = file("$rootDir/yawa-server/plugins")
-
-        from(srcDir)
-        into(distDir)
-    }
-
-    afterEvaluate {
-        tasks.build {
-            dependsOn("copyLicense")
-            finalizedBy("copyArtifacts")
-        }
-    }
-}

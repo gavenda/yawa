@@ -4,7 +4,9 @@ plugins {
 }
 
 kotlinProject("YawaAPI")
+shadowedKotlinProject()
 paperPlugin()
+deployablePlugin()
 
 dependencies {
     implementation(Library.KYORI_MINIMESSAGE)

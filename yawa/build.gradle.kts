@@ -4,7 +4,9 @@ plugins {
 }
 
 kotlinProject("Yawa")
+shadowedKotlinProject()
 paperPlugin()
+deployablePlugin()
 
 dependencies {
     // Runtime JAR files in the classpath should have the same version. These files were found in the classpath
@@ -26,4 +28,10 @@ dependencies {
     implementation(Library.Exposed.CORE)
     implementation(Library.Exposed.DAO)
     implementation(Library.Exposed.JDBC)
+}
+
+tasks.shadowJar {
+    val projectPackage = project.group
+
+    relocate("com.zaxxer.hikari", "$projectPackage.hikari")
 }

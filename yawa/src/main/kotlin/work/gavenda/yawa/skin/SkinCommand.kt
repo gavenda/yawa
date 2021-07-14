@@ -37,7 +37,7 @@ class SkinCommand : Command(commands = skinCommands) {
             .command("skin url", listOf("<url>", "<slim:true>"), "Apply a skin from a url", Permission.SKIN_URL)
             .command("skin reset", listOf(), "Resets your skin", Permission.SKIN_URL)
             .generate(sender)
-            .forEach(sender::sendMessage)
+            .forEach { sender.sendMessage(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

@@ -30,7 +30,7 @@ class ChatListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onPlayerChat(e: AsyncChatEvent) {
-        e.renderer { source, sourceDisplayName, message, viewer ->
+        e.renderer { source, _, message, _ ->
             Placeholder
                 .withContext(source)
                 .parse(Config.Chat.FormatMessage)

@@ -47,7 +47,7 @@ class PermissionCommand : Command(commands = permissionCommands) {
                 Permission.PERMISSION_GROUP
             )
             .generate(sender)
-            .forEach(sender::sendMessage)
+            .forEach { sender.sendMessage(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

@@ -30,7 +30,6 @@ import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
-import com.destroystokyo.paper.profile.ProfileProperty
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
@@ -41,7 +40,6 @@ import work.gavenda.yawa.api.wrapper.*
 import java.util.*
 
 const val META_AFK = "Afk"
-const val META_VERIFIED = "Verified"
 
 /**
  * AFK state.

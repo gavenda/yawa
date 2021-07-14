@@ -21,6 +21,7 @@ object Version {
     const val KOTLIN = "1.5.20"
     const val SPIGOT = "1.17.1-R0.1-SNAPSHOT"
     const val PAPER = "1.17.1-R0.1-SNAPSHOT"
+    const val PAPER_LIB = "1.0.6"
     const val HIKARICP = "4.0.3"
     const val PROTOCOL_LIB = "4.5.1"
     const val EXPOSED = "0.32.1"
@@ -34,6 +35,7 @@ object Version {
 object Library {
     const val SPIGOT = "org.spigotmc:spigot-api:${Version.SPIGOT}"
     const val PAPER = "io.papermc.paper:paper-api:${Version.PAPER}"
+    const val PAPER_LIB = "io.papermc:paperlib:${Version.PAPER_LIB}"
     const val HIKARICP = "com.zaxxer:HikariCP:${Version.HIKARICP}"
     const val PROTOCOL_LIB = "com.comphenix.protocol:ProtocolLib:${Version.PROTOCOL_LIB}"
     const val VAULT = "com.github.MilkBowl:VaultAPI:${Version.VAULT}"

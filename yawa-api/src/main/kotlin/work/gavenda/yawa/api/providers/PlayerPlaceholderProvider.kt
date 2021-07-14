@@ -33,6 +33,7 @@ class PlayerPlaceholderProvider : PlaceholderProvider {
         val displayName = player?.displayName()?.let {
             PlainTextComponentSerializer.plainText().serialize(it)
         }
+
         return mapOf(
             "player-name" to player?.name,
             "player-display-name" to displayName

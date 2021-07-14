@@ -21,8 +21,6 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
-import net.kyori.adventure.audience.Audience
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.World
 

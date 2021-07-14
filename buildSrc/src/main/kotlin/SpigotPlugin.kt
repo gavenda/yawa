@@ -29,8 +29,9 @@ import org.gradle.language.jvm.tasks.ProcessResources
  */
 @Suppress("UnstableApiUsage")
 fun Project.spigotPlugin() {
+    val build = tasks.named("build")
     val processResources by tasks.existing(ProcessResources::class)
-     val shadowJar by tasks.existing(ShadowJar::class)
+    val shadowJar by tasks.existing(ShadowJar::class)
     val jar by tasks.existing(Jar::class)
     val test by tasks.existing(Test::class)
 
@@ -58,6 +59,8 @@ fun Project.spigotPlugin() {
     }
 
     shadowJar {
+        val projectPackage = project.group
+
         dependencies {
             // Remove Kotlin
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
@@ -67,5 +70,13 @@ fun Project.spigotPlugin() {
             exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
+
+        // Relocate internal libraries
+        relocate("io.papermc.lib", "$projectPackage.paperlib")
+        relocate("work.gavenda.adventurelib", "$projectPackage.adventurelib")
+    }
+
+    build {
+        dependsOn(shadowJar)
     }
 }

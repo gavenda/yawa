@@ -17,8 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Project
+import org.gradle.api.tasks.Copy
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 
@@ -26,7 +26,6 @@ import org.gradle.kotlin.dsl.*
  * Configures the project as a shadowed Kotlin project.
  */
 fun Project.kotlinProject(archiveName: String) {
-    val shadowJar by tasks.existing(ShadowJar::class)
     val build = tasks.named("build")
     val jar by tasks.existing(Jar::class)
     val sysProp = System.getProperties().toMap()
@@ -54,11 +53,19 @@ fun Project.kotlinProject(archiveName: String) {
         "compileOnly"(kotlin("stdlib-jdk8"))
     }
 
-    shadowJar {
-        archiveFileName.set("$archiveName.${archiveExtension.get()}")
+    val copyLicense = tasks.register<Copy>("copyLicense") {
+        val srcDir = file("$rootDir/LICENSE")
+        val distDir = file("$buildDir/resources/main/META-INF/")
+
+        from(srcDir)
+        into(distDir)
+    }
+
+    jar.configure {
+        mustRunAfter(copyLicense)
     }
 
     build {
-        dependsOn(shadowJar)
+        dependsOn(copyLicense)
     }
 }
