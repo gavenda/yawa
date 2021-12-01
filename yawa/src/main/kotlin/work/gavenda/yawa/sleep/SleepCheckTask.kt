@@ -46,14 +46,6 @@ class SleepCheckTask(
         // Someone is asleep, and we lack more people.
         when {
             world.beganSleeping -> {
-                val message = Placeholder
-                    .withContext(world)
-                    .parseWithDefaultLocale(Message.ActionBarSleeping)
-
-                world.sendActionBarIf(message) {
-                    Config.Sleep.ActionBar.Enabled
-                }
-
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
                     // Less than configured seconds, increment counter
@@ -76,14 +68,6 @@ class SleepCheckTask(
             }
             // Everyone is asleep, and we have enough people
             world.isEveryoneSleeping -> {
-                val message = Placeholder
-                    .withContext(world)
-                    .parseWithDefaultLocale(Message.ActionBarSleepingDone)
-
-                world.sendActionBarIf(message) {
-                    Config.Sleep.ActionBar.Enabled
-                }
-
                 sleepingWorlds.add(world.uid)
 
                 val sleepingMessage = Placeholder

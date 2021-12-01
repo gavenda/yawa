@@ -52,6 +52,8 @@ tasks {
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
 
+        relocate("io.papermc", "work.gavenda.yawa.api.paper")
+
         mustRunAfter(copyLicense)
     }
 

@@ -31,8 +31,6 @@ import java.util.*
 object Message {
     const val AfkEntryMessage = "afk-entry"
     const val AfkLeaveMessage = "afk-leave"
-    const val ActionBarSleeping = "action-bar-sleeping"
-    const val ActionBarSleepingDone = "action-bar-sleeping-done"
     const val PlayerAfkStart = "player-afk-start"
     const val PlayerAfkEnd = "player-afk-end"
     const val PlayerEnterBed = "player-enter-bed"
@@ -76,7 +74,6 @@ object Message {
     const val ImageUploadError = "image-upload-error"
     const val ImageUploadSuccess = "image-upload-success"
     const val ImageUploadBegin = "image-upload-begin"
-    const val ChunkAlreadyMarked = "chunk-already-marked"
     const val ChunkMarked = "chunk-marked"
     const val ChunkUnmarked = "chunk-unmarked"
 }

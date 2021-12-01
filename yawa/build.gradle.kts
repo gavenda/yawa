@@ -60,7 +60,8 @@ tasks {
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
 
-        relocate("com.zaxxer.hikari", "work.gavenda.hikari")
+        relocate("com.zaxxer.hikari", "work.gavenda.yawa.hikari")
+        relocate("io.papermc", "work.gavenda.yawa.paper")
 
         mustRunAfter(copyLicense)
     }
