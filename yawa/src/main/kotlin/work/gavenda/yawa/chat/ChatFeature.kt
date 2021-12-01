@@ -22,6 +22,8 @@ package work.gavenda.yawa.chat
 
 import github.scarsz.discordsrv.DiscordSRV
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.PluginEnvironment
+import work.gavenda.yawa.api.pluginEnvironment
 
 object ChatFeature : PluginFeature {
     override val isDisabled get() = Config.Chat.Disabled
@@ -30,7 +32,8 @@ object ChatFeature : PluginFeature {
 
     private val whisperCommand = WhisperCommand()
     private val replyCommand = ReplyCommand()
-    private val chatListener = ChatListener()
+    private val paperChatListener = PaperChatListener()
+    private val bukkitChatListener = BukkitChatListener()
 
     private lateinit var discordSRVListener: DiscordSRVListener
 
@@ -62,10 +65,18 @@ object ChatFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
-        pluginManager.registerEvents(chatListener)
+        if(pluginEnvironment == PluginEnvironment.PAPER) {
+            pluginManager.registerEvents(paperChatListener)
+        } else {
+            pluginManager.registerEvents(bukkitChatListener)
+        }
     }
 
     override fun unregisterEventListeners() {
-        pluginManager.unregisterEvents(chatListener)
+        if(pluginEnvironment == PluginEnvironment.PAPER) {
+            pluginManager.unregisterEvents(paperChatListener)
+        } else {
+            pluginManager.unregisterEvents(bukkitChatListener)
+        }
     }
 }

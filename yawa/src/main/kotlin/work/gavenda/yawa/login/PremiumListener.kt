@@ -28,6 +28,8 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import work.gavenda.yawa.api.joinMessageCompat
+import work.gavenda.yawa.api.quitMessageCompat
 
 class PremiumListener : Listener {
 
@@ -44,7 +46,7 @@ class PremiumListener : Listener {
                 .hoverEvent(hover)
                 .append(Component.text(" joined the game", NamedTextColor.YELLOW))
 
-            event.joinMessage(message)
+            event.joinMessageCompat(message)
         }
     }
 
@@ -61,7 +63,7 @@ class PremiumListener : Listener {
                 .hoverEvent(hover)
                 .append(Component.text(" left the game", NamedTextColor.YELLOW))
 
-            event.quitMessage(message)
+            event.quitMessageCompat(message)
         }
     }
 

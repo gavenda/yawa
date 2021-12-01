@@ -34,6 +34,7 @@ import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.PlaceholderContext
 import work.gavenda.yawa.api.YawaAPI
+import work.gavenda.yawa.api.sendMessageCompat
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -146,7 +147,7 @@ fun URL.downloadTo(file: File): Long {
  */
 fun CommandSender.sendMessageUsingKey(key: String) {
     if (this is Player) {
-            sendMessage(
+            sendMessageCompat(
                 Placeholder
                     .withContext(this)
                     .parseWithLocale(this, key)
@@ -157,6 +158,6 @@ fun CommandSender.sendMessageUsingKey(key: String) {
             Messages.useDefault()
                 .get(key)
         )
-        sendMessage(message)
+        sendMessageCompat(message)
     }
 }

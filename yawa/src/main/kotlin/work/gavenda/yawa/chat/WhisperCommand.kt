@@ -27,6 +27,7 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.sendMessageCompat
 import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
 
@@ -53,8 +54,8 @@ class WhisperCommand : Command(
             .parse(Config.Chat.FormatMessageFrom)
             .append(Component.text(message))
 
-        sender.sendMessage(messageTo)
-        target.sendMessage(messageFrom)
+        sender.sendMessageCompat(messageTo)
+        target.sendMessageCompat(messageFrom)
         target.lastWhisperPlayer = sender.name
     }
 

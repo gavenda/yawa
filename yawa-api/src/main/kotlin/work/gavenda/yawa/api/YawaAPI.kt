@@ -20,6 +20,7 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.text.minimessage.MiniMessage.miniMessage
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import work.gavenda.yawa.api.providers.PlayerPlaceholderProvider
@@ -33,7 +34,7 @@ class YawaAPI : JavaPlugin() {
 
     companion object {
         lateinit var Instance: YawaAPI
-        val MiniMessage = net.kyori.adventure.text.minimessage.MiniMessage.get()
+        val MiniMessage = miniMessage()
     }
 
     private val placeholderCommand = PlaceholderCommand()

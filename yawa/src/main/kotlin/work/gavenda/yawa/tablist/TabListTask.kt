@@ -22,6 +22,8 @@ package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.sendPlayerListFooterCompat
+import work.gavenda.yawa.api.sendPlayerListHeaderCompat
 import work.gavenda.yawa.server
 
 class TabListTask : Runnable {
@@ -29,12 +31,12 @@ class TabListTask : Runnable {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {
-            player.sendPlayerListHeader(
+            player.sendPlayerListHeaderCompat(
                 Placeholder
                     .withContext(player)
                     .parse(Config.TabList.Header)
             )
-            player.sendPlayerListFooter(
+            player.sendPlayerListFooterCompat(
                 Placeholder
                     .withContext(player)
                     .parse(Config.TabList.Footer)

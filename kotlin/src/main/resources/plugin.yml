@@ -2,7 +2,7 @@ name: Kotlin
 description: Simply provides Kotlin to the classpath. Any plugin that does this will also work as an alternative.
 author: Gavenda
 website: https://gavenda.work
-load: STARTUP
-api-version: '1.17'
-version: ${project.version}
-main: work.gavenda.yawa.kotlin.Plugin
+
+api-version: '1.18'
+version: 1.6.0
+main: work.gavenda.kotlin.Plugin

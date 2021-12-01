@@ -22,7 +22,7 @@ package work.gavenda.yawa.api
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.template.TemplateResolver
 import org.bukkit.World
 import org.bukkit.entity.Player
 
@@ -92,8 +92,10 @@ class PlaceholderContext(
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
 
+        val resolver = TemplateResolver.pairs(placeholders)
+
         return YawaAPI.MiniMessage
-            .parse(text, placeholders)
+            .deserialize(text, resolver)
     }
 
     /**

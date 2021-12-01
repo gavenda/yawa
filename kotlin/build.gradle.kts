@@ -3,15 +3,45 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-version = Version.KOTLIN
-
 kotlinProject("Kotlin")
-shadowedKotlinProject()
 deployablePlugin()
 
-// Manually set the server plugin api, since this basically is a provider for Kotlin
+version = Version.KOTLIN
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    compileOnly(Library.SPIGOT)
+
+    compileOnly(libs.paper)
+}
+
+tasks {
+    val copyLicense = named("copyLicense")
+
+    jar {
+        manifest {
+            attributes(
+                "Paper-Version" to libs.versions.paper
+            )
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
+    }
+
+    shadowJar {
+        archiveFileName.set(jar.get().archiveFileName)
+        mustRunAfter(copyLicense)
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
 }

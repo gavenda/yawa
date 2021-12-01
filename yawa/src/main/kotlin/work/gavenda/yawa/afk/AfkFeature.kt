@@ -20,8 +20,9 @@
 
 package work.gavenda.yawa.afk
 
-import org.bukkit.event.HandlerList
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.PluginEnvironment
+import work.gavenda.yawa.api.pluginEnvironment
 
 /**
  * Represents the afk feature.
@@ -30,6 +31,8 @@ object AfkFeature : PluginFeature {
 
     private var afkTaskId = -1
     private val afkListener = AfkListener()
+    private val bukkitAfkListener = BukkitAfkListener()
+    private val paperAfkListener = PaperAfkListener()
     private val afkCommand = AfkCommand()
 
     override val isDisabled get() = Config.Afk.Disabled
@@ -47,8 +50,14 @@ object AfkFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
-        pluginManager.registerEvents(afkCommand, plugin)
-        pluginManager.registerEvents(afkListener, plugin)
+        pluginManager.registerEvents(afkCommand)
+        pluginManager.registerEvents(afkListener)
+
+        if(pluginEnvironment == PluginEnvironment.PAPER) {
+            pluginManager.registerEvents(paperAfkListener)
+        } else {
+            pluginManager.registerEvents(bukkitAfkListener)
+        }
     }
 
     override fun unregisterTasks() {
@@ -56,7 +65,13 @@ object AfkFeature : PluginFeature {
     }
 
     override fun unregisterEventListeners() {
-        HandlerList.unregisterAll(afkListener)
-        HandlerList.unregisterAll(afkCommand)
+        pluginManager.unregisterEvents(afkListener)
+        pluginManager.unregisterEvents(afkCommand)
+
+        if(pluginEnvironment == PluginEnvironment.PAPER) {
+            pluginManager.unregisterEvents(paperAfkListener)
+        } else {
+            pluginManager.unregisterEvents(bukkitAfkListener)
+        }
     }
 }

@@ -4,41 +4,68 @@ plugins {
 }
 
 kotlinProject("Yawa")
-shadowedKotlinProject()
-paperPlugin()
 deployablePlugin()
 
 dependencies {
-    // Runtime JAR files in the classpath should have the same version. These files were found in the classpath
-    // Yes it is to fix the above
+    compileOnly(kotlin("stdlib-jdk8"))
     compileOnly(kotlin("reflect"))
+
+    // Paper API
+    compileOnly(libs.bundles.paper)
 
     // Implement our own api
     compileOnly(project(":yawa-api"))
 
-    // Data source
-    implementation(Library.HIKARICP)
+    // Data source + Db oop
+    implementation(libs.hikari)
+    implementation(libs.bundles.exposed)
 
     // Minecraft plugins
-    compileOnly(Library.VAULT)
-    compileOnly(Library.DISCORDSRV)
-    compileOnly(Library.PROTOCOL_LIB)
-    compileOnly(Library.LOG4J2)
-    
-    // Exposed
-    implementation(Library.Exposed.CORE) {
-        exclude(group = "org.jetbrains.kotlin")
-    }
-    implementation(Library.Exposed.DAO) {
-        exclude(group = "org.jetbrains.kotlin")
-    }
-    implementation(Library.Exposed.JDBC) {
-        exclude(group = "org.jetbrains.kotlin")
-    }
+    compileOnly(libs.vault)
+    compileOnly(libs.protocol.lib)
+    compileOnly(libs.discordsrv)
 }
 
-tasks.shadowJar {
-    val projectPackage = project.group
+tasks {
+    val copyLicense = named("copyLicense")
 
-    relocate("com.zaxxer.hikari", "$projectPackage.hikari")
+    jar {
+        manifest {
+            attributes(
+                "Paper-Version" to libs.versions.paper
+            )
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
+    }
+
+    shadowJar {
+        archiveFileName.set(jar.get().archiveFileName)
+
+        dependencies {
+            // Remove Kotlin
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
+            exclude(dependency("org.jetbrains:annotations:.*"))
+        }
+
+        relocate("com.zaxxer.hikari", "work.gavenda.hikari")
+
+        mustRunAfter(copyLicense)
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
 }

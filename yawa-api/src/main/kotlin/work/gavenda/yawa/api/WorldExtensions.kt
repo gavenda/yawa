@@ -45,7 +45,7 @@ val World.debugMode: Boolean
  */
 fun World.sendMessageIf(message: Component, condition: () -> Boolean) {
     if (!condition()) return
-    sendMessage(message)
+    sendMessageCompat(message)
 }
 
 /**
@@ -55,5 +55,5 @@ fun World.sendMessageIf(message: Component, condition: () -> Boolean) {
  */
 fun World.sendActionBarIf(text: Component, condition: () -> Boolean) {
     if (!condition()) return
-    sendActionBar(text)
+    sendActionBarCompat(text)
 }

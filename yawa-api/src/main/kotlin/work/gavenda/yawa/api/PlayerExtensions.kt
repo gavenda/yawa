@@ -98,7 +98,7 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
 fun Player.updateAbilities() {
     val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
     val entityPlayer = getHandle.invoke(this)
-    val updateAbilities = entityPlayer.javaClass.getDeclaredMethod("updateAbilities")
+    val updateAbilities = entityPlayer.javaClass.getDeclaredMethod("w")
 
     updateAbilities.invoke(entityPlayer)
 }
@@ -106,14 +106,6 @@ fun Player.updateAbilities() {
 fun Player.updateScaledHealth() {
     val updateScaledHealth = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
     updateScaledHealth.invoke(this)
-}
-
-fun Player.triggerHealthUpdate() {
-    val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
-    val entityPlayer = getHandle.invoke(this)
-    val updateAbilities = entityPlayer.javaClass.getDeclaredMethod("triggerHealthUpdate")
-
-    updateAbilities.invoke(entityPlayer)
 }
 
 /**
@@ -153,6 +145,11 @@ fun Player.updateSkin() {
         writePitch(location.pitch)
         writeOnGround(isOnGround)
     }
+    val updateHealth = WrapperPlayServerUpdateHealth().apply {
+        writeHealth(health.toFloat())
+        writeFood(foodLevel)
+        writeFoodSaturation(saturation)
+    }
     val slot = WrapperPlayServerHeldItemSlot().apply {
         writeSlot(inventory.heldItemSlot)
     }
@@ -172,7 +169,7 @@ fun Player.updateSkin() {
     slot.sendPacket(this)
     updateScaledHealth()
     updateInventory()
-    triggerHealthUpdate()
+    updateHealth.sendPacket(this)
 
     // Op refresh
     if (this.isOp) {
@@ -186,9 +183,9 @@ fun Player.updateSkin() {
  */
 val Player.networkManager: Any
     get() {
-        val injectorContainer = TemporaryPlayerFactory.getInjectorFromPlayer(player)
+        val socketInjector = TemporaryPlayerFactory.getInjectorFromPlayer(player)
         val injectorClass = Class.forName("com.comphenix.protocol.injector.netty.Injector")
-        val rawInjector = FuzzyReflection.getFieldValue(injectorContainer, injectorClass, true)
+        val rawInjector = FuzzyReflection.getFieldValue(socketInjector, injectorClass, true)
         return FieldUtils.readField(rawInjector, "networkManager", true)
     }
 
@@ -214,7 +211,5 @@ fun Player.disconnect(reason: String = "") {
         }
         // Send disconnect packet
         disconnectPacket.sendPacket(this)
-        // Server cleanup
-        kick(Component.text("Disconnected"))
     }
 }

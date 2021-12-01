@@ -29,6 +29,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
+import work.gavenda.yawa.api.loreCompat
 
 class PlayerHeadListener : Listener {
 
@@ -43,7 +44,7 @@ class PlayerHeadListener : Listener {
         val skull = item.itemMeta as SkullMeta
 
         skull.owningPlayer = victim
-        skull.lore(listOf(
+        skull.loreCompat(listOf(
             Component.text("Trophy rewarded by yeeting ${victim.name} out of existence")
         ))
         item.itemMeta = skull

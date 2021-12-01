@@ -24,6 +24,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.registerNewObjectiveCompat
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
@@ -39,7 +40,7 @@ object PingFeature : PluginFeature {
     private val playerPingPlaceholder = PlayerPingPlaceholder()
 
     private val scoreboard = server.scoreboardManager.newScoreboard
-    private val objective = scoreboard.registerNewObjective(
+    private val objective = scoreboard.registerNewObjectiveCompat(
         SB_NAME,
         SB_CRITERIA,
         Component.text(SB_DISPLAY_NAME)

@@ -10,8 +10,9 @@ depend:
   - YawaAPI
 softdepend:
   - DiscordSRV
+database: true
 
-api-version: '1.17'
+api-version: '1.18'
 version: ${project.version}
 main: work.gavenda.yawa.Yawa
 

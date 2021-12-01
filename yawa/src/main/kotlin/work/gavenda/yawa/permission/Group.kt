@@ -57,5 +57,4 @@ object GroupSchema : UUIDTable("yawa_group") {
 object GroupPlayerSchema : UUIDTable("yawa_group_player", "uuid") {
     val group = reference("group_uuid", GroupSchema)
     val player = reference("player_uuid", PlayerSchema)
-    override val primaryKey = PrimaryKey(group, player)
 }

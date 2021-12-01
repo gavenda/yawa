@@ -24,7 +24,7 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 
 /**
- * Configures the project as a shadowed Kotlin project.
+ * Configures the project as a Kotlin project.
  */
 fun Project.kotlinProject(archiveName: String) {
     val build = tasks.named("build")
@@ -48,10 +48,6 @@ fun Project.kotlinProject(archiveName: String) {
                 "Implementation-Vendor" to "Gavenda"
             )
         }
-    }
-
-    dependencies {
-        "compileOnly"(kotlin("stdlib-jdk8"))
     }
 
     val copyLicense = tasks.register<Copy>("copyLicense") {
