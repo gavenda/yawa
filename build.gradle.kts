@@ -17,7 +17,7 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
 
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.0.0-SNAPSHOT-$gitHash"
+    version = "1.1.0-SNAPSHOT-$gitHash"
 
     repositories {
         maven("https://papermc.io/repo/repository/maven-public")
