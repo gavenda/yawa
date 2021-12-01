@@ -34,7 +34,7 @@ class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) 
             .withContext(sender, sender.world)
             .asHelpList()
             .forEach {
-                sender.sendMessage(it)
+                sender.sendMessageCompat(it)
             }
     }
 

@@ -27,6 +27,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
+import work.gavenda.yawa.api.sendMessageCompat
 import java.util.*
 
 private val permissionCommands = listOf("permission", "yawa:permission")
@@ -48,7 +49,7 @@ class PermissionCommand : Command(commands = permissionCommands) {
                 Permission.PERMISSION_GROUP
             )
             .generate(sender)
-            .forEach { sender.sendMessage(it) }
+            .forEach { sender.sendMessageCompat(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

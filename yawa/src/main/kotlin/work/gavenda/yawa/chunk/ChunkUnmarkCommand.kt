@@ -6,6 +6,7 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.sendMessageCompat
 import work.gavenda.yawa.parseWithLocale
 
 class ChunkUnmarkCommand : Command(Permission.CHUNK_UNMARK) {
@@ -13,7 +14,7 @@ class ChunkUnmarkCommand : Command(Permission.CHUNK_UNMARK) {
         if (sender !is Player) return
 
         updateChunkMark(sender.location, false).thenRun {
-            sender.sendMessage(
+            sender.sendMessageCompat(
                 Placeholder.withContext(sender)
                     .parseWithLocale(sender, Message.ChunkUnmarked)
             )
