@@ -18,11 +18,11 @@ db:
 
 # Permission feature configuration
 permission:
-  disabled: false
+  disabled: true
 
 # Essentials feature configuration
 essentials:
-  disabled: false
+  disabled: true
 
 # Ping feature configuration
 ping:
@@ -59,7 +59,7 @@ sleep:
 
 # Ender dragon battle configuration
 ender:
-  disabled: false
+  disabled: true
 
 # Sit feature configuration
 sit:

@@ -43,7 +43,7 @@ class BukkitEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun lore(meta: SkullMeta, lore: List<Component>) {
-       meta.lore = lore.map { it.toLegacyText() }
+        meta.lore = lore.map { it.toLegacyText() }
     }
 
     private fun Component.toLegacyText(): String {
@@ -51,7 +51,12 @@ class BukkitEnvironment : Environment {
     }
 
     @Suppress("DEPRECATION")
-    override fun registerNewObjective(scoreboard: Scoreboard, name: String, criteria: String, displayName: Component): Objective {
+    override fun registerNewObjective(
+        scoreboard: Scoreboard,
+        name: String,
+        criteria: String,
+        displayName: Component
+    ): Objective {
         return scoreboard.registerNewObjective(name, criteria, displayName.toLegacyText())
     }
 

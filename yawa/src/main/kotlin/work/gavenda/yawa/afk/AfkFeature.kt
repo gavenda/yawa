@@ -21,8 +21,6 @@
 package work.gavenda.yawa.afk
 
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.PluginEnvironment
-import work.gavenda.yawa.api.pluginEnvironment
 
 /**
  * Represents the afk feature.
@@ -50,14 +48,16 @@ object AfkFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
-        pluginManager.registerEvents(afkCommand)
         pluginManager.registerEvents(afkListener)
+    }
 
-        if(pluginEnvironment == PluginEnvironment.PAPER) {
-            pluginManager.registerEvents(paperAfkListener)
-        } else {
-            pluginManager.registerEvents(bukkitAfkListener)
-        }
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(afkCommand)
+        pluginManager.registerEvents(paperAfkListener)
+    }
+
+    override fun registerBukkitEventListeners() {
+        pluginManager.registerEvents(bukkitAfkListener)
     }
 
     override fun unregisterTasks() {
@@ -66,12 +66,14 @@ object AfkFeature : PluginFeature {
 
     override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(afkListener)
-        pluginManager.unregisterEvents(afkCommand)
+    }
 
-        if(pluginEnvironment == PluginEnvironment.PAPER) {
-            pluginManager.unregisterEvents(paperAfkListener)
-        } else {
-            pluginManager.unregisterEvents(bukkitAfkListener)
-        }
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(paperAfkListener)
+        pluginManager.unregisterEvents(afkCommand)
+    }
+
+    override fun unregisterBukkitEventListeners() {
+        pluginManager.unregisterEvents(bukkitAfkListener)
     }
 }

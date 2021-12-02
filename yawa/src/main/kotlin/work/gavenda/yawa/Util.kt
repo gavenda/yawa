@@ -147,11 +147,11 @@ fun URL.downloadTo(file: File): Long {
  */
 fun CommandSender.sendMessageUsingKey(key: String) {
     if (this is Player) {
-            sendMessageCompat(
-                Placeholder
-                    .withContext(this)
-                    .parseWithLocale(this, key)
-            )
+        sendMessageCompat(
+            Placeholder
+                .withContext(this)
+                .parseWithLocale(this, key)
+        )
     } else {
         val miniMessage = YawaAPI.MiniMessage
         val message = miniMessage.parse(

@@ -35,4 +35,12 @@ object ImageUploadFeature : PluginFeature {
     override fun disableCommands() {
         plugin.getCommand(Command.IMAGE_UPLOAD)?.setExecutor(DisabledCommand)
     }
+
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(imageUploadCommand)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(imageUploadCommand)
+    }
 }

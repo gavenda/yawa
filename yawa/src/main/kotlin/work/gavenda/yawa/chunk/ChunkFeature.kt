@@ -49,6 +49,14 @@ object ChunkFeature : PluginFeature {
         plugin.getCommand(Command.CHUNK)?.setExecutor(DisabledCommand)
     }
 
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(chunkCommand)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(chunkCommand)
+    }
+
     override fun registerPlaceholders() {
         Placeholder.register(chunkPlaceholder)
     }

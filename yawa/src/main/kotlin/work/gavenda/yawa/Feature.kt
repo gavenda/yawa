@@ -20,6 +20,9 @@
 
 package work.gavenda.yawa
 
+import work.gavenda.yawa.api.PluginEnvironment
+import work.gavenda.yawa.api.pluginEnvironment
+
 /**
  * Constants for features.
  */
@@ -63,6 +66,13 @@ interface PluginFeature {
         registerHooks()
         registerPlaceholders()
         registerEventListeners()
+
+        if (pluginEnvironment == PluginEnvironment.PAPER) {
+            registerPaperEventListeners()
+        } else {
+            registerBukkitEventListeners()
+        }
+
         registerTasks()
         enableCommands()
         onEnable()
@@ -78,6 +88,13 @@ interface PluginFeature {
         disableCommands()
         unregisterTasks()
         unregisterEventListeners()
+
+        if (pluginEnvironment == PluginEnvironment.PAPER) {
+            unregisterPaperEventListeners()
+        } else {
+            unregisterBukkitEventListeners()
+        }
+
         unregisterPlaceholders()
         unregisterHooks()
     }
@@ -113,9 +130,19 @@ interface PluginFeature {
     fun registerPlaceholders() {}
 
     /**
-     * Register feature event listeners.
+     * Register cross-compatible feature event listeners.
      */
     fun registerEventListeners() {}
+
+    /**
+     * Register paper-only event listeners.
+     */
+    fun registerPaperEventListeners() {}
+
+    /**
+     * Register bukkit-only event listeners.
+     */
+    fun registerBukkitEventListeners() {}
 
     /**
      * Register feature tasks.
@@ -146,4 +173,14 @@ interface PluginFeature {
      * Unregister feature event listeners.
      */
     fun unregisterEventListeners() {}
+
+    /**
+     * Unregister paper-only event listeners.
+     */
+    fun unregisterPaperEventListeners() {}
+
+    /**
+     * Unregister bukkit-only event listeners.
+     */
+    fun unregisterBukkitEventListeners() {}
 }

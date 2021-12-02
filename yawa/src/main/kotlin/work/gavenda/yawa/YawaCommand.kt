@@ -95,7 +95,7 @@ class YawaCommand : Command(commands = yawaCommands) {
                 Permission.FEATURE
             )
             .generate(sender)
-            .forEach { sender.sendMessageCompat(it)}
+            .forEach { sender.sendMessageCompat(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

@@ -64,6 +64,14 @@ object PingFeature : PluginFeature {
         Placeholder.unregister(playerPingPlaceholder)
     }
 
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(pingCommand)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(pingCommand)
+    }
+
     override fun registerTasks() {
         val pingTask = PingTask(scoreboard, objective)
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)

@@ -61,7 +61,7 @@ tasks {
         }
 
         relocate("com.zaxxer.hikari", "work.gavenda.yawa.hikari")
-        relocate("io.papermc", "work.gavenda.yawa.paper")
+        relocate("io.papermc.lib", "work.gavenda.yawa.paperlib")
 
         mustRunAfter(copyLicense)
     }

@@ -44,9 +44,11 @@ class PlayerHeadListener : Listener {
         val skull = item.itemMeta as SkullMeta
 
         skull.owningPlayer = victim
-        skull.loreCompat(listOf(
-            Component.text("Trophy rewarded by yeeting ${victim.name} out of existence")
-        ))
+        skull.loreCompat(
+            listOf(
+                Component.text("Trophy rewarded by yeeting ${victim.name} out of existence")
+            )
+        )
         item.itemMeta = skull
 
         // Drop the item

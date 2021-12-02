@@ -9,7 +9,7 @@ import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.sendMessageCompat
 import work.gavenda.yawa.parseWithLocale
 
-class ChunkMarkCommand: Command(Permission.CHUNK_MARK) {
+class ChunkMarkCommand : Command(Permission.CHUNK_MARK) {
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return

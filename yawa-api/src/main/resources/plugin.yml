@@ -2,21 +2,18 @@ name: YawaAPI
 description: The Yawa API.
 author: Gavenda
 website: https://gavenda.work
+api-version: '1.18'
+version: ${project.version}
+main: work.gavenda.yawa.api.YawaAPI
 load: STARTUP
 depend:
   - Kotlin
   - ProtocolLib
-
-api-version: '1.18'
-version: ${project.version}
-main: work.gavenda.yawa.api.YawaAPI
-
 commands:
   placeholders:
     description: Lists all available placeholders.
     permission: yawa.api.placeholder
     usage: /placeholders
-
 permissions:
   yawa.api.*:
     description: Gives access to all plugin commands.

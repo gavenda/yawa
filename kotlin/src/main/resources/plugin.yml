@@ -4,5 +4,5 @@ author: Gavenda
 website: https://gavenda.work
 
 api-version: '1.18'
-version: 1.6.0
+version: ${project.version}
 main: work.gavenda.kotlin.Plugin

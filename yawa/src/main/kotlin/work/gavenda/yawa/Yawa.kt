@@ -27,6 +27,8 @@ import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
+import work.gavenda.yawa.api.PluginEnvironment
+import work.gavenda.yawa.api.pluginEnvironment
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.ender.EnderFeature
@@ -174,12 +176,16 @@ class Yawa : JavaPlugin() {
     }
 
     private fun registerRootCommand() {
-        server.pluginManager.registerEvents(rootCommand, this)
+        if (pluginEnvironment == PluginEnvironment.PAPER) {
+            server.pluginManager.registerEvents(rootCommand, this)
+        }
         getCommand(Command.ROOT)?.setExecutor(rootCommand)
     }
 
     private fun unregisterRootCommand() {
         getCommand(Command.ROOT)?.setExecutor(null)
-        HandlerList.unregisterAll(rootCommand)
+        if (pluginEnvironment == PluginEnvironment.PAPER) {
+            HandlerList.unregisterAll(rootCommand)
+        }
     }
 }

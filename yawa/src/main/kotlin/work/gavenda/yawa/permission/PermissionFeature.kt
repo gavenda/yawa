@@ -95,12 +95,18 @@ object PermissionFeature : PluginFeature {
 
     override fun registerEventListeners() {
         pluginManager.registerEvents(permissionListener)
-        pluginManager.registerEvents(permissionCommand)
     }
 
     override fun unregisterEventListeners() {
-        pluginManager.unregisterEvents(permissionCommand)
         pluginManager.unregisterEvents(permissionListener)
+    }
+
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(permissionCommand)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(permissionCommand)
     }
 
     override fun createTables() {

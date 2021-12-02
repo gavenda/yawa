@@ -27,8 +27,8 @@ import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.disconnect
-import work.gavenda.yawa.scheduler
 import work.gavenda.yawa.logger
+import work.gavenda.yawa.scheduler
 import java.security.KeyPair
 
 /**

@@ -2,6 +2,10 @@ name: Yawa
 description: All in one plugin for any of my personally hosted minecraft servers. Most of its code bases are taken from popular plugins.
 author: Gavenda
 website: https://gavenda.work
+database: true
+api-version: '1.18'
+version: ${project.version}
+main: work.gavenda.yawa.Yawa
 load: STARTUP
 loadbefore:
   - Vault
@@ -10,53 +14,38 @@ depend:
   - YawaAPI
 softdepend:
   - DiscordSRV
-database: true
-
-api-version: '1.18'
-version: ${project.version}
-main: work.gavenda.yawa.Yawa
-
 commands:
   afk:
     description: Toggles being AFK. (Away from Keyboard)
     permission: yawa.afk
     usage: /afk
-
   imgup:
     description: Uploads an image for use in CustomImages plugin
     permission: yawa.img-up
     usage: /imgup <url> <file-name>
-
   skin:
     description: Changes your skin.
     usage: /skin <subcommands>
-
   permission:
     description: Change player/group permissions.
     usage: /permission <player|group> <permission> <enabled:true|false>
-
   ping:
     description: Check your latency to the server.
     usage: /ping
-
   yawa:
     description: Plugin root command.
     usage: /yawa <subcommands>
-
   whisper:
     description: Send a whisper to a player.
     usage: /whisper <player> <message>
     aliases: [w, msg, tell]
-
   reply:
     description: Reply to a whisper from a player.
     usage: /reply <message>
     aliases: [r]
-
   chunk:
     description: Manages the current chunk.
     usage: /chunk
-
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.

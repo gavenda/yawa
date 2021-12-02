@@ -27,10 +27,6 @@ allprojects {
         maven("https://nexus.vankka.dev/repository/maven-public")
         maven("https://m2.dv8tion.net/releases")
         maven("https://jitpack.io")
-
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/") {
-            name = "sonatype-oss-snapshots"
-        }
     }
 
     tasks.withType<KotlinCompile> {

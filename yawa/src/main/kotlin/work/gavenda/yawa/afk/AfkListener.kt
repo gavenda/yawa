@@ -20,7 +20,6 @@
 
 package work.gavenda.yawa.afk
 
-import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority

@@ -20,6 +20,4 @@
 
 object Version {
     const val KOTLIN = "1.6.0"
-    const val SPIGOT = "1.18-R0.1-SNAPSHOT"
-    const val PAPER = "1.18-R0.1-SNAPSHOT"
 }

@@ -47,7 +47,9 @@ class YawaAPI : JavaPlugin() {
         Placeholder.register(WorldPlaceholderProvider())
         Placeholder.register(ServerPlaceholderProvider())
 
-        server.pluginManager.registerEvents(placeholderCommand, this)
+        if (pluginEnvironment == PluginEnvironment.PAPER) {
+            server.pluginManager.registerEvents(placeholderCommand, this)
+        }
         getCommand("placeholders")?.setExecutor(placeholderCommand)
     }
 
@@ -55,6 +57,8 @@ class YawaAPI : JavaPlugin() {
         Placeholder.clear()
 
         getCommand("placeholders")?.setExecutor(null)
-        HandlerList.unregisterAll(placeholderCommand)
+        if (pluginEnvironment == PluginEnvironment.PAPER) {
+            HandlerList.unregisterAll(placeholderCommand)
+        }
     }
 }

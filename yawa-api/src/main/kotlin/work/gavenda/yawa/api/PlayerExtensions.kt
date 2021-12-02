@@ -32,6 +32,8 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
+import net.md_5.bungee.api.ChatMessageType
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
@@ -39,6 +41,7 @@ import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.*
 import java.util.*
+import javax.crypto.Cipher
 
 const val META_AFK = "Afk"
 
@@ -209,7 +212,16 @@ fun Player.disconnect(reason: String = "") {
         val disconnectPacket = WrapperLoginServerDisconnect().apply {
             writeReason(WrappedChatComponent.fromText(reason))
         }
-        // Send disconnect packet
-        disconnectPacket.sendPacket(this)
+
+        try {
+            // Send disconnect packet
+            disconnectPacket.sendPacket(this)
+        } finally {
+            try {
+                kickCompat(Component.text("Disconnected"))
+            } catch (e: UnsupportedOperationException) {
+                // ProtocolLib will throw an error for kicking temporary players
+            }
+        }
     }
 }

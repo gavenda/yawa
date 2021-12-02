@@ -50,12 +50,17 @@ object SkinFeature : PluginFeature {
 
     override fun registerEventListeners() {
         pluginManager.registerEvents(skinListener)
-        pluginManager.registerEvents(skinCommand)
     }
 
     override fun unregisterEventListeners() {
-        pluginManager.unregisterEvents(skinCommand)
         pluginManager.unregisterEvents(skinListener)
     }
 
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(skinCommand)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(skinCommand)
+    }
 }
