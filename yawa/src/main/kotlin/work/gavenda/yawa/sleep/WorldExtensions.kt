@@ -22,6 +22,10 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.World
 import org.bukkit.entity.Player
+import org.bukkit.metadata.FixedMetadataValue
+import work.gavenda.yawa.Config
+import work.gavenda.yawa.Yawa
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 
 /**
@@ -40,6 +44,25 @@ val World.sleepingPlayers
  */
 val World.awakePlayers
     get(): List<Player> = players.filter { it.isSleeping.not() }
+
+
+const val META_WORLD_KICK_SECONDS = "SleepKickSeconds"
+
+/**
+ * Returns elapsed kick seconds, should increment per tick (1 second).
+ */
+var World.kickSeconds: Int
+    get() = if (hasMetadata(META_WORLD_KICK_SECONDS)) {
+        getMetadata(META_WORLD_KICK_SECONDS)
+            .first { it.owningPlugin == Yawa.Instance }
+            .asInt()
+    } else 0
+    set(value) = setMetadata(META_WORLD_KICK_SECONDS, FixedMetadataValue(Yawa.Instance, value))
+
+/**
+ * Remaining seconds before awake players get kicked.
+ */
+val World.remainingSeconds get(): Int = Config.Sleep.KickSeconds - kickSeconds
 
 /**
  * Actual needed players that are sleeping to pass the night.

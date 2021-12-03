@@ -23,9 +23,10 @@ package work.gavenda.yawa.sleep
 import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.kickCompat
+import work.gavenda.yawa.api.sendMessageCompat
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Checks per world if there are people beginning to sleep.
@@ -34,9 +35,6 @@ class SleepCheckTask(
     private val sleepAnimationTaskIds: MutableMap<UUID, Int>,
     private val sleepingWorlds: MutableSet<UUID>
 ) : Runnable {
-
-    // Kick seconds should increment per tick (1 second)
-    private var kickSeconds = AtomicInteger()
 
     private fun checkWorld(world: World) {
         val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
@@ -47,8 +45,14 @@ class SleepCheckTask(
             world.beganSleeping -> {
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
-                    // Less than configured seconds, increment counter
-                    if (kickSeconds.incrementAndGet() < Config.Sleep.KickSeconds) {
+                    if (world.kickSeconds < Config.Sleep.KickSeconds) {
+                        world.kickSeconds = world.kickSeconds + 1
+
+                        val kickBroadcastMessage = Placeholder
+                            .withContext(world)
+                            .parseWithDefaultLocale(Message.SleepKickRemainingBroadcast)
+
+                        world.sendMessageCompat(kickBroadcastMessage)
                         return
                     }
 
@@ -60,7 +64,7 @@ class SleepCheckTask(
                                 .parseWithDefaultLocale(Message.SleepKickMessage)
 
                             it.sleepKicked = true
-                            it.kick(kickMessage)
+                            it.kickCompat(kickMessage)
                         }
                     }
                 }
@@ -88,11 +92,11 @@ class SleepCheckTask(
                 sleepAnimationTaskIds[world.uid] = scheduler.runTaskTimer(plugin, sleepAnimationTask, 1, 1).taskId
 
                 // Reset kick seconds
-                kickSeconds.lazySet(0)
+                world.kickSeconds = 0
             }
             else -> {
                 // Reset kick seconds
-                kickSeconds.lazySet(0)
+                world.kickSeconds = 0
             }
         }
     }

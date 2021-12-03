@@ -34,6 +34,7 @@ class SleepPlaceholderProvider : PlaceholderProvider {
         return mapOf(
             "world-sleeping" to world?.sleepingPlayers?.size.toString(),
             "world-sleeping-needed" to world?.sleepingNeeded.toString(),
+            "sleep-kick-remaining" to world?.remainingSeconds.toString(),
             "sleep-kick-seconds" to Config.Sleep.KickSeconds.toString()
         )
     }
