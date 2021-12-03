@@ -39,7 +39,7 @@ class PremiumListener : Listener {
 
         if (player.isVerified) {
             val hover = HoverEvent.showText(
-                Component.text("Verified Mojang/Microsoft Account", NamedTextColor.GREEN)
+                Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
             )
 
             val message = Component.text(player.name, NamedTextColor.GOLD)
@@ -56,7 +56,7 @@ class PremiumListener : Listener {
 
         if (player.isVerified) {
             val hover = HoverEvent.showText(
-                Component.text("Verified Mojang/Microsoft Account", NamedTextColor.GREEN)
+                Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
             )
 
             val message = Component.text(player.name, NamedTextColor.GOLD)
