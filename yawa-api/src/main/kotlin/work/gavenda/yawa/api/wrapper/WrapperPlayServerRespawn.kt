@@ -78,8 +78,8 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
      * Write dimension.
      * @param value new value
      */
-    fun writeDimension(value: Int) {
-        handle.dimensions.write(0, value)
+    fun writeDimensionTypes(value: World) {
+        handle.dimensionTypes.write(0, value)
     }
 
     /**

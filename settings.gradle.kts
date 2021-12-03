@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             alias("log4j2").to("org.apache.logging.log4j:log4j-api:2.14.1")
             alias("discordsrv").to("com.discordsrv:discordsrv:1.24.0")
             alias("kyori-adventurelib").to("net.kyori:adventure-platform-bukkit:4.0.1")
-            alias("kyori-minimessage").to("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
+            alias("kyori-minimessage").to("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT")
             // Bundles
             bundle("exposed", listOf("exposed-core", "exposed-dao", "exposed-jdbc"))
             bundle("paper", listOf("paper", "paper-lib"))

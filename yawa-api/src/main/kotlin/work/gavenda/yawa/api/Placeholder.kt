@@ -86,11 +86,20 @@ class PlaceholderContext(
      * @param text text to parse
      */
     fun parse(text: String): Component {
-        val placeholders = providers
+        val componentPlaceholders = providers
             .map { it.provide(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
+        val stringPlaceholders = providers
+            .map { it.provide(player, world) }
+            .flatMap { it.entries }
+            .associate { it.key to it.value }
+            .filter { entry -> entry.value != null }
+        val placeholders = mapOf<String, Any?>(
+            *componentPlaceholders.toList().toTypedArray(),
+            *stringPlaceholders.toList().toTypedArray()
+        )
 
         val resolver = TemplateResolver.pairs(placeholders)
 
@@ -116,7 +125,7 @@ class PlaceholderContext(
                 .append(Component.text(placeholder))
                 .append(Component.text("]", NamedTextColor.GREEN))
                 .append(Component.text(" » ", NamedTextColor.YELLOW))
-                .append(Component.text(value ?: "", NamedTextColor.WHITE))
+                .append(value ?: Component.text("None" , NamedTextColor.WHITE))
         }
     }
 
@@ -129,5 +138,10 @@ interface PlaceholderProvider {
     /**
      * Provide a placeholder.
      */
-    fun provide(player: Player?, world: World?): Map<String, String?>
+    fun provide(player: Player?, world: World?): Map<String, Component?>
+
+    /**
+     * Provide a placeholder.
+     */
+    fun provideString(player: Player?, world: World?): Map<String, String?>
 }

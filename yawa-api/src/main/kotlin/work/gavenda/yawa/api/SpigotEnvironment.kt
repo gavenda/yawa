@@ -21,9 +21,12 @@
 package work.gavenda.yawa.api
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.md_5.bungee.api.ChatMessageType
+import net.md_5.bungee.api.chat.BaseComponent
 import net.md_5.bungee.api.chat.TextComponent
+import net.md_5.bungee.chat.ComponentSerializer
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -34,7 +37,12 @@ import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 
-class BukkitEnvironment : Environment {
+class SpigotEnvironment : Environment {
+
+    @Suppress("DEPRECATION")
+    override fun displayNameCompat(player: Player): Component {
+        return player.displayName.toComponent()
+    }
 
     @Suppress("DEPRECATION")
     override fun locale(player: Player): Locale {
@@ -43,7 +51,17 @@ class BukkitEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun lore(meta: SkullMeta, lore: List<Component>) {
-        meta.lore = lore.map { it.toLegacyText() }
+        meta.loreComponents = lore.map { it.toBaseComponent() }
+    }
+
+    private fun String.toComponent(): Component {
+        return LegacyComponentSerializer.legacySection().deserialize(this)
+    }
+
+    private fun Component.toBaseComponent(): Array<BaseComponent> {
+        return ComponentSerializer.parse(
+            GsonComponentSerializer.gson().serialize(this)
+        )
     }
 
     private fun Component.toLegacyText(): String {
@@ -62,21 +80,29 @@ class BukkitEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {
-        quitEvent.quitMessage = component?.toLegacyText()
+        quitEvent.quitMessage = ""
+        if (component != null) {
+            quitEvent.player.spigot().sendMessage(*component.toBaseComponent())
+        }
     }
 
     @Suppress("DEPRECATION")
     override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
-        joinEvent.joinMessage = component?.toLegacyText()
+        joinEvent.joinMessage = ""
+        if (component != null) {
+            joinEvent.player.spigot().sendMessage(*component.toBaseComponent())
+        }
     }
 
+    @Suppress("DEPRECATION")
     override fun sendMessage(sender: CommandSender, component: Component) {
-        sender.sendMessage(component.toLegacyText())
+        sender.spigot().sendMessage(*component.toBaseComponent())
     }
 
+    @Suppress("DEPRECATION")
     override fun sendMessage(world: World, component: Component) {
         world.players.forEach {
-            it.sendMessage(component.toLegacyText())
+            it.spigot().sendMessage(*component.toBaseComponent())
         }
     }
 

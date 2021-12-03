@@ -44,4 +44,5 @@ interface Environment {
     fun registerNewObjective(scoreboard: Scoreboard, name: String, criteria: String, displayName: Component): Objective
     fun lore(meta: SkullMeta, lore: List<Component>)
     fun locale(player: Player): Locale
+    fun displayNameCompat(player: Player): Component
 }

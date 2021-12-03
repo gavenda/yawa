@@ -131,7 +131,7 @@ fun Player.updateSkin() {
     }
     val respawn = WrapperPlayServerRespawn().apply {
         writeResourceKey(world)
-        writeDimension(world.environment.id)
+        writeDimensionTypes(world)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
         writePreviousGameMode(previousGameMode)
         writeSeed(world.seed)

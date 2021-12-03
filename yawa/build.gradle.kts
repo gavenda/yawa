@@ -11,7 +11,8 @@ dependencies {
     compileOnly(kotlin("reflect"))
 
     // Paper API
-    compileOnly(libs.bundles.paper)
+    compileOnly(libs.paper)
+    implementation(libs.paper.lib)
 
     // Implement our own api
     compileOnly(project(":yawa-api"))

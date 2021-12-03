@@ -1,7 +1,7 @@
 package work.gavenda.yawa.api
 
 enum class PluginEnvironment {
-    BUKKIT, PAPER
+    SPIGOT, PAPER
 }
 
 val pluginEnvironment by lazy {
@@ -9,6 +9,6 @@ val pluginEnvironment by lazy {
         Class.forName("com.destroystokyo.paper.PaperConfig")
         PluginEnvironment.PAPER
     } catch (e: ClassNotFoundException) {
-        PluginEnvironment.BUKKIT
+        PluginEnvironment.SPIGOT
     }
 }

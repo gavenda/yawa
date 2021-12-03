@@ -33,6 +33,10 @@ import java.util.*
 
 class PaperEnvironment : Environment {
 
+    override fun displayNameCompat(player: Player): Component {
+        return player.displayName()
+    }
+
     override fun locale(player: Player): Locale {
         return player.locale()
     }

@@ -10,7 +10,8 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
 
     // Paper API
-    compileOnly(libs.bundles.paper)
+    compileOnly(libs.paper)
+    implementation(libs.paper.lib)
     implementation(libs.kyori.adventurelib)
     implementation(libs.kyori.minimessage)
 

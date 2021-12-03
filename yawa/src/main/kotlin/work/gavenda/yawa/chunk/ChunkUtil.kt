@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.logger
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -19,6 +20,12 @@ fun updateChunkMark(location: Location, marked: Boolean): CompletableFuture<Void
 
         world.loadChunk(chunkX, chunkZ)
         world.setChunkForceLoaded(chunkX, chunkZ, marked)
+
+        if (marked) {
+            logger.info("Chunk ($chunkX, $chunkZ) is marked to keep running")
+        } else {
+            logger.info("Chunk ($chunkX, $chunkZ) is unmarked")
+        }
 
         transaction {
             val worldChunk = WorldChunk.find(chunk(world.name, chunkX, chunkZ))

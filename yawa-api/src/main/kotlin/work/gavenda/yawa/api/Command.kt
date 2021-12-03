@@ -77,6 +77,7 @@ abstract class Command(
         }
         if (!hasPermission(sender, parent)) {
             sender.sendMessageCompat(COMMAND_NO_PERMISSION)
+            return
         }
         parent.execute(sender, args)
     }

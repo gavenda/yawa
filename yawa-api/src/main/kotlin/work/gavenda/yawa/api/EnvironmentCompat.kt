@@ -37,8 +37,12 @@ private val pluginRuntimeEnvironment: Environment by lazy {
     if (pluginEnvironment == PluginEnvironment.PAPER) {
         PaperEnvironment()
     } else {
-        BukkitEnvironment()
+        SpigotEnvironment()
     }
+}
+
+val Player.displayNameCompat get(): Component {
+    return pluginRuntimeEnvironment.displayNameCompat(this)
 }
 
 fun Player.localeCompat(): Locale {
