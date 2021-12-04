@@ -92,11 +92,11 @@ class PlaceholderContext(
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
         val stringPlaceholders = providers
-            .map { it.provide(player, world) }
+            .map { it.provideString(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
-        val placeholders = mapOf<String, Any?>(
+        val placeholders = mapOf(
             *componentPlaceholders.toList().toTypedArray(),
             *stringPlaceholders.toList().toTypedArray()
         )

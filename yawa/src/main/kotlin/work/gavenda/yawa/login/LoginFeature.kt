@@ -25,6 +25,8 @@ import org.bukkit.event.HandlerList
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.sleep.SleepFeature
 import java.security.KeyPair
 
 /**
@@ -35,6 +37,7 @@ object LoginFeature : PluginFeature {
 
     private val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
     private val premiumListener = PremiumListener()
+    private val premiumPlaceholderProvider = PremiumPlaceholderProvider()
     private lateinit var loginHandler: AsyncListenerHandler
     private lateinit var loginEncryptionHandler: AsyncListenerHandler
 
@@ -45,6 +48,14 @@ object LoginFeature : PluginFeature {
             logger.warn("Server is in online mode, rendering this feature useless")
             return
         }
+    }
+
+    override fun registerPlaceholders() {
+        Placeholder.register(premiumPlaceholderProvider)
+    }
+
+    override fun unregisterPlaceholders() {
+        Placeholder.unregister(premiumPlaceholderProvider)
     }
 
     override fun disable() {
