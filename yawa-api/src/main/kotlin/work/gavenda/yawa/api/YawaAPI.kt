@@ -23,9 +23,13 @@ package work.gavenda.yawa.api
 import net.kyori.adventure.text.minimessage.MiniMessage.miniMessage
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
-import work.gavenda.yawa.api.providers.PlayerPlaceholderProvider
-import work.gavenda.yawa.api.providers.ServerPlaceholderProvider
-import work.gavenda.yawa.api.providers.WorldPlaceholderProvider
+import work.gavenda.yawa.api.compat.PluginEnvironment
+import work.gavenda.yawa.api.compat.pluginEnvironment
+import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.PlaceholderCommand
+import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
+import work.gavenda.yawa.api.placeholder.provider.ServerPlaceholderProvider
+import work.gavenda.yawa.api.placeholder.provider.WorldPlaceholderProvider
 
 /**
  * Yawa API plugin entry point.

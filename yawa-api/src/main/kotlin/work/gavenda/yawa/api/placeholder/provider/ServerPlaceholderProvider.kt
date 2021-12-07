@@ -18,20 +18,21 @@
  *
  */
 
-package work.gavenda.yawa.api.providers
+package work.gavenda.yawa.api.placeholder.provider
 
-import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.PlaceholderProvider
+import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 
 /**
  * Provides common placeholders for server information.
  */
 class ServerPlaceholderProvider : PlaceholderProvider {
-    override fun provide(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf()
+
+    companion object {
+        const val SERVER_PLAYER_COUNT = "server-player-count"
+        const val SERVER_PLAYER_MAX = "server-player-max"
     }
 
     override fun provideString(player: Player?, world: World?): Map<String, String?> {

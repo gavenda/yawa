@@ -5,8 +5,12 @@ import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.PlaceholderProvider
+import work.gavenda.yawa.api.placeholder.PlaceholderProvider
+import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 
+/**
+ * Overrides player name.
+ */
 class PremiumPlaceholderProvider : PlaceholderProvider {
 
     override fun provide(player: Player?, world: World?): Map<String, Component?> {
@@ -17,14 +21,12 @@ class PremiumPlaceholderProvider : PlaceholderProvider {
 
             if (player.isVerified) {
                 return mapOf(
-                    "player-name" to Component.text(player.name, NamedTextColor.GOLD).hoverEvent(hover)
+                    PlayerPlaceholderProvider.PLAYER_NAME to Component
+                        .text(player.name, NamedTextColor.GOLD)
+                        .hoverEvent(hover)
                 )
             }
         }
-        return mapOf()
-    }
-
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
         return mapOf()
     }
 

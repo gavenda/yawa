@@ -18,7 +18,7 @@
  *
  */
 
-package work.gavenda.yawa.api
+package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.text.Component
 import org.bukkit.World

@@ -1,15 +1,10 @@
 package work.gavenda.yawa.chunk
 
-import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.PlaceholderProvider
+import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 
 class ChunkPlaceholder : PlaceholderProvider {
-
-    override fun provide(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf()
-    }
 
     override fun provideString(player: Player?, world: World?): Map<String, String?> {
         val currentChunk = player?.location?.chunk

@@ -29,7 +29,7 @@ object NotifyFeature : PluginFeature {
 
     private val itemListener = ItemListener()
 
-    override val isDisabled get() = Config.Login.Disabled
+    override val isDisabled get() = Config.Notify.Disabled
 
     override fun registerEventListeners() {
         pluginManager.registerEvents(itemListener)

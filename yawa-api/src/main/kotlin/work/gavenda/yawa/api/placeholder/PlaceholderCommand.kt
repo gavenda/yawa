@@ -18,31 +18,30 @@
  *
  */
 
-package work.gavenda.yawa.api.providers
+package work.gavenda.yawa.api.placeholder
 
-import net.kyori.adventure.text.Component
-import org.bukkit.World
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.PlaceholderProvider
-import work.gavenda.yawa.api.displayNameCompat
+import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.compat.sendMessageCompat
 
-/**
- * Provides common placeholders for player instances.
- */
-class PlayerPlaceholderProvider : PlaceholderProvider {
+private val placeholderCommands = listOf("placeholders", "yawaapi:placeholders")
 
-    @Suppress("DEPRECATION")
-    override fun provide(player: Player?, world: World?): Map<String, Component?> {
-        val displayName = player?.displayNameCompat
+class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) {
 
-        return mapOf(
-            "player-display-name" to displayName
-        )
+    override fun execute(sender: CommandSender, args: List<String>) {
+        if (sender !is Player) return
+
+        Placeholder
+            .withContext(sender, sender.world)
+            .asHelpList()
+            .forEach {
+                sender.sendMessageCompat(it)
+            }
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
-        return mapOf(
-            "player-name" to player?.name,
-        )
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return emptyList()
     }
+
 }

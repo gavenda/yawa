@@ -25,7 +25,7 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.sendMessageCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 
 class SkinCommand : Command(
     commands = listOf("skin", "yawa:skin")

@@ -23,8 +23,8 @@ package work.gavenda.yawa.afk
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 
 const val META_PLAYER_AFK_LAST = "AfkLast"

@@ -22,9 +22,9 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.World
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.kickCompat
-import work.gavenda.yawa.api.sendMessageCompat
+import work.gavenda.yawa.api.compat.kickCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
 

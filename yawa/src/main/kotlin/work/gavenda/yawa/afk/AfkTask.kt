@@ -21,9 +21,9 @@
 package work.gavenda.yawa.afk
 
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.compat.playerListNameCompat
 import work.gavenda.yawa.api.isAfk
-import work.gavenda.yawa.api.playerListNameCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.concurrent.TimeUnit
 

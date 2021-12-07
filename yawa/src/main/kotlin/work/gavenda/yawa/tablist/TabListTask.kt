@@ -21,9 +21,9 @@
 package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.sendPlayerListFooterCompat
-import work.gavenda.yawa.api.sendPlayerListHeaderCompat
+import work.gavenda.yawa.api.compat.sendPlayerListFooterCompat
+import work.gavenda.yawa.api.compat.sendPlayerListHeaderCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.server
 
 class TabListTask : Runnable {

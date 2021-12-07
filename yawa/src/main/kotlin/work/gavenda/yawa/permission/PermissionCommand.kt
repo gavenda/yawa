@@ -27,7 +27,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.sendMessageCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import java.util.*
 
 private val permissionCommands = listOf("permission", "yawa:permission")

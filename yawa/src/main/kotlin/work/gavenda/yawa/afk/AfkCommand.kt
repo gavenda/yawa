@@ -24,8 +24,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.Placeholder
 import work.gavenda.yawa.api.isAfk
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 
 class AfkCommand : Command(

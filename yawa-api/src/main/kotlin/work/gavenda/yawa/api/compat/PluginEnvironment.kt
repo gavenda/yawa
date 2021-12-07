@@ -1,4 +1,4 @@
-package work.gavenda.yawa.api
+package work.gavenda.yawa.api.compat
 
 enum class PluginEnvironment {
     SPIGOT, PAPER

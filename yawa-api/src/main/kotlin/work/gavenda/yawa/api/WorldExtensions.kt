@@ -24,6 +24,8 @@ import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
 import net.kyori.adventure.text.Component
 import org.bukkit.World
+import work.gavenda.yawa.api.compat.sendActionBarCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 
 /**
  * Retrieves debug mode status.

@@ -28,8 +28,8 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import work.gavenda.yawa.api.joinMessageCompat
-import work.gavenda.yawa.api.quitMessageCompat
+import work.gavenda.yawa.api.compat.joinMessageCompat
+import work.gavenda.yawa.api.compat.quitMessageCompat
 
 class PremiumListener : Listener {
 

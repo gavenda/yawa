@@ -27,8 +27,8 @@ import org.bukkit.event.player.PlayerBedLeaveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.quitMessageCompat
+import work.gavenda.yawa.api.compat.quitMessageCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.parseWithDefaultLocale
 import work.gavenda.yawa.parseWithLocale

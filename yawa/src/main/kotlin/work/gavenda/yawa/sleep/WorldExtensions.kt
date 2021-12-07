@@ -25,7 +25,6 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Yawa
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 
 /**

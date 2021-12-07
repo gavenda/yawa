@@ -18,13 +18,15 @@
  *
  */
 
-package work.gavenda.yawa.api
+package work.gavenda.yawa.api.placeholder
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.template.TemplateResolver
 import org.bukkit.World
 import org.bukkit.entity.Player
+import work.gavenda.yawa.api.YawaAPI
+import work.gavenda.yawa.api.apiLogger
 
 /**
  * Simple placeholder API.
@@ -86,6 +88,33 @@ class PlaceholderContext(
      * @param text text to parse
      */
     fun parse(text: String): Component {
+        val resolver = TemplateResolver.pairs(mergeProviders())
+
+        return YawaAPI.MiniMessage
+            .deserialize(text, resolver)
+    }
+
+    /**
+     * Returns this placeholder as a help list.
+     */
+    fun asHelpList(): List<Component> {
+        return mergeProviders().map { entry ->
+            val placeholder = entry.key
+            val value = entry.value
+            val componentText = Component.text("[", NamedTextColor.GREEN)
+                .append(Component.text(placeholder))
+                .append(Component.text("]", NamedTextColor.GREEN))
+                .append(Component.text(" » ", NamedTextColor.YELLOW))
+
+            when (value) {
+                is String -> componentText.append(Component.text(value, NamedTextColor.WHITE))
+                is Component -> componentText.append(value)
+                else -> componentText.append(Component.text("None", NamedTextColor.WHITE))
+            }
+        }
+    }
+
+    private fun mergeProviders(): Map<String, Any?> {
         val componentPlaceholders = providers
             .map { it.provide(player, world) }
             .flatMap { it.entries }
@@ -96,37 +125,11 @@ class PlaceholderContext(
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
-        val placeholders = mapOf(
+
+        return mapOf(
             *componentPlaceholders.toList().toTypedArray(),
             *stringPlaceholders.toList().toTypedArray()
         )
-
-        val resolver = TemplateResolver.pairs(placeholders)
-
-        return YawaAPI.MiniMessage
-            .deserialize(text, resolver)
-    }
-
-    /**
-     * Returns this placeholder as a help list.
-     */
-    fun asHelpList(): List<Component> {
-        val placeholders = providers
-            .map { it.provide(player, world) }
-            .flatMap { it.entries }
-            .associate { it.key to it.value }
-            .filter { entry -> entry.value != null }
-
-        return placeholders.map { entry ->
-            val placeholder = entry.key
-            val value = entry.value
-
-            Component.text("[", NamedTextColor.GREEN)
-                .append(Component.text(placeholder))
-                .append(Component.text("]", NamedTextColor.GREEN))
-                .append(Component.text(" » ", NamedTextColor.YELLOW))
-                .append(value ?: Component.text("None" , NamedTextColor.WHITE))
-        }
     }
 
 }
@@ -138,10 +141,14 @@ interface PlaceholderProvider {
     /**
      * Provide a placeholder.
      */
-    fun provide(player: Player?, world: World?): Map<String, Component?>
+    fun provide(player: Player?, world: World?): Map<String, Component?> {
+        return mapOf()
+    }
 
     /**
      * Provide a placeholder.
      */
-    fun provideString(player: Player?, world: World?): Map<String, String?>
+    fun provideString(player: Player?, world: World?): Map<String, String?> {
+        return mapOf()
+    }
 }

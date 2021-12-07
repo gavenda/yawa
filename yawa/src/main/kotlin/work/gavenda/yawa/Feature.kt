@@ -20,8 +20,8 @@
 
 package work.gavenda.yawa
 
-import work.gavenda.yawa.api.PluginEnvironment
-import work.gavenda.yawa.api.pluginEnvironment
+import work.gavenda.yawa.api.compat.PluginEnvironment
+import work.gavenda.yawa.api.compat.pluginEnvironment
 
 /**
  * Constants for features.

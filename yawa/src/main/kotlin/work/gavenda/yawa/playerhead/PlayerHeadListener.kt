@@ -29,7 +29,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
-import work.gavenda.yawa.api.loreCompat
+import work.gavenda.yawa.api.compat.loreCompat
 
 class PlayerHeadListener : Listener {
 

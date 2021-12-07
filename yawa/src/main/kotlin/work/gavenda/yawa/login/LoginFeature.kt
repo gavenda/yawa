@@ -25,8 +25,7 @@ import org.bukkit.event.HandlerList
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.sleep.SleepFeature
+import work.gavenda.yawa.api.placeholder.Placeholder
 import java.security.KeyPair
 
 /**

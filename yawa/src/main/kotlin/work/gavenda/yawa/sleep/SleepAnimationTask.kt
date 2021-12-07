@@ -24,7 +24,7 @@ import org.bukkit.Statistic
 import org.bukkit.World
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
-import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.parseWithDefaultLocale
 import work.gavenda.yawa.scheduler

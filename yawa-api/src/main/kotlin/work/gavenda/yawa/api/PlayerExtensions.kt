@@ -32,16 +32,14 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
-import net.md_5.bungee.api.ChatMessageType
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
+import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.*
 import java.util.*
-import javax.crypto.Cipher
 
 const val META_AFK = "Afk"
 

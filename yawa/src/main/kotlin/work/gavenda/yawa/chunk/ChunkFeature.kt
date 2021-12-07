@@ -3,7 +3,7 @@ package work.gavenda.yawa.chunk
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholder
 
 /**
  * Represents the chunk feature.

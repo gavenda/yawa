@@ -31,10 +31,10 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
 import org.bukkit.scheduler.BukkitScheduler
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.PlaceholderContext
 import work.gavenda.yawa.api.YawaAPI
-import work.gavenda.yawa.api.sendMessageCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL

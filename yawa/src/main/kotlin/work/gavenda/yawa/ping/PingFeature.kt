@@ -23,8 +23,8 @@ package work.gavenda.yawa.ping
 import net.kyori.adventure.text.Component
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.registerNewObjectiveCompat
+import work.gavenda.yawa.api.compat.registerNewObjectiveCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"

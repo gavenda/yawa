@@ -25,7 +25,7 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.sendMessageCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature

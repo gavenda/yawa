@@ -5,8 +5,8 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.Placeholder
-import work.gavenda.yawa.api.sendMessageCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
+import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.parseWithLocale
 
 class ChunkUnmarkCommand : Command(Permission.CHUNK_UNMARK) {

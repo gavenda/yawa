@@ -21,7 +21,7 @@
 package work.gavenda.yawa.sleep
 
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholder
 import java.util.*
 
 object SleepFeature : PluginFeature {

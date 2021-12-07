@@ -38,11 +38,11 @@ commands:
   whisper:
     description: Send a whisper to a player.
     usage: /whisper <player> <message>
-    aliases: [w, msg, tell]
+    aliases: [ w, msg, tell ]
   reply:
     description: Reply to a whisper from a player.
     usage: /reply <message>
-    aliases: [r]
+    aliases: [ r ]
   chunk:
     description: Manages the current chunk.
     usage: /chunk

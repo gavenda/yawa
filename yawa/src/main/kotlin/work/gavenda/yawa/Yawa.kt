@@ -27,14 +27,15 @@ import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
-import work.gavenda.yawa.api.PluginEnvironment
-import work.gavenda.yawa.api.pluginEnvironment
+import work.gavenda.yawa.api.compat.PluginEnvironment
+import work.gavenda.yawa.api.compat.pluginEnvironment
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.imgup.ImageUploadFeature
 import work.gavenda.yawa.login.LoginFeature
+import work.gavenda.yawa.notify.NotifyFeature
 import work.gavenda.yawa.permission.PermissionFeature
 import work.gavenda.yawa.ping.PingFeature
 import work.gavenda.yawa.playerhead.PlayerHeadFeature
@@ -79,6 +80,7 @@ class Yawa : JavaPlugin() {
         EssentialsFeature.enable()
         ImageUploadFeature.enable()
         LoginFeature.enable()
+        NotifyFeature.enable()
         PlayerHeadFeature.enable()
         PermissionFeature.enable()
         SitFeature.enable()
@@ -111,6 +113,7 @@ class Yawa : JavaPlugin() {
         EssentialsFeature.disable()
         ImageUploadFeature.disable()
         LoginFeature.disable()
+        NotifyFeature.disable()
         PingFeature.disable()
         PlayerHeadFeature.disable()
         PermissionFeature.disable()
@@ -142,6 +145,7 @@ class Yawa : JavaPlugin() {
 
     fun resetKeepAliveTimeout() {
         if (Config.KeepAlive.Disabled) return
+        if (pluginEnvironment != PluginEnvironment.PAPER) return
 
         // This is a paper plugin, resetting should also be paper-based
         work.gavenda.yawa.logger.warn("Resetting keep alive timeout")
@@ -154,6 +158,7 @@ class Yawa : JavaPlugin() {
 
     fun adjustKeepAliveTimeout(timeout: Long = Config.KeepAlive.Timeout * 1000) {
         if (Config.KeepAlive.Disabled) return
+        if (pluginEnvironment != PluginEnvironment.PAPER) return
 
         work.gavenda.yawa.logger.warn("Adjusting keep alive timeout to $timeout ms")
 

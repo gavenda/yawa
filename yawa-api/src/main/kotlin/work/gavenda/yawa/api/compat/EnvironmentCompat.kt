@@ -20,7 +20,7 @@
 
 @file:JvmName("EnvironmentKt")
 
-package work.gavenda.yawa.api
+package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.text.Component
 import org.bukkit.World
@@ -41,9 +41,10 @@ private val pluginRuntimeEnvironment: Environment by lazy {
     }
 }
 
-val Player.displayNameCompat get(): Component {
-    return pluginRuntimeEnvironment.displayNameCompat(this)
-}
+val Player.displayNameCompat
+    get(): Component {
+        return pluginRuntimeEnvironment.displayNameCompat(this)
+    }
 
 fun Player.localeCompat(): Locale {
     return pluginRuntimeEnvironment.locale(this)

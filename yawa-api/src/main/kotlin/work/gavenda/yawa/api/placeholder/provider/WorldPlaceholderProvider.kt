@@ -18,28 +18,25 @@
  *
  */
 
-package work.gavenda.yawa.api
+package work.gavenda.yawa.api.placeholder.provider
 
-import org.bukkit.command.CommandSender
+import org.bukkit.World
 import org.bukkit.entity.Player
+import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 
-private val placeholderCommands = listOf("placeholders", "yawaapi:placeholders")
+/**
+ * Provides common placeholders for world instances.
+ */
+class WorldPlaceholderProvider : PlaceholderProvider {
 
-class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) {
-
-    override fun execute(sender: CommandSender, args: List<String>) {
-        if (sender !is Player) return
-
-        Placeholder
-            .withContext(sender, sender.world)
-            .asHelpList()
-            .forEach {
-                sender.sendMessageCompat(it)
-            }
+    companion object {
+        const val WORLD_PLAYER_COUNT = "world-player-count"
     }
 
-    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
-        return emptyList()
+    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+        return mapOf(
+            WORLD_PLAYER_COUNT to world?.players?.size.toString(),
+        )
     }
 
 }
