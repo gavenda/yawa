@@ -32,7 +32,6 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.captilizeFully
-import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.compat.loreCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholder
@@ -54,9 +53,10 @@ class ItemListener : Listener {
         val itemStackLore = itemStack.loreCompat()?.first {
             it.toPlainText().contains("Farmed up by")
         }
-        val itemStackLoreStr = if (itemStackLore != null) {
+        val farmerName = if (itemStackLore != null) {
             itemStackLore.toPlainText().split("Farmed up by ")[1]
         } else ""
+        val farmerPlayer = server.getPlayer(farmerName)
 
         if (itemStackLore == null) {
             itemStack.loreCompat(
@@ -75,14 +75,14 @@ class ItemListener : Listener {
 
         if (matches) {
             val placeholderParams = mapOf(
-                "farmer-name" to player.verifiedName,
+                "farmer-name" to farmerPlayer?.verifiedName,
                 "item-stack-amount" to itemStack.amount.toString(),
                 "item-name" to itemStack.type.name
                     .replace("_", " ")
                     .captilizeFully()
             )
 
-            if (itemStackLoreStr.isEmpty()) {
+            if (farmerName.isEmpty()) {
                 player.world.sendMessageCompat(
                     Placeholder.withContext(player)
                         .parse(message, placeholderParams)
