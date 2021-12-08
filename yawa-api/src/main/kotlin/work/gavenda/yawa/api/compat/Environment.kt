@@ -26,6 +26,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
@@ -43,6 +45,10 @@ interface Environment {
     fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?)
     fun registerNewObjective(scoreboard: Scoreboard, name: String, criteria: String, displayName: Component): Objective
     fun lore(meta: SkullMeta, lore: List<Component>)
+    fun lore(meta: ItemMeta, lore: List<Component>)
+    fun lore(itemStack: ItemStack, lore: List<Component>)
+    fun lore(itemStack: ItemStack): List<Component>?
     fun locale(player: Player): Locale
     fun displayNameCompat(player: Player): Component
+    fun displayNameCompat(itemMeta: ItemMeta): Component?
 }

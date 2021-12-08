@@ -20,6 +20,9 @@
 
 package work.gavenda.yawa.login
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -35,3 +38,17 @@ val Player.isVerified: Boolean
         return@transaction login.premium
     }
 
+/**
+ * Returns the a name component with a hover for verified accounts.
+ */
+val Player.verifiedName: Component get() {
+    return if (isVerified) {
+        val hover = HoverEvent.showText(
+            Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
+        )
+        Component.text(name, NamedTextColor.GOLD)
+            .hoverEvent(hover)
+    } else {
+        Component.text(name)
+    }
+}

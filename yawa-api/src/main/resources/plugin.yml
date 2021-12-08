@@ -9,6 +9,12 @@ load: STARTUP
 depend:
   - Kotlin
   - ProtocolLib
+libraries:
+  - net.kyori:adventure-api:4.9.3
+  - net.kyori:adventure-key:4.9.3
+  - net.kyori:adventure-nbt:4.9.3
+  - net.kyori:adventure-text-serializer-plain:4.9.3
+  - net.kyori:adventure-platform-bukkit:4.0.1
 commands:
   placeholders:
     description: Lists all available placeholders.

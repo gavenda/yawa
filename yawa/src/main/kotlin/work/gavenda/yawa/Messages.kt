@@ -77,6 +77,8 @@ object Message {
     const val ImageUploadBegin = "image-upload-begin"
     const val ChunkMarked = "chunk-marked"
     const val ChunkUnmarked = "chunk-unmarked"
+    const val NotifyItemPickup = "notify-item-pickup"
+    const val NotifyItemPickupFarmed = "notify-item-pickup-farmed"
 }
 
 /**

@@ -14,20 +14,9 @@ import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 class PremiumPlaceholderProvider : PlaceholderProvider {
 
     override fun provide(player: Player?, world: World?): Map<String, Component?> {
-        if (player != null) {
-            val hover = HoverEvent.showText(
-                Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
-            )
-
-            if (player.isVerified) {
-                return mapOf(
-                    PlayerPlaceholderProvider.PLAYER_NAME to Component
-                        .text(player.name, NamedTextColor.GOLD)
-                        .hoverEvent(hover)
-                )
-            }
-        }
-        return mapOf()
+        return mapOf(
+            PlayerPlaceholderProvider.PLAYER_NAME to player?.verifiedName
+        )
     }
 
 }

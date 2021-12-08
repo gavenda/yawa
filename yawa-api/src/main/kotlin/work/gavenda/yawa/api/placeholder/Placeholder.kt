@@ -87,8 +87,8 @@ class PlaceholderContext(
      * Parses the text with the appropriate registered placeholders.
      * @param text text to parse
      */
-    fun parse(text: String): Component {
-        val resolver = TemplateResolver.pairs(mergeProviders())
+    fun parse(text: String, params: Map<String, Any?> = mapOf()): Component {
+        val resolver = TemplateResolver.pairs(mergeProviders(params))
 
         return YawaAPI.MiniMessage
             .deserialize(text, resolver)
@@ -114,21 +114,23 @@ class PlaceholderContext(
         }
     }
 
-    private fun mergeProviders(): Map<String, Any?> {
-        val componentPlaceholders = providers
-            .map { it.provide(player, world) }
-            .flatMap { it.entries }
-            .associate { it.key to it.value }
-            .filter { entry -> entry.value != null }
+    private fun mergeProviders(params: Map<String, Any?> = mapOf()): Map<String, Any?> {
         val stringPlaceholders = providers
             .map { it.provideString(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
+        val componentPlaceholders = providers
+            .map { it.provide(player, world) }
+            .flatMap { it.entries }
+            .associate { it.key to it.value }
+            .filter { entry -> entry.value != null }
 
+        // Order of priority -> params > component > string
         return mapOf(
+            *stringPlaceholders.toList().toTypedArray(),
             *componentPlaceholders.toList().toTypedArray(),
-            *stringPlaceholders.toList().toTypedArray()
+            *params.toList().toTypedArray()
         )
     }
 

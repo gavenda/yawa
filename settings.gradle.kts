@@ -25,11 +25,21 @@ dependencyResolutionManagement {
             alias("exposed-jdbc").to("org.jetbrains.exposed:exposed-jdbc:0.36.2")
             alias("log4j2").to("org.apache.logging.log4j:log4j-api:2.14.1")
             alias("discordsrv").to("com.discordsrv:discordsrv:1.24.0")
-            alias("kyori-adventurelib").to("net.kyori:adventure-platform-bukkit:4.0.1")
-            alias("kyori-minimessage").to("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT")
+            alias("adventure-platform-bukkit").to("net.kyori:adventure-platform-bukkit:4.0.1")
+            alias("adventure-api").to("net.kyori:adventure-api:4.9.3")
+            alias("adventure-key").to("net.kyori:adventure-key:4.9.3")
+            alias("adventure-nbt").to("net.kyori:adventure-nbt:4.9.3")
+            alias("adventure-text-minimessage").to("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT")
             // Bundles
             bundle("exposed", listOf("exposed-core", "exposed-dao", "exposed-jdbc"))
             bundle("paper", listOf("paper", "paper-lib"))
+            bundle("adventure", listOf(
+                "adventure-api",
+                "adventure-key",
+                "adventure-nbt",
+                "adventure-text-minimessage",
+                "adventure-platform-bukkit"
+            ))
         }
     }
 }

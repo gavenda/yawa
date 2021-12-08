@@ -20,6 +20,11 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import net.md_5.bungee.api.chat.BaseComponent
+import net.md_5.bungee.chat.ComponentSerializer
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -47,3 +52,60 @@ fun URL.asHttpConnection(): HttpURLConnection {
     return openConnection() as HttpURLConnection
 }
 
+fun Component.toPlainText(): String {
+    return PlainTextComponentSerializer.plainText().serialize(this)
+}
+
+fun Component.toLegacyText(): String {
+    return BukkitComponentSerializer.legacy().serialize(this)
+}
+
+fun String.toComponent(): Component {
+    return BukkitComponentSerializer.legacy().deserialize(this)
+}
+
+fun Component.toBaseComponent(): Array<BaseComponent> {
+    return ComponentSerializer.parse(
+        BukkitComponentSerializer.gson().serialize(this)
+    )
+}
+
+fun String.captilizeFully(): String {
+    if (isEmpty() || isBlank()) {
+        return ""
+    }
+
+    if (length == 1) {
+        return Character.toUpperCase(this[0]).toString()
+    }
+
+    val textArray = split(" ")
+    val stringBuilder = StringBuilder()
+
+    for ((index, item) in textArray.withIndex()) {
+        // If item is empty string, continue to next item
+        if (item.isEmpty()) {
+            continue
+        }
+
+        stringBuilder
+            .append(Character.toUpperCase(item[0]))
+
+        // If the item has only one character then continue to next item because we have already capitalized it.
+        if (item.length == 1) {
+            continue
+        }
+
+        for (i in 1 until item.length) {
+            stringBuilder
+                .append(Character.toLowerCase(item[i]))
+        }
+
+        if (index < textArray.lastIndex) {
+            stringBuilder
+                .append(" ")
+        }
+    }
+
+    return stringBuilder.toString()
+}

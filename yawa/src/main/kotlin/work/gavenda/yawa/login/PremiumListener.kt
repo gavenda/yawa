@@ -21,7 +21,6 @@
 package work.gavenda.yawa.login
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -35,36 +34,16 @@ class PremiumListener : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        val player = event.player
-
-        if (player.isVerified) {
-            val hover = HoverEvent.showText(
-                Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
-            )
-
-            val message = Component.text(player.name, NamedTextColor.GOLD)
-                .hoverEvent(hover)
-                .append(Component.text(" joined the game", NamedTextColor.YELLOW))
-
-            event.joinMessageCompat(message)
-        }
+        val joinMessage = event.player.verifiedName
+            .append(Component.text(" joined the game", NamedTextColor.YELLOW))
+        event.joinMessageCompat(joinMessage)
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerQuit(event: PlayerQuitEvent) {
-        val player = event.player
-
-        if (player.isVerified) {
-            val hover = HoverEvent.showText(
-                Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
-            )
-
-            val message = Component.text(player.name, NamedTextColor.GOLD)
-                .hoverEvent(hover)
-                .append(Component.text(" left the game", NamedTextColor.YELLOW))
-
-            event.quitMessageCompat(message)
-        }
+        val quitMessage = event.player.verifiedName
+            .append(Component.text(" left the game", NamedTextColor.YELLOW))
+        event.quitMessageCompat(quitMessage)
     }
 
 }

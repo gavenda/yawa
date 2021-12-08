@@ -199,6 +199,8 @@ object Config {
         var Disabled
             get() = config.getBoolean("notify.disabled", false)
             set(value) = config.set("notify.disabled", value)
+        val Item: List<String>
+            get() = config.getStringList("notify.item")
     }
 
     object Portal {

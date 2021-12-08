@@ -93,3 +93,36 @@ chat:
     message-from: "[<light_purple><player-name></light_purple>] <gray>»</gray> "
     message-discord: "[<aqua><player-name></aqua>] <gray>»</gray> "
 
+notify:
+  disabled: true
+  item:
+    - DIAMOND
+    - DIAMOND_ORE
+    - DEEPSLATE_DIAMOND_ORE
+    - DIAMOND_BLOCK
+    - DIAMOND_SWORD
+    - DIAMOND_SHOVEL
+    - DIAMOND_PICKAXE
+    - DIAMOND_AXE
+    - DIAMOND_HOE
+    - DIAMOND_HELMET
+    - DIAMOND_CHESTPLATE
+    - DIAMOND_LEGGINGS
+    - DIAMOND_BOOTS
+    - DIAMOND_HORSE_ARMOR
+    - ANCIENT_DEBRIS
+    - NETHERITE_INGOT
+    - NETHERITE_SCRAP
+    - NETHERITE_SWORD
+    - NETHERITE_SHOVEL
+    - NETHERITE_PICKAXE
+    - NETHERITE_AXE
+    - NETHERITE_HOE
+    - NETHERITE_HELMET
+    - NETHERITE_CHESTPLATE
+    - NETHERITE_LEGGINGS
+    - NETHERITE_BOOTS
+    - ENCHANTED_GOLDEN_APPLE
+    - ELYTRA
+    - EMERALD
+    - EMERALD_BLOCK

@@ -12,8 +12,10 @@ dependencies {
     // Paper API
     compileOnly(libs.paper)
     implementation(libs.paper.lib)
-    implementation(libs.kyori.adventurelib)
-    implementation(libs.kyori.minimessage)
+    implementation(libs.adventure.text.minimessage) {
+        isTransitive = false
+    }
+    compileOnly(libs.bundles.adventure)
 
     // Dependencies
     compileOnly(libs.protocol.lib)

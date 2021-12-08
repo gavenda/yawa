@@ -21,23 +21,47 @@
 package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import net.md_5.bungee.api.ChatMessageType
-import net.md_5.bungee.api.chat.BaseComponent
 import net.md_5.bungee.api.chat.TextComponent
-import net.md_5.bungee.chat.ComponentSerializer
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
+import work.gavenda.yawa.api.toBaseComponent
+import work.gavenda.yawa.api.toComponent
+import work.gavenda.yawa.api.toLegacyText
 import java.util.*
 
 class SpigotEnvironment : Environment {
+
+    @Suppress("DEPRECATION")
+    override fun displayNameCompat(itemMeta: ItemMeta): Component {
+        return itemMeta.displayName.toComponent()
+    }
+
+    @Suppress("DEPRECATION")
+    override fun lore(itemStack: ItemStack): List<Component>? {
+        return itemStack.itemMeta.lore?.map { it.toComponent() }
+    }
+
+    @Suppress("DEPRECATION")
+    override fun lore(itemStack: ItemStack, lore: List<Component>) {
+        val meta = itemStack.itemMeta.apply {
+            setLore(lore.map { it.toLegacyText() })
+        }
+        itemStack.itemMeta = meta
+    }
+
+    @Suppress("DEPRECATION")
+    override fun lore(meta: ItemMeta, lore: List<Component>) {
+        meta.loreComponents = lore.map { it.toBaseComponent() }
+    }
 
     @Suppress("DEPRECATION")
     override fun displayNameCompat(player: Player): Component {
@@ -54,19 +78,6 @@ class SpigotEnvironment : Environment {
         meta.loreComponents = lore.map { it.toBaseComponent() }
     }
 
-    private fun String.toComponent(): Component {
-        return LegacyComponentSerializer.legacySection().deserialize(this)
-    }
-
-    private fun Component.toBaseComponent(): Array<BaseComponent> {
-        return ComponentSerializer.parse(
-            GsonComponentSerializer.gson().serialize(this)
-        )
-    }
-
-    private fun Component.toLegacyText(): String {
-        return LegacyComponentSerializer.legacySection().serialize(this)
-    }
 
     @Suppress("DEPRECATION")
     override fun registerNewObjective(

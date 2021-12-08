@@ -28,6 +28,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
@@ -39,6 +41,23 @@ private val pluginRuntimeEnvironment: Environment by lazy {
     } else {
         SpigotEnvironment()
     }
+}
+
+val ItemMeta.displayNameCompat
+    get(): Component? {
+        return pluginRuntimeEnvironment.displayNameCompat(this)
+    }
+
+fun ItemStack.loreCompat(): List<Component>? {
+    return pluginRuntimeEnvironment.lore(this)
+}
+
+fun ItemStack.loreCompat(lore: List<Component>) {
+    pluginRuntimeEnvironment.lore(this, lore)
+}
+
+fun ItemMeta.loreCompat(lore: List<Component>) {
+    pluginRuntimeEnvironment.lore(this, lore)
 }
 
 val Player.displayNameCompat

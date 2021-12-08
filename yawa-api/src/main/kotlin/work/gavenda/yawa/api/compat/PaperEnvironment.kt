@@ -26,12 +26,30 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 
 class PaperEnvironment : Environment {
+
+    override fun displayNameCompat(itemMeta: ItemMeta): Component? {
+        return itemMeta.displayName()
+    }
+
+    override fun lore(itemStack: ItemStack): List<Component>? {
+        return itemStack.lore()?.toList()
+    }
+
+    override fun lore(itemStack: ItemStack, lore: List<Component>) {
+        itemStack.lore(lore)
+    }
+
+    override fun lore(meta: ItemMeta, lore: List<Component>) {
+        meta.lore(lore)
+    }
 
     override fun displayNameCompat(player: Player): Component {
         return player.displayName()
