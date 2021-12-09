@@ -58,14 +58,6 @@ class ItemListener : Listener {
         } else ""
         val farmerPlayer = server.getPlayer(farmerName)
 
-        if (itemStackLore == null) {
-            itemStack.loreCompat(
-                listOf(
-                    Component.text("Farmed up by ").append(player.verifiedName)
-                )
-            )
-        }
-
         val message = Messages.forPlayer(player)
             .get(Message.NotifyItemPickup)
         val messageFarmed = Messages.forPlayer(player)
@@ -74,6 +66,14 @@ class ItemListener : Listener {
         val matches = materialsToMatch.any { it == itemStack.type }
 
         if (matches) {
+            if (itemStackLore == null) {
+                itemStack.loreCompat(
+                    listOf(
+                        Component.text("Farmed up by ").append(player.verifiedName)
+                    )
+                )
+            }
+
             val placeholderParams = mapOf(
                 "farmer-name" to farmerPlayer?.verifiedName,
                 "item-stack-amount" to itemStack.amount.toString(),
