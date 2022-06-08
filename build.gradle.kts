@@ -17,7 +17,7 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
 
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.2.0-SNAPSHOT-$gitHash"
+    version = "1.3.0-SNAPSHOT-$gitHash"
 
     repositories {
         maven("https://papermc.io/repo/repository/maven-public")
@@ -29,6 +29,9 @@ allprojects {
         maven("https://jitpack.io")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/") {
             name = "sonatype-oss-snapshots"
+        }
+        maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+            name = "s01-sonatype-oss-snapshots"
         }
     }
 

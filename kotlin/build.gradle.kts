@@ -12,7 +12,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
 
-    compileOnly(libs.paper)
+    compileOnly(libs.spigot)
 }
 
 tasks {
@@ -21,7 +21,7 @@ tasks {
     jar {
         manifest {
             attributes(
-                "Paper-Version" to libs.versions.paper
+                "Spigot-Version" to libs.versions.spigot
             )
         }
     }

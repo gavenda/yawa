@@ -204,14 +204,14 @@ class LoginEncryptionTask(
      */
     private fun receiveFakeStartPacket(player: Player, name: String) {
         // uuid is ignored by the packet definition
-        val fakeProfile = WrappedGameProfile(UUID.randomUUID(), name)
+        // val fakeProfile = WrappedGameProfile(UUID.randomUUID(), name)
         // See StartPacketListener for packet information
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
-            gameProfiles.write(0, fakeProfile)
+            strings.write(0, name)
         }
         try {
             // We don't want to handle our own packets so ignore filters
-            protocolManager.recieveClientPacket(player, startPacket, false)
+            protocolManager.receiveClientPacket(player, startPacket, false)
         } catch (ex: Exception) {
             logger.warn("Failed to fake a new start packet")
             // Cancel the event in order to prevent the server receiving an invalid packet

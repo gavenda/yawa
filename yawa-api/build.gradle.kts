@@ -9,16 +9,14 @@ deployablePlugin()
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
 
-    // Paper API
-    compileOnly(libs.paper)
-    implementation(libs.paper.lib)
-    implementation(libs.adventure.text.minimessage) {
-        isTransitive = false
-    }
-    compileOnly(libs.bundles.adventure)
+    // API
+    compileOnly(libs.spigot)
 
     // Dependencies
     compileOnly(libs.protocol.lib)
+    compileOnly(libs.bundles.adventure)
+    implementation(libs.paper.lib)
+    implementation(libs.log4j2)
 }
 
 tasks {
@@ -27,7 +25,7 @@ tasks {
     jar {
         manifest {
             attributes(
-                "Paper-Version" to libs.versions.paper
+                "Spigot-Version" to libs.versions.spigot
             )
         }
     }

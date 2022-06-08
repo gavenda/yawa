@@ -39,12 +39,12 @@ object PingFeature : PluginFeature {
     private val pingCommand = PingCommand()
     private val playerPingPlaceholder = PlayerPingPlaceholder()
 
-    private val scoreboard = server.scoreboardManager.newScoreboard
-    private val objective = scoreboard.registerNewObjectiveCompat(
+    private val scoreboard = server.scoreboardManager?.newScoreboard
+    private val objective = scoreboard?.registerNewObjectiveCompat(
         SB_NAME,
         SB_CRITERIA,
         Component.text(SB_DISPLAY_NAME)
-    ).apply {
+    )?.apply {
         displaySlot = DisplaySlot.PLAYER_LIST
     }
 
@@ -73,10 +73,12 @@ object PingFeature : PluginFeature {
     }
 
     override fun registerTasks() {
-        val pingTask = PingTask(scoreboard, objective)
-        val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
+        if (scoreboard != null && objective != null) {
+            val pingTask = PingTask(scoreboard, objective)
+            val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
 
-        pingTaskId = scheduler.scheduleSyncRepeatingTask(plugin, pingTask, 0, secondsInTicks)
+            pingTaskId = scheduler.scheduleSyncRepeatingTask(plugin, pingTask, 0, secondsInTicks)
+        }
     }
 
     override fun unregisterTasks() {

@@ -53,7 +53,7 @@ class LoginListener(
         if (rateLimiter.tryAcquire().not()) return
 
         val packet = packetEvent.packet
-        val name = packet.gameProfiles.read(0).name
+        val name = packet.strings.read(0)
         val player = packetEvent.player
 
         // Use mojang name check

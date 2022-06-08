@@ -20,7 +20,7 @@
 
 package work.gavenda.yawa.api
 
-import com.comphenix.protocol.injector.server.TemporaryPlayerFactory
+import com.comphenix.protocol.injector.temporary.TemporaryPlayerFactory
 import com.comphenix.protocol.reflect.FieldUtils
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.utility.MinecraftReflection
@@ -64,15 +64,6 @@ val Player.latencyInMillis: Int
     get() {
         val bukkitPlayer = Bukkit.getPlayer(uniqueId)
         return bukkitPlayer?.ping ?: 0
-    }
-
-/**
- * Retrieves this player previous game mode.
- */
-val Player.previousGameMode: NativeGameMode
-    get() {
-        // TODO actual previous game mode
-        return NativeGameMode.fromBukkit(gameMode)
     }
 
 /**
@@ -131,7 +122,7 @@ fun Player.updateSkin() {
         writeResourceKey(world)
         writeDimensionTypes(world)
         writeGameMode(NativeGameMode.fromBukkit(gameMode))
-        writePreviousGameMode(previousGameMode)
+        writePreviousGameMode(NativeGameMode.fromBukkit(previousGameMode ?: gameMode))
         writeSeed(world.seed)
         writeIsDebug(world.debugMode)
         writeIsWorldFlat(world.worldType == WorldType.FLAT)

@@ -2,19 +2,14 @@ name: YawaAPI
 description: The Yawa API.
 author: Gavenda
 website: https://gavenda.work
-api-version: '1.18'
+api-version: '1.19'
 version: ${project.version}
 main: work.gavenda.yawa.api.YawaAPI
 load: STARTUP
 depend:
+  - Adventure
   - Kotlin
   - ProtocolLib
-libraries:
-  - net.kyori:adventure-api:4.9.3
-  - net.kyori:adventure-key:4.9.3
-  - net.kyori:adventure-nbt:4.9.3
-  - net.kyori:adventure-text-serializer-plain:4.9.3
-  - net.kyori:adventure-platform-bukkit:4.0.1
 commands:
   placeholders:
     description: Lists all available placeholders.

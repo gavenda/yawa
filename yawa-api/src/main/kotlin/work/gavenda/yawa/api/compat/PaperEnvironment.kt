@@ -19,92 +19,92 @@
  */
 
 package work.gavenda.yawa.api.compat
-
-import net.kyori.adventure.text.Component
-import org.bukkit.World
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
-import org.bukkit.inventory.meta.SkullMeta
-import org.bukkit.scoreboard.Objective
-import org.bukkit.scoreboard.Scoreboard
-import java.util.*
-
-class PaperEnvironment : Environment {
-
-    override fun displayNameCompat(itemMeta: ItemMeta): Component? {
-        return itemMeta.displayName()
-    }
-
-    override fun lore(itemStack: ItemStack): List<Component>? {
-        return itemStack.lore()?.toList()
-    }
-
-    override fun lore(itemStack: ItemStack, lore: List<Component>) {
-        itemStack.lore(lore)
-    }
-
-    override fun lore(meta: ItemMeta, lore: List<Component>) {
-        meta.lore(lore)
-    }
-
-    override fun displayNameCompat(player: Player): Component {
-        return player.displayName()
-    }
-
-    override fun locale(player: Player): Locale {
-        return player.locale()
-    }
-
-    override fun lore(meta: SkullMeta, lore: List<Component>) {
-        meta.lore(lore)
-    }
-
-    override fun registerNewObjective(
-        scoreboard: Scoreboard,
-        name: String,
-        criteria: String,
-        displayName: Component
-    ): Objective {
-        return scoreboard.registerNewObjective(name, criteria, displayName)
-    }
-
-    override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {
-        quitEvent.quitMessage(component)
-    }
-
-    override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
-        joinEvent.joinMessage(component)
-    }
-
-    override fun sendMessage(sender: CommandSender, component: Component) {
-        sender.sendMessage(component)
-    }
-
-    override fun sendMessage(world: World, component: Component) {
-        world.sendMessage(component)
-    }
-
-    override fun sendActionBar(world: World, component: Component) {
-        world.sendActionBar(component)
-    }
-
-    override fun setPlayerListHeader(player: Player, component: Component) {
-        player.sendPlayerListHeader(component)
-    }
-
-    override fun setPlayerListFooter(player: Player, component: Component) {
-        player.sendPlayerListFooter(component)
-    }
-
-    override fun kickPlayer(player: Player, component: Component) {
-        player.kick(component)
-    }
-
-    override fun setPlayerListName(player: Player, component: Component?) {
-        player.playerListName(component)
-    }
-}
+//
+//import net.kyori.adventure.text.Component
+//import org.bukkit.World
+//import org.bukkit.command.CommandSender
+//import org.bukkit.entity.Player
+//import org.bukkit.event.player.PlayerJoinEvent
+//import org.bukkit.event.player.PlayerQuitEvent
+//import org.bukkit.inventory.ItemStack
+//import org.bukkit.inventory.meta.ItemMeta
+//import org.bukkit.inventory.meta.SkullMeta
+//import org.bukkit.scoreboard.Objective
+//import org.bukkit.scoreboard.Scoreboard
+//import java.util.*
+//
+//class PaperEnvironment : Environment {
+//
+//    override fun displayNameCompat(itemMeta: ItemMeta): Component? {
+//        return itemMeta.displayName()
+//    }
+//
+//    override fun lore(itemStack: ItemStack): List<Component>? {
+//        return itemStack.lore()?.toList()
+//    }
+//
+//    override fun lore(itemStack: ItemStack, lore: List<Component>) {
+//        itemStack.lore(lore)
+//    }
+//
+//    override fun lore(meta: ItemMeta, lore: List<Component>) {
+//        meta.lore(lore)
+//    }
+//
+//    override fun displayNameCompat(player: Player): Component {
+//        return player.displayName()
+//    }
+//
+//    override fun locale(player: Player): Locale {
+//        return player.locale()
+//    }
+//
+//    override fun lore(meta: SkullMeta, lore: List<Component>) {
+//        meta.lore(lore)
+//    }
+//
+//    override fun registerNewObjective(
+//        scoreboard: Scoreboard,
+//        name: String,
+//        criteria: String,
+//        displayName: Component
+//    ): Objective {
+//        return scoreboard.registerNewObjective(name, criteria, displayName)
+//    }
+//
+//    override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {
+//        quitEvent.quitMessage(component)
+//    }
+//
+//    override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
+//        joinEvent.joinMessage(component)
+//    }
+//
+//    override fun sendMessage(sender: CommandSender, component: Component) {
+//        sender.sendMessage(component)
+//    }
+//
+//    override fun sendMessage(world: World, component: Component) {
+//        world.sendMessage(component)
+//    }
+//
+//    override fun sendActionBar(world: World, component: Component) {
+//        world.sendActionBar(component)
+//    }
+//
+//    override fun setPlayerListHeader(player: Player, component: Component) {
+//        player.sendPlayerListHeader(component)
+//    }
+//
+//    override fun setPlayerListFooter(player: Player, component: Component) {
+//        player.sendPlayerListFooter(component)
+//    }
+//
+//    override fun kickPlayer(player: Player, component: Component) {
+//        player.kick(component)
+//    }
+//
+//    override fun setPlayerListName(player: Player, component: Component?) {
+//        player.playerListName(component)
+//    }
+//}

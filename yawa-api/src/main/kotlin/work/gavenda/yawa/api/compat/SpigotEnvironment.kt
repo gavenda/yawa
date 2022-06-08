@@ -20,6 +20,7 @@
 
 package work.gavenda.yawa.api.compat
 
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
@@ -33,6 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
+import work.gavenda.yawa.api.YawaAPI
 import work.gavenda.yawa.api.toBaseComponent
 import work.gavenda.yawa.api.toComponent
 import work.gavenda.yawa.api.toLegacyText
@@ -47,12 +49,12 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun lore(itemStack: ItemStack): List<Component>? {
-        return itemStack.itemMeta.lore?.map { it.toComponent() }
+        return itemStack.itemMeta?.lore?.map { it.toComponent() }
     }
 
     @Suppress("DEPRECATION")
     override fun lore(itemStack: ItemStack, lore: List<Component>) {
-        val meta = itemStack.itemMeta.apply {
+        val meta = itemStack.itemMeta?.apply {
             setLore(lore.map { it.toLegacyText() })
         }
         itemStack.itemMeta = meta
@@ -60,7 +62,7 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun lore(meta: ItemMeta, lore: List<Component>) {
-        meta.loreComponents = lore.map { it.toBaseComponent() }
+        meta.lore = lore.map { it.toLegacyText() }
     }
 
     @Suppress("DEPRECATION")
@@ -75,7 +77,7 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun lore(meta: SkullMeta, lore: List<Component>) {
-        meta.loreComponents = lore.map { it.toBaseComponent() }
+        meta.lore = lore.map { it.toLegacyText() }
     }
 
 
@@ -93,7 +95,7 @@ class SpigotEnvironment : Environment {
     override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {
         quitEvent.quitMessage = ""
         if (component != null) {
-            quitEvent.player.spigot().sendMessage(*component.toBaseComponent())
+            YawaAPI.Instance.adventure.player(quitEvent.player).sendMessage(component)
         }
     }
 
@@ -101,40 +103,36 @@ class SpigotEnvironment : Environment {
     override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
         joinEvent.joinMessage = ""
         if (component != null) {
-            joinEvent.player.spigot().sendMessage(*component.toBaseComponent())
+            YawaAPI.Instance.adventure.player(joinEvent.player).sendMessage(component)
         }
     }
 
     @Suppress("DEPRECATION")
     override fun sendMessage(sender: CommandSender, component: Component) {
-        sender.spigot().sendMessage(*component.toBaseComponent())
+        YawaAPI.Instance.adventure.sender(sender).sendMessage(component)
     }
 
     @Suppress("DEPRECATION")
     override fun sendMessage(world: World, component: Component) {
-        world.players.forEach {
-            it.spigot().sendMessage(*component.toBaseComponent())
-        }
+        val worldKey = Key.key(world.key.namespace, world.key.key)
+        YawaAPI.Instance.adventure.world(worldKey).sendMessage(component)
     }
 
     @Suppress("DEPRECATION")
     override fun sendActionBar(world: World, component: Component) {
-        val legacyComponent = TextComponent.fromLegacyText(component.toLegacyText())
         world.players.forEach { player ->
-            player
-                .spigot()
-                .sendMessage(ChatMessageType.ACTION_BAR, *legacyComponent)
+            YawaAPI.Instance.adventure.player(player).sendActionBar(component)
         }
     }
 
     @Suppress("DEPRECATION")
     override fun setPlayerListHeader(player: Player, component: Component) {
-        player.playerListHeader = component.toLegacyText()
+        YawaAPI.Instance.adventure.player(player).sendPlayerListHeader(component)
     }
 
     @Suppress("DEPRECATION")
     override fun setPlayerListFooter(player: Player, component: Component) {
-        player.playerListFooter = component.toLegacyText()
+        YawaAPI.Instance.adventure.player(player).sendPlayerListFooter(component)
     }
 
     @Suppress("DEPRECATION")

@@ -19,5 +19,6 @@
  */
 
 object Version {
-    const val KOTLIN = "1.6.0"
+    const val KOTLIN = "1.6.21"
+    const val ADVENTURE = "4.11.0"
 }

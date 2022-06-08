@@ -20,7 +20,7 @@
 
 package work.gavenda.yawa
 
-import com.comphenix.protocol.injector.server.TemporaryPlayer
+import com.comphenix.protocol.injector.temporary.TemporaryPlayer
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.compat.localeCompat
 import java.util.*

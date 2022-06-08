@@ -31,7 +31,6 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
 import org.bukkit.scheduler.BukkitScheduler
-import work.gavenda.yawa.api.YawaAPI
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholder
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
@@ -153,8 +152,7 @@ fun CommandSender.sendMessageUsingKey(key: String) {
                 .parseWithLocale(this, key)
         )
     } else {
-        val miniMessage = YawaAPI.MiniMessage
-        val message = miniMessage.parse(
+        val message = Placeholder.deserialize(
             Messages.useDefault()
                 .get(key)
         )

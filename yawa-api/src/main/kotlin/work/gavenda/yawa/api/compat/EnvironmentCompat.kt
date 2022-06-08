@@ -36,11 +36,12 @@ import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 
 private val pluginRuntimeEnvironment: Environment by lazy {
-    if (pluginEnvironment == PluginEnvironment.PAPER) {
-        PaperEnvironment()
-    } else {
-        SpigotEnvironment()
-    }
+    SpigotEnvironment()
+//    if (pluginEnvironment == PluginEnvironment.PAPER) {
+//        PaperEnvironment()
+//    } else {
+//        SpigotEnvironment()
+//    }
 }
 
 val ItemMeta.displayNameCompat

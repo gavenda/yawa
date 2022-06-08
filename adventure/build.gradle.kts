@@ -3,33 +3,14 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-kotlinProject("Yawa")
+kotlinProject("Adventure")
 deployablePlugin()
 
+version = Version.ADVENTURE
+
 dependencies {
-    compileOnly(kotlin("stdlib-jdk8"))
-    compileOnly(kotlin("reflect"))
-
-    // API
+    implementation(libs.bundles.adventure)
     compileOnly(libs.spigot)
-
-    // Adventure
-    compileOnly(libs.bundles.adventure)
-
-    // Implement our own api
-    compileOnly(project(":yawa-api"))
-
-    // Data source + Db oop
-    implementation(libs.hikari)
-    implementation(libs.bundles.exposed)
-
-    implementation(libs.paper.lib)
-    implementation(libs.log4j2)
-
-    // Minecraft plugins
-    compileOnly(libs.vault)
-    compileOnly(libs.protocol.lib)
-    compileOnly(libs.discordsrv)
 }
 
 tasks {
@@ -54,8 +35,6 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName.set(jar.get().archiveFileName)
-
         dependencies {
             // Remove Kotlin
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
@@ -66,9 +45,7 @@ tasks {
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
 
-        relocate("com.zaxxer.hikari", "work.gavenda.yawa.hikari")
-        relocate("io.papermc.lib", "work.gavenda.yawa.paperlib")
-
+        archiveFileName.set(jar.get().archiveFileName)
         mustRunAfter(copyLicense)
     }
 

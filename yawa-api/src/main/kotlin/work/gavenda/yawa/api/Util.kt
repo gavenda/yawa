@@ -70,7 +70,7 @@ fun Component.toBaseComponent(): Array<BaseComponent> {
     )
 }
 
-fun String.captilizeFully(): String {
+fun String.capitalizeFully(): String {
     if (isEmpty() || isBlank()) {
         return ""
     }

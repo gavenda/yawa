@@ -76,7 +76,7 @@ abstract class AbstractPacket(val handle: PacketContainer, type: PacketType) {
      */
     fun receivePacket(sender: Player) {
         try {
-            protocolManager.recieveClientPacket(sender, handle)
+            protocolManager.receiveClientPacket(sender, handle)
         } catch (e: Exception) {
             throw RuntimeException("Cannot receive packet.", e)
         }

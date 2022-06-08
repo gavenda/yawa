@@ -30,7 +30,7 @@ object ChatFeature : PluginFeature {
 
     private val whisperCommand = WhisperCommand()
     private val replyCommand = ReplyCommand()
-    private val paperChatListener = PaperChatListener()
+//    private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
 
     private lateinit var discordSRVListener: DiscordSRVListener
@@ -63,7 +63,7 @@ object ChatFeature : PluginFeature {
     }
 
     override fun registerPaperEventListeners() {
-        pluginManager.registerEvents(paperChatListener)
+//        pluginManager.registerEvents(paperChatListener)
         pluginManager.registerEvents(whisperCommand)
         pluginManager.registerEvents(replyCommand)
     }
@@ -75,7 +75,7 @@ object ChatFeature : PluginFeature {
     override fun unregisterPaperEventListeners() {
         pluginManager.unregisterEvents(replyCommand)
         pluginManager.unregisterEvents(whisperCommand)
-        pluginManager.unregisterEvents(paperChatListener)
+//        pluginManager.unregisterEvents(paperChatListener)
     }
 
     override fun unregisterBukkitEventListeners() {

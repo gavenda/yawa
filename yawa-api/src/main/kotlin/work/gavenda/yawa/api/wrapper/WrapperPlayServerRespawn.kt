@@ -49,12 +49,17 @@ import com.comphenix.protocol.wrappers.BukkitConverters
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
 import com.google.common.hash.Hashing
 import org.bukkit.World
+import java.util.*
 
 /**
  * @since Minecraft 1.16.2
  */
 @Suppress("UNCHECKED_CAST")
 class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
+
+    fun writePosition() {
+        handle.optionalStructures.write(0, Optional.empty())
+    }
 
     /**
      * Write the resource key.
@@ -63,7 +68,7 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
     fun writeResourceKey(world: World) {
         val nmsWorld = BukkitConverters.getWorldConverter().getGeneric(world)
         val nmsWorldClass = MinecraftReflection.getNmsWorldClass()
-        val localWorldKey = nmsWorldClass.getDeclaredField("G").apply {
+        val localWorldKey = nmsWorldClass.getDeclaredField("I").apply {
             isAccessible = true
         }
         val resourceKeyClass = MinecraftReflection.getMinecraftLibraryClass("net.minecraft.resources.ResourceKey")
@@ -71,15 +76,25 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
         val resourceMod = handle.getSpecificModifier(resourceKeyClass) as StructureModifier<Any>
 
         // Write resource key
-        resourceMod.write(resourceMod.size() - 1, resourceKey)
+        resourceMod.write(1, resourceKey)
     }
 
     /**
      * Write dimension.
-     * @param value new value
+     * @param world new value
      */
-    fun writeDimensionTypes(value: World) {
-        handle.dimensionTypes.write(0, value)
+    fun writeDimensionTypes(world: World) {
+        val nmsWorld = BukkitConverters.getWorldConverter().getGeneric(world)
+        val nmsWorldClass = MinecraftReflection.getNmsWorldClass()
+        val localWorldKey = nmsWorldClass.getDeclaredField("D").apply {
+            isAccessible = true
+        }
+        val resourceKeyClass = MinecraftReflection.getMinecraftLibraryClass("net.minecraft.resources.ResourceKey")
+        val resourceKey = localWorldKey.get(nmsWorld)
+        val resourceMod = handle.getSpecificModifier(resourceKeyClass) as StructureModifier<Any>
+
+        // Write resource key
+        resourceMod.write(0, resourceKey)
     }
 
     /**
@@ -129,5 +144,6 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
 
     init {
         handle.modifier.writeDefaults()
+        writePosition()
     }
 }

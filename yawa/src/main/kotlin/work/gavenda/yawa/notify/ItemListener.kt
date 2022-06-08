@@ -31,10 +31,11 @@ import org.bukkit.event.entity.EntityPickupItemEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
-import work.gavenda.yawa.api.captilizeFully
+import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.loreCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.toLegacyText
 import work.gavenda.yawa.api.toPlainText
 import work.gavenda.yawa.login.verifiedName
 import work.gavenda.yawa.server
@@ -51,7 +52,7 @@ class ItemListener : Listener {
         val player = event.entity as Player
         val itemStack = event.item.itemStack
         val itemStackLore = itemStack.loreCompat()?.first {
-            it.toPlainText().contains("Farmed up by")
+            it.toLegacyText().contains("Farmed up by")
         }
         val farmerName = if (itemStackLore != null) {
             itemStackLore.toPlainText().split("Farmed up by ")[1]
@@ -79,7 +80,7 @@ class ItemListener : Listener {
                 "item-stack-amount" to itemStack.amount.toString(),
                 "item-name" to itemStack.type.name
                     .replace("_", " ")
-                    .captilizeFully()
+                    .capitalizeFully()
             )
 
             if (farmerName.isEmpty()) {

@@ -20,6 +20,7 @@
 
 package work.gavenda.yawa.api
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import net.kyori.adventure.text.minimessage.MiniMessage.miniMessage
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
@@ -38,13 +39,14 @@ class YawaAPI : JavaPlugin() {
 
     companion object {
         lateinit var Instance: YawaAPI
-        val MiniMessage = miniMessage()
     }
 
+    lateinit var adventure: BukkitAudiences
     private val placeholderCommand = PlaceholderCommand()
 
     override fun onEnable() {
         Instance = this
+        adventure = BukkitAudiences.create(this)
 
         // Register placeholders
         Placeholder.register(PlayerPlaceholderProvider())
@@ -59,6 +61,7 @@ class YawaAPI : JavaPlugin() {
 
     override fun onDisable() {
         Placeholder.clear()
+        adventure.close()
 
         getCommand("placeholders")?.setExecutor(null)
         if (pluginEnvironment == PluginEnvironment.PAPER) {

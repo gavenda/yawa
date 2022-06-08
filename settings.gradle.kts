@@ -3,6 +3,7 @@ rootProject.name = "yawa"
 
 enableFeaturePreview("VERSION_CATALOGS")
 
+include("adventure")
 include("kotlin")
 include("yawa")
 include("yawa-api")
@@ -11,33 +12,36 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             // Versions
-            version("paper", "1.18-R0.1-SNAPSHOT")
+            version("spigot", "1.19-R0.1-SNAPSHOT")
+            version("adventure", "4.11.0")
+            version("exposed", "0.38.2")
 
             // Libraries
-            alias("paper").to("io.papermc.paper", "paper-api").versionRef("paper")
-            alias("paper-lib").to("io.papermc:paperlib:1.0.7")
-            alias("spigot").to("org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT")
-            alias("protocol-lib").to("com.comphenix.protocol:ProtocolLib:4.8.0-SNAPSHOT")
-            alias("vault").to("com.github.MilkBowl:VaultAPI:1.7")
-            alias("hikari").to("com.zaxxer:HikariCP:5.0.0")
-            alias("exposed-core").to("org.jetbrains.exposed:exposed-core:0.36.2")
-            alias("exposed-dao").to("org.jetbrains.exposed:exposed-dao:0.36.2")
-            alias("exposed-jdbc").to("org.jetbrains.exposed:exposed-jdbc:0.36.2")
-            alias("log4j2").to("org.apache.logging.log4j:log4j-api:2.14.1")
-            alias("discordsrv").to("com.discordsrv:discordsrv:1.24.0")
-            alias("adventure-platform-bukkit").to("net.kyori:adventure-platform-bukkit:4.0.1")
-            alias("adventure-api").to("net.kyori:adventure-api:4.9.3")
-            alias("adventure-key").to("net.kyori:adventure-key:4.9.3")
-            alias("adventure-nbt").to("net.kyori:adventure-nbt:4.9.3")
-            alias("adventure-text-minimessage").to("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT")
+            library("paper-lib", "io.papermc:paperlib:1.0.7")
+            library("spigot", "org.spigotmc", "spigot-api").versionRef("spigot")
+            library("protocol-lib", "com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT")
+            library("vault", "com.github.MilkBowl:VaultAPI:1.7")
+            library("hikari", "com.zaxxer:HikariCP:5.0.1")
+            library("exposed-core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
+            library("exposed-dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
+            library("exposed-jdbc", "org.jetbrains.exposed", "exposed-jdbc").versionRef("exposed")
+            library("log4j2", "org.apache.logging.log4j:log4j-api:2.17.2")
+            library("discordsrv", "com.discordsrv:discordsrv:1.25.1")
+            library("adventure-platform-bukkit", "net.kyori:adventure-platform-bukkit:4.1.0")
+            library("adventure-api", "net.kyori", "adventure-api").versionRef("adventure")
+            library("adventure-key", "net.kyori", "adventure-key").versionRef("adventure")
+            library("adventure-nbt", "net.kyori", "adventure-nbt").versionRef("adventure")
+            library("adventure-text-minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
+            library("adventure-text-serializer-plain", "net.kyori", "adventure-text-serializer-plain").versionRef("adventure")
             // Bundles
             bundle("exposed", listOf("exposed-core", "exposed-dao", "exposed-jdbc"))
-            bundle("paper", listOf("paper", "paper-lib"))
+            bundle("spigot", listOf("spigot"))
             bundle("adventure", listOf(
                 "adventure-api",
                 "adventure-key",
                 "adventure-nbt",
                 "adventure-text-minimessage",
+                "adventure-text-serializer-plain",
                 "adventure-platform-bukkit"
             ))
         }
