@@ -29,7 +29,9 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
+import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.compat.loreCompat
+import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.login.verifiedName
 
 class PlayerHeadListener : Listener {
@@ -43,12 +45,17 @@ class PlayerHeadListener : Listener {
         // Create player head
         val item = ItemStack(Material.PLAYER_HEAD)
         val skull = item.itemMeta as SkullMeta
+        val playerName = if (LoginFeature.isDisabled) {
+            victim.displayNameCompat
+        } else {
+            victim.verifiedName
+        }
 
         skull.owningPlayer = victim
         skull.loreCompat(
             listOf(
                 Component.text("Trophy rewarded by yeeting ")
-                    .append(victim.verifiedName)
+                    .append(playerName)
                     .append(Component.text(" out of existence"))
             )
         )

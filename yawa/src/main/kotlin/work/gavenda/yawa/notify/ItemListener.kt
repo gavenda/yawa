@@ -20,7 +20,6 @@
 
 package work.gavenda.yawa.notify
 
-import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -32,13 +31,8 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.capitalizeFully
-import work.gavenda.yawa.api.compat.loreCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.toLegacyText
-import work.gavenda.yawa.api.toPlainText
-import work.gavenda.yawa.login.verifiedName
-import work.gavenda.yawa.server
 
 /**
  * Notifier for items.
@@ -51,49 +45,24 @@ class ItemListener : Listener {
 
         val player = event.entity as Player
         val itemStack = event.item.itemStack
-        val itemStackLore = itemStack.loreCompat()?.first {
-            it.toLegacyText().contains("Farmed up by")
-        }
-        val farmerName = if (itemStackLore != null) {
-            itemStackLore.toPlainText().split("Farmed up by ")[1]
-        } else ""
-        val farmerPlayer = server.getPlayer(farmerName)
 
         val message = Messages.forPlayer(player)
             .get(Message.NotifyItemPickup)
-        val messageFarmed = Messages.forPlayer(player)
-            .get(Message.NotifyItemPickupFarmed)
         val materialsToMatch = Config.Notify.Item.map { Material.getMaterial(it) }
         val matches = materialsToMatch.any { it == itemStack.type }
 
         if (matches) {
-            if (itemStackLore == null) {
-                itemStack.loreCompat(
-                    listOf(
-                        Component.text("Farmed up by ").append(player.verifiedName)
-                    )
-                )
-            }
-
             val placeholderParams = mapOf(
-                "farmer-name" to farmerPlayer?.verifiedName,
                 "item-stack-amount" to itemStack.amount.toString(),
                 "item-name" to itemStack.type.name
                     .replace("_", " ")
                     .capitalizeFully()
             )
 
-            if (farmerName.isEmpty()) {
-                player.world.sendMessageCompat(
-                    Placeholders.withContext(player)
-                        .parse(message, placeholderParams)
-                )
-            } else {
-                player.world.sendMessageCompat(
-                    Placeholders.withContext(player)
-                        .parse(messageFarmed, placeholderParams)
-                )
-            }
+            player.world.sendMessageCompat(
+                Placeholders.withContext(player)
+                    .parse(message, placeholderParams)
+            )
         }
     }
 }
