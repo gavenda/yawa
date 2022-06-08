@@ -1,8 +1,6 @@
 // What we all are
 rootProject.name = "yawa"
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 include("adventure")
 include("kotlin")
 include("yawa")
@@ -12,11 +10,14 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             // Versions
+            version("kotlin", "1.6.21")
+            version("paper", "1.19-R0.1-SNAPSHOT")
             version("spigot", "1.19-R0.1-SNAPSHOT")
             version("adventure", "4.11.0")
             version("exposed", "0.38.2")
 
             // Libraries
+            library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("paper-lib", "io.papermc:paperlib:1.0.7")
             library("spigot", "org.spigotmc", "spigot-api").versionRef("spigot")
             library("protocol-lib", "com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT")

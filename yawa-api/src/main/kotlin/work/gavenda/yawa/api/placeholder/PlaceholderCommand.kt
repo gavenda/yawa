@@ -32,7 +32,7 @@ class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
-        Placeholder
+        Placeholders
             .withContext(sender, sender.world)
             .asHelpList()
             .forEach {

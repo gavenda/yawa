@@ -36,8 +36,8 @@ data class Region(
         val tmp1 = Vector(p1.x, p1.y, p1.z)
         val tmp2 = Vector(p2.x, p2.y, p2.z)
 
-        this.min = Vector.getMinimum(tmp1, tmp2);
-        this.max = Vector.getMaximum(tmp1, tmp2);
+        this.min = Vector.getMinimum(tmp1, tmp2)
+        this.max = Vector.getMaximum(tmp1, tmp2)
     }
 }
 

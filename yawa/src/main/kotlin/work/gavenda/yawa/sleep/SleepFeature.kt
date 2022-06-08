@@ -21,7 +21,7 @@
 package work.gavenda.yawa.sleep
 
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 
 object SleepFeature : PluginFeature {
@@ -52,10 +52,10 @@ object SleepFeature : PluginFeature {
     }
 
     override fun registerPlaceholders() {
-        Placeholder.register(sleepPlaceholderProvider)
+        Placeholders.register(sleepPlaceholderProvider)
     }
 
     override fun unregisterPlaceholders() {
-        Placeholder.unregister(sleepPlaceholderProvider)
+        Placeholders.unregister(sleepPlaceholderProvider)
     }
 }

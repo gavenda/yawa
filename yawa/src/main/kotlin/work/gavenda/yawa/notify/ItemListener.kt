@@ -34,7 +34,7 @@ import work.gavenda.yawa.Messages
 import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.loreCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toLegacyText
 import work.gavenda.yawa.api.toPlainText
 import work.gavenda.yawa.login.verifiedName
@@ -85,12 +85,12 @@ class ItemListener : Listener {
 
             if (farmerName.isEmpty()) {
                 player.world.sendMessageCompat(
-                    Placeholder.withContext(player)
+                    Placeholders.withContext(player)
                         .parse(message, placeholderParams)
                 )
             } else {
                 player.world.sendMessageCompat(
-                    Placeholder.withContext(player)
+                    Placeholders.withContext(player)
                         .parse(messageFarmed, placeholderParams)
                 )
             }

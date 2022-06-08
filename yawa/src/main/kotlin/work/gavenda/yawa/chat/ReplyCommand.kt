@@ -27,7 +27,7 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
 
@@ -46,10 +46,10 @@ class ReplyCommand : Command(
         }
         if (message.isBlank()) return
 
-        val messageTo = Placeholder.withContext(target)
+        val messageTo = Placeholders.withContext(target)
             .parse(Config.Chat.FormatMessageTo)
             .append(Component.text(message))
-        val messageFrom = Placeholder.withContext(sender)
+        val messageFrom = Placeholders.withContext(sender)
             .parse(Config.Chat.FormatMessageFrom)
             .append(Component.text(message))
 

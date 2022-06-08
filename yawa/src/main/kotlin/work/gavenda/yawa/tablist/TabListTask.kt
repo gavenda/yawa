@@ -23,7 +23,7 @@ package work.gavenda.yawa.tablist
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.compat.sendPlayerListFooterCompat
 import work.gavenda.yawa.api.compat.sendPlayerListHeaderCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.server
 
 class TabListTask : Runnable {
@@ -32,12 +32,12 @@ class TabListTask : Runnable {
 
         for (player in onlinePlayers) {
             player.sendPlayerListHeaderCompat(
-                Placeholder
+                Placeholders
                     .withContext(player)
                     .parse(Config.TabList.Header)
             )
             player.sendPlayerListFooterCompat(
-                Placeholder
+                Placeholders
                     .withContext(player)
                     .parse(Config.TabList.Footer)
             )

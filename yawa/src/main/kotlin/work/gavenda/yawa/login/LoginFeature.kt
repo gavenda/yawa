@@ -25,7 +25,7 @@ import org.bukkit.event.HandlerList
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import java.security.KeyPair
 
 /**
@@ -50,11 +50,11 @@ object LoginFeature : PluginFeature {
     }
 
     override fun registerPlaceholders() {
-        Placeholder.register(premiumPlaceholderProvider)
+        Placeholders.register(premiumPlaceholderProvider)
     }
 
     override fun unregisterPlaceholders() {
-        Placeholder.unregister(premiumPlaceholderProvider)
+        Placeholders.unregister(premiumPlaceholderProvider)
     }
 
     override fun disable() {

@@ -3,7 +3,7 @@ package work.gavenda.yawa.chunk
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 
 /**
  * Represents the chunk feature.
@@ -58,10 +58,10 @@ object ChunkFeature : PluginFeature {
     }
 
     override fun registerPlaceholders() {
-        Placeholder.register(chunkPlaceholder)
+        Placeholders.register(chunkPlaceholder)
     }
 
     override fun unregisterPlaceholders() {
-        Placeholder.unregister(chunkPlaceholder)
+        Placeholders.unregister(chunkPlaceholder)
     }
 }

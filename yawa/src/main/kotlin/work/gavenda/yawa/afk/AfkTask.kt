@@ -23,7 +23,7 @@ package work.gavenda.yawa.afk
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.playerListNameCompat
 import work.gavenda.yawa.api.isAfk
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +40,7 @@ class AfkTask : Runnable {
                 if (isNotAfk && afkSeconds > Config.Afk.Seconds) {
                     player.isAfk = true
 
-                    val message = Placeholder
+                    val message = Placeholders
                         .withContext(player)
                         .parseWithLocale(player, Message.AfkEntryMessage)
 
@@ -52,7 +52,7 @@ class AfkTask : Runnable {
 
                 if (player.isAfk) {
                     player.playerListNameCompat(
-                        Placeholder.withContext(player)
+                        Placeholders.withContext(player)
                             .parse(Config.Afk.PlayerListName)
                     )
                 } else {

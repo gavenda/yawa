@@ -28,7 +28,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.compat.quitMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.parseWithDefaultLocale
 import work.gavenda.yawa.parseWithLocale
@@ -48,7 +48,7 @@ class SleepListener(
 
         if (event.bedEnterResult != PlayerBedEnterEvent.BedEnterResult.OK) return
 
-        val message = Placeholder
+        val message = Placeholders
             .withContext(player, world)
             .parseWithLocale(player, Message.PlayerEnterBed)
 
@@ -60,7 +60,7 @@ class SleepListener(
         val player = event.player
 
         if (player.sleepKicked) {
-            val kickMessageBroadcast = Placeholder
+            val kickMessageBroadcast = Placeholders
                 .withContext(player)
                 .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
 
@@ -76,7 +76,7 @@ class SleepListener(
 
         if (world.uid in sleepingWorlds) return
 
-        val message = Placeholder
+        val message = Placeholders
             .withContext(player, world)
             .parseWithLocale(player, Message.PlayerLeftBed)
 

@@ -3,7 +3,7 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     base
-    kotlin("jvm") version Version.KOTLIN
+    kotlin("jvm") version "1.6.21"
 }
 
 val gitHash: String = ByteArrayOutputStream().use { outputStream ->
@@ -13,6 +13,12 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
         standardOutput = outputStream
     }
     outputStream.toString().trim()
+}
+
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 allprojects {
@@ -33,16 +39,5 @@ allprojects {
         maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             name = "s01-sonatype-oss-snapshots"
         }
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
-    }
-
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
     }
 }

@@ -23,8 +23,6 @@ package work.gavenda.yawa.api
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
-import net.md_5.bungee.api.chat.BaseComponent
-import net.md_5.bungee.chat.ComponentSerializer
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -62,12 +60,6 @@ fun Component.toLegacyText(): String {
 
 fun String.toComponent(): Component {
     return BukkitComponentSerializer.legacy().deserialize(this)
-}
-
-fun Component.toBaseComponent(): Array<BaseComponent> {
-    return ComponentSerializer.parse(
-        BukkitComponentSerializer.gson().serialize(this)
-    )
 }
 
 fun String.capitalizeFully(): String {

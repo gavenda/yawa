@@ -24,7 +24,7 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.isAfk
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
 
 const val META_PLAYER_AFK_LAST = "AfkLast"
@@ -48,7 +48,7 @@ fun Player.doInteract() {
     if (isAfk) {
         isAfk = false
 
-        val message = Placeholder
+        val message = Placeholders
             .withContext(this)
             .parseWithLocale(this, Message.AfkLeaveMessage)
 

@@ -6,7 +6,7 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.parseWithLocale
 
 class ChunkMarkCommand : Command(Permission.CHUNK_MARK) {
@@ -16,7 +16,7 @@ class ChunkMarkCommand : Command(Permission.CHUNK_MARK) {
 
         updateChunkMark(sender.location, true).thenRun {
             sender.sendMessageCompat(
-                Placeholder.withContext(sender)
+                Placeholders.withContext(sender)
                     .parseWithLocale(sender, Message.ChunkMarked)
             )
         }

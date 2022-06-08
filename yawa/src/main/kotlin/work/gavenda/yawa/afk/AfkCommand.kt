@@ -25,7 +25,7 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.isAfk
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
 
 class AfkCommand : Command(
@@ -39,7 +39,7 @@ class AfkCommand : Command(
 
         sender.isAfk = true
 
-        val message = Placeholder
+        val message = Placeholders
             .withContext(sender)
             .parseWithLocale(sender, Message.AfkEntryMessage)
 

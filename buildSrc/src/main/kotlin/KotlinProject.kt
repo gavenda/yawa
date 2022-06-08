@@ -42,7 +42,7 @@ fun Project.kotlinProject(archiveName: String) {
                 "Created-By" to "Gradle ${gradle.gradleVersion}",
                 "Build-System" to operatingSystem,
                 "Build-Jdk" to javaVersion,
-                "Kotlin-Version" to Version.KOTLIN,
+                "Kotlin-Version" to "1.6.21",
                 "Implementation-Version" to project.version,
                 "Implementation-Title" to archiveName,
                 "Implementation-Vendor" to "Gavenda"

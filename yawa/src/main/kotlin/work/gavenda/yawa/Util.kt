@@ -32,7 +32,7 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
 import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import java.io.File
 import java.io.FileOutputStream
@@ -147,12 +147,12 @@ fun URL.downloadTo(file: File): Long {
 fun CommandSender.sendMessageUsingKey(key: String) {
     if (this is Player) {
         sendMessageCompat(
-            Placeholder
+            Placeholders
                 .withContext(this)
                 .parseWithLocale(this, key)
         )
     } else {
-        val message = Placeholder.deserialize(
+        val message = Placeholders.deserialize(
             Messages.useDefault()
                 .get(key)
         )

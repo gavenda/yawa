@@ -24,7 +24,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.registerNewObjectiveCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
@@ -57,11 +57,11 @@ object PingFeature : PluginFeature {
     }
 
     override fun registerPlaceholders() {
-        Placeholder.register(playerPingPlaceholder)
+        Placeholders.register(playerPingPlaceholder)
     }
 
     override fun unregisterPlaceholders() {
-        Placeholder.unregister(playerPingPlaceholder)
+        Placeholders.unregister(playerPingPlaceholder)
     }
 
     override fun registerPaperEventListeners() {

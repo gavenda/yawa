@@ -24,7 +24,7 @@ import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholder
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
 
@@ -48,7 +48,7 @@ class SleepCheckTask(
                     if (world.kickSeconds < Config.Sleep.KickSeconds) {
                         world.kickSeconds = world.kickSeconds + 1
 
-                        val kickBroadcastMessage = Placeholder
+                        val kickBroadcastMessage = Placeholders
                             .withContext(world)
                             .parseWithDefaultLocale(Message.SleepKickRemainingBroadcast)
 
@@ -59,7 +59,7 @@ class SleepCheckTask(
                     scheduler.runTask(plugin) { _ ->
                         // Kick awake players
                         world.awakePlayers.forEach {
-                            val kickMessage = Placeholder
+                            val kickMessage = Placeholders
                                 .withContext(it)
                                 .parseWithDefaultLocale(Message.SleepKickMessage)
 
@@ -73,7 +73,7 @@ class SleepCheckTask(
             world.isEveryoneSleeping -> {
                 sleepingWorlds.add(world.uid)
 
-                val sleepingMessage = Placeholder
+                val sleepingMessage = Placeholders
                     .withContext(world)
                     .parseWithDefaultLocale(Message.Sleeping)
 

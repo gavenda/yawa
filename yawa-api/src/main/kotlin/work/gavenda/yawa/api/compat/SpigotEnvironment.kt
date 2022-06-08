@@ -20,10 +20,7 @@
 
 package work.gavenda.yawa.api.compat
 
-import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
-import net.md_5.bungee.api.ChatMessageType
-import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -34,8 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
-import work.gavenda.yawa.api.YawaAPI
-import work.gavenda.yawa.api.toBaseComponent
+import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.api.toComponent
 import work.gavenda.yawa.api.toLegacyText
 import java.util.*
@@ -95,7 +91,7 @@ class SpigotEnvironment : Environment {
     override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {
         quitEvent.quitMessage = ""
         if (component != null) {
-            YawaAPI.Instance.adventure.player(quitEvent.player).sendMessage(component)
+            quitEvent.player.asAudience().sendMessage(component)
         }
     }
 
@@ -103,36 +99,33 @@ class SpigotEnvironment : Environment {
     override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
         joinEvent.joinMessage = ""
         if (component != null) {
-            YawaAPI.Instance.adventure.player(joinEvent.player).sendMessage(component)
+            joinEvent.player.asAudience().sendMessage(component)
         }
     }
 
     @Suppress("DEPRECATION")
     override fun sendMessage(sender: CommandSender, component: Component) {
-        YawaAPI.Instance.adventure.sender(sender).sendMessage(component)
+        sender.asAudience().sendMessage(component)
     }
 
     @Suppress("DEPRECATION")
     override fun sendMessage(world: World, component: Component) {
-        val worldKey = Key.key(world.key.namespace, world.key.key)
-        YawaAPI.Instance.adventure.world(worldKey).sendMessage(component)
+        world.asAudience().sendMessage(component)
     }
 
     @Suppress("DEPRECATION")
     override fun sendActionBar(world: World, component: Component) {
-        world.players.forEach { player ->
-            YawaAPI.Instance.adventure.player(player).sendActionBar(component)
-        }
+        world.asAudience().sendActionBar(component)
     }
 
     @Suppress("DEPRECATION")
     override fun setPlayerListHeader(player: Player, component: Component) {
-        YawaAPI.Instance.adventure.player(player).sendPlayerListHeader(component)
+        player.asAudience().sendPlayerListHeader(component)
     }
 
     @Suppress("DEPRECATION")
     override fun setPlayerListFooter(player: Player, component: Component) {
-        YawaAPI.Instance.adventure.player(player).sendPlayerListFooter(component)
+        player.asAudience().sendPlayerListFooter(component)
     }
 
     @Suppress("DEPRECATION")

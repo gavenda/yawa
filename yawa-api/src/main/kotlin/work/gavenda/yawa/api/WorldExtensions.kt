@@ -22,6 +22,8 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
+import net.kyori.adventure.audience.Audience
+import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.World
 import work.gavenda.yawa.api.compat.sendActionBarCompat
@@ -58,4 +60,9 @@ fun World.sendMessageIf(message: Component, condition: () -> Boolean) {
 fun World.sendActionBarIf(text: Component, condition: () -> Boolean) {
     if (!condition()) return
     sendActionBarCompat(text)
+}
+
+fun World.asAudience(): Audience {
+    val worldKey = Key.key(key.namespace, key.key)
+    return YawaAPI.Instance.adventure.world(worldKey)
 }

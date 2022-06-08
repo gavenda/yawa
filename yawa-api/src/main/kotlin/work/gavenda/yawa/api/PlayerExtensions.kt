@@ -31,6 +31,7 @@ import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
+import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
@@ -190,6 +191,13 @@ var Player.spoofedUuid: UUID
         //https://github.com/bergerkiller/CraftSource/blob/master/net.minecraft.server/NetworkManager.java#L69
         FieldUtils.writeField(networkManager, "spoofedUUID", value, true)
     }
+
+/**
+ * Returns this player instance as audience.
+ */
+fun Player.asAudience(): Audience {
+    return YawaAPI.Instance.adventure.player(this)
+}
 
 /**
  * Disconnect the player using a packet.

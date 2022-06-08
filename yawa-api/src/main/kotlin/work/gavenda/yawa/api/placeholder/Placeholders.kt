@@ -23,6 +23,7 @@ package work.gavenda.yawa.api.placeholder
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage.miniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.World
 import org.bukkit.entity.Player
@@ -31,12 +32,15 @@ import work.gavenda.yawa.api.apiLogger
 /**
  * Simple placeholder API.
  */
-object Placeholder {
+object Placeholders {
 
     private val providers = mutableSetOf<PlaceholderProvider>()
-    internal val serializer = miniMessage()
+    private val serializer = miniMessage()
 
-    fun deserialize(text: String) = serializer.deserialize(text)
+    /**
+     * Call deserialize directly without context.
+     */
+    fun deserialize(text: String, vararg tagResolvers: TagResolver) = serializer.deserialize(text, *tagResolvers)
 
     /**
      * Register a placeholder provider.
@@ -94,10 +98,10 @@ class PlaceholderContext(
         val providers = mergeProviders(params).map { (placeholder, value) ->
             when (value) {
                 is String -> {
-                    net.kyori.adventure.text.minimessage.tag.resolver.Placeholder.unparsed(placeholder, value)
+                    Placeholder.unparsed(placeholder, value)
                 }
                 is Component -> {
-                    net.kyori.adventure.text.minimessage.tag.resolver.Placeholder.component(placeholder, value)
+                    Placeholder.component(placeholder, value)
                 }
                 else -> {
                     TagResolver.empty()
@@ -105,7 +109,7 @@ class PlaceholderContext(
             }
         }
 
-        return Placeholder.serializer.deserialize(text, *providers.toTypedArray())
+        return Placeholders.deserialize(text, *providers.toTypedArray())
     }
 
     /**

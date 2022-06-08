@@ -1,8 +1,6 @@
 package work.gavenda.yawa.login
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.event.HoverEvent
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.World
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.placeholder.PlaceholderProvider
