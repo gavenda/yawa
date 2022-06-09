@@ -3,6 +3,6 @@ description: Simply provides Kotlin to the classpath. Any plugin that does this 
 author: Gavenda
 website: https://gavenda.work
 
-api-version: '1.18'
-version: ${project.version}
+api-version: '1.19'
+version: '1.7.0'
 main: work.gavenda.kotlin.Plugin

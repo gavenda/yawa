@@ -4,5 +4,5 @@ author: Gavenda
 website: https://gavenda.work
 
 api-version: '1.19'
-version: ${project.version}
+version: '4.11.0'
 main: work.gavenda.adventure.Plugin
