@@ -7,9 +7,10 @@ version: ${project.version}
 main: work.gavenda.yawa.api.YawaAPI
 load: STARTUP
 depend:
-  - Adventure
   - Kotlin
   - ProtocolLib
+softdepend:
+  - Adventure
 commands:
   placeholders:
     description: Lists all available placeholders.

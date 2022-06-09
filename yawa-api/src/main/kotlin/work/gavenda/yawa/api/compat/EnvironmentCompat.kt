@@ -17,9 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
-@file:JvmName("EnvironmentKt")
-
 package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
@@ -37,7 +34,11 @@ import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 
 private val pluginRuntimeEnvironment: Environment by lazy {
-    SpigotEnvironment()
+    if (pluginEnvironment == PluginEnvironment.PAPER) {
+        PaperEnvironment()
+    } else {
+        SpigotEnvironment()
+    }
 }
 
 val ItemMeta.displayNameCompat

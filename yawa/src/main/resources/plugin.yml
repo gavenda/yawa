@@ -11,10 +11,10 @@ loadbefore:
   - Vault
 depend:
   - Kotlin
-  - Adventure
   - YawaAPI
 softdepend:
   - DiscordSRV
+  - Adventure
 commands:
   afk:
     description: Toggles being AFK. (Away from Keyboard)

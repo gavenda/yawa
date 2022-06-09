@@ -11,7 +11,7 @@ dependencies {
     compileOnly(kotlin("reflect"))
 
     // API
-    compileOnly(libs.spigot.api)
+    compileOnly(libs.paper.api)
 
     // Adventure
     compileOnly(libs.bundles.adventure)
@@ -39,7 +39,7 @@ tasks {
     jar {
         manifest {
             attributes(
-                "Spigot-Version" to libs.versions.spigot
+                "Paper-Version" to libs.versions.paper
             )
         }
     }
@@ -64,6 +64,7 @@ tasks {
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
             exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
             exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
+            exclude(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm.*"))
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
 

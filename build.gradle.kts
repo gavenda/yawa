@@ -2,7 +2,7 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     base
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.7.0"
 }
 
 val gitHash: String = ByteArrayOutputStream().use { outputStream ->
@@ -16,7 +16,7 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
 
 kotlin {
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 

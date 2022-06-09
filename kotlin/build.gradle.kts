@@ -6,11 +6,12 @@ plugins {
 kotlinProject("Kotlin")
 deployablePlugin()
 
-version = libs.versions.kotlin
+version = libs.versions.kotlin.get()
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2")
 
     compileOnly(libs.spigot)
 }

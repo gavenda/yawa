@@ -20,23 +20,23 @@
 
 package work.gavenda.yawa.chat
 
-//import io.papermc.paper.event.player.AsyncChatEvent
-//import org.bukkit.event.EventHandler
-//import org.bukkit.event.EventPriority
-//import org.bukkit.event.Listener
-//import work.gavenda.yawa.Config
-//import work.gavenda.yawa.api.placeholder.Placeholder
-//
-//class PaperChatListener : Listener {
-//
-//    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-//    fun onPlayerChat(e: AsyncChatEvent) {
-//        e.renderer { source, _, message, _ ->
-//            Placeholder
-//                .withContext(source)
-//                .parse(Config.Chat.FormatMessage)
-//                .append(message)
-//        }
-//    }
-//
-//}
+import io.papermc.paper.event.player.AsyncChatEvent
+import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
+import org.bukkit.event.Listener
+import work.gavenda.yawa.Config
+import work.gavenda.yawa.api.placeholder.Placeholders
+
+class PaperChatListener : Listener {
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    fun onPlayerChat(e: AsyncChatEvent) {
+        e.renderer { source, _, message, _ ->
+            Placeholders
+                .withContext(source)
+                .parse(Config.Chat.FormatMessage)
+                .append(message)
+        }
+    }
+
+}

@@ -10,7 +10,7 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
 
     // API
-    compileOnly(libs.spigot.api)
+    compileOnly(libs.paper.api)
 
     // Dependencies
     compileOnly(files("$rootDir/libs/ProtocolLib.jar"))
@@ -25,7 +25,7 @@ tasks {
     jar {
         manifest {
             attributes(
-                "Spigot-Version" to libs.versions.spigot
+                "Paper-Version" to libs.versions.paper
             )
         }
     }

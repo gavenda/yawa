@@ -45,7 +45,9 @@ class SpigotEnvironment : Environment {
     }
 
     override fun playSound(world: World, sound: Sound) {
-        return world.asAudience().playSound(sound)
+        world.players.forEach { player ->
+            player.asAudience().playSound(sound)
+        }
     }
 
     @Suppress("DEPRECATION")
@@ -115,12 +117,16 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun sendMessage(world: World, component: Component) {
-        world.asAudience().sendMessage(component)
+        world.players.forEach { player ->
+            player.asAudience().sendMessage(component)
+        }
     }
 
     @Suppress("DEPRECATION")
     override fun sendActionBar(world: World, component: Component) {
-        world.asAudience().sendActionBar(component)
+        world.players.forEach { player ->
+            player.asAudience().sendActionBar(component)
+        }
     }
 
     @Suppress("DEPRECATION")

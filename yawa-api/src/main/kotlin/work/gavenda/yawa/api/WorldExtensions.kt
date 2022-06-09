@@ -61,8 +61,3 @@ fun World.sendActionBarIf(text: Component, condition: () -> Boolean) {
     if (!condition()) return
     sendActionBarCompat(text)
 }
-
-fun World.asAudience(): Audience {
-    val worldKey = Key.key(key.namespace, key.key)
-    return YawaAPI.Instance.adventure.world(worldKey)
-}

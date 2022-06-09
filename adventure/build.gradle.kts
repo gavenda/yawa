@@ -6,7 +6,7 @@ plugins {
 kotlinProject("Adventure")
 deployablePlugin()
 
-version = libs.versions.adventure
+version = libs.versions.adventure.get()
 
 dependencies {
     implementation(libs.bundles.adventure)
