@@ -116,19 +116,18 @@ class PlaceholderContext(
      * Returns this placeholder as a help list.
      */
     fun asHelpList(): List<Component> {
-        return mergeProviders().map { entry ->
-            val placeholder = entry.key
-            val value = entry.value
-            val componentText = Component.text("[", NamedTextColor.GREEN)
-                .append(Component.text(placeholder))
-                .append(Component.text("]", NamedTextColor.GREEN))
-                .append(Component.text(" » ", NamedTextColor.YELLOW))
-
-            when (value) {
-                is String -> componentText.append(Component.text(value, NamedTextColor.WHITE))
-                is Component -> componentText.append(value)
-                else -> componentText.append(Component.text("None", NamedTextColor.WHITE))
-            }
+        return mergeProviders().map { (placeholder, value) ->
+            return@map Component.textOfChildren(
+                Component.text("[", NamedTextColor.GREEN),
+                Component.text(placeholder, NamedTextColor.WHITE),
+                Component.text("]", NamedTextColor.GREEN),
+                Component.text(" » ", NamedTextColor.YELLOW),
+                when (value) {
+                    is String -> Component.text(value, NamedTextColor.WHITE)
+                    is Component -> value
+                    else -> Component.text("None", NamedTextColor.WHITE)
+                }
+            )
         }
     }
 

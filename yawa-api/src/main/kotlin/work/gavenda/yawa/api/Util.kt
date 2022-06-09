@@ -22,7 +22,6 @@ package work.gavenda.yawa.api
 
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -48,10 +47,6 @@ fun HttpURLConnection.asText(): String {
  */
 fun URL.asHttpConnection(): HttpURLConnection {
     return openConnection() as HttpURLConnection
-}
-
-fun Component.toPlainText(): String {
-    return PlainTextComponentSerializer.plainText().serialize(this)
 }
 
 fun Component.toLegacyText(): String {

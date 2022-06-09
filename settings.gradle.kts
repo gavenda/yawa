@@ -34,7 +34,6 @@ dependencyResolutionManagement {
             library("adventure-key", "net.kyori", "adventure-key").versionRef("adventure")
             library("adventure-nbt", "net.kyori", "adventure-nbt").versionRef("adventure")
             library("adventure-text-minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
-            library("adventure-text-serializer-plain", "net.kyori", "adventure-text-serializer-plain").versionRef("adventure")
             // Bundles
             bundle("exposed", listOf("exposed-core", "exposed-dao", "exposed-jdbc"))
             bundle("spigot", listOf("spigot"))
@@ -43,7 +42,6 @@ dependencyResolutionManagement {
                 "adventure-key",
                 "adventure-nbt",
                 "adventure-text-minimessage",
-                "adventure-text-serializer-plain",
                 "adventure-platform-bukkit"
             ))
         }
