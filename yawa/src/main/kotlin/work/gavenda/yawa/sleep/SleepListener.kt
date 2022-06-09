@@ -30,7 +30,7 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.compat.quitMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.parseWithDefaultLocale
+import work.gavenda.yawa.parseUsingDefaultLocale
 import work.gavenda.yawa.parseWithLocale
 import java.util.*
 
@@ -62,7 +62,7 @@ class SleepListener(
         if (player.sleepKicked) {
             val kickMessageBroadcast = Placeholders
                 .withContext(player)
-                .parseWithDefaultLocale(Message.SleepKickMessageBroadcast)
+                .parseUsingDefaultLocale(Message.SleepKickMessageBroadcast)
 
             event.quitMessageCompat(kickMessageBroadcast)
             player.sleepKicked = false

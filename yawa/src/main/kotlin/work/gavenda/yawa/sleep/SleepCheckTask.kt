@@ -20,10 +20,12 @@
 
 package work.gavenda.yawa.sleep
 
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound
 import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.kickCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
+import work.gavenda.yawa.api.compat.playSoundCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
@@ -50,9 +52,15 @@ class SleepCheckTask(
 
                         val kickBroadcastMessage = Placeholders
                             .withContext(world)
-                            .parseWithDefaultLocale(Message.SleepKickRemainingBroadcast)
+                            .parseUsingDefaultLocale(Message.SleepKickRemainingBroadcast)
 
-                        world.sendMessageCompat(kickBroadcastMessage)
+                        val note = Key.key("block.note_block.xylophone")
+                        val sound = Sound.sound(note, Sound.Source.MASTER, 1f, 1f)
+
+                        world.sendMessageIf(kickBroadcastMessage) {
+                            Config.Sleep.Chat.Enabled
+                        }
+                        world.playSoundCompat(sound)
                         return
                     }
 
@@ -61,7 +69,7 @@ class SleepCheckTask(
                         world.awakePlayers.forEach {
                             val kickMessage = Placeholders
                                 .withContext(it)
-                                .parseWithDefaultLocale(Message.SleepKickMessage)
+                                .parseUsingDefaultLocale(Message.SleepKickMessage)
 
                             it.sleepKicked = true
                             it.kickCompat(kickMessage)
@@ -75,7 +83,7 @@ class SleepCheckTask(
 
                 val sleepingMessage = Placeholders
                     .withContext(world)
-                    .parseWithDefaultLocale(Message.Sleeping)
+                    .parseUsingDefaultLocale(Message.Sleeping)
 
                 // Broadcast everyone sleeping
                 world.sendMessageIf(sleepingMessage) {

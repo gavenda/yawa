@@ -21,6 +21,7 @@
 package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.sound.Sound
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -37,6 +38,7 @@ interface Environment {
     fun sendMessage(sender: CommandSender, component: Component)
     fun sendMessage(world: World, component: Component)
     fun sendActionBar(world: World, component: Component)
+    fun playSound(world: World, sound: Sound)
     fun setPlayerListHeader(player: Player, component: Component)
     fun setPlayerListFooter(player: Player, component: Component)
     fun kickPlayer(player: Player, component: Component)

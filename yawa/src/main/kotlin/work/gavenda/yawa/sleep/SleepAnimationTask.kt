@@ -26,7 +26,7 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.parseWithDefaultLocale
+import work.gavenda.yawa.parseUsingDefaultLocale
 import work.gavenda.yawa.scheduler
 import java.util.*
 
@@ -53,7 +53,7 @@ class SleepAnimationTask(
 
             val sleepingDoneMessage = Placeholders
                 .withContext(world)
-                .parseWithDefaultLocale(Message.SleepingDone)
+                .parseUsingDefaultLocale(Message.SleepingDone)
 
             // Broadcast successful sleep
             world.sendMessageIf(sleepingDoneMessage) {

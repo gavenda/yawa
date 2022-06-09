@@ -54,8 +54,8 @@ sleep:
   time-rate: 85
   kick-seconds: 15
   messages:
-    chat.enabled: true
-    action-bar.enabled: true
+    chat:
+      enabled: true
 
 # Ender dragon battle configuration
 ender:

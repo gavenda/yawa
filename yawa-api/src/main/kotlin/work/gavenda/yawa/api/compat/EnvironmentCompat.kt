@@ -22,6 +22,7 @@
 
 package work.gavenda.yawa.api.compat
 
+import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.command.CommandSender
@@ -37,11 +38,6 @@ import java.util.*
 
 private val pluginRuntimeEnvironment: Environment by lazy {
     SpigotEnvironment()
-//    if (pluginEnvironment == PluginEnvironment.PAPER) {
-//        PaperEnvironment()
-//    } else {
-//        SpigotEnvironment()
-//    }
 }
 
 val ItemMeta.displayNameCompat
@@ -96,6 +92,10 @@ fun World.sendMessageCompat(component: Component) {
 
 fun World.sendActionBarCompat(component: Component) {
     pluginRuntimeEnvironment.sendActionBar(this, component)
+}
+
+fun World.playSoundCompat(sound: Sound) {
+    pluginRuntimeEnvironment.playSound(this, sound)
 }
 
 fun Player.sendPlayerListHeaderCompat(component: Component) {

@@ -117,10 +117,6 @@ object Config {
         val TimeRate = config.getInt("sleep.time-rate")
         val KickSeconds = config.getInt("sleep.kick-seconds")
 
-        object ActionBar {
-            val Enabled get() = config.getBoolean("sleep.messages.action-bar.enabled")
-        }
-
         object Chat {
             val Enabled get() = config.getBoolean("sleep.messages.chat.enabled")
         }

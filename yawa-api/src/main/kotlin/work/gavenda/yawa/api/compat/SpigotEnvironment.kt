@@ -20,6 +20,7 @@
 
 package work.gavenda.yawa.api.compat
 
+import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.command.CommandSender
@@ -41,6 +42,10 @@ class SpigotEnvironment : Environment {
     @Suppress("DEPRECATION")
     override fun displayNameCompat(itemMeta: ItemMeta): Component {
         return itemMeta.displayName.toComponent()
+    }
+
+    override fun playSound(world: World, sound: Sound) {
+        return world.asAudience().playSound(sound)
     }
 
     @Suppress("DEPRECATION")

@@ -112,7 +112,7 @@ fun PlaceholderContext.parseWithLocale(player: Player, key: String): Component {
 /**
  * Extend placeholder context to parse for the server's default locale.
  */
-fun PlaceholderContext.parseWithDefaultLocale(key: String): Component {
+fun PlaceholderContext.parseUsingDefaultLocale(key: String): Component {
     return parse(
         Messages
             .useDefault()
