@@ -39,7 +39,7 @@ val Player.isVerified: Boolean
     }
 
 /**
- * Returns the a name component with a hover for verified accounts.
+ * Returns a component with a hover for verified accounts.
  */
 val Player.verifiedName: Component get() {
     return if (isVerified) {

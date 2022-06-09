@@ -10,10 +10,10 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
 
     // API
-    compileOnly(libs.spigot)
+    compileOnly(libs.spigot.api)
 
     // Dependencies
-    compileOnly(libs.protocol.lib)
+    compileOnly(files("$rootDir/libs/ProtocolLib.jar"))
     compileOnly(libs.bundles.adventure)
     implementation(libs.paper.lib)
     implementation(libs.log4j2)

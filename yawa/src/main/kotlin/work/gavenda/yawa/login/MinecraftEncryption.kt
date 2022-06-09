@@ -22,10 +22,13 @@ package work.gavenda.yawa.login
 
 import java.math.BigInteger
 import java.security.*
+import java.security.spec.EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+
 
 /**
  * Utilities related to Minecraft Encryption.
@@ -39,9 +42,9 @@ object MinecraftEncryption {
     /**
      * Generate an RSA key pair with a `1024` length.
      */
-    fun generateKeyPair(): KeyPair =
+    fun generateKeyPair(keySize: Int = 1024): KeyPair =
         KeyPairGenerator.getInstance(keyPairAlgorithm).apply {
-            initialize(1024)
+            initialize(keySize)
         }.generateKeyPair()
 
     /**
@@ -85,6 +88,12 @@ object MinecraftEncryption {
      */
     fun decryptSharedKey(privateKey: PrivateKey, sharedKey: ByteArray): SecretKey =
         SecretKeySpec(decrypt(privateKey, sharedKey), "AES")
+
+    fun decryptPublicKey(privateKey: PrivateKey, publicKey: ByteArray): PublicKey {
+        val decryptedPublicKey = decrypt(privateKey, publicKey)
+        val encodedKeySpec: EncodedKeySpec = X509EncodedKeySpec(decryptedPublicKey)
+        return KeyFactory.getInstance("RSA").generatePublic(encodedKeySpec)
+    }
 
     /**
      * Decrypt the given data using the given private key.

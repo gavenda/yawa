@@ -23,6 +23,7 @@ package work.gavenda.yawa.login
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
+import com.comphenix.protocol.wrappers.BukkitConverters
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.*
@@ -54,6 +55,7 @@ class LoginListener(
 
         val packet = packetEvent.packet
         val name = packet.strings.read(0)
+        val profileKeyData = packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).read(0)
         val player = packetEvent.player
 
         // Use mojang name check
@@ -98,7 +100,8 @@ class LoginListener(
             packetEvent = packetEvent,
             player = player,
             name = name,
-            keyPair = keyPair
+            keyPair = keyPair,
+            profileKeyData = profileKeyData
         )
 
         scheduler.runTaskAsynchronously(plugin, loginConnectionTask)

@@ -11,7 +11,7 @@ dependencies {
     compileOnly(kotlin("reflect"))
 
     // API
-    compileOnly(libs.spigot)
+    compileOnly(libs.spigot.api)
 
     // Adventure
     compileOnly(libs.bundles.adventure)
@@ -28,7 +28,8 @@ dependencies {
 
     // Minecraft plugins
     compileOnly(libs.vault)
-    compileOnly(libs.protocol.lib)
+    compileOnly(files("$rootDir/libs/ProtocolLib.jar"))
+    // compileOnly(libs.protocol.lib)
     compileOnly(libs.discordsrv)
 }
 

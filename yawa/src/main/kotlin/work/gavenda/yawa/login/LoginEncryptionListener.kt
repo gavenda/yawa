@@ -46,8 +46,7 @@ class LoginEncryptionListener(
 ) {
 
     override fun onPacketReceiving(packetEvent: PacketEvent) {
-        val sharedSecret = packetEvent.packet.byteArrays.read(0).copyOf()
-        val encryptedVerifyToken = packetEvent.packet.byteArrays.read(1)
+        val encryptedKey = packetEvent.packet.byteArrays.read(0).copyOf()
         val player = packetEvent.player
 
         packetEvent.asyncMarker.incrementProcessingDelay()
@@ -68,8 +67,7 @@ class LoginEncryptionListener(
             session = session,
             player = player,
             keyPair = keyPair,
-            encryptedVerifyToken = encryptedVerifyToken,
-            sharedSecret = sharedSecret
+            encryptedKey = encryptedKey,
         )
 
         scheduler.runTaskAsynchronously(plugin, encryptionTask)

@@ -24,7 +24,7 @@ import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
-import com.comphenix.protocol.wrappers.WrappedGameProfile
+import com.comphenix.protocol.wrappers.BukkitConverters
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
@@ -47,13 +47,12 @@ class LoginEncryptionTask(
     private val session: LoginSession,
     private val player: Player,
     private val keyPair: KeyPair,
-    private val encryptedVerifyToken: ByteArray,
-    private val sharedSecret: ByteArray
+    private val encryptedKey: ByteArray,
 ) : Runnable {
 
     override fun run() {
-        val loginKey = try {
-            MinecraftEncryption.decryptSharedKey(keyPair.private, sharedSecret)
+        val decryptedKey = try {
+            MinecraftEncryption.decryptSharedKey(keyPair.private, encryptedKey)
         } catch (ex: GeneralSecurityException) {
             player.disconnect(
                 Messages
@@ -64,18 +63,7 @@ class LoginEncryptionTask(
             return
         }
 
-        val tokenVerified = validateVerifyToken(session, encryptedVerifyToken)
-        val encryptionEnabled = enableEncryption(player, loginKey)
-
-        if (tokenVerified.not()) {
-            logger.warn("Unable to verify token")
-            player.disconnect(
-                Messages
-                    .forPlayer(player)
-                    .get(Message.LoginInvalidToken)
-            )
-            return
-        }
+        val encryptionEnabled = enableEncryption(player, decryptedKey)
 
         if (encryptionEnabled.not()) {
             logger.warn("Unable to enable encryption")
@@ -87,7 +75,7 @@ class LoginEncryptionTask(
             return
         }
 
-        val serverId = MinecraftEncryption.generateServerIdHash(session.serverId, loginKey, keyPair.public)
+        val serverId = MinecraftEncryption.generateServerIdHash(session.serverId, decryptedKey, keyPair.public)
         val socketAddress = player.address
         try {
             val address = socketAddress!!.address
@@ -154,27 +142,6 @@ class LoginEncryptionTask(
             .signalPacketTransmission(packetEvent)
     }
 
-
-    /**
-     * Validate the verify token of the current login session.
-     * @param session the current login session
-     * @param encryptedVerifyToken the encrypted verified token
-     */
-    private fun validateVerifyToken(session: LoginSession, encryptedVerifyToken: ByteArray): Boolean {
-        try {
-            val verifyToken = session.verifyToken
-            val decryptedVerifyToken = MinecraftEncryption.decrypt(keyPair.private, encryptedVerifyToken)
-            // https://github.com/bergerkiller/CraftSource/blob/master/net.minecraft.server/LoginListener.java#L182
-            // Check if the verify token are equal to the server sent one
-            if (verifyToken.contentEquals(decryptedVerifyToken)) {
-                return true
-            }
-        } catch (ex: Exception) {
-            logger.error("Cannot decrypt received contents", ex)
-        }
-        return false
-    }
-
     /**
      * Attempt to enable encryption.
      * @return true if successful, otherwise false
@@ -203,11 +170,11 @@ class LoginEncryptionTask(
      * @param name login name
      */
     private fun receiveFakeStartPacket(player: Player, name: String) {
-        // uuid is ignored by the packet definition
-        // val fakeProfile = WrappedGameProfile(UUID.randomUUID(), name)
-        // See StartPacketListener for packet information
+        val profileKeyData = Session.find(player.address!!)!!.profileKeyData
+
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
             strings.write(0, name)
+            getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, profileKeyData)
         }
         try {
             // We don't want to handle our own packets so ignore filters

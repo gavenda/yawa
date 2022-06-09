@@ -1,24 +1,29 @@
 package work.gavenda.yawa.chat
 
+import net.kyori.adventure.text.Component
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.toLegacyText
 
 class BukkitChatListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     @Suppress("DEPRECATION")
     fun onPlayerChat(e: AsyncPlayerChatEvent) {
-        val chatFormatComponent = Placeholders
+        e.isCancelled = true
+
+        val chatMessage = Placeholders
             .withContext(e.player)
             .parse(Config.Chat.FormatMessage)
-        val chatFormat = chatFormatComponent.toLegacyText()
+            .append(Component.text(e.message))
 
-        e.format = chatFormat.plus("%2\$s")
+        e.recipients.forEach {
+            it.sendMessageCompat(chatMessage)
+        }
     }
 
 }

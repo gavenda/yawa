@@ -21,6 +21,7 @@
 package work.gavenda.yawa.login
 
 import com.comphenix.protocol.events.PacketEvent
+import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKeyData
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.mojang.MojangApi
@@ -30,6 +31,7 @@ import work.gavenda.yawa.logger
 import work.gavenda.yawa.protocolManager
 import java.security.KeyPair
 import java.security.PublicKey
+import java.util.*
 
 /**
  * Determines if you have a cracked account and begins encrypting your connection if possible.
@@ -38,7 +40,8 @@ class LoginConnectionTask(
     private val packetEvent: PacketEvent,
     private val player: Player,
     private val name: String,
-    private val keyPair: KeyPair
+    private val keyPair: KeyPair,
+    private val profileKeyData: Optional<WrappedProfileKeyData>
 ) : Runnable {
 
     private val serverId = ""
@@ -93,7 +96,7 @@ class LoginConnectionTask(
     private fun unsecureConnection(player: Player, playerName: String) {
         logger.info("Initiating unsecure connection for player $playerName")
 
-        val session = LoginSession(playerName, serverId, byteArrayOf())
+        val session = LoginSession(playerName, serverId, profileKeyData)
         Session.cache(player.address!!, session)
 
         val uuid = playerName.minecraftOfflineUuid()
@@ -129,7 +132,7 @@ class LoginConnectionTask(
             return
         }
 
-        val session = LoginSession(name, serverId, verifyToken)
+        val session = LoginSession(name, serverId, profileKeyData)
 
         // Pending verification
         Session.pending(player.address!!, name)

@@ -19,7 +19,8 @@ dependencyResolutionManagement {
             // Libraries
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("paper-lib", "io.papermc:paperlib:1.0.7")
-            library("spigot", "org.spigotmc", "spigot-api").versionRef("spigot")
+            library("spigot", "org.spigotmc", "spigot").versionRef("spigot")
+            library("spigot.api", "org.spigotmc", "spigot-api").versionRef("spigot")
             library("protocol-lib", "com.comphenix.protocol:ProtocolLib:5.0.0-SNAPSHOT")
             library("vault", "com.github.MilkBowl:VaultAPI:1.7")
             library("hikari", "com.zaxxer:HikariCP:5.0.1")

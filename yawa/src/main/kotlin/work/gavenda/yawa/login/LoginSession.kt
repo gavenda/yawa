@@ -20,31 +20,14 @@
 
 package work.gavenda.yawa.login
 
+import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKeyData
+import java.util.*
+
 /**
  * Represents a login session.
  */
 data class LoginSession(
     val name: String,
     val serverId: String,
-    val verifyToken: ByteArray,
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as LoginSession
-
-        if (name != other.name) return false
-        if (serverId != other.serverId) return false
-        if (!verifyToken.contentEquals(other.verifyToken)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + serverId.hashCode()
-        result = 31 * result + verifyToken.contentHashCode()
-        return result
-    }
-}
+    val profileKeyData: Optional<WrappedProfileKeyData>,
+)
