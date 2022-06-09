@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import work.gavenda.yawa.api.asAudience
+import work.gavenda.yawa.api.toBaseComponent
 import work.gavenda.yawa.api.toComponent
 import work.gavenda.yawa.api.toLegacyText
 import java.util.*

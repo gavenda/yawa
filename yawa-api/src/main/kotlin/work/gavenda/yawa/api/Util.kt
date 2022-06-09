@@ -22,6 +22,7 @@ package work.gavenda.yawa.api
 
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -47,6 +48,11 @@ fun HttpURLConnection.asText(): String {
  */
 fun URL.asHttpConnection(): HttpURLConnection {
     return openConnection() as HttpURLConnection
+}
+
+@Suppress("DEPRECATION")
+fun Component.toBaseComponent(): Array<net.md_5.bungee.api.chat.BaseComponent> {
+    return BungeeComponentSerializer.get().serialize(this)
 }
 
 fun Component.toLegacyText(): String {

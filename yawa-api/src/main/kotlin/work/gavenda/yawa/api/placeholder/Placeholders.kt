@@ -58,6 +58,8 @@ object Placeholders {
         apiLogger.info("Unregistered placeholder: ${provider::class.qualifiedName}")
     }
 
+    fun noContext() = PlaceholderContext(providers)
+
     /**
      * Returns a provider with the given context.
      */
@@ -95,7 +97,7 @@ class PlaceholderContext(
      * @param text text to parse
      */
     fun parse(text: String, params: Map<String, Any?> = mapOf()): Component {
-        val providers = mergeProviders(params).map { (placeholder, value) ->
+        val providers = mergeWithProviders(params).map { (placeholder, value) ->
             when (value) {
                 is String -> {
                     Placeholder.unparsed(placeholder, value)
@@ -116,7 +118,7 @@ class PlaceholderContext(
      * Returns this placeholder as a help list.
      */
     fun asHelpList(): List<Component> {
-        return mergeProviders().map { (placeholder, value) ->
+        return mergeWithProviders().map { (placeholder, value) ->
             return@map Component.textOfChildren(
                 Component.text("[", NamedTextColor.GREEN),
                 Component.text(placeholder, NamedTextColor.WHITE),
@@ -131,7 +133,7 @@ class PlaceholderContext(
         }
     }
 
-    private fun mergeProviders(params: Map<String, Any?> = mapOf()): Map<String, Any?> {
+    fun providers(): Map<String, Any?> {
         val stringPlaceholders = providers
             .map { it.provideString(player, world) }
             .flatMap { it.entries }
@@ -142,11 +144,16 @@ class PlaceholderContext(
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { entry -> entry.value != null }
-
-        // Order of priority -> params > component > string
         return mapOf(
             *stringPlaceholders.toList().toTypedArray(),
             *componentPlaceholders.toList().toTypedArray(),
+        )
+    }
+
+    fun mergeWithProviders(params: Map<String, Any?> = mapOf()): Map<String, Any?> {
+        // Order of priority -> params > component > string
+        return mapOf(
+            *providers().toList().toTypedArray(),
             *params.toList().toTypedArray()
         )
     }
