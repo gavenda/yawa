@@ -8,13 +8,10 @@ deployablePlugin()
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
-
-    // API
     compileOnly(libs.paper.api)
-
-    // Dependencies
     compileOnly(files("$rootDir/libs/ProtocolLib.jar"))
     compileOnly(libs.bundles.adventure)
+
     implementation(libs.paper.lib)
     implementation(libs.log4j2)
 }
@@ -42,23 +39,7 @@ tasks {
 
     shadowJar {
         archiveFileName.set(jar.get().archiveFileName)
-
-        dependencies {
-            // Remove Kotlin
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common:.*"))
-            exclude(dependency("org.jetbrains.kotlin:kotlin-reflect:.*"))
-            exclude(dependency("org.jetbrains:annotations:.*"))
-        }
-
         relocate("io.papermc.lib", "work.gavenda.yawa.api.paperlib")
-
         mustRunAfter(copyLicense)
-    }
-
-    build {
-        dependsOn(shadowJar)
     }
 }

@@ -39,7 +39,7 @@ val COMMAND_NO_PERMISSION = Component.text(TEXT_NO_PERMISSION, NamedTextColor.GO
  */
 abstract class Command(
     private val permission: String = "",
-    private val commands: List<String> = listOf()
+    private val commands: List<String> = emptyList()
 ) : TabExecutor, Listener {
     private val subCommands = mutableMapOf<String, Command>()
 

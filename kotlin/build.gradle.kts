@@ -41,8 +41,4 @@ tasks {
         archiveFileName.set(jar.get().archiveFileName)
         mustRunAfter(copyLicense)
     }
-
-    build {
-        dependsOn(shadowJar)
-    }
 }
