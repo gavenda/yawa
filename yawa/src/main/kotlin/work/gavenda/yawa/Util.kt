@@ -27,7 +27,6 @@ import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Server
-import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
@@ -175,7 +174,7 @@ fun Player.discordAlert(text: String) {
         .setColor(Color.YELLOW)
         .build()
 
-    mainChannel.sendMessageEmbeds(embed)
+    mainChannel.sendMessageEmbeds(embed).queue()
 }
 
 fun Player.discordAlert(component: Component) {
@@ -200,6 +199,6 @@ object Discord {
             .setColor(Color.YELLOW)
             .build()
 
-        mainChannel.sendMessageEmbeds(embed)
+        mainChannel.sendMessageEmbeds(embed).queue()
     }
 }

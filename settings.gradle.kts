@@ -34,6 +34,10 @@ dependencyResolutionManagement {
             library("adventure-key", "net.kyori", "adventure-key").versionRef("adventure")
             library("adventure-nbt", "net.kyori", "adventure-nbt").versionRef("adventure")
             library("adventure-text-minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
+            library("adventure-text-serializer-plain", "net.kyori", "adventure-text-serializer-plain").versionRef("adventure")
+            library("adventure-text-serializer-legacy", "net.kyori", "adventure-text-serializer-legacy").versionRef("adventure")
+            library("adventure-text-serializer-bungeecord", "net.kyori", "adventure-text-serializer-bungeecord").versionRef("adventure")
+            library("adventure-text-serializer-gson", "net.kyori", "adventure-text-serializer-gson").versionRef("adventure")
             // Bundles
             bundle("exposed", listOf("exposed-core", "exposed-dao", "exposed-jdbc"))
             bundle("spigot", listOf("spigot"))
@@ -42,6 +46,10 @@ dependencyResolutionManagement {
                 "adventure-key",
                 "adventure-nbt",
                 "adventure-text-minimessage",
+                "adventure-text-serializer-plain",
+                "adventure-text-serializer-legacy",
+                "adventure-text-serializer-bungeecord",
+                "adventure-text-serializer-gson",
                 "adventure-platform-bukkit"
             ))
         }
