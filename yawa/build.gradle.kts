@@ -72,6 +72,7 @@ tasks {
         relocate("io.papermc.lib", "work.gavenda.yawa.paperlib")
 
         mustRunAfter(copyLicense)
+        dependsOn(":yawa-api:shadowJar")
     }
 
     build {
