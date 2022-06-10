@@ -6,7 +6,7 @@ plugins {
 kotlinProject("Kotlin")
 deployablePlugin()
 
-version = libs.versions.kotlin.get()
+version = libs.versions.kotlin
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))

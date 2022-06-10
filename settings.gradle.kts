@@ -14,6 +14,7 @@ dependencyResolutionManagement {
             version("paper", "1.19-R0.1-SNAPSHOT")
             version("spigot", "1.19-R0.1-SNAPSHOT")
             version("adventure", "4.11.0")
+            version("adventure-bungeecord", "4.1.0")
             version("exposed", "0.38.2")
 
             // Libraries
@@ -36,7 +37,7 @@ dependencyResolutionManagement {
             library("adventure-text-minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
             library("adventure-text-serializer-plain", "net.kyori", "adventure-text-serializer-plain").versionRef("adventure")
             library("adventure-text-serializer-legacy", "net.kyori", "adventure-text-serializer-legacy").versionRef("adventure")
-            library("adventure-text-serializer-bungeecord", "net.kyori", "adventure-text-serializer-bungeecord").versionRef("adventure")
+            library("adventure-text-serializer-bungeecord", "net.kyori", "adventure-text-serializer-bungeecord").versionRef("adventure-bungeecord")
             library("adventure-text-serializer-gson", "net.kyori", "adventure-text-serializer-gson").versionRef("adventure")
             // Bundles
             bundle("exposed", listOf("exposed-core", "exposed-dao", "exposed-jdbc"))
