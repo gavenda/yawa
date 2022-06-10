@@ -22,9 +22,12 @@ package work.gavenda.yawa
 
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
+import github.scarsz.discordsrv.DiscordSRV
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Server
+import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
@@ -32,8 +35,10 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
 import org.bukkit.scheduler.BukkitScheduler
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
+import work.gavenda.yawa.api.placeholder.Placeholders
+import work.gavenda.yawa.api.toPlainText
+import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -157,5 +162,44 @@ fun CommandSender.sendMessageUsingKey(key: String) {
                 .get(key)
         )
         sendMessageCompat(message)
+    }
+}
+
+fun Player.discordAlert(text: String) {
+    if (pluginManager.getPlugin("DiscordSRV") == null) return
+
+    val mainChannel = DiscordSRV.getPlugin().mainTextChannel
+    val avatarUrl = DiscordSRV.getAvatarUrl(player)
+    val embed = EmbedBuilder()
+        .setAuthor(text, null, avatarUrl)
+        .setColor(Color.YELLOW)
+        .build()
+
+    mainChannel.sendMessageEmbeds(embed)
+}
+
+fun Player.discordAlert(component: Component) {
+    discordAlert(component.toPlainText())
+}
+
+object Discord {
+
+    private const val defaultAvatarUrl = "https://cravatar.eu/avatar/shirobiru/50.png"
+    val disabled = pluginManager.getPlugin("DiscordSRV") == null
+
+    fun alert(component: Component, avatarUrl: String = defaultAvatarUrl) {
+        alert(component.toPlainText(), avatarUrl)
+    }
+
+    fun alert(text: String, avatarUrl: String = defaultAvatarUrl) {
+        if (disabled) return
+        val mainChannel = DiscordSRV.getPlugin().mainTextChannel
+
+        val embed = EmbedBuilder()
+            .setAuthor(text, null, avatarUrl)
+            .setColor(Color.YELLOW)
+            .build()
+
+        mainChannel.sendMessageEmbeds(embed)
     }
 }

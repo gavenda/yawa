@@ -60,6 +60,7 @@ object Message {
     const val SkinReset = "skin-reset"
     const val EnderBattleStart = "ender-battle-start"
     const val EnderBattleTeleport = "ender-battle-teleport"
+    const val EnderBattleAlert = "ender-battle-alert"
     const val LoginInvalidSession = "login-invalid-session"
     const val LoginInvalidSessionRetry = "login-invalid-session-retry"
     const val LoginInvalidRequest = "login-invalid-request"

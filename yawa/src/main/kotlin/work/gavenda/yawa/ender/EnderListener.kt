@@ -29,6 +29,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -38,6 +39,8 @@ import java.util.concurrent.TimeUnit
 class EnderListener(
     private val teleportingPlayers: Queue<Player>
 ) : Listener {
+
+    private val enderAvatarUrl = "https://cravatar.eu/avatar/EnderCristy/50.png"
 
     @EventHandler(ignoreCancelled = true)
     fun onEntityDamage(e: EntityDamageByEntityEvent) {
@@ -77,6 +80,11 @@ class EnderListener(
                 player.sendMessageUsingKey(Message.EnderBattleStart)
             }
         }
+
+        val alertMessage = Placeholders.noContext()
+            .parseUsingDefaultLocale(Message.EnderBattleAlert)
+
+        Discord.alert(alertMessage, enderAvatarUrl)
 
         // Teleport to ender dragon after 5 seconds
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)

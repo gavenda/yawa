@@ -66,13 +66,14 @@ class SleepCheckTask(
 
                     scheduler.runTask(plugin) { _ ->
                         // Kick awake players
-                        world.awakePlayers.forEach {
+                        world.awakePlayers.forEach { player ->
                             val kickMessage = Placeholders
-                                .withContext(it)
+                                .withContext(player)
                                 .parseUsingDefaultLocale(Message.SleepKickMessage)
 
-                            it.sleepKicked = true
-                            it.kickCompat(kickMessage)
+                            player.sleepKicked = true
+                            player.kickCompat(kickMessage)
+                            player.discordAlert(kickMessage)
                         }
                     }
                 }

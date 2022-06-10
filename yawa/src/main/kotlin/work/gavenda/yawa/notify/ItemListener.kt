@@ -27,9 +27,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityPickupItemEvent
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Message
-import work.gavenda.yawa.Messages
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
@@ -39,6 +37,8 @@ import work.gavenda.yawa.api.placeholder.Placeholders
  */
 class ItemListener : Listener {
 
+    private val isDiscordSRVEnabled = pluginManager.getPlugin("DiscordSRV") != null
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onItemPickedUp(event: EntityPickupItemEvent) {
         if (event.entityType !== EntityType.PLAYER) return
@@ -46,7 +46,7 @@ class ItemListener : Listener {
         val player = event.entity as Player
         val itemStack = event.item.itemStack
 
-        val message = Messages.forPlayer(player)
+        val pickupMessage = Messages.forPlayer(player)
             .get(Message.NotifyItemPickup)
         val materialsToMatch = Config.Notify.Item.map { Material.getMaterial(it) }
         val matches = materialsToMatch.any { it == itemStack.type }
@@ -59,10 +59,11 @@ class ItemListener : Listener {
                     .capitalizeFully()
             )
 
-            player.world.sendMessageCompat(
-                Placeholders.withContext(player)
-                    .parse(message, placeholderParams)
-            )
+            val message = Placeholders.withContext(player)
+                .parse(pickupMessage, placeholderParams)
+
+            player.world.sendMessageCompat(message)
+            player.discordAlert(message)
         }
     }
 }
