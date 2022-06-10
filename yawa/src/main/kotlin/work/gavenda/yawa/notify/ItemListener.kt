@@ -37,14 +37,14 @@ import work.gavenda.yawa.api.placeholder.Placeholders
  */
 class ItemListener : Listener {
 
-    private val isDiscordSRVEnabled = pluginManager.getPlugin("DiscordSRV") != null
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onItemPickedUp(event: EntityPickupItemEvent) {
         if (event.entityType !== EntityType.PLAYER) return
 
         val player = event.entity as Player
         val itemStack = event.item.itemStack
+
+        if (event.item.thrower == player.uniqueId) return
 
         val pickupMessage = Messages.forPlayer(player)
             .get(Message.NotifyItemPickup)

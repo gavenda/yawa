@@ -72,6 +72,7 @@ object Message {
     const val SleepKickMessage = "sleep-kick"
     const val SleepKickMessageBroadcast = "sleep-kick-broadcast"
     const val SleepKickRemainingBroadcast = "sleep-kick-remaining-broadcast"
+    const val SleepKickAlert = "sleep-kick-alert"
     const val ImageUploadInvalid = "image-upload-invalid"
     const val ImageUploadError = "image-upload-error"
     const val ImageUploadSuccess = "image-upload-success"

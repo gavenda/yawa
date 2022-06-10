@@ -21,6 +21,7 @@
 package work.gavenda.yawa.sleep
 
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
@@ -41,11 +42,12 @@ class SleepListener(
     private val sleepingWorlds: MutableSet<UUID>
 ) : Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBedEnter(event: PlayerBedEnterEvent) {
         val world = event.bed.world
         val player = event.player
 
+        if (world.uid in sleepingWorlds) return
         if (event.bedEnterResult != PlayerBedEnterEvent.BedEnterResult.OK) return
 
         val message = Placeholders
@@ -55,7 +57,7 @@ class SleepListener(
         world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val player = event.player
 
@@ -69,7 +71,7 @@ class SleepListener(
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onBedLeave(event: PlayerBedLeaveEvent) {
         val world = event.bed.world
         val player = event.player

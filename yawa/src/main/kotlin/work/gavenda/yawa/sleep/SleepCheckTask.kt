@@ -47,8 +47,11 @@ class SleepCheckTask(
             world.beganSleeping -> {
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
-                    if (world.kickSeconds < Config.Sleep.KickSeconds) {
+                    if (world.kickSeconds <= Config.Sleep.KickSeconds) {
                         world.kickSeconds = world.kickSeconds + 1
+
+                        // Don't broadcast anything until 5 seconds remain
+                        if (world.remainingSeconds > 5) return
 
                         val kickBroadcastMessage = Placeholders
                             .withContext(world)
@@ -71,9 +74,13 @@ class SleepCheckTask(
                                 .withContext(player)
                                 .parseUsingDefaultLocale(Message.SleepKickMessage)
 
+                            val kickAlertMessage = Placeholders
+                                .noContext()
+                                .parseUsingDefaultLocale(Message.SleepKickAlert)
+
                             player.sleepKicked = true
                             player.kickCompat(kickMessage)
-                            player.discordAlert(kickMessage)
+                            player.discordAlert(kickAlertMessage)
                         }
                     }
                 }

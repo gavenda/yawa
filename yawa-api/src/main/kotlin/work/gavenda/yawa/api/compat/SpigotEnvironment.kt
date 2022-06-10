@@ -96,18 +96,12 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {
-        quitEvent.quitMessage = ""
-        if (component != null) {
-            quitEvent.player.asAudience().sendMessage(component)
-        }
+        quitEvent.quitMessage = component?.toLegacyText()
     }
 
     @Suppress("DEPRECATION")
     override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
-        joinEvent.joinMessage = ""
-        if (component != null) {
-            joinEvent.player.asAudience().sendMessage(component)
-        }
+        joinEvent.joinMessage = component?.toLegacyText()
     }
 
     @Suppress("DEPRECATION")
