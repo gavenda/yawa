@@ -247,10 +247,10 @@ class YawaVaultPermission : AbstractVaultPermission() {
     }
 
     override fun groupAddPermission(groupId: UUID, permission: String) =
-        modifyUserPermission(groupId, permission, true)
+        modifyGroupPermission(groupId, permission, true)
 
     override fun groupRemovePermission(groupId: UUID, permission: String) =
-        modifyUserPermission(groupId, permission, false)
+        modifyGroupPermission(groupId, permission, false)
 
     override fun getName() = Yawa.Instance.name
 

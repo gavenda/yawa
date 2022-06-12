@@ -23,6 +23,9 @@ package work.gavenda.yawa
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import net.milkbowl.vault.chat.Chat
+import net.milkbowl.vault.economy.Economy
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
@@ -45,6 +48,8 @@ import work.gavenda.yawa.sleep.SleepFeature
 import work.gavenda.yawa.tablist.TabListFeature
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
+import java.util.*
+
 
 /**
  * Yawa plugin entry point.
@@ -90,6 +95,7 @@ class Yawa : JavaPlugin() {
 
         // Register root command
         registerRootCommand()
+        registerVault()
         adjustKeepAliveTimeout()
 
         safeLoad = true
@@ -178,6 +184,12 @@ class Yawa : JavaPlugin() {
 
     fun loadConfig() {
         Config.load(config)
+    }
+
+    private fun registerVault() {
+        VaultUtil.Permission = server.servicesManager.getRegistration(Permission::class.java)?.provider
+        VaultUtil.Chat = server.servicesManager.getRegistration(Chat::class.java)?.provider
+        VaultUtil.Economy = server.servicesManager.getRegistration(Economy::class.java)?.provider
     }
 
     private fun registerRootCommand() {

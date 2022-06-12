@@ -22,13 +22,11 @@ package work.gavenda.yawa.permission
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.compat.sendMessageCompat
-import java.util.*
 
 private val permissionCommands = listOf("permission", "yawa:permission")
 
@@ -65,40 +63,18 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
             val permissionArg = args[1]
             val enabledArg = args[2].toBoolean()
 
-            transaction {
-                val uniqueId = PlayerDb.find { PlayerSchema.name eq nameArg }
-                    .firstOrNull()?.id?.value
+            try {
+                val uniqueId = PermissionFeature.Vault.lookupUuid(nameArg)
 
-                if (uniqueId == null) {
-                    sender.sendMessageUsingKey(Message.PermissionPlayerNotFound)
-                    return@transaction
+                if (enabledArg) {
+                    PermissionFeature.Vault.playerAddPermission(uniqueId, permissionArg)
+                } else {
+                    PermissionFeature.Vault.playerRemovePermission(uniqueId, permissionArg)
                 }
-
-                logger.info("UUID of player $nameArg is $uniqueId")
-
-                val playerDb = PlayerDb.findById(uniqueId)
-
-                if (playerDb == null) {
-                    sender.sendMessageUsingKey(Message.PermissionPlayerNotLoggedIn)
-                    return@transaction
-                }
-
-                val playerPermission = PlayerPermission.find {
-                    (PlayerPermissionSchema.player eq uniqueId) and (PlayerPermissionSchema.permission eq permissionArg)
-                }.firstOrNull() ?: PlayerPermission.new { }
-
-                playerPermission.apply {
-                    playerId = playerDb
-                    permission = permissionArg
-                    enabled = enabledArg
-                }
-
-                // Calculate permissions if exists
-                val player = Bukkit.getPlayer(uniqueId)
-
-                player?.calculatePermissions()
 
                 sender.sendMessageUsingKey(Message.PermissionApplied)
+            } catch (ex: IllegalArgumentException) {
+                sender.sendMessageUsingKey(Message.PermissionPlayerNotFound)
             }
         }
     }
@@ -123,38 +99,20 @@ class PermissionGroupCommand : Command(Permission.PERMISSION_GROUP) {
             val groupNameArg = args[0]
             val permissionArg = args[1]
             val enabledArg = args[2].toBoolean()
-            val playerIds = mutableListOf<UUID>()
 
-            transaction {
-                val foundGroup = Group.find { GroupSchema.name eq groupNameArg }.firstOrNull()
+            try {
+                val uniqueId = PermissionFeature.Vault.lookupGroupUuid(groupNameArg)
 
-                if (foundGroup == null) {
-                    sender.sendMessageUsingKey(Message.PermissionGroupNotFound)
-                    return@transaction
+                if (enabledArg) {
+                    PermissionFeature.Vault.groupAddPermission(uniqueId, permissionArg)
+                } else {
+                    PermissionFeature.Vault.groupRemovePermission(uniqueId, permissionArg)
                 }
 
-                val groupPermission = GroupPermission.find {
-                    (GroupPermissionSchema.group eq foundGroup.id) and (GroupPermissionSchema.permission eq permissionArg)
-                }.firstOrNull() ?: GroupPermission.new { }
-
-                groupPermission.apply {
-                    group = foundGroup
-                    permission = permissionArg
-                    enabled = enabledArg
-                }
-
-                foundGroup.players.forEach {
-                    playerIds.add(it.id.value)
-                }
+                sender.sendMessageUsingKey(Message.PermissionApplied)
+            } catch (ex: IllegalArgumentException) {
+                sender.sendMessageUsingKey(Message.PermissionGroupNotFound)
             }
-
-            playerIds.forEach {
-                // Calculate permissions if exists
-                val player = Bukkit.getPlayer(it)
-                player?.calculatePermissions()
-            }
-
-            sender.sendMessageUsingKey(Message.PermissionApplied)
         }
     }
 

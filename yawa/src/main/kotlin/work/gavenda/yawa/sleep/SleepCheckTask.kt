@@ -20,6 +20,7 @@
 
 package work.gavenda.yawa.sleep
 
+import github.scarsz.discordsrv.hooks.VaultHook
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import org.bukkit.World
@@ -47,9 +48,9 @@ class SleepCheckTask(
             world.beganSleeping -> {
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
-                    if (world.kickSeconds <= Config.Sleep.KickSeconds) {
-                        world.kickSeconds = world.kickSeconds + 1
+                    world.kickSeconds = world.kickSeconds + 1
 
+                    if (world.kickSeconds < Config.Sleep.KickSeconds) {
                         // Don't broadcast anything until 5 seconds remain
                         if (world.remainingSeconds > 5) return
 
@@ -75,8 +76,10 @@ class SleepCheckTask(
                                 .parseUsingDefaultLocale(Message.SleepKickMessage)
 
                             val kickAlertMessage = Placeholders
-                                .noContext()
+                                .withContext(player)
                                 .parseUsingDefaultLocale(Message.SleepKickAlert)
+
+                            VaultUtil.Permission?.playerAddTransient(player, "discordsrv.silentquit")
 
                             player.sleepKicked = true
                             player.kickCompat(kickMessage)

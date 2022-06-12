@@ -181,12 +181,12 @@ abstract class AbstractVaultPermission : Permission() {
         return playerInGroup(player.uniqueId, lookupGroupUuid(group))
     }
 
-    @Deprecated("Deprecated in Java")
+    @Deprecated("Deprecated in Java", ReplaceWith("playerAddGroup(lookupUuid(player), lookupGroupUuid(group))"))
     override fun playerAddGroup(world: String, player: String, group: String): Boolean {
         return playerAddGroup(lookupUuid(player), lookupGroupUuid(group))
     }
 
-    @Deprecated("Deprecated in Java")
+    @Deprecated("Deprecated in Java", ReplaceWith("playerAddGroup(lookupUuid(player), lookupGroupUuid(group))"))
     override fun playerAddGroup(world: World, player: String, group: String): Boolean {
         return playerAddGroup(lookupUuid(player), lookupGroupUuid(group))
     }

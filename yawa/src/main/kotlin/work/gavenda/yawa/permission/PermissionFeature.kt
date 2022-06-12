@@ -43,7 +43,7 @@ object PermissionFeature : PluginFeature {
         sub(PermissionGroupCommand(), "group")
     }
 
-    private lateinit var vaultPermission: YawaVaultPermission
+    val Vault: YawaVaultPermission = YawaVaultPermission()
 
     fun attachTo(player: Player) {
         permissionAttachments[player.uniqueId] = player.addAttachment(plugin)
@@ -65,9 +65,8 @@ object PermissionFeature : PluginFeature {
     override fun registerHooks() {
         // Hook to vault
         if (isVaultEnabled) {
-            vaultPermission = YawaVaultPermission()
             logger.info("Vault detected, registering permissions feature")
-            server.servicesManager.register(Permission::class.java, vaultPermission, plugin, ServicePriority.Normal)
+            server.servicesManager.register(Permission::class.java, Vault, plugin, ServicePriority.Normal)
         }
     }
 
@@ -75,7 +74,7 @@ object PermissionFeature : PluginFeature {
         // Unhook from vault
         if (isVaultEnabled) {
             logger.info("Vault detected, unregistering permissions feature")
-            server.servicesManager.unregister(vaultPermission)
+            server.servicesManager.unregister(Vault)
         }
     }
 
