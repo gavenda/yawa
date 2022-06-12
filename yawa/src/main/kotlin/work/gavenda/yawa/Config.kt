@@ -183,12 +183,12 @@ object Config {
     }
 
     /**
-     * Image upload feature configuration.
+     * Image feature configuration.
      */
-    object ImageUpload {
+    object Image {
         var Disabled
-            get() = config.getBoolean("image-upload.disabled", false)
-            set(value) = config.set("image-upload.disabled", value)
+            get() = config.getBoolean("image.disabled", false)
+            set(value) = config.set("image.disabled", value)
     }
 
     object Notify {

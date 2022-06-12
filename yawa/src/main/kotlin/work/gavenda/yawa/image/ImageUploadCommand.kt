@@ -18,7 +18,7 @@
  *
  */
 
-package work.gavenda.yawa.imgup
+package work.gavenda.yawa.image
 
 import org.bukkit.command.CommandSender
 import work.gavenda.yawa.*

@@ -36,7 +36,7 @@ import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
-import work.gavenda.yawa.imgup.ImageUploadFeature
+import work.gavenda.yawa.image.ImageUtilFeature
 import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.notify.NotifyFeature
 import work.gavenda.yawa.permission.PermissionFeature
@@ -48,7 +48,6 @@ import work.gavenda.yawa.sleep.SleepFeature
 import work.gavenda.yawa.tablist.TabListFeature
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
-import java.util.*
 
 
 /**
@@ -83,7 +82,7 @@ class Yawa : JavaPlugin() {
         ChatFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
-        ImageUploadFeature.enable()
+        ImageUtilFeature.enable()
         LoginFeature.enable()
         NotifyFeature.enable()
         PlayerHeadFeature.enable()
@@ -117,7 +116,7 @@ class Yawa : JavaPlugin() {
         ChatFeature.disable()
         EnderFeature.disable()
         EssentialsFeature.disable()
-        ImageUploadFeature.disable()
+        ImageUtilFeature.disable()
         LoginFeature.disable()
         NotifyFeature.disable()
         PingFeature.disable()

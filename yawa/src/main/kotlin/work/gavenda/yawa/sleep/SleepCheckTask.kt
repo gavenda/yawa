@@ -20,7 +20,6 @@
 
 package work.gavenda.yawa.sleep
 
-import github.scarsz.discordsrv.hooks.VaultHook
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import org.bukkit.World

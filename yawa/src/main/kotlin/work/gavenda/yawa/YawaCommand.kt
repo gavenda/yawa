@@ -29,7 +29,7 @@ import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
-import work.gavenda.yawa.imgup.ImageUploadFeature
+import work.gavenda.yawa.image.ImageUtilFeature
 import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.permission.PermissionFeature
 import work.gavenda.yawa.ping.PingFeature
@@ -48,7 +48,7 @@ private val featureEnableMap = mapOf(
     Feature.CHAT to { ChatFeature.enable() },
     Feature.ENDER to { EnderFeature.enable() },
     Feature.ESSENTIALS to { EssentialsFeature.enable() },
-    Feature.IMAGE_UPLOAD to { ImageUploadFeature.enable() },
+    Feature.IMAGE_UPLOAD to { ImageUtilFeature.enable() },
     Feature.LOGIN to { LoginFeature.enable() },
     Feature.PING to { PingFeature.enable() },
     Feature.PLAYER_HEAD to { PlayerHeadFeature.enable() },
@@ -65,7 +65,7 @@ private val featureDisableMap = mapOf(
     Feature.CHAT to { ChatFeature.disable() },
     Feature.ENDER to { EnderFeature.disable() },
     Feature.ESSENTIALS to { EssentialsFeature.disable() },
-    Feature.IMAGE_UPLOAD to { ImageUploadFeature.disable() },
+    Feature.IMAGE_UPLOAD to { ImageUtilFeature.disable() },
     Feature.LOGIN to { LoginFeature.disable() },
     Feature.PING to { PingFeature.disable() },
     Feature.PLAYER_HEAD to { PlayerHeadFeature.disable() },

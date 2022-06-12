@@ -18,29 +18,34 @@
  *
  */
 
-package work.gavenda.yawa.imgup
+package work.gavenda.yawa.image
 
 import work.gavenda.yawa.*
 
-object ImageUploadFeature : PluginFeature {
+object ImageUtilFeature : PluginFeature {
     override val isDisabled: Boolean
-        get() = Config.ImageUpload.Disabled
+        get() = Config.Image.Disabled
 
     private val imageUploadCommand = ImageUploadCommand()
+    private val imageDeleteCommand = ImageDeleteCommand()
 
     override fun enableCommands() {
         plugin.getCommand(Command.IMAGE_UPLOAD)?.setExecutor(imageUploadCommand)
+        plugin.getCommand(Command.IMAGE_DELETE)?.setExecutor(imageDeleteCommand)
     }
 
     override fun disableCommands() {
         plugin.getCommand(Command.IMAGE_UPLOAD)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.IMAGE_DELETE)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {
         pluginManager.registerEvents(imageUploadCommand)
+        pluginManager.registerEvents(imageDeleteCommand)
     }
 
     override fun unregisterPaperEventListeners() {
         pluginManager.unregisterEvents(imageUploadCommand)
+        pluginManager.unregisterEvents(imageDeleteCommand)
     }
 }

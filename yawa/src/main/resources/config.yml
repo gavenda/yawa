@@ -28,8 +28,8 @@ essentials:
 ping:
   disabled: false
 
-# Image upload feature configuration
-image-upload:
+# Image feature configuration
+image:
   disabled: false
 
 # Player head feature configuration
