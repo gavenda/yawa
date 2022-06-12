@@ -22,12 +22,9 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.Statistic
 import org.bukkit.World
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.Message
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.sendMessageIf
-import work.gavenda.yawa.parseUsingDefaultLocale
-import work.gavenda.yawa.scheduler
 import java.util.*
 
 /**
@@ -48,9 +45,6 @@ class SleepAnimationTask(
 
         // Time within range, we have reached morning
         if (isMorning) {
-            // Remove world from set
-            sleepingWorlds.remove(world.uid)
-
             val sleepingDoneMessage = Placeholders
                 .withContext(world)
                 .parseUsingDefaultLocale(Message.SleepingDone)
@@ -72,6 +66,11 @@ class SleepAnimationTask(
                 scheduler.cancelTask(taskId)
                 sleepAnimationTaskIds[world.uid] = -1
             }
+
+            // Remove later
+            scheduler.runTaskLater(Yawa.Instance, { _ ->
+                sleepingWorlds.remove(world.uid)
+            }, 20 * 5)
         }
         // Out of range, keep animating
         else {
