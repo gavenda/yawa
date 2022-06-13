@@ -26,9 +26,8 @@ import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.compat.playSoundCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.sendActionBarIf
-import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
 
 /**
@@ -50,8 +49,8 @@ class SleepCheckTask(
                     .withContext(world)
                     .parseUsingDefaultLocale(Message.ActionBarSleeping)
 
-                world.sendActionBarIf(message) {
-                    Config.Sleep.ActionBar.Enabled
+                if (Config.Sleep.ActionBar.Enabled) {
+                    world.sendMessageCompat(message)
                 }
 
                 // Sleeping @ 50%
@@ -69,8 +68,8 @@ class SleepCheckTask(
                         val note = Key.key("block.note_block.xylophone")
                         val sound = Sound.sound(note, Sound.Source.MASTER, 1f, 1f)
 
-                        world.sendMessageIf(kickBroadcastMessage) {
-                            Config.Sleep.Chat.Enabled
+                        if (Config.Sleep.Chat.Enabled) {
+                            world.sendMessageCompat(kickBroadcastMessage)
                         }
                         world.playSoundCompat(sound)
                         return
@@ -102,8 +101,8 @@ class SleepCheckTask(
                     .withContext(world)
                     .parseUsingDefaultLocale(Message.ActionBarSleepingDone)
 
-                world.sendActionBarIf(message) {
-                    Config.Sleep.ActionBar.Enabled
+                if (Config.Sleep.ActionBar.Enabled) {
+                    world.sendMessageCompat(message)
                 }
 
                 val sleepingMessage = Placeholders
@@ -111,8 +110,8 @@ class SleepCheckTask(
                     .parseUsingDefaultLocale(Message.Sleeping)
 
                 // Broadcast everyone sleeping
-                world.sendMessageIf(sleepingMessage) {
-                    Config.Sleep.Chat.Enabled
+                if (Config.Sleep.Chat.Enabled) {
+                    world.sendMessageCompat(sleepingMessage)
                 }
 
                 // Cancel existing task if exists

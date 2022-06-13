@@ -23,8 +23,8 @@ package work.gavenda.yawa.sleep
 import org.bukkit.Statistic
 import org.bukkit.World
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
 
 /**
@@ -50,8 +50,8 @@ class SleepAnimationTask(
                 .parseUsingDefaultLocale(Message.SleepingDone)
 
             // Broadcast successful sleep
-            world.sendMessageIf(sleepingDoneMessage) {
-                Config.Sleep.Chat.Enabled
+            if (Config.Sleep.Chat.Enabled) {
+                world.sendMessageCompat(sleepingDoneMessage)
             }
 
             // Clear thunder and storm

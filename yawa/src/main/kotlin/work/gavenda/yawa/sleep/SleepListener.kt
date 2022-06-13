@@ -29,8 +29,8 @@ import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.compat.quitMessageCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.sendMessageIf
 import work.gavenda.yawa.parseUsingDefaultLocale
 import work.gavenda.yawa.parseWithLocale
 import java.util.*
@@ -54,7 +54,9 @@ class SleepListener(
             .withContext(player, world)
             .parseWithLocale(player, Message.PlayerEnterBed)
 
-        world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
+        if (Config.Sleep.Chat.Enabled) {
+            world.sendMessageCompat(message)
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -82,7 +84,9 @@ class SleepListener(
             .withContext(player, world)
             .parseWithLocale(player, Message.PlayerLeftBed)
 
-        world.sendMessageIf(message) { Config.Sleep.Chat.Enabled }
+        if (Config.Sleep.Chat.Enabled) {
+            world.sendMessageCompat(message)
+        }
     }
 
 }

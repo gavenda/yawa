@@ -22,12 +22,7 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
-import net.kyori.adventure.audience.Audience
-import net.kyori.adventure.key.Key
-import net.kyori.adventure.text.Component
 import org.bukkit.World
-import work.gavenda.yawa.api.compat.sendActionBarCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
 
 /**
  * Retrieves debug mode status.
@@ -41,23 +36,3 @@ val World.debugMode: Boolean
         }
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
     }
-
-/**
- * Send a message to all players in this world.
- * @param message  message to broadcast
- * @param condition condition if allowed to broadcast
- */
-fun World.sendMessageIf(message: Component, condition: () -> Boolean) {
-    if (!condition()) return
-    sendMessageCompat(message)
-}
-
-/**
- * Send an action bar text to all players in this world.
- * @param text text to broadcast
- * @param condition condition if allowed to broadcast
- */
-fun World.sendActionBarIf(text: Component, condition: () -> Boolean) {
-    if (!condition()) return
-    sendActionBarCompat(text)
-}
