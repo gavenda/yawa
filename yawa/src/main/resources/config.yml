@@ -85,7 +85,7 @@ login:
 afk:
   disabled: false
   seconds: 120
-  player-list-name: "<player-name> <yellow>AFK</yellow>"
+  player-list-name: "<player-name>"
   player-list-name-afk: "<player-name> <yellow>AFK</yellow>"
   messages.enabled: false
 

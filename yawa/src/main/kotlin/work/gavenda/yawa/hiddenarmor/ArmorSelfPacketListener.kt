@@ -36,7 +36,7 @@ class ArmorSelfPacketListener : PacketAdapter(
         // WINDOW_ITEMS
         if (packet.type == PacketType.Play.Server.WINDOW_ITEMS && windowId == 0) {
             val itemStacks = packet.itemListModifier.read(0)
-            itemStacks.subList(5, 8).forEach { itemStack: ItemStack ->
+            itemStacks.subList(5, 9).forEach { itemStack: ItemStack ->
                 itemStack.itemMeta = itemStack.hideArmor().itemMeta
             }
         }
