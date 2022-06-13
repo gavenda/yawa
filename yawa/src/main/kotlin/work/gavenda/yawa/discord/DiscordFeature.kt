@@ -132,6 +132,7 @@ object DiscordFeature : PluginFeature, EventListener {
         when (event) {
             is MessageReceivedEvent -> {
                 if (event.author.isBot) return
+                if (event.channel.idLong != Config.Discord.GuildChannel) return
 
                 val messageRaw = Config.Discord.MessageFormat + event.message.contentDisplay
                 val message = Placeholders.noContext()

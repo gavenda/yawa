@@ -29,12 +29,21 @@ import java.util.*
 @Serializable
 data class MineSkinResult(
     val id: Int,
+    val idStr: String,
+    val uuid: String,
+    val hash: String,
     val name: String,
+    val model: String,
+    val variant: String,
     val data: MineSkinTextureData,
+    val timestamp: Long,
     val duration: Int,
-    val accountId: String,
+    val accountId: Int,
+    val account: Int,
+    val server: String,
     val private: Boolean,
     val views: Int,
+    val duplicate: Boolean,
     val nextRequest: Int
 )
 

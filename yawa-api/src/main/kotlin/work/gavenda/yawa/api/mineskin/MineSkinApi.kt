@@ -34,6 +34,9 @@ import java.net.URLEncoder
 object MineSkinApi {
 
     private const val URI_API_GENERATE_TEXTURE = "https://api.mineskin.org/generate/url"
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     /**
      * Generates a minecraft texture based on the given url.
@@ -75,7 +78,7 @@ object MineSkinApi {
 
         val response = httpConnection.asText()
 
-        return Json.decodeFromString<MineSkinResult>(response).data.texture
+        return json.decodeFromString<MineSkinResult>(response).data.texture
     }
 
 }

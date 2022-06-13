@@ -48,6 +48,9 @@ object MojangApi {
 
     // Mojang API rate limiter, does not apply to profile since it can be as many as long as its unique
     private val rateLimiter = RateLimiter.create(600.0, 10, TimeUnit.MINUTES)
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     // We cache to avoid hitting the 1 minute rate limit per profile
     private val profileCache = CacheBuilder.newBuilder()
@@ -64,7 +67,7 @@ object MojangApi {
         }
 
         val response = URL(URI_API_STATUS).asText()
-        return Json.decodeFromString(response)
+        return json.decodeFromString(response)
     }
 
     /**
@@ -86,7 +89,7 @@ object MojangApi {
             throw RateLimitException()
         }
 
-        return Json.decodeFromString<MojangProfile>(httpConnection.asText()).id
+        return json.decodeFromString<MojangProfile>(httpConnection.asText()).id
     }
 
     /**
@@ -102,7 +105,7 @@ object MojangApi {
             return null
         }
 
-        return Json.decodeFromString<MojangProfile>(httpConnection.asText())
+        return json.decodeFromString<MojangProfile>(httpConnection.asText())
     }
 
     /**
@@ -128,7 +131,7 @@ object MojangApi {
             throw RateLimitException()
         }
 
-        return Json.decodeFromString<MojangProfile>(httpConnection.asText()).also {
+        return json.decodeFromString<MojangProfile>(httpConnection.asText()).also {
             // We cache the result
             profileCache.put(uuid, it)
         }
