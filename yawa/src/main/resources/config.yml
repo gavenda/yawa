@@ -48,7 +48,7 @@ keep-alive:
 # Tab List feature configuration
 tab-list:
   disabled: false
-  header: "<gold>Yawaland</gold>"
+  header: "<gold>Yawa</gold>"
   footer: "<server-player-count> / <server-player-max>"
 
 # Sleep - Configure how we pass the night, defaults to desired values.
@@ -63,7 +63,7 @@ sleep:
 
 # Ender dragon battle configuration
 ender:
-  disabled: true
+  disabled: false
 
 # Sit feature configuration
 sit:
@@ -73,8 +73,8 @@ sit:
 skin:
   disabled: false
   default-texture:
-    value: "ewogICJ0aW1lc3RhbXAiIDogMTU5OTcxNzAyNzM1NCwKICAicHJvZmlsZUlkIiA6ICIwYTMyZGNkNDkxMjI0Zjc0OTdmYmM3MzJkOGVlZTJkYyIsCiAgInByb2ZpbGVOYW1lIiA6ICJCYXNpY0hlbnJ5XyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xNjNmNzBiYzcxOGIzZGIyNmMyZTI4OTVhYmUzMmIyYWFjNWQyZDczNWFiMzI0MTcxNmViZGQyM2VmZWQyNDI2IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
-    signature: "I+Go6MfWxFRgVXITUN8aZQUfULZL1qM6IWoTZsZBYu3q5QXe21mUDdjCCNAJWJjDD35TVfdYD1zbenauEbPw0lqzKQV7eftxQ/A2eandKZRT/qWIjDSElo+GlTGr4nDa8g4OdM1BeknoqDTeINWKvf4izDidABFtglPNpmLVKpzIM8FrXxNDDu7Y6DSBy0239Vj6NTWxPCoOhnz816OkvuFW0+It6si5oqqTmffmZ1Cs8qmrJ6+6EcWB7W+r2/qFI2oRRvogZ28IK1g6XZkSJ3S5Ra04ZN87dnRs58Ow+sN3eJVj8FAvJAOg8HLoN4ThRRDPhrbelYFb60VYdG/AjYugMZc9/CJ3D51EqvLuJzw/Z1bqWEmSjCgIkHpD0ZK9SPxrmcP0+mYtq3mQolwtR9RuNvjvXiaMTFFza8Fnd/MO/DPAe4XbbNlRZlMINgfy/T9v83p6aM3OGVD5yNHQ/cWxHac8Fjzck/Fdj9D13PKK7hozmEoU023qWj0Z88rlUfXRl7gSNfwrGxDjlC2KQ+Jl8/siqfaau8SiQw3Z5liZAdWCab562XWzvCJwNgzfulcUK9g8Fh52pGm90KMZZloscu8ZKlGzjwe1KNE6wmf5hzhbyYmhs/pxrNZEawPCx+QuKc1MObTkNS26P6UdaDcOBlgmSZOVLmr+MqWwa3I="
+    value: "eyJ0aW1lc3RhbXAiOjE1ODc5NTIzNzQ4MDcsInByb2ZpbGVJZCI6IjBmNjQ3NDFlNDAzMjQ2ZGY5NDdmZmFiYTg5Yzc5ZGQwIiwicHJvZmlsZU5hbWUiOiJOb29vb29vb29vb29vbzAwIiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS80MzkzNDE4MzQ4NTY2NzMyMWM5YWQ1OGM0YWQwMzM3N2IwMjBhOGI3ODEwYzgyZWEzMDQ4YmVlOGYwYTI1OWM0In19fQ=="
+    signature: "JPEl2xSJglzhykvvP/CRh5idRx0uO9qlJALDeQB7c0vds9NjzB8TXZhOdeDI8gxwCqKps6MSW1oh23yx9WKXbxt2HsmXfBmQYSV6HkJ+qWa//D8/Gi8osGa3MMi90CWRlalmZTGFYaF9ALimrLtBDBMKNnrV6MPdTaQbgRdIwUjRz6q/ST+qwR/HidrRowV23P/UNJd+/zl/mn2b4q+zpNpSsRqqlavHXrYI8aM7NtiNe6cJAafE8h6ibShCGFiaXDNpLYCzRcOWQ41HyTLFkhbeWauPw+aLCBvx49yCnhxtIlpXNnA4scmNTEruKLaleTYuj4PKqwqr6l/25NZgV08lcgfM3GpXgK4JQD/o3VYYAZvFjTBgrM0VBbKQCn+akLECi9bozRFWM9JPF6xrvYKLK0IlCX3bYCtdUtzHf2wfvVEoIp1XGdzYMPZUvRLUT22TO76bFyXPEOplNEEIhuQa1OpvXukLNmiibqLNsBD9fIdaMPRLw/A4SSC+yrU8LgGYCN4dco01vpapRBmqcjeVfP1YPaA+zUMscBHLgFlwCWSYsNMmwP89nAJOyM+UXFYNsZ5y7bEMwXimneFhEPxDqoIeHwtrbS3Gkiw40NdPDcQhTXMkvdlCKsoC7IbHsj2vTsZxTLKH5os29NjBeUS4/2DqpyfCCgfImXFhrEo="
 
 # Premium login configuration
 login:
@@ -92,12 +92,12 @@ chat:
   disabled: false
   format:
     message: "[<player-name>] <gold>»</gold> "
-    message-to: "[<light_purple><player-name></light_purple>] <gray>«</gray> "
-    message-from: "[<light_purple><player-name></light_purple>] <gray>»</gray> "
-    message-discord: "[<aqua><player-name></aqua>] <gray>»</gray> "
+    message-to: "[<light_purple><player-name></light_purple>] <light_purple>«</light_purple> "
+    message-from: "[<light_purple><player-name></light_purple>] <light_purple>»</light_purple> "
+    message-discord: "[<aqua><player-name></aqua>] <aqua>»</aqua> "
 
 notify:
-  disabled: true
+  disabled: false
   item:
     - DIAMOND
     - DIAMOND_ORE

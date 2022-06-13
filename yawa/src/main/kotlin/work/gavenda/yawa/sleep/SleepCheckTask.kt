@@ -27,6 +27,7 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.compat.playSoundCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
+import work.gavenda.yawa.api.sendActionBarIf
 import work.gavenda.yawa.api.sendMessageIf
 import java.util.*
 
@@ -45,6 +46,14 @@ class SleepCheckTask(
         // Someone is asleep, and we lack more people.
         when {
             world.beganSleeping -> {
+                val message = Placeholders
+                    .withContext(world)
+                    .parseUsingDefaultLocale(Message.ActionBarSleeping)
+
+                world.sendActionBarIf(message) {
+                    Config.Sleep.ActionBar.Enabled
+                }
+
                 // Sleeping @ 50%
                 if (world.sleepingPlayers.size >= sleepRequired) {
                     world.kickSeconds = world.kickSeconds + 1
@@ -90,6 +99,14 @@ class SleepCheckTask(
             // Everyone is asleep, and we have enough people
             world.isEveryoneSleeping -> {
                 sleepingWorlds.add(world.uid)
+
+                val message = Placeholders
+                    .withContext(world)
+                    .parseUsingDefaultLocale(Message.ActionBarSleepingDone)
+
+                world.sendActionBarIf(message) {
+                    Config.Sleep.ActionBar.Enabled
+                }
 
                 val sleepingMessage = Placeholders
                     .withContext(world)

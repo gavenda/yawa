@@ -66,8 +66,8 @@ object Config {
         var Disabled
             get() = config.getBoolean("tab-list.disabled", false)
             set(value) = config.set("tab-list.disabled", value)
-        val Header get() = config.getString("tab-list.header")!!
-        val Footer get() = config.getString("tab-list.footer")!!
+        val Header get() = config.getString("tab-list.header", "<gold>Yawa</gold>")!!
+        val Footer get() = config.getString("tab-list.footer", "<server-player-count> / <server-player-max>")!!
     }
 
     /**
@@ -114,11 +114,15 @@ object Config {
             get() = config.getBoolean("sleep.disabled", false)
             set(value) = config.set("sleep.disabled", value)
 
-        val TimeRate = config.getInt("sleep.time-rate")
-        val KickSeconds = config.getInt("sleep.kick-seconds")
+        val TimeRate = config.getInt("sleep.time-rate", 85)
+        val KickSeconds = config.getInt("sleep.kick-seconds", 15)
 
         object Chat {
-            val Enabled get() = config.getBoolean("sleep.messages.chat.enabled")
+            val Enabled get() = config.getBoolean("sleep.messages.chat.enabled", true)
+        }
+
+        object ActionBar {
+            val Enabled get() = config.getBoolean("sleep.messages.action-bar.enabled", true)
         }
     }
 
@@ -129,7 +133,7 @@ object Config {
         var Disabled
             get() = config.getBoolean("login.disabled", false)
             set(value) = config.set("login.disabled", value)
-        val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid")
+        val UsePremiumUuid get() = config.getBoolean("login.use-premium-uuid", true)
         val StrictNames get() = config.getBoolean("login.strict-names", false)
     }
 
@@ -151,8 +155,13 @@ object Config {
             set(value) = config.set("skin.disabled", value)
 
         object DefaultTexture {
-            val Value get() = config.getString("skin.default-texture.value")!!
-            val Signature get() = config.getString("skin.default-texture.signature")!!
+            val DEFAULT_SKIN =
+                "eyJ0aW1lc3RhbXAiOjE1ODc5NTIzNzQ4MDcsInByb2ZpbGVJZCI6IjBmNjQ3NDFlNDAzMjQ2ZGY5NDdmZmFiYTg5Yzc5ZGQwIiwicHJvZmlsZU5hbWUiOiJOb29vb29vb29vb29vbzAwIiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS80MzkzNDE4MzQ4NTY2NzMyMWM5YWQ1OGM0YWQwMzM3N2IwMjBhOGI3ODEwYzgyZWEzMDQ4YmVlOGYwYTI1OWM0In19fQ=="
+            val DEFAULT_SKIN_SIGNATURE =
+                "JPEl2xSJglzhykvvP/CRh5idRx0uO9qlJALDeQB7c0vds9NjzB8TXZhOdeDI8gxwCqKps6MSW1oh23yx9WKXbxt2HsmXfBmQYSV6HkJ+qWa//D8/Gi8osGa3MMi90CWRlalmZTGFYaF9ALimrLtBDBMKNnrV6MPdTaQbgRdIwUjRz6q/ST+qwR/HidrRowV23P/UNJd+/zl/mn2b4q+zpNpSsRqqlavHXrYI8aM7NtiNe6cJAafE8h6ibShCGFiaXDNpLYCzRcOWQ41HyTLFkhbeWauPw+aLCBvx49yCnhxtIlpXNnA4scmNTEruKLaleTYuj4PKqwqr6l/25NZgV08lcgfM3GpXgK4JQD/o3VYYAZvFjTBgrM0VBbKQCn+akLECi9bozRFWM9JPF6xrvYKLK0IlCX3bYCtdUtzHf2wfvVEoIp1XGdzYMPZUvRLUT22TO76bFyXPEOplNEEIhuQa1OpvXukLNmiibqLNsBD9fIdaMPRLw/A4SSC+yrU8LgGYCN4dco01vpapRBmqcjeVfP1YPaA+zUMscBHLgFlwCWSYsNMmwP89nAJOyM+UXFYNsZ5y7bEMwXimneFhEPxDqoIeHwtrbS3Gkiw40NdPDcQhTXMkvdlCKsoC7IbHsj2vTsZxTLKH5os29NjBeUS4/2DqpyfCCgfImXFhrEo="
+
+            val Value get() = config.getString("skin.default-texture.value", DEFAULT_SKIN)!!
+            val Signature get() = config.getString("skin.default-texture.signature", DEFAULT_SKIN_SIGNATURE)!!
         }
     }
 
@@ -160,26 +169,39 @@ object Config {
      * Afk feature configuration.
      */
     object Afk {
+        const val DEFAULT_AFK = "<player-name> <yellow>AFK</yellow>"
+
         var Disabled
             get() = config.getBoolean("afk.disabled", false)
             set(value) = config.set("afk.disabled", value)
-        val Seconds get() = config.getInt("afk.seconds")
-        val PlayerListName get() = config.getString("afk.player-list-name")!!
-        val MessageEnabled get() = config.getBoolean("afk.messages.enabled")
+        val Seconds get() = config.getInt("afk.seconds", 120)
+        val PlayerListName get() = config.getString("afk.player-list-name", DEFAULT_AFK)!!
+        val MessageEnabled get() = config.getBoolean("afk.messages.enabled", true)
     }
 
     /**
      * Chat feature configuration.
      */
     object Chat {
+        const val DEFAULT_FORMAT_MESSAGE = "[<player-name>] <gold>»</gold> "
+        const val DEFAULT_FORMAT_MESSAGE_TO =
+            "[<light_purple><player-name></light_purple>] <light_purple>«</light_purple> "
+        const val DEFAULT_FORMAT_MESSAGE_FROM =
+            "[<light_purple><player-name></light_purple>] <light_purple>»</light_purple> "
+        const val DEFAULT_FORMAT_MESSAGE_DISCORD = "[<aqua><player-name></aqua>] <aqua>»</aqua> "
+
         var Disabled
             get() = config.getBoolean("chat.disabled", false)
             set(value) = config.set("chat.disabled", value)
 
-        val FormatMessage get() = config.getString("chat.format.message")!!
-        val FormatMessageTo get() = config.getString("chat.format.message-to")!!
-        val FormatMessageFrom get() = config.getString("chat.format.message-from")!!
-        val FormatMessageDiscord get() = config.getString("chat.format.message-discord")!!
+        val FormatMessage get() = config.getString("chat.format.message", DEFAULT_FORMAT_MESSAGE)!!
+        val FormatMessageTo get() = config.getString("chat.format.message-to", DEFAULT_FORMAT_MESSAGE_TO)!!
+        val FormatMessageFrom get() = config.getString("chat.format.message-from", DEFAULT_FORMAT_MESSAGE_FROM)!!
+        val FormatMessageDiscord
+            get() = config.getString(
+                "chat.format.message-discord",
+                DEFAULT_FORMAT_MESSAGE_DISCORD
+            )!!
     }
 
     /**
@@ -197,12 +219,6 @@ object Config {
             set(value) = config.set("notify.disabled", value)
         val Item: List<String>
             get() = config.getStringList("notify.item")
-    }
-
-    object Portal {
-        var Disabled
-            get() = config.getBoolean("portal.disabled", false)
-            set(value) = config.set("portal.disabled", value)
     }
 
     object HiddenArmor {

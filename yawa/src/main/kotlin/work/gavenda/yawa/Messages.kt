@@ -31,6 +31,8 @@ import java.util.*
 object Message {
     const val AfkEntryMessage = "afk-entry"
     const val AfkLeaveMessage = "afk-leave"
+    const val ActionBarSleeping = "action-bar-sleeping"
+    const val ActionBarSleepingDone = "action-bar-sleeping-done"
     const val PlayerAfkStart = "player-afk-start"
     const val PlayerAfkEnd = "player-afk-end"
     const val PlayerEnterBed = "player-enter-bed"
