@@ -51,12 +51,12 @@ import com.google.common.hash.Hashing
 import org.bukkit.World
 import java.util.*
 
+
 /**
  * @since Minecraft 1.16.2
  */
 @Suppress("UNCHECKED_CAST")
 class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
-
     fun writePosition() {
         handle.optionalStructures.write(0, Optional.empty())
     }
@@ -134,7 +134,7 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
         handle.booleans.write(1, value)
     }
 
-    fun writeIsAlive(value: Boolean) {
+    fun writeCopyMetadata(value: Boolean) {
         handle.booleans.write(2, value)
     }
 

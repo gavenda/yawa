@@ -88,14 +88,6 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
     }
 }
 
-fun Player.updateAbilities() {
-    val getHandle = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("getHandle")
-    val entityPlayer = getHandle.invoke(this)
-    val updateAbilities = entityPlayer.javaClass.getDeclaredMethod("w")
-
-    updateAbilities.invoke(entityPlayer)
-}
-
 fun Player.updateScaledHealth() {
     val updateScaledHealth = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
     updateScaledHealth.invoke(this)
@@ -128,7 +120,7 @@ fun Player.updateSkin() {
         writeIsDebug(world.debugMode)
         writeIsWorldFlat(world.worldType == WorldType.FLAT)
         // true = teleport like, false = player actually died
-        writeIsAlive(true)
+        writeCopyMetadata(true)
     }
     val position = WrapperPlayServerPosition().apply {
         writeX(location.x)
@@ -136,38 +128,43 @@ fun Player.updateSkin() {
         writeZ(location.z)
         writeYaw(location.yaw)
         writePitch(location.pitch)
-        writeOnGround(isOnGround)
+
+        // send an invalid teleport id in order to let Bukkit ignore the incoming confirm packet
+        handle.integers.write(0, -1337)
     }
-    val updateHealth = WrapperPlayServerUpdateHealth().apply {
-        writeHealth(health.toFloat())
-        writeFood(foodLevel)
-        writeFoodSaturation(saturation)
-    }
-    val slot = WrapperPlayServerHeldItemSlot().apply {
-        writeSlot(inventory.heldItemSlot)
-    }
+
+    // Refresh
+    // - removePlayer
+    // - addPlayer
+    // - respawn
+    // - updateAbilities
+    // - position
+    // - slot
+    // - updateScaledHealth
+    // - updateInventory
+    // - triggerHealthUpdate
+
+    // Send
+    removeInfo.sendPacket(this)
+    addInfo.sendPacket(this)
+    respawn.sendPacket(this)
+    position.sendPacket(this)
+
+    // trigger update exp
+    exp = exp
+    // triggers updateAbilities
+    walkSpeed = walkSpeed
+    // update inventory
+    updateInventory()
+    // update held item
+    inventory.heldItemSlot = inventory.heldItemSlot
+    // update scaled health
+    updateScaledHealth()
 
     // Show update to other players
     for (p in Bukkit.getOnlinePlayers()) {
         p.hidePlayer(YawaAPI.Instance, this)
         p.showPlayer(YawaAPI.Instance, this)
-    }
-
-    // Send self
-    removeInfo.sendPacket(this)
-    addInfo.sendPacket(this)
-    respawn.sendPacket(this)
-    updateAbilities()
-    position.sendPacket(this)
-    slot.sendPacket(this)
-    updateScaledHealth()
-    updateInventory()
-    updateHealth.sendPacket(this)
-
-    // Op refresh
-    if (this.isOp) {
-        this.isOp = false
-        this.isOp = true
     }
 }
 

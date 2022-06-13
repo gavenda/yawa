@@ -96,30 +96,8 @@ class WrapperPlayServerPosition : AbstractPacket(PacketContainer(type), type) {
         handle.booleans.write(0, value)
     }
 
-//    enum class PlayerTeleportFlag {
-//        X, Y, Z, Y_ROT, X_ROT
-//    }
-//
-//    private val flagsModifier: StructureModifier<Set<PlayerTeleportFlag>>
-//        get() = handle.getSets(
-//            EnumWrappers.getGenericConverter(flagsClass, PlayerTeleportFlag::class.java)
-//        )
-//
-//    /**
-//     * Write flags.
-//     * @param value new value
-//     */
-//    fun writeFlags(value: Set<PlayerTeleportFlag>) {
-//        flagsModifier.write(0, value)
-//    }
-
     companion object {
         val type: PacketType = PacketType.Play.Server.POSITION
-//        private val flagsClass = MinecraftReflection
-//            .getMinecraftClass(
-//                "EnumPlayerTeleportFlags",
-//                "PacketPlayOutPosition\$EnumPlayerTeleportFlags"
-//            )
     }
 
     init {
