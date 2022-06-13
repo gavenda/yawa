@@ -32,8 +32,7 @@ object ChatFeature : PluginFeature {
     private val replyCommand = ReplyCommand()
     private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
-
-    private lateinit var discordSRVListener: DiscordSRVListener
+    private val discordSRVListener = DiscordSRVListener()
 
     override fun enableCommands() {
         plugin.getCommand(Command.WHISPER)?.setExecutor(whisperCommand)
@@ -48,8 +47,6 @@ object ChatFeature : PluginFeature {
     override fun registerHooks() {
         if (isDiscordSRVEnabled) {
             logger.info("DiscordSRV detected, attaching message post processor")
-
-            discordSRVListener = DiscordSRVListener()
             DiscordSRV.api.subscribe(discordSRVListener)
         }
     }
@@ -57,7 +54,6 @@ object ChatFeature : PluginFeature {
     override fun unregisterHooks() {
         if (isDiscordSRVEnabled) {
             logger.info("DiscordSRV detected, detaching message post processor")
-
             DiscordSRV.api.unsubscribe(discordSRVListener)
         }
     }

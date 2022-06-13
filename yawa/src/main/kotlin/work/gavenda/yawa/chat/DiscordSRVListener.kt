@@ -20,13 +20,17 @@
 
 package work.gavenda.yawa.chat
 
+import github.scarsz.discordsrv.DiscordSRV
 import github.scarsz.discordsrv.api.ListenerPriority
 import github.scarsz.discordsrv.api.Subscribe
 import github.scarsz.discordsrv.api.events.DiscordGuildMessagePostProcessEvent
+import github.scarsz.discordsrv.api.events.GameChatMessagePostProcessEvent
 import github.scarsz.discordsrv.dependencies.kyori.adventure.text.minimessage.MiniMessage
 import work.gavenda.yawa.Config
 
 class DiscordSRVListener {
+
+    val emojiRegex = Regex("(<a?)?:\\w+:(\\d{18}>)?")
 
     @Subscribe(priority = ListenerPriority.HIGHEST)
     fun onDiscordMessagePostProcess(e: DiscordGuildMessagePostProcessEvent) {
@@ -38,6 +42,25 @@ class DiscordSRVListener {
 
         val formattedMessage = miniMessage.parse(message, "player-name", author)
         e.minecraftMessage = formattedMessage
+    }
+
+    @Subscribe(priority = ListenerPriority.HIGHEST)
+    fun onMinecraftMessagePostProcess(e: GameChatMessagePostProcessEvent) {
+        val replacements = mutableMapOf<String, String>()
+
+        emojiRegex.findAll(e.processedMessage).forEach {
+            val emote = DiscordSRV.getPlugin().mainGuild
+                .getEmotesByName(it.value, true)
+                .firstOrNull()
+
+            if (emote != null) {
+                replacements.putIfAbsent(it.value, emote.asMention)
+            }
+        }
+
+        replacements.forEach { (match, mention) ->
+            e.processedMessage = e.processedMessage.replace(match, mention)
+        }
     }
 
 }
