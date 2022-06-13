@@ -182,13 +182,15 @@ object Config {
      * Afk feature configuration.
      */
     object Afk {
+        const val DEFAULT_NON_AFK = "<player-name>"
         const val DEFAULT_AFK = "<player-name> <yellow>AFK</yellow>"
 
         var Disabled
             get() = config.getBoolean("afk.disabled", false)
             set(value) = config.set("afk.disabled", value)
         val Seconds get() = config.getInt("afk.seconds", 120)
-        val PlayerListName get() = config.getString("afk.player-list-name", DEFAULT_AFK)!!
+        val PlayerListName get() = config.getString("afk.player-list-name", DEFAULT_NON_AFK)!!
+        val PlayerListNameAfk get() = config.getString("afk.player-list-name-afk", DEFAULT_AFK)!!
         val MessageEnabled get() = config.getBoolean("afk.messages.enabled", true)
     }
 

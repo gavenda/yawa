@@ -22,9 +22,9 @@ package work.gavenda.yawa.afk
 
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.playerListNameCompat
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.sendMessageIf
 import java.util.concurrent.TimeUnit
 
 class AfkTask : Runnable {
@@ -44,8 +44,8 @@ class AfkTask : Runnable {
                         .withContext(player)
                         .parseWithLocale(player, Message.AfkEntryMessage)
 
-                    player.world.sendMessageIf(message) {
-                        Config.Afk.MessageEnabled
+                    if (Config.Afk.MessageEnabled) {
+                        player.world.sendMessageCompat(message)
                     }
                     player.sendMessageUsingKey(Message.PlayerAfkStart)
                 }
@@ -53,10 +53,13 @@ class AfkTask : Runnable {
                 if (player.isAfk) {
                     player.playerListNameCompat(
                         Placeholders.withContext(player)
-                            .parse(Config.Afk.PlayerListName)
+                            .parse(Config.Afk.PlayerListNameAfk)
                     )
                 } else {
-                    player.playerListNameCompat(null)
+                    player.playerListNameCompat(
+                        Placeholders.withContext(player)
+                            .parse(Config.Afk.PlayerListName)
+                    )
                 }
             }
     }

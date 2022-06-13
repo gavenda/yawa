@@ -28,6 +28,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.api.compat.joinMessageCompat
+import work.gavenda.yawa.api.compat.playerListNameCompat
 import work.gavenda.yawa.api.compat.quitMessageCompat
 
 class PremiumListener : Listener {
@@ -38,6 +39,7 @@ class PremiumListener : Listener {
         val joinMessage = event.player.verifiedName
             .append(Component.text(" joined the game", NamedTextColor.YELLOW))
         event.joinMessageCompat(joinMessage)
+        event.player.playerListNameCompat(event.player.verifiedName)
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

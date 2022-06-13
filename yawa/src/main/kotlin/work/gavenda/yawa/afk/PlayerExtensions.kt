@@ -23,9 +23,9 @@ package work.gavenda.yawa.afk
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.sendMessageIf
 
 const val META_PLAYER_AFK_LAST = "AfkLast"
 
@@ -52,8 +52,8 @@ fun Player.doInteract() {
             .withContext(this)
             .parseWithLocale(this, Message.AfkLeaveMessage)
 
-        world.sendMessageIf(message) {
-            Config.Afk.MessageEnabled
+        if (Config.Afk.MessageEnabled) {
+            world.sendMessageCompat(message)
         }
 
         sendMessageUsingKey(Message.PlayerAfkEnd)
