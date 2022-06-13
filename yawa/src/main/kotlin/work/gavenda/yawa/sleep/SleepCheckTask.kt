@@ -26,6 +26,7 @@ import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.compat.playSoundCompat
+import work.gavenda.yawa.api.compat.sendActionBarCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
@@ -50,7 +51,7 @@ class SleepCheckTask(
                     .parseUsingDefaultLocale(Message.ActionBarSleeping)
 
                 if (Config.Sleep.ActionBar.Enabled) {
-                    world.sendMessageCompat(message)
+                    world.sendActionBarCompat(message)
                 }
 
                 // Sleeping @ 50%
@@ -102,7 +103,7 @@ class SleepCheckTask(
                     .parseUsingDefaultLocale(Message.ActionBarSleepingDone)
 
                 if (Config.Sleep.ActionBar.Enabled) {
-                    world.sendMessageCompat(message)
+                    world.sendActionBarCompat(message)
                 }
 
                 val sleepingMessage = Placeholders

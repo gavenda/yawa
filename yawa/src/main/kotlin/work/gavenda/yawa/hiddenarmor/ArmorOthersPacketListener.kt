@@ -27,7 +27,7 @@ class ArmorOthersPacketListener : PacketAdapter(plugin, PacketType.Play.Server.E
             .forEach { pair ->
                 if (pair.second.type == Material.ELYTRA && (hidPlayer.isGliding && !hidPlayer.isInvisible)) {
                     pair.second = ItemStack(Material.ELYTRA)
-                } else if (!pair.second.armor) {
+                } else {
                     pair.second = ItemStack(Material.AIR)
                 }
             }
