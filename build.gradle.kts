@@ -23,16 +23,4 @@ kotlin {
 allprojects {
     group = "work.gavenda.yawa"
     version = "1.3.0-SNAPSHOT-$gitHash"
-
-    repositories {
-        maven("https://papermc.io/repo/repository/maven-public")
-        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots")
-        maven("https://repo.dmulloy2.net/nexus/repository/public")
-        maven("https://nexus.scarsz.me/content/groups/public")
-        maven("https://m2.dv8tion.net/releases")
-        maven("https://jitpack.io")
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/") {
-            name = "sonatype-oss-snapshots"
-        }
-    }
 }
