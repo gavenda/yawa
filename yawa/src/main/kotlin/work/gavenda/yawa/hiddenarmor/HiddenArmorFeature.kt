@@ -2,6 +2,8 @@ package work.gavenda.yawa.hiddenarmor
 
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import java.util.*
 
@@ -9,7 +11,7 @@ object HiddenArmorFeature : PluginFeature {
     override val disabled: Boolean
         get() = Config.HiddenArmor.Disabled
 
-    private val hiddenPlayers = mutableListOf<String>()
+    private val hiddenPlayers = mutableListOf<UUID>()
     private val ignoredPlayers = mutableListOf<UUID>()
 
     private val inventoryShiftClickListener = InventoryShiftClickListener()
@@ -57,20 +59,34 @@ object HiddenArmorFeature : PluginFeature {
         pluginManager.unregisterEvents(toggleArmorCommand)
     }
 
+    override fun createTables() {
+        transaction {
+            SchemaUtils.create(
+                PlayerArmorSchema,
+            )
+        }
+    }
+
+    override fun onEnable() {
+        transaction {
+            hiddenPlayers.addAll(PlayerArmorDb.all().filter { it.hidden }.map { it.id.value })
+        }
+    }
+
     fun shouldNotHide(player: Player): Boolean {
         return !hasPlayer(player) || (player.gameMode == GameMode.CREATIVE) || ignoredPlayers.contains(player.uniqueId)
     }
 
     fun addHiddenPlayer(player: Player) {
-        hiddenPlayers.add(player.uniqueId.toString())
+        hiddenPlayers.add(player.uniqueId)
     }
 
     fun removeHiddenPlayer(player: Player) {
-        hiddenPlayers.remove(player.uniqueId.toString())
+        hiddenPlayers.remove(player.uniqueId)
     }
 
     fun hasPlayer(player: Player): Boolean {
-        return hiddenPlayers.contains(player.uniqueId.toString())
+        return hiddenPlayers.contains(player.uniqueId)
     }
 
     fun addIgnoredPlayer(player: Player) {
