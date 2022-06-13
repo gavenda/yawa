@@ -25,6 +25,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerBedEnterEvent
 import org.bukkit.event.player.PlayerBedLeaveEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
@@ -59,6 +60,11 @@ class SleepListener(
         }
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    fun onPlayerJoin(event: PlayerJoinEvent) {
+        event.player.sleepKicked = false
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val player = event.player
@@ -69,7 +75,6 @@ class SleepListener(
                 .parseUsingDefaultLocale(Message.SleepKickMessageBroadcast)
 
             event.quitMessageCompat(kickMessageBroadcast)
-            player.sleepKicked = false
         }
     }
 
