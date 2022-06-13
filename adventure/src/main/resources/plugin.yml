@@ -1,8 +1,0 @@
-name: Adventure
-description: Simply provides Adventure to the classpath. Any plugin that does this will also work as an alternative.
-author: Gavenda
-website: https://gavenda.work
-
-api-version: '1.19'
-version: '4.11.0'
-main: work.gavenda.adventure.Plugin

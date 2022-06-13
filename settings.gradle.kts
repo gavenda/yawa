@@ -1,8 +1,6 @@
 // What we all are
 rootProject.name = "yawa"
 
-//include("adventure")
-//include("kotlin")
 include("yawa")
 include("yawa-api")
 
