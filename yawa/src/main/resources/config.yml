@@ -32,6 +32,10 @@ ping:
 image:
   disabled: false
 
+# Hidden armor feature configuration
+hidden-armor:
+  disabled: false
+
 # Player head feature configuration
 player-head:
   disabled: false

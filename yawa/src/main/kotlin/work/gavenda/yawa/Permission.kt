@@ -29,6 +29,7 @@ object Permission {
     const val AFK = "yawa.afk"
     const val IMAGE_UPLOAD = "yawa.image.upload"
     const val IMAGE_DELETE = "yawa.image.delete"
+    const val TOGGLE_HIDDEN_ARMOR = "yawa.hidden-armor.toggle"
     const val SKIN_PLAYER = "yawa.skin.player"
     const val SKIN_RESET = "yawa.skin.reset"
     const val SKIN_URL = "yawa.skin.url"

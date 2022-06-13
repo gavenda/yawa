@@ -3,21 +3,22 @@ package work.gavenda.yawa.image
 import org.bukkit.command.CommandSender
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import java.io.File
-import java.nio.file.Paths
+import kotlin.io.path.Path
 import kotlin.io.path.deleteIfExists
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.name
 
 class ImageDeleteCommand : Command(
     permission = Permission.IMAGE_DELETE,
     commands = listOf("imgdel")
 ) {
-    private val imageDirectory = File("plugins/Images")
+    private val imageDirectory = Path("plugins/Images")
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (args.size != 1) return
 
         val fileNameParam = args[0]
-        val fileDestination = Paths.get(imageDirectory.path, fileNameParam)
+        val fileDestination = imageDirectory.resolve(fileNameParam)
 
         scheduler.runTaskAsynchronously(plugin) { _ ->
             try {
@@ -34,7 +35,9 @@ class ImageDeleteCommand : Command(
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
-            1 -> listOf("<file-name>")
+            1 -> imageDirectory
+                .listDirectoryEntries()
+                .map { it.name }
             else -> emptyList()
         }
     }

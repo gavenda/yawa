@@ -38,10 +38,12 @@ import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toPlainText
 import java.awt.Color
-import java.io.File
-import java.io.FileOutputStream
 import java.net.URL
 import java.nio.channels.Channels
+import java.nio.channels.FileChannel
+import java.nio.file.OpenOption
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import java.util.concurrent.TimeUnit
 
 
@@ -126,21 +128,21 @@ fun PlaceholderContext.parseUsingDefaultLocale(key: String): Component {
 
 /**
  * Downloads the URL to the following file.
- * @param file the file location to download into
+ * @param path the path to download into
  * @return total bytes transferred
  */
-fun URL.downloadTo(file: File): Long {
-    val readableByteChannel = Channels.newChannel(openStream())
-    val fileOutputStream = FileOutputStream(file)
-    val fileChannel = fileOutputStream.channel
-
+fun URL.downloadTo(path: Path): Long {
     var bytesTransferred = 0L
     var availableBytes: Long
 
-    do {
-        availableBytes = fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
-        bytesTransferred += availableBytes
-    } while (availableBytes > 0)
+    Channels.newChannel(openStream()).use { readableByteChannel ->
+        FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.WRITE).use { fileChannel ->
+            do {
+                availableBytes = fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
+                bytesTransferred += availableBytes
+            } while (availableBytes > 0)
+        }
+    }
 
     return bytesTransferred
 }

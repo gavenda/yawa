@@ -84,6 +84,8 @@ object Message {
     const val ChunkUnmarked = "chunk-unmarked"
     const val NotifyItemPickup = "notify-item-pickup"
     const val NotifyItemPickupFarmed = "notify-item-pickup-farmed"
+    const val HiddenArmorVisible = "hidden-armor-visible"
+    const val HiddenArmorInvisible = "hidden-armor-invisible"
 }
 
 /**

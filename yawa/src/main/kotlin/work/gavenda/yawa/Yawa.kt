@@ -36,6 +36,7 @@ import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
+import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
 import work.gavenda.yawa.image.ImageUtilFeature
 import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.notify.NotifyFeature
@@ -82,6 +83,7 @@ class Yawa : JavaPlugin() {
         ChatFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
+        HiddenArmorFeature.enable()
         ImageUtilFeature.enable()
         LoginFeature.enable()
         NotifyFeature.enable()
@@ -116,6 +118,7 @@ class Yawa : JavaPlugin() {
         ChatFeature.disable()
         EnderFeature.disable()
         EssentialsFeature.disable()
+        HiddenArmorFeature.disable()
         ImageUtilFeature.disable()
         LoginFeature.disable()
         NotifyFeature.disable()

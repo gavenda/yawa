@@ -205,6 +205,12 @@ object Config {
             set(value) = config.set("portal.disabled", value)
     }
 
+    object HiddenArmor {
+        var Disabled
+            get() = config.getBoolean("hidden-armor.disabled", false)
+            set(value) = config.set("hidden-armor.disabled", value)
+    }
+
     object Chunk {
         var Disabled
             get() = config.getBoolean("chunk.disabled", false)

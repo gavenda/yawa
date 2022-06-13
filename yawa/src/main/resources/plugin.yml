@@ -21,13 +21,17 @@ commands:
     permission: yawa.afk
     usage: /afk
   imgup:
-    description: Uploads an image for use in CustomImages plugin
+    description: Uploads an image for use by the CustomImages plugin.
     permission: yawa.image.upload
     usage: /imgup <url> <file-name>
   imgdel:
-    description: Deletes an image that is used in CustomImages plugin
+    description: Deletes an image in use by the CustomImages plugin.
     permission: yawa.image.delete
     usage: /imgdel <url> <file-name>
+  toggle-armor:
+    description: Toggle armor visibility.
+    permission: yawa.hidden-armor.toggle
+    usage: /toggle-armor
   skin:
     description: Changes your skin.
     usage: /skin <subcommands>
@@ -61,12 +65,16 @@ permissions:
       yawa.afk: true
       yawa.image.*: true
       yawa.permission.*: true
+      yawa.hidden-armor.*: true
       yawa.skin.*: true
+  yawa.hidden-armor.toggle:
+    description: Permission to toggle hidden armor.
+    default: true
   yawa.image.upload:
-    description: Permission to upload images for the CustomImages plugin
+    description: Permission to upload images for use by the CustomImages plugin.
     default: true
   yawa.image.delete:
-    description: Permission to delete images in use by the CustomImages plugin
+    description: Permission to delete images in use by the CustomImages plugin.
     default: true
   yawa.ping:
     description: Permission to check your ping.

@@ -23,16 +23,15 @@ package work.gavenda.yawa.image
 import org.bukkit.command.CommandSender
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import java.io.File
 import java.net.URL
-import java.nio.file.Paths
+import kotlin.io.path.Path
 
 class ImageUploadCommand : Command(
     permission = Permission.IMAGE_UPLOAD,
     commands = listOf("imgup")
 ) {
 
-    private val imageDirectory = File("plugins/Images")
+    private val imageDirectory = Path("plugins/Images")
     private val allowedFileExt = Regex("(.*?)\\.(jpg|gif|jpeg|png)\$", RegexOption.IGNORE_CASE)
 
     override fun execute(sender: CommandSender, args: List<String>) {
@@ -49,7 +48,7 @@ class ImageUploadCommand : Command(
             return
         }
 
-        val fileDestination = Paths.get(imageDirectory.path, fileNameParam).toFile()
+        val fileDestination = imageDirectory.resolve(fileNameParam)
 
         scheduler.runTaskAsynchronously(plugin) { _ ->
             try {
