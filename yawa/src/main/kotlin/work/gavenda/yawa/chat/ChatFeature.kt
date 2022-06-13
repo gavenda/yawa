@@ -20,19 +20,15 @@
 
 package work.gavenda.yawa.chat
 
-import github.scarsz.discordsrv.DiscordSRV
 import work.gavenda.yawa.*
 
 object ChatFeature : PluginFeature {
-    override val isDisabled get() = Config.Chat.Disabled
-
-    private val isDiscordSRVEnabled = pluginManager.getPlugin("DiscordSRV") != null
+    override val disabled get() = Config.Chat.Disabled
 
     private val whisperCommand = WhisperCommand()
     private val replyCommand = ReplyCommand()
     private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
-    private val discordSRVListener = DiscordSRVListener()
 
     override fun enableCommands() {
         plugin.getCommand(Command.WHISPER)?.setExecutor(whisperCommand)
@@ -42,20 +38,6 @@ object ChatFeature : PluginFeature {
     override fun disableCommands() {
         plugin.getCommand(Command.WHISPER)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.REPLY)?.setExecutor(DisabledCommand)
-    }
-
-    override fun registerHooks() {
-        if (isDiscordSRVEnabled) {
-            logger.info("DiscordSRV detected, attaching message post processor")
-            DiscordSRV.api.subscribe(discordSRVListener)
-        }
-    }
-
-    override fun unregisterHooks() {
-        if (isDiscordSRVEnabled) {
-            logger.info("DiscordSRV detected, detaching message post processor")
-            DiscordSRV.api.unsubscribe(discordSRVListener)
-        }
     }
 
     override fun registerPaperEventListeners() {

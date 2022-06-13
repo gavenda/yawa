@@ -6,7 +6,7 @@ import work.gavenda.yawa.*
 import java.util.*
 
 object HiddenArmorFeature : PluginFeature {
-    override val isDisabled: Boolean
+    override val disabled: Boolean
         get() = Config.HiddenArmor.Disabled
 
     private val hiddenPlayers = mutableListOf<String>()

@@ -45,7 +45,7 @@ class PlayerHeadListener : Listener {
         // Create player head
         val item = ItemStack(Material.PLAYER_HEAD)
         val skull = item.itemMeta as SkullMeta
-        val playerName = if (LoginFeature.isDisabled) {
+        val playerName = if (LoginFeature.disabled) {
             victim.displayNameCompat
         } else {
             victim.verifiedName

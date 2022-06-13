@@ -34,8 +34,5 @@ allprojects {
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/") {
             name = "sonatype-oss-snapshots"
         }
-        maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-            name = "s01-sonatype-oss-snapshots"
-        }
     }
 }

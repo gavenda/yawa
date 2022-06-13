@@ -87,8 +87,6 @@ class SleepCheckTask(
                                 .withContext(player)
                                 .parseUsingDefaultLocale(Message.SleepKickAlert)
 
-                            VaultUtil.Permission?.playerAddTransient(player, "discordsrv.silentquit")
-
                             player.sleepKicked = true
                             player.kickCompat(kickMessage)
                             player.discordAlert(kickAlertMessage)

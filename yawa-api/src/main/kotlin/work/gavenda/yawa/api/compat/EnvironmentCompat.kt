@@ -24,6 +24,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
@@ -58,9 +59,24 @@ fun ItemMeta.loreCompat(lore: List<Component>) {
     pluginRuntimeEnvironment.lore(this, lore)
 }
 
+val PlayerDeathEvent.deathMessageCompat
+    get(): Component? {
+        return pluginRuntimeEnvironment.deathMessage(this)
+    }
+
 val Player.displayNameCompat
     get(): Component {
         return pluginRuntimeEnvironment.displayNameCompat(this)
+    }
+
+val PlayerQuitEvent.quitMessageCompat
+    get(): Component? {
+        return pluginRuntimeEnvironment.quitMessage(this)
+    }
+
+val PlayerJoinEvent.joinMessageCompat
+    get(): Component? {
+        return pluginRuntimeEnvironment.joinMessage(this)
     }
 
 fun Player.localeCompat(): Locale {

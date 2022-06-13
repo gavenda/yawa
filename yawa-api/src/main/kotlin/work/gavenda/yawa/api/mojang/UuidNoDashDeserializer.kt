@@ -20,22 +20,31 @@
 
 package work.gavenda.yawa.api.mojang
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import java.lang.reflect.Type
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.math.BigInteger
 import java.util.*
 
 /**
  * UUID no dash deserializer.
  */
-class UuidNoDashDeserializer : JsonDeserializer<UUID> {
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): UUID {
-        val value = json.asJsonPrimitive.asString
+class UuidNoDashDeserializer : KSerializer<UUID> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
+
+    override fun deserialize(decoder: Decoder): UUID {
+        val value = decoder.decodeString()
         // Parse to uuid
         val bi1 = BigInteger(value.substring(0, 16), 16)
         val bi2 = BigInteger(value.substring(16, 32), 16)
         return UUID(bi1.toLong(), bi2.toLong())
     }
+
+    override fun serialize(encoder: Encoder, value: UUID) {
+        encoder.encodeString(value.toString().replace("-", ""))
+    }
+
 }

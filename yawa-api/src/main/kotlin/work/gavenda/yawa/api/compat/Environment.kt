@@ -25,6 +25,7 @@ import net.kyori.adventure.sound.Sound
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
@@ -43,8 +44,11 @@ interface Environment {
     fun setPlayerListFooter(player: Player, component: Component)
     fun kickPlayer(player: Player, component: Component)
     fun setPlayerListName(player: Player, component: Component?)
+    fun deathMessage(deathEvent: PlayerDeathEvent): Component?
     fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?)
+    fun joinMessage(joinEvent: PlayerJoinEvent): Component?
     fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?)
+    fun quitMessage(quitEvent: PlayerQuitEvent): Component?
     fun registerNewObjective(scoreboard: Scoreboard, name: String, criteria: String, displayName: Component): Objective
     fun lore(meta: SkullMeta, lore: List<Component>)
     fun lore(meta: ItemMeta, lore: List<Component>)

@@ -32,7 +32,7 @@ import java.security.KeyPair
  * Represents the login feature.
  */
 object LoginFeature : PluginFeature {
-    override val isDisabled get() = Config.Login.Disabled
+    override val disabled get() = Config.Login.Disabled
 
     private val keyPair: KeyPair = MinecraftEncryption.generateKeyPair()
     private val premiumListener = PremiumListener()
@@ -42,7 +42,7 @@ object LoginFeature : PluginFeature {
 
     override fun enable() {
         super.enable()
-        if (isDisabled) return
+        if (disabled) return
         if (server.onlineMode) {
             logger.warn("Server is in online mode, rendering this feature useless")
             return
@@ -58,7 +58,7 @@ object LoginFeature : PluginFeature {
     }
 
     override fun disable() {
-        if (isDisabled) return
+        if (disabled) return
         if (server.onlineMode) return
         super.disable()
     }

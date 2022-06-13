@@ -88,13 +88,23 @@ afk:
   player-list-name: "<player-name> <yellow>AFK</yellow>"
   messages.enabled: false
 
+discord:
+  disabled: false
+  token: ""
+  avatar-url: "https://mineskin.eu/helm/<player-name>.png"
+  guild:
+    id: 672642223942139915
+    channel: 985847790594834452
+    webhook: "Yawa"
+  format:
+    message: "[<aqua><player-name></aqua>] <aqua>»</aqua> "
+
 chat:
   disabled: false
   format:
     message: "[<player-name>] <gold>»</gold> "
     message-to: "[<light_purple><player-name></light_purple>] <light_purple>«</light_purple> "
     message-from: "[<light_purple><player-name></light_purple>] <light_purple>»</light_purple> "
-    message-discord: "[<aqua><player-name></aqua>] <aqua>»</aqua> "
 
 notify:
   disabled: false

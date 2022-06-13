@@ -20,9 +20,8 @@
 
 package work.gavenda.yawa.api.mineskin
 
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
-import work.gavenda.yawa.api.apiLogger
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
 import java.net.URI
@@ -35,7 +34,6 @@ import java.net.URLEncoder
 object MineSkinApi {
 
     private const val URI_API_GENERATE_TEXTURE = "https://api.mineskin.org/generate/url"
-    private val gson = Gson()
 
     /**
      * Generates a minecraft texture based on the given url.
@@ -77,13 +75,7 @@ object MineSkinApi {
 
         val response = httpConnection.asText()
 
-        try {
-            val result = gson.fromJson(response, MineSkinResult::class.java)
-            return result.data.texture
-        } catch (e: JsonSyntaxException) {
-            apiLogger.error("Unable to generate texture", e)
-            throw e
-        }
+        return Json.decodeFromString<MineSkinResult>(response).data.texture
     }
 
 }

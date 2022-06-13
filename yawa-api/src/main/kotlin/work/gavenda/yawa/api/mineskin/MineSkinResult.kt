@@ -20,11 +20,13 @@
 
 package work.gavenda.yawa.api.mineskin
 
+import kotlinx.serialization.Serializable
 import java.util.*
 
 /**
  * Represents a mineskin generation result.
  */
+@Serializable
 data class MineSkinResult(
     val id: Int,
     val name: String,
@@ -39,7 +41,9 @@ data class MineSkinResult(
 /**
  * Represents a mineskin texture data.
  */
+@Serializable
 data class MineSkinTextureData(
+    @Serializable(with = UuidDeserializer::class)
     val uuid: UUID,
     val texture: MineSkinTexture
 )
@@ -47,6 +51,7 @@ data class MineSkinTextureData(
 /**
  * Represents a mineskin texture.
  */
+@Serializable
 data class MineSkinTexture(
     val value: String,
     val signature: String,

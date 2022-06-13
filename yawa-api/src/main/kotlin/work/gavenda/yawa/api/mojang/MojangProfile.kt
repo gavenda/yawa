@@ -21,11 +21,14 @@
 package work.gavenda.yawa.api.mojang
 
 import java.util.*
+import kotlinx.serialization.Serializable
 
 /**
  * Represents a Mojang profile.
  */
+@Serializable
 data class MojangProfile(
+    @Serializable(with = UuidNoDashDeserializer::class)
     val id: UUID,
     val name: String,
     val properties: List<MojangProfileProperty> = listOf()
@@ -34,6 +37,7 @@ data class MojangProfile(
 /**
  * Represents a Mojang profile property.
  */
+@Serializable
 data class MojangProfileProperty(
     val name: String,
     val value: String,

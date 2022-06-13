@@ -22,8 +22,8 @@ package work.gavenda.yawa.api.mojang
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.util.concurrent.RateLimiter
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonSyntaxException
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
@@ -46,10 +46,6 @@ object MojangApi {
     private const val URI_API_PROFILE = "https://sessionserver.mojang.com/session/minecraft/profile"
     private const val URI_API_HAS_JOIN = "https://sessionserver.mojang.com/session/minecraft/hasJoined"
 
-    private val gson = GsonBuilder()
-        .registerTypeAdapter(UUID::class.java, UuidNoDashDeserializer())
-        .create()
-
     // Mojang API rate limiter, does not apply to profile since it can be as many as long as its unique
     private val rateLimiter = RateLimiter.create(600.0, 10, TimeUnit.MINUTES)
 
@@ -68,16 +64,7 @@ object MojangApi {
         }
 
         val response = URL(URI_API_STATUS).asText()
-
-        try {
-            return gson
-                .fromJson(response, Array<MojangService>::class.java)
-                .toList()
-        } catch (e: JsonSyntaxException) {
-            apiLogger.error("Unable to retrieve service status", e)
-        }
-
-        return emptyList()
+        return Json.decodeFromString(response)
     }
 
     /**
@@ -99,14 +86,7 @@ object MojangApi {
             throw RateLimitException()
         }
 
-        try {
-            val result = gson.fromJson(httpConnection.asText(), MojangProfile::class.java)
-            return result.id
-        } catch (e: JsonSyntaxException) {
-            apiLogger.error("Unable to retrieve minecraft uuid", e)
-        }
-
-        return null
+        return Json.decodeFromString<MojangProfile>(httpConnection.asText()).id
     }
 
     /**
@@ -122,13 +102,7 @@ object MojangApi {
             return null
         }
 
-        try {
-            return gson.fromJson(httpConnection.asText(), MojangProfile::class.java)
-        } catch (e: JsonSyntaxException) {
-            apiLogger.error("Unable to retrieve minecraft session", e)
-        }
-
-        return null
+        return Json.decodeFromString<MojangProfile>(httpConnection.asText())
     }
 
     /**
@@ -154,16 +128,9 @@ object MojangApi {
             throw RateLimitException()
         }
 
-        try {
-            return gson.fromJson(httpConnection.asText(), MojangProfile::class.java).also {
-                // We cache the result
-                profileCache.put(uuid, it)
-            }
-        } catch (e: JsonSyntaxException) {
-            apiLogger.error("Unable to retrieve minecraft uuid", e)
+        return Json.decodeFromString<MojangProfile>(httpConnection.asText()).also {
+            // We cache the result
+            profileCache.put(uuid, it)
         }
-
-        return null
     }
-
 }

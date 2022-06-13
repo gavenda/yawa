@@ -25,6 +25,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
@@ -81,8 +82,20 @@ class PaperEnvironment : Environment {
         quitEvent.quitMessage(component)
     }
 
+    override fun quitMessage(quitEvent: PlayerQuitEvent): Component? {
+        return quitEvent.quitMessage()
+    }
+
+    override fun deathMessage(deathEvent: PlayerDeathEvent): Component? {
+        return deathEvent.deathMessage()
+    }
+
     override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
         joinEvent.joinMessage(component)
+    }
+
+    override fun joinMessage(joinEvent: PlayerJoinEvent): Component? {
+        return joinEvent.joinMessage()
     }
 
     override fun sendMessage(sender: CommandSender, component: Component) {

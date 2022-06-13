@@ -34,6 +34,7 @@ import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.pluginEnvironment
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
+import work.gavenda.yawa.discord.DiscordFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
@@ -81,6 +82,7 @@ class Yawa : JavaPlugin() {
         // Enable features
         AfkFeature.enable()
         ChatFeature.enable()
+        DiscordFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
         HiddenArmorFeature.enable()
@@ -116,6 +118,8 @@ class Yawa : JavaPlugin() {
         // Disable features
         AfkFeature.disable()
         ChatFeature.disable()
+        ChunkFeature.disable()
+        DiscordFeature.disable()
         EnderFeature.disable()
         EssentialsFeature.disable()
         HiddenArmorFeature.disable()
@@ -129,7 +133,6 @@ class Yawa : JavaPlugin() {
         SkinFeature.disable()
         SleepFeature.disable()
         TabListFeature.disable()
-        ChunkFeature.disable()
         // Unregister startup listener
         HandlerList.unregisterAll(startupListener)
         // Close data source

@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("com.github.johnrengelman.shadow")
 }
 
@@ -8,19 +9,23 @@ deployablePlugin()
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
-    compileOnly(files("$rootDir/libs/ProtocolLib.jar"))
+    compileOnly(libs.protocol.lib)
     compileOnly(libs.paper.api)
     compileOnly(libs.bundles.adventure)
     compileOnly(project(":yawa-api", "shadow"))
     compileOnly(libs.vault)
-    compileOnly(libs.discordsrv)
 
-    implementation(libs.hikari)
-    implementation(libs.bundles.exposed) {
+    compileOnly(libs.discord) {
+        exclude(group = "club.minnced", module = "opus-java")
+    }
+    compileOnly(libs.discord.webhooks)
+
+    compileOnly(libs.hikari)
+    compileOnly(libs.bundles.exposed) {
         isTransitive = false
     }
     implementation(libs.paper.lib)
-    implementation(libs.log4j2)
+    compileOnly(libs.log4j2)
 }
 
 tasks {
@@ -46,7 +51,7 @@ tasks {
 
     shadowJar {
         archiveFileName.set(jar.get().archiveFileName)
-        relocate("com.zaxxer.hikari", "work.gavenda.yawa.hikari")
+        // relocate("com.zaxxer.hikari", "work.gavenda.yawa.hikari")
         relocate("io.papermc.lib", "work.gavenda.yawa.paperlib")
         mustRunAfter(copyLicense)
     }

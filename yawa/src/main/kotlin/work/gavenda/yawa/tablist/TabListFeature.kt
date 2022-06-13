@@ -26,7 +26,7 @@ import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
 object TabListFeature : PluginFeature {
-    override val isDisabled get() = Config.TabList.Disabled
+    override val disabled get() = Config.TabList.Disabled
 
     private var tabListTaskId = -1
 

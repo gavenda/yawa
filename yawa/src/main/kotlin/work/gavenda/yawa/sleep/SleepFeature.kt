@@ -25,7 +25,7 @@ import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 
 object SleepFeature : PluginFeature {
-    override val isDisabled get() = Config.Sleep.Disabled
+    override val disabled get() = Config.Sleep.Disabled
 
     private var sleepTaskId = -1
     private val sleepPlaceholderProvider = SleepPlaceholderProvider()

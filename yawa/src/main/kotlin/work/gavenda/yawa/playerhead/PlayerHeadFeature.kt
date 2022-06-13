@@ -26,7 +26,7 @@ object PlayerHeadFeature : PluginFeature {
 
     private val playerHeadListener = PlayerHeadListener()
 
-    override val isDisabled get() = Config.PlayerHead.Disabled
+    override val disabled get() = Config.PlayerHead.Disabled
 
     override fun registerEventListeners() {
         pluginManager.registerEvents(playerHeadListener)

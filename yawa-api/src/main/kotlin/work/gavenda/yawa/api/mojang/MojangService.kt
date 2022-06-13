@@ -20,11 +20,13 @@
 
 package work.gavenda.yawa.api.mojang
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Represents a Mojang service.
  */
+@Serializable
 data class MojangService(
     val name: String,
     val status: MojangServiceStatus
@@ -33,23 +35,24 @@ data class MojangService(
 /**
  * Represents the status of a Mojang service.
  */
+@Serializable
 enum class MojangServiceStatus {
     /**
      * Service is running without issues.
      */
-    @SerializedName(MOJANG_VAL_GREEN)
+    @SerialName(MOJANG_VAL_GREEN)
     OK,
 
     /**
      * Service is running with some issues.
      */
-    @SerializedName(MOJANG_VAL_YELLOW)
+    @SerialName(MOJANG_VAL_YELLOW)
     PARTIAL,
 
     /**
      * Service is unavailable.
      */
-    @SerializedName(MOJANG_VAL_RED)
+    @SerialName(MOJANG_VAL_RED)
     UNAVAILABLE;
 
     companion object {

@@ -51,13 +51,13 @@ interface PluginFeature {
     /**
      * Return true if feature is disabled, otherwise false.
      */
-    val isDisabled: Boolean
+    val disabled: Boolean
 
     /**
      * Enable this feature.
      */
     fun enable() {
-        if (isDisabled) {
+        if (disabled) {
             disableCommands()
             return
         }
@@ -82,7 +82,7 @@ interface PluginFeature {
      * Disable this feature.
      */
     fun disable() {
-        if (isDisabled) return
+        if (disabled) return
 
         onDisable()
         disableCommands()

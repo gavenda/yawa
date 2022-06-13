@@ -32,7 +32,7 @@ object EnderFeature : PluginFeature {
     private val teleportingPlayers = ConcurrentLinkedQueue<Player>()
     private val enderListener = EnderListener(teleportingPlayers)
 
-    override val isDisabled get() = Config.Ender.Disabled
+    override val disabled get() = Config.Ender.Disabled
 
     override fun registerEventListeners() {
         pluginManager.registerEvents(enderListener)

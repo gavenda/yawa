@@ -22,9 +22,9 @@ package work.gavenda.yawa
 
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
-import github.scarsz.discordsrv.DiscordSRV
-import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.CommandSender
@@ -37,11 +37,12 @@ import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toPlainText
+import work.gavenda.yawa.discord.DiscordFeature
+import work.gavenda.yawa.discord.avatarUrl
 import java.awt.Color
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.channels.FileChannel
-import java.nio.file.OpenOption
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 import java.util.concurrent.TimeUnit
@@ -166,41 +167,15 @@ fun CommandSender.sendMessageUsingKey(key: String) {
     }
 }
 
-fun Player.discordAlert(text: String) {
-    if (pluginManager.getPlugin("DiscordSRV") == null) return
-
-    val mainChannel = DiscordSRV.getPlugin().mainTextChannel
-    val avatarUrl = DiscordSRV.getAvatarUrl(player)
-    val embed = EmbedBuilder()
-        .setAuthor(text, null, avatarUrl)
-        .setColor(Color.YELLOW)
-        .build()
-
-    mainChannel.sendMessageEmbeds(embed).queue()
+fun Player.discordAlert(text: String, color: TextColor = NamedTextColor.YELLOW) {
+    DiscordFeature.sendAlert(text, avatarUrl, color)
 }
 
-fun Player.discordAlert(component: Component) {
-    discordAlert(component.toPlainText())
+fun Player.discordAlert(component: Component, color: TextColor = NamedTextColor.YELLOW) {
+    discordAlert(component.toPlainText(), color)
 }
 
-object Discord {
-
-    private const val defaultAvatarUrl = "https://cravatar.eu/avatar/shirobiru/50.png"
-    val disabled = pluginManager.getPlugin("DiscordSRV") == null
-
-    fun alert(component: Component, avatarUrl: String = defaultAvatarUrl) {
-        alert(component.toPlainText(), avatarUrl)
-    }
-
-    fun alert(text: String, avatarUrl: String = defaultAvatarUrl) {
-        if (disabled) return
-        val mainChannel = DiscordSRV.getPlugin().mainTextChannel
-
-        val embed = EmbedBuilder()
-            .setAuthor(text, null, avatarUrl)
-            .setColor(Color.YELLOW)
-            .build()
-
-        mainChannel.sendMessageEmbeds(embed).queue()
-    }
+fun TextColor.asAwtColor(): Color {
+    val hsv = asHSV()
+    return Color.getHSBColor(hsv.h(), hsv.s(), hsv.v())
 }

@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 
 object SkinFeature : PluginFeature {
-    override val isDisabled get() = Config.Skin.Disabled
+    override val disabled get() = Config.Skin.Disabled
 
     private val skinListener = SkinListener()
     private val skinCommand = SkinCommand().apply {

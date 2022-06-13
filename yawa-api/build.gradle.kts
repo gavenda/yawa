@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("com.github.johnrengelman.shadow")
 }
 
@@ -8,12 +9,13 @@ deployablePlugin()
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     compileOnly(libs.paper.api)
-    compileOnly(files("$rootDir/libs/ProtocolLib.jar"))
+    compileOnly(libs.protocol.lib)
     compileOnly(libs.bundles.adventure)
 
     implementation(libs.paper.lib)
-    implementation(libs.log4j2)
+    compileOnly(libs.log4j2)
 }
 
 tasks {

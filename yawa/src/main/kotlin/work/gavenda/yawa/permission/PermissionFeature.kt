@@ -32,7 +32,7 @@ import work.gavenda.yawa.permission.vault.YawaVaultPermission
 import java.util.*
 
 object PermissionFeature : PluginFeature {
-    override val isDisabled get() = Config.Permission.Disabled
+    override val disabled get() = Config.Permission.Disabled
 
     private val isVaultEnabled get() = pluginManager.getPlugin("Vault") != null
 

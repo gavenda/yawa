@@ -31,6 +31,19 @@ object Config {
      */
     private lateinit var config: FileConfiguration
 
+    object Discord {
+        var Disabled
+            get() = config.getBoolean("discord.disabled", true)
+            set(value) = config.set("discord.disabled", value)
+
+        val Token get() = config.getString("discord.token")!!
+        val AvatarUrl get() = config.getString("discord.avatar-url")!!
+        val GuildId get() = config.getLong("discord.guild.id")
+        val GuildChannel get() = config.getLong("discord.guild.channel")
+        val GuildWebhook get() = config.getString("discord.guild.webhook")!!
+        val MessageFormat get() = config.getString("discord.format.message")!!
+    }
+
     /**
      * Database configuration.
      */

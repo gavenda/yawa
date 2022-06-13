@@ -33,7 +33,7 @@ object AfkFeature : PluginFeature {
     private val paperAfkListener = PaperAfkListener()
     private val afkCommand = AfkCommand()
 
-    override val isDisabled get() = Config.Afk.Disabled
+    override val disabled get() = Config.Afk.Disabled
 
     override fun registerTasks() {
         afkTaskId = scheduler.runTaskTimer(plugin, AfkTask(), 0, 20).taskId

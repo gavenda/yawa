@@ -23,7 +23,7 @@ package work.gavenda.yawa.image
 import work.gavenda.yawa.*
 
 object ImageUtilFeature : PluginFeature {
-    override val isDisabled: Boolean
+    override val disabled: Boolean
         get() = Config.Image.Disabled
 
     private val imageUploadCommand = ImageUploadCommand()

@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
  * Represents the chunk feature.
  */
 object ChunkFeature : PluginFeature {
-    override val isDisabled: Boolean
+    override val disabled: Boolean
         get() = Config.Chunk.Disabled
 
     private val chunkPlaceholder = ChunkPlaceholder()

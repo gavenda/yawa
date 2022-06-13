@@ -1,8 +1,8 @@
 // What we all are
 rootProject.name = "yawa"
 
-include("adventure")
-include("kotlin")
+//include("adventure")
+//include("kotlin")
 include("yawa")
 include("yawa-api")
 
@@ -16,6 +16,12 @@ dependencyResolutionManagement {
             version("adventure", "4.11.0")
             version("adventure-bungeecord", "4.1.0")
             version("exposed", "0.38.2")
+            version("discord", "5.0.0-alpha.12")
+            version("discord-webhooks", "0.8.0")
+
+            // Discord
+            library("discord", "net.dv8tion", "JDA").versionRef("discord")
+            library("discord-webhooks", "club.minnced", "discord-webhooks").versionRef("discord-webhooks")
 
             // Libraries
             library("paper-api", "io.papermc.paper", "paper-api").versionRef("paper")

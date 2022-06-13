@@ -24,5 +24,5 @@ import work.gavenda.yawa.Config
 import work.gavenda.yawa.PluginFeature
 
 object EssentialsFeature : PluginFeature {
-    override val isDisabled get() = Config.Essentials.Disabled
+    override val disabled get() = Config.Essentials.Disabled
 }

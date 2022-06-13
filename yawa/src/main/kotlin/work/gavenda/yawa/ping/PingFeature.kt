@@ -32,7 +32,7 @@ const val SB_CRITERIA = "dummy"
 const val SB_DISPLAY_NAME = "ms"
 
 object PingFeature : PluginFeature {
-    override val isDisabled get() = Config.Ping.Disabled
+    override val disabled get() = Config.Ping.Disabled
 
     private var pingTaskId = -1
 

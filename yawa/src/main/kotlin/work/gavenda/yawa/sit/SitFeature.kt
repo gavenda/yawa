@@ -24,7 +24,7 @@ import work.gavenda.yawa.*
 
 object SitFeature : PluginFeature {
 
-    override val isDisabled get() = Config.Sit.Disabled
+    override val disabled get() = Config.Sit.Disabled
 
     private val sitListener = SitListener()
 
