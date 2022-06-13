@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.MemberCachePolicy
-import net.dv8tion.jda.api.utils.cache.CacheFlag
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
@@ -34,6 +33,8 @@ object DiscordFeature : PluginFeature, EventListener {
     private const val defaultAvatarUrl = "https://cravatar.eu/avatar/shirobiru/50.png"
     private val playerListener = PlayerListener()
     private var topicTaskId = -1
+    private val paperChatListener = PaperChatListener()
+    private val bukkitChatListener = BukkitChatListener()
     private lateinit var jda: JDA
     private lateinit var guild: Guild
     private lateinit var textChannel: TextChannel
@@ -78,6 +79,10 @@ object DiscordFeature : PluginFeature, EventListener {
                 }
             }
         }
+    }
+
+    fun sendMessage(player: Player, component: Component) {
+        sendMessage(player, component.toPlainText())
     }
 
     fun sendMessage(player: Player, message: String) {
@@ -165,5 +170,21 @@ object DiscordFeature : PluginFeature, EventListener {
     override fun unregisterEventListeners() {
         jda.removeEventListener(this)
         pluginManager.unregisterEvents(playerListener)
+    }
+
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(paperChatListener)
+    }
+
+    override fun registerBukkitEventListeners() {
+        pluginManager.registerEvents(bukkitChatListener)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(paperChatListener)
+    }
+
+    override fun unregisterBukkitEventListeners() {
+        pluginManager.unregisterEvents(bukkitChatListener)
     }
 }

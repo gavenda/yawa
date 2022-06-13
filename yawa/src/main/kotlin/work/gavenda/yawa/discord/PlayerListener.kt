@@ -16,12 +16,6 @@ import work.gavenda.yawa.sleep.sleepKicked
 class PlayerListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    @Suppress("DEPRECATION")
-    fun onPlayerChat(e: org.bukkit.event.player.AsyncPlayerChatEvent) {
-        DiscordFeature.sendMessage(e.player, e.message)
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerJoin(e: PlayerJoinEvent) {
         e.player.discordAlert("${e.player.name} joined the server", color = NamedTextColor.GREEN)
     }
