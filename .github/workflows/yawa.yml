@@ -15,18 +15,10 @@ jobs:
         with:
           distribution: adopt
           java-version: 17
-      - name: Setup Gradle Dependencies Cache
-        uses: actions/cache@v2
+      - uses: gradle/gradle-build-action@v2
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
-      - name: Setup Gradle Wrapper Cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Build Plugin
-        run: ./gradlew package
+          gradle-version: release-candidate
+      - run: gradle package
       - name: Parse Build SHA
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
