@@ -41,10 +41,8 @@ fun Project.minecraftPlugin(name: String) {
         into(distDir)
     }
 
-    tasks.existing(ProcessResources::class) {
-        filesMatching("plugin.yml") {
-            expand(project.properties)
-        }
+    tasks.named("processResources", ProcessResources::class) {
+        expand(project.properties)
     }
 
     tasks.register<Copy>("package") {
