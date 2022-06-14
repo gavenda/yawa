@@ -1,8 +1,8 @@
-name: Yawa Prerelease
+name: Yawa Release
 on:
   push:
-    branches: [ master ]
-  workflow_dispatch:
+    tags:
+      - "v*"
 jobs:
   build:
     name: Build

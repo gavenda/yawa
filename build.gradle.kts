@@ -24,3 +24,9 @@ allprojects {
     group = "work.gavenda.yawa"
     version = "1.3.0-SNAPSHOT-$gitHash"
 }
+
+tasks.register("version") {
+    doLast {
+        println(project.version)
+    }
+}
