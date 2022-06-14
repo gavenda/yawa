@@ -234,6 +234,8 @@ object Config {
             set(value) = config.set("notify.disabled", value)
         val Item: List<String>
             get() = config.getStringList("notify.item")
+        val Debounce
+            get() = config.getInt("notify.debounce", 10)
     }
 
     object HiddenArmor {

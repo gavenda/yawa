@@ -109,6 +109,7 @@ chat:
 
 notify:
   disabled: false
+  debounce: 10
   item:
     - DIAMOND
     - DIAMOND_ORE

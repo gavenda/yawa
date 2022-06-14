@@ -31,11 +31,45 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Notifier for items.
  */
 class ItemListener : Listener {
+
+    private val playerStacks = ConcurrentHashMap<UUID, ConcurrentHashMap<Material, Int>>()
+
+    private val recentLootTask = Runnable {
+        playerStacks.forEach { (playerId, loots) ->
+            val player = server.getPlayer(playerId)
+
+            if (player == null) {
+                playerStacks.remove(playerId)
+                return@forEach
+            }
+
+            loots.forEach { (material, amount) ->
+                val recentPlaceholderParams = mapOf(
+                    "item-stack-amount" to amount,
+                    "item-name" to material.name
+                        .replace("_", " ")
+                        .capitalizeFully()
+                )
+
+                val recentPickupMessage = Messages.forPlayer(player)
+                    .get(Message.NotifyItemPickup)
+                val message = Placeholders.withContext(player)
+                    .parse(recentPickupMessage, recentPlaceholderParams)
+
+                player.discordAlert(message)
+
+                loots.remove(material)
+            }
+            playerStacks.remove(playerId)
+        }
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onItemPickedUp(event: EntityPickupItemEvent) {
@@ -63,7 +97,18 @@ class ItemListener : Listener {
                 .parse(pickupMessage, placeholderParams)
 
             player.world.sendMessageCompat(message)
-            player.discordAlert(message)
+
+            if (itemStack.maxStackSize > 1) {
+                val materialMap = playerStacks.computeIfAbsent(player.uniqueId) {
+                    ConcurrentHashMap<Material, Int>()
+                }
+                materialMap.compute(itemStack.type) { _, amount ->
+                    (amount ?: 0) + itemStack.amount
+                }
+                scheduler.runTaskLater(plugin, recentLootTask, 20L * Config.Notify.Debounce)
+            } else {
+                player.discordAlert(message)
+            }
         }
     }
 }
