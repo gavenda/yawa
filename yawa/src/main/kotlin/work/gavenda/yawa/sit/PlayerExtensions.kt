@@ -20,7 +20,6 @@
 
 package work.gavenda.yawa.sit
 
-import io.papermc.lib.PaperLib
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
@@ -29,6 +28,7 @@ import org.bukkit.block.data.type.Stairs
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.teleportAsyncCompat
 import java.util.concurrent.TimeUnit
 
 const val META_PLAYER_SITTING = "PlayerSitting"
@@ -138,7 +138,7 @@ fun Player.sit(block: Block) {
 
     val chairEntity = sitLocation.spawnChairEntity()
 
-    PaperLib.teleportAsync(this, sitLocation).thenRun {
+    teleportAsyncCompat(sitLocation).thenRun {
         chairEntity.addPassenger(this)
         sittingBlock = block
         block.sittingPlayer = this

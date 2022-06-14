@@ -1,11 +1,9 @@
 package work.gavenda.yawa.chunk
 
-import io.papermc.lib.PaperLib
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.placeholder.Placeholders
-import java.util.concurrent.CompletableFuture
 
 /**
  * Represents the chunk feature.
@@ -33,14 +31,10 @@ object ChunkFeature : PluginFeature {
             dbChunks.forEach { dbChunk ->
                 server.getWorld(dbChunk.name)?.let { world ->
                     if (dbChunk.marked) {
-                        val chunk = PaperLib
-                            .getChunkAtAsync(world, dbChunk.x, dbChunk.z)
-                            .get()
+                        world.loadChunk(dbChunk.x, dbChunk.z)
+                        world.setChunkForceLoaded(dbChunk.x, dbChunk.z, true)
 
-                        chunk.load()
-                        chunk.isForceLoaded = true
-
-                        logger.info("Chunk (${chunk.x}, ${chunk.z}) is marked to keep running")
+                        logger.info("Chunk (${dbChunk.x}, ${dbChunk.z}) is marked to keep running")
                     }
                 }
             }

@@ -22,26 +22,38 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 class PaperEnvironment : Environment {
+
+    override fun teleportAsync(entity: Entity, location: Location): CompletableFuture<Boolean> {
+        return entity.teleportAsync(location)
+    }
+
+    override fun teleportAsync(entity: Entity, location: Location, cause: PlayerTeleportEvent.TeleportCause): CompletableFuture<Boolean> {
+        return entity.teleportAsync(location, cause)
+    }
 
     override fun playSound(world: World, sound: Sound) {
         world.playSound(sound)
     }
 
-    override fun displayNameCompat(itemMeta: ItemMeta): Component? {
+    override fun displayName(itemMeta: ItemMeta): Component? {
         return itemMeta.displayName()
     }
 
@@ -57,7 +69,7 @@ class PaperEnvironment : Environment {
         meta.lore(lore)
     }
 
-    override fun displayNameCompat(player: Player): Component {
+    override fun displayName(player: Player): Component {
         return player.displayName()
     }
 

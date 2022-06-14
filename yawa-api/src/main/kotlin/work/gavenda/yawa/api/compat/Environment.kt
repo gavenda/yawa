@@ -22,18 +22,22 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.sound.Sound
+import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 interface Environment {
     fun sendMessage(sender: CommandSender, component: Component)
@@ -55,6 +59,8 @@ interface Environment {
     fun lore(itemStack: ItemStack, lore: List<Component>)
     fun lore(itemStack: ItemStack): List<Component>?
     fun locale(player: Player): Locale
-    fun displayNameCompat(player: Player): Component
-    fun displayNameCompat(itemMeta: ItemMeta): Component?
+    fun displayName(player: Player): Component
+    fun displayName(itemMeta: ItemMeta): Component?
+    fun teleportAsync(entity: Entity, location: Location): CompletableFuture<Boolean>
+    fun teleportAsync(entity: Entity, location: Location, cause: TeleportCause): CompletableFuture<Boolean>
 }

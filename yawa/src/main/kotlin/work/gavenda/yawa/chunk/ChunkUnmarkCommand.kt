@@ -13,12 +13,11 @@ class ChunkUnmarkCommand : Command(Permission.CHUNK_UNMARK) {
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
-        updateChunkMark(sender.location, false).thenRun {
-            sender.sendMessageCompat(
-                Placeholders.withContext(sender)
-                    .parseWithLocale(sender, Message.ChunkUnmarked)
-            )
-        }
+        updateChunkMark(sender.location, false)
+        sender.sendMessageCompat(
+            Placeholders.withContext(sender)
+                .parseWithLocale(sender, Message.ChunkUnmarked)
+        )
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

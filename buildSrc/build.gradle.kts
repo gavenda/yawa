@@ -3,10 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation(kotlin(module = "serialization", version = "1.7.0"))
-}
-
-repositories {
-    gradlePluginPortal()
+    // Hacky way to add versionCatalogs to "main"
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+    implementation(files(mcLibs.javaClass.superclass.protectionDomain.codeSource.location))
 }

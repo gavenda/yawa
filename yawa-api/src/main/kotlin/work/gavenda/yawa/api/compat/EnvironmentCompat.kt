@@ -21,18 +21,22 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 private val pluginRuntimeEnvironment: Environment by lazy {
     if (pluginEnvironment == PluginEnvironment.PAPER) {
@@ -44,7 +48,7 @@ private val pluginRuntimeEnvironment: Environment by lazy {
 
 val ItemMeta.displayNameCompat
     get(): Component? {
-        return pluginRuntimeEnvironment.displayNameCompat(this)
+        return pluginRuntimeEnvironment.displayName(this)
     }
 
 fun ItemStack.loreCompat(): List<Component>? {
@@ -66,7 +70,7 @@ val PlayerDeathEvent.deathMessageCompat
 
 val Player.displayNameCompat
     get(): Component {
-        return pluginRuntimeEnvironment.displayNameCompat(this)
+        return pluginRuntimeEnvironment.displayName(this)
     }
 
 val PlayerQuitEvent.quitMessageCompat
@@ -78,6 +82,17 @@ val PlayerJoinEvent.joinMessageCompat
     get(): Component? {
         return pluginRuntimeEnvironment.joinMessage(this)
     }
+
+fun Entity.teleportAsyncCompat(
+    location: Location,
+    cause: PlayerTeleportEvent.TeleportCause
+): CompletableFuture<Boolean> {
+    return pluginRuntimeEnvironment.teleportAsync(this, location, cause)
+}
+
+fun Entity.teleportAsyncCompat(location: Location): CompletableFuture<Boolean> {
+    return pluginRuntimeEnvironment.teleportAsync(this, location)
+}
 
 fun Player.localeCompat(): Locale {
     return pluginRuntimeEnvironment.locale(this)

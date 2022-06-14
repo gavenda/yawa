@@ -2,7 +2,7 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     base
-    kotlin("jvm") version "1.7.0"
+    alias(libs.plugins.kotlin.jvm)
 }
 
 val gitHash: String = ByteArrayOutputStream().use { outputStream ->

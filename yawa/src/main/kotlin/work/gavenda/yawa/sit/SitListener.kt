@@ -20,7 +20,6 @@
 
 package work.gavenda.yawa.sit
 
-import io.papermc.lib.PaperLib
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -34,6 +33,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.spigotmc.event.entity.EntityDismountEvent
+import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 /**
  * Listens for events related to sitting.
@@ -44,7 +44,7 @@ class SitListener : Listener {
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val player = e.player
         if (player.location.y.isNaN()) {
-            PaperLib.teleportAsync(player, player.world.spawnLocation)
+            player.teleportAsyncCompat(player.world.spawnLocation).get()
         }
     }
 

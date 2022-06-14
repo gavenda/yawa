@@ -20,10 +20,10 @@
 
 package work.gavenda.yawa.ender
 
-import io.papermc.lib.PaperLib
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Message
+import work.gavenda.yawa.api.compat.teleportAsyncCompat
 import work.gavenda.yawa.sendMessageUsingKey
 import java.util.*
 
@@ -36,7 +36,7 @@ class EnderTeleportTask(
             val player = teleportingPlayers.remove()
 
             // Teleport to damaging entity
-            PaperLib.teleportAsync(player, location).thenRun {
+            player.teleportAsyncCompat(location).thenRun {
                 player.sendMessageUsingKey(Message.EnderBattleTeleport)
             }
         }

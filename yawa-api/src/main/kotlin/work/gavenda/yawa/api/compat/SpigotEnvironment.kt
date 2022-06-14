@@ -22,12 +22,15 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
@@ -37,11 +40,24 @@ import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.api.toComponent
 import work.gavenda.yawa.api.toLegacyText
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 class SpigotEnvironment : Environment {
 
+    override fun teleportAsync(entity: Entity, location: Location): CompletableFuture<Boolean> {
+        return CompletableFuture.completedFuture(entity.teleport(location))
+    }
+
+    override fun teleportAsync(
+        entity: Entity,
+        location: Location,
+        cause: PlayerTeleportEvent.TeleportCause
+    ): CompletableFuture<Boolean> {
+        return CompletableFuture.completedFuture(entity.teleport(location, cause))
+    }
+
     @Suppress("DEPRECATION")
-    override fun displayNameCompat(itemMeta: ItemMeta): Component {
+    override fun displayName(itemMeta: ItemMeta): Component {
         return itemMeta.displayName.toComponent()
     }
 
@@ -70,7 +86,7 @@ class SpigotEnvironment : Environment {
     }
 
     @Suppress("DEPRECATION")
-    override fun displayNameCompat(player: Player): Component {
+    override fun displayName(player: Player): Component {
         return player.displayName.toComponent()
     }
 
