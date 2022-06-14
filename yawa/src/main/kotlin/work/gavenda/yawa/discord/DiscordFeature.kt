@@ -138,8 +138,14 @@ object DiscordFeature : PluginFeature, EventListener {
             is MessageReceivedEvent -> {
                 if (event.author.isBot) return
                 if (event.channel.idLong != Config.Discord.GuildChannel) return
+                if (event.message.contentRaw.isBlank() && event.message.attachments.isEmpty()) return
 
-                val messageRaw = Config.Discord.MessageFormat + event.message.contentDisplay
+                val messageRaw = if (event.message.contentRaw.isBlank()) {
+                    Config.Discord.MessageFormat + event.message.attachments.first().url
+                } else {
+                    Config.Discord.MessageFormat + event.message.contentDisplay
+                }
+
                 val message = Placeholders.noContext()
                     .parse(
                         messageRaw, mapOf(
