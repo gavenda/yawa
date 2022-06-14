@@ -23,7 +23,7 @@ jobs:
       - name: Parse Version
         id: vars
         run: echo "::set-output name=version::$(gradle version -q)"
-      - name: Prerelease Plugin
+      - name: Release Plugin
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
