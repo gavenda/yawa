@@ -24,11 +24,12 @@ jobs:
         id: vars
         run: echo "::set-output name=version::$(gradle version -q)"
       - name: Prerelease Plugin
+        if: contains(steps.vars.outputs.version, 'SNAPSHOT')
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: latest
-          prerelease: false
+          prerelease: true
           title: ${{ steps.vars.outputs.version }}
           files: |
             yawa/build/libs/Yawa.jar
