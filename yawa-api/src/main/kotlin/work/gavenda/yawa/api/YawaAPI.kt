@@ -25,8 +25,8 @@ import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.pluginEnvironment
-import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.PlaceholderCommand
+import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 import work.gavenda.yawa.api.placeholder.provider.ServerPlaceholderProvider
 import work.gavenda.yawa.api.placeholder.provider.WorldPlaceholderProvider

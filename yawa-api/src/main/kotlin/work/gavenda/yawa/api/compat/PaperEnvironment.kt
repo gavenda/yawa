@@ -45,7 +45,11 @@ class PaperEnvironment : Environment {
         return entity.teleportAsync(location)
     }
 
-    override fun teleportAsync(entity: Entity, location: Location, cause: PlayerTeleportEvent.TeleportCause): CompletableFuture<Boolean> {
+    override fun teleportAsync(
+        entity: Entity,
+        location: Location,
+        cause: PlayerTeleportEvent.TeleportCause
+    ): CompletableFuture<Boolean> {
         return entity.teleportAsync(location, cause)
     }
 

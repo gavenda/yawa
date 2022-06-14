@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.api.compat.deathMessageCompat
 import work.gavenda.yawa.discordAlert
-import work.gavenda.yawa.logger
 import work.gavenda.yawa.sleep.sleepKicked
 
 class PlayerListener : Listener {
@@ -28,17 +27,7 @@ class PlayerListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerAdvancement(e: PlayerAdvancementDoneEvent) {
-        try {
-            val craftAdvancement = (e.advancement as Any).javaClass.getMethod("getHandle").invoke(e.advancement)
-            val advancementDisplay = craftAdvancement.javaClass.getMethod("c").invoke(craftAdvancement)
-            val display = advancementDisplay.javaClass.getMethod("i").invoke(advancementDisplay) as Boolean
-            if (!display) return
-        } catch (e: NullPointerException) {
-            return
-        } catch (e: Exception) {
-            logger.info("Failed to check if advancement should be displayed: $e")
-        }
-
+        if (!e.advancement.displayOnChat) return
         e.player.discordAlert("${e.player.name} has made the advancement '${e.advancement.title}'")
     }
 

@@ -20,8 +20,8 @@
 
 package work.gavenda.yawa.api.mojang
 
-import java.util.*
 import kotlinx.serialization.Serializable
+import java.util.*
 
 /**
  * Represents a Mojang profile.

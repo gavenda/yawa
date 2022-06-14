@@ -11,6 +11,20 @@ import java.util.stream.Collectors
 
 private val ADVANCEMENT_TITLE_CACHE = ConcurrentHashMap<Advancement, String>()
 
+val Advancement.displayOnChat: Boolean
+    get() {
+        try {
+            val craftAdvancement = (this as Any).javaClass.getMethod("getHandle").invoke(this)
+            val advancementDisplay = craftAdvancement.javaClass.getMethod("c").invoke(craftAdvancement)
+            return advancementDisplay.javaClass.getMethod("i").invoke(advancementDisplay) as Boolean
+        } catch (e: NullPointerException) {
+            return false
+        } catch (e: Exception) {
+            logger.info("Failed to check if advancement should be displayed: $e")
+        }
+        return false
+    }
+
 val Advancement.title: String
     get() {
         return ADVANCEMENT_TITLE_CACHE.computeIfAbsent(this) {
@@ -39,7 +53,8 @@ val Advancement.title: String
                     .findFirst().orElseThrow { RuntimeException("Failed to find advancement display properties field") }
                 titleComponentField.isAccessible = true
                 val titleChatBaseComponent: Any = titleComponentField.get(advancementDisplay)
-                val title = titleChatBaseComponent.javaClass.getMethod("getText").invoke(titleChatBaseComponent) as String
+                val title =
+                    titleChatBaseComponent.javaClass.getMethod("getText").invoke(titleChatBaseComponent) as String
                 if (title.isNotBlank()) {
                     return@computeIfAbsent title
                 }

@@ -39,7 +39,10 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
-import work.gavenda.yawa.api.wrapper.*
+import work.gavenda.yawa.api.wrapper.WrapperLoginServerDisconnect
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
+import work.gavenda.yawa.api.wrapper.WrapperPlayServerRespawn
 import java.util.*
 
 const val META_AFK = "Afk"

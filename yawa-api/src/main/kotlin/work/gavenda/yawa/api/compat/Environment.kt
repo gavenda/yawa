@@ -20,8 +20,8 @@
 
 package work.gavenda.yawa.api.compat
 
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.sound.Sound
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.command.CommandSender

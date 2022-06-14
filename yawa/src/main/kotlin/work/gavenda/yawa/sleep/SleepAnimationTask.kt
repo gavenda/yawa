@@ -70,7 +70,7 @@ class SleepAnimationTask(
             // Remove later
             scheduler.runTaskLater(Yawa.Instance, { _ ->
                 sleepingWorlds.remove(world.uid)
-            }, 20 * 5)
+            }, 20 * 10)
         }
         // Out of range, keep animating
         else {
