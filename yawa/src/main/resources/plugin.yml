@@ -22,42 +22,34 @@ commands:
   afk:
     description: Toggles being AFK. (Away from Keyboard)
     permission: yawa.afk
-    usage: /afk
-  imgup:
-    description: Uploads an image for use by the CustomImages plugin.
-    permission: yawa.image.upload
-    usage: /imgup <url> <file-name>
-  imgdel:
-    description: Deletes an image in use by the CustomImages plugin.
-    permission: yawa.image.delete
-    usage: /imgdel <url> <file-name>
+    usage: /<command>
   toggle-armor:
     description: Toggle armor visibility.
     permission: yawa.hidden-armor.toggle
-    usage: /toggle-armor
+    usage: /<command>
   skin:
     description: Changes your skin.
-    usage: /skin <subcommands>
+    usage: /<command> <subcommands>
   permission:
     description: Change player/group permissions.
-    usage: /permission <player|group> <permission> <enabled:true|false>
+    usage: /<command> <player|group> <permission> <enabled:true|false>
   ping:
     description: Check your latency to the server.
-    usage: /ping
+    usage: /<command>
   yawa:
     description: Plugin root command.
-    usage: /yawa <subcommands>
+    usage: /<command> <subcommands>
   whisper:
     description: Send a whisper to a player.
-    usage: /whisper <player> <message>
+    usage: /<command> <player> <message>
     aliases: [ w, msg, tell ]
   reply:
     description: Reply to a whisper from a player.
-    usage: /reply <message>
+    usage: /<command> <message>
     aliases: [ r ]
   chunk:
     description: Manages the current chunk.
-    usage: /chunk
+    usage: /<command>
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.

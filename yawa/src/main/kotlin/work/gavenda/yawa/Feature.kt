@@ -27,11 +27,14 @@ import work.gavenda.yawa.api.compat.pluginEnvironment
  * Constants for features.
  */
 object Feature {
+    const val NOTIFY = "notify"
+    const val HIDDEN_ARMOR = "hidden-armor"
+    const val DISCORD = "discord"
+    const val CHUNK = "chunk"
     const val AFK = "afk"
     const val CHAT = "chat"
     const val ESSENTIALS = "essentials"
     const val ENDER = "ender"
-    const val IMAGE_UPLOAD = "img-up"
     const val LOGIN = "login"
     const val PERMISSION = "permission"
     const val PING = "ping"
@@ -39,7 +42,7 @@ object Feature {
     const val SIT = "sit"
     const val SKIN = "skin"
     const val SLEEP = "sleep"
-    const val TABLIST = "tab-list"
+    const val TAB_LIST = "tab-list"
     const val KEEP_ALIVE = "keep-alive"
 }
 

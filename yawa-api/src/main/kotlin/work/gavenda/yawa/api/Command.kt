@@ -30,7 +30,7 @@ import org.bukkit.event.Listener
 import work.gavenda.yawa.api.compat.sendMessageCompat
 
 const val TEXT_NO_PERMISSION = "You do not have enough permissions to use this command"
-val COMMAND_NO_PERMISSION = Component.text(TEXT_NO_PERMISSION, NamedTextColor.GOLD)
+val COMMAND_NO_PERMISSION = Component.text(TEXT_NO_PERMISSION, NamedTextColor.RED)
 
 /**
  * Represents a command executor.

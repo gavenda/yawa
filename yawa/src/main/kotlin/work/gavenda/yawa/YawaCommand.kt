@@ -27,10 +27,13 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.chat.ChatFeature
+import work.gavenda.yawa.chunk.ChunkFeature
+import work.gavenda.yawa.discord.DiscordFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
-import work.gavenda.yawa.image.ImageUtilFeature
+import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
 import work.gavenda.yawa.login.LoginFeature
+import work.gavenda.yawa.notify.NotifyFeature
 import work.gavenda.yawa.permission.PermissionFeature
 import work.gavenda.yawa.ping.PingFeature
 import work.gavenda.yawa.playerhead.PlayerHeadFeature
@@ -46,34 +49,40 @@ const val FEATURE_SWITCH_DISABLE = "disable"
 private val featureEnableMap = mapOf(
     Feature.AFK to { AfkFeature.enable() },
     Feature.CHAT to { ChatFeature.enable() },
+    Feature.CHUNK to { ChunkFeature.enable() },
+    Feature.DISCORD to { DiscordFeature.enable() },
     Feature.ENDER to { EnderFeature.enable() },
     Feature.ESSENTIALS to { EssentialsFeature.enable() },
-    Feature.IMAGE_UPLOAD to { ImageUtilFeature.enable() },
+    Feature.HIDDEN_ARMOR to { HiddenArmorFeature.enable() },
     Feature.LOGIN to { LoginFeature.enable() },
+    Feature.NOTIFY to { NotifyFeature.enable() },
+    Feature.PERMISSION to { PermissionFeature.enable() },
     Feature.PING to { PingFeature.enable() },
     Feature.PLAYER_HEAD to { PlayerHeadFeature.enable() },
-    Feature.PERMISSION to { PermissionFeature.enable() },
     Feature.SIT to { SitFeature.enable() },
     Feature.SKIN to { SkinFeature.enable() },
     Feature.SLEEP to { SleepFeature.enable() },
-    Feature.TABLIST to { TabListFeature.enable() },
+    Feature.TAB_LIST to { TabListFeature.enable() },
     Feature.KEEP_ALIVE to { Yawa.Instance.adjustKeepAliveTimeout() },
 )
 
 private val featureDisableMap = mapOf(
     Feature.AFK to { AfkFeature.disable() },
     Feature.CHAT to { ChatFeature.disable() },
+    Feature.CHUNK to { ChunkFeature.disable() },
+    Feature.DISCORD to { DiscordFeature.disable() },
     Feature.ENDER to { EnderFeature.disable() },
     Feature.ESSENTIALS to { EssentialsFeature.disable() },
-    Feature.IMAGE_UPLOAD to { ImageUtilFeature.disable() },
+    Feature.HIDDEN_ARMOR to { HiddenArmorFeature.disable() },
     Feature.LOGIN to { LoginFeature.disable() },
+    Feature.NOTIFY to { NotifyFeature.disable() },
+    Feature.PERMISSION to { PermissionFeature.disable() },
     Feature.PING to { PingFeature.disable() },
     Feature.PLAYER_HEAD to { PlayerHeadFeature.disable() },
-    Feature.PERMISSION to { PermissionFeature.disable() },
     Feature.SIT to { SitFeature.disable() },
     Feature.SKIN to { SkinFeature.disable() },
     Feature.SLEEP to { SleepFeature.disable() },
-    Feature.TABLIST to { TabListFeature.disable() },
+    Feature.TAB_LIST to { TabListFeature.disable() },
     Feature.KEEP_ALIVE to { Yawa.Instance.resetKeepAliveTimeout() },
 )
 

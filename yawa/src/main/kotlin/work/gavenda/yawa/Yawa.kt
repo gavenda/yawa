@@ -38,7 +38,6 @@ import work.gavenda.yawa.discord.DiscordFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
-import work.gavenda.yawa.image.ImageUtilFeature
 import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.notify.NotifyFeature
 import work.gavenda.yawa.permission.PermissionFeature
@@ -86,7 +85,6 @@ class Yawa : JavaPlugin() {
         EnderFeature.enable()
         EssentialsFeature.enable()
         HiddenArmorFeature.enable()
-        ImageUtilFeature.enable()
         LoginFeature.enable()
         NotifyFeature.enable()
         PlayerHeadFeature.enable()
@@ -123,7 +121,6 @@ class Yawa : JavaPlugin() {
         EnderFeature.disable()
         EssentialsFeature.disable()
         HiddenArmorFeature.disable()
-        ImageUtilFeature.disable()
         LoginFeature.disable()
         NotifyFeature.disable()
         PingFeature.disable()

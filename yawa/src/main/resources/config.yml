@@ -28,10 +28,6 @@ essentials:
 ping:
   disabled: false
 
-# Image feature configuration
-image:
-  disabled: false
-
 # Hidden armor feature configuration
 hidden-armor:
   disabled: false

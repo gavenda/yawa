@@ -57,10 +57,8 @@ object DiscordFeature : PluginFeature, EventListener {
             .build()
             .awaitReady()
 
-        guild = jda.getGuildById(Config.Discord.GuildId)
-            ?: throw IllegalStateException("Unknown guild")
-        textChannel = guild.getTextChannelById(Config.Discord.GuildChannel)
-            ?: throw IllegalStateException("Unknown text channel")
+        guild = jda.getGuildById(Config.Discord.GuildId) ?: error("Unknown guild")
+        textChannel = guild.getTextChannelById(Config.Discord.GuildChannel) ?: error("Unknown text channel")
 
         topicTaskId = scheduler.runTaskTimerAsynchronously(plugin, { ->
             textChannel.manager
@@ -161,11 +159,11 @@ object DiscordFeature : PluginFeature, EventListener {
     }
 
     override fun unregisterHooks() {
-        jda.shutdown()
-        scheduler.cancelTask(topicTaskId)
         textChannel.manager
             .setTopic("Server offline")
-            .queue()
+            .complete()
+        jda.shutdown()
+        scheduler.cancelTask(topicTaskId)
     }
 
     override fun registerEventListeners() {

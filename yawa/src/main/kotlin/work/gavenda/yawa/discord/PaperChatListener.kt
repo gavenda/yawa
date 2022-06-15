@@ -24,8 +24,6 @@ import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.placeholder.Placeholders
 
 class PaperChatListener : Listener {
 
