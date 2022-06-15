@@ -52,14 +52,14 @@ class ItemListener : Listener {
 
             loots.forEach { (material, amount) ->
                 val recentPlaceholderParams = mapOf(
-                    "item-stack-amount" to amount,
+                    "item-stack-amount" to amount.toString(),
                     "item-name" to material.name
                         .replace("_", " ")
                         .capitalizeFully()
                 )
 
                 val recentPickupMessage = Messages.forPlayer(player)
-                    .get(Message.NotifyItemPickup)
+                    .get(Message.NotifyItemPickupRecent)
                 val message = Placeholders.withContext(player)
                     .parse(recentPickupMessage, recentPlaceholderParams)
 
