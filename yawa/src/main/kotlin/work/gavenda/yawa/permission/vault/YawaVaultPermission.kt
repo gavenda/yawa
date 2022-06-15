@@ -35,7 +35,7 @@ class YawaVaultPermission : AbstractVaultPermission() {
      * Assures execution on async thread or throw an error.
      */
     private fun assureAsync() {
-        if (server.isPrimaryThread) throw IllegalStateException("Vault lookup cancelled, request done on primary thread")
+        if (server.isPrimaryThread) error("Vault lookup cancelled, request done on primary thread")
     }
 
     /**
@@ -228,7 +228,7 @@ class YawaVaultPermission : AbstractVaultPermission() {
                 .find { GroupPlayerSchema.player eq playerId }
                 .with(GroupPlayer::group)
                 .firstOrNull()
-                ?: throw IllegalStateException("User has no groups, this should not be the case, db was modified?")
+                ?: error("User has no groups, this should not be the case, db was modified?")
 
             return@transaction groupPlayer.group.name
         }

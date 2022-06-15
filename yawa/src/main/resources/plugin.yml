@@ -9,6 +9,8 @@ main: work.gavenda.yawa.Yawa
 load: STARTUP
 loadbefore:
   - Vault
+softdepend:
+  - Vault
 depend:
   - YawaAPI
 libraries:
