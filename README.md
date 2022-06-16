@@ -17,7 +17,7 @@ All code is licensed under [GNU GPLv3](LICENSE).
 - Skin Changing
 - AFK System
 - Premium Login on Offline Mode
-- [DiscordSRV](https://github.com/DiscordSRV/DiscordSRV) hook
+- Discord chat sync
 - Minimal Permission System w/[Vault](https://github.com/MilkBowl/VaultAPI)
 
 ## Code based on popular plugins
