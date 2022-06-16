@@ -5,6 +5,8 @@ Most of its code bases are taken from popular plugins.
 The sole purpose of this is to take whatever feature I want, simplify it as much as possible.
 Avoiding plugin conflict hell in general.
 
+This really is just for use in a simple SMP server for friends.
+
 All code is licensed under [GNU GPLv3](LICENSE).
 
 ## Feature Set
@@ -14,7 +16,6 @@ All code is licensed under [GNU GPLv3](LICENSE).
 - Tab List Customization
 - Skin Changing
 - AFK System
-- Image Upload/Delete for use in [CustomImages](https://www.spigotmc.org/resources/custom-images.53036/)
 - Premium Login on Offline Mode
 - [DiscordSRV](https://github.com/DiscordSRV/DiscordSRV) hook
 - Minimal Permission System w/[Vault](https://github.com/MilkBowl/VaultAPI)
