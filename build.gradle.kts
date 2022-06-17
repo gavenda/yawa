@@ -22,7 +22,7 @@ kotlin {
 
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.3.3-SNAPSHOT-$gitHash"
+    version = "1.3.3"
 }
 
 tasks.register("version") {

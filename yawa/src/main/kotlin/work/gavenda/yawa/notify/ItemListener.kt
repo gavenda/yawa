@@ -27,6 +27,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityPickupItemEvent
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.MerchantInventory
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.sendMessageCompat
@@ -71,15 +75,7 @@ class ItemListener : Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    fun onItemPickedUp(event: EntityPickupItemEvent) {
-        if (event.entityType !== EntityType.PLAYER) return
-
-        val player = event.entity as Player
-        val itemStack = event.item.itemStack
-
-        if (event.item.thrower == player.uniqueId) return
-
+    private fun announce(player: Player, itemStack: ItemStack) {
         val pickupMessage = Messages.forPlayer(player)
             .get(Message.NotifyItemPickup)
         val materialsToMatch = Config.Notify.Item.map { Material.getMaterial(it) }
@@ -109,6 +105,33 @@ class ItemListener : Listener {
             } else {
                 player.discordAlert(message)
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onItemPickedUp(event: EntityPickupItemEvent) {
+        if (event.entityType !== EntityType.PLAYER) return
+
+        val player = event.entity as Player
+        val itemStack = event.item.itemStack
+
+        if (event.item.thrower == player.uniqueId) return
+
+        announce(player, itemStack)
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onVillagerBuy(event: InventoryClickEvent) {
+        if (event.whoClicked !is Player) return
+        if (event.inventory.type != InventoryType.MERCHANT) return
+        if (event.clickedInventory !is MerchantInventory) return
+        if (event.isShiftClick) return
+
+        val inventory = event.inventory as MerchantInventory
+        val player = event.whoClicked as Player
+
+        inventory.selectedRecipe?.let { recipe ->
+            announce(player, recipe.result)
         }
     }
 }

@@ -35,13 +35,16 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
+import work.gavenda.yawa.api.apiLogger
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
 private val pluginRuntimeEnvironment: Environment by lazy {
     if (pluginEnvironment == PluginEnvironment.PAPER) {
+        apiLogger.info("Paper detected, using paper as platform for all bukkit calls")
         PaperEnvironment()
     } else {
+        apiLogger.info("Spigot detected, using spigot as platform for all bukkit calls")
         SpigotEnvironment()
     }
 }
