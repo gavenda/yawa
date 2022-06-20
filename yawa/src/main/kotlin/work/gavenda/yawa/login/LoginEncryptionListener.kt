@@ -23,9 +23,13 @@ package work.gavenda.yawa.login
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
+import com.comphenix.protocol.reflect.FuzzyReflection
+import com.mojang.datafixers.util.Either
+import net.kyori.adventure.text.Component
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
+import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.logger
 import work.gavenda.yawa.scheduler
@@ -46,7 +50,11 @@ class LoginEncryptionListener(
 ) {
 
     override fun onPacketReceiving(packetEvent: PacketEvent) {
-        val encryptedKey = packetEvent.packet.byteArrays.read(0).copyOf()
+        val sharedSecret = packetEvent.packet.byteArrays.read(0).copyOf()
+        val either = packetEvent.packet.getSpecificModifier(Either::class.java).read(0)
+        val signatureData = either.right().get()
+        val salt = FuzzyReflection.getFieldValue(signatureData, Long::class.java, true)
+        val signature = FuzzyReflection.getFieldValue(signatureData, ByteArray::class.java, true)
         val player = packetEvent.player
 
         packetEvent.asyncMarker.incrementProcessingDelay()
@@ -62,14 +70,26 @@ class LoginEncryptionListener(
             return
         }
 
-        val encryptionTask = LoginEncryptionTask(
-            packetEvent = packetEvent,
-            session = session,
-            player = player,
-            keyPair = keyPair,
-            encryptedKey = encryptedKey,
-        )
+        val publicKey = session.profileKeyData.get().key
 
-        scheduler.runTaskAsynchronously(plugin, encryptionTask)
+        if (MinecraftEncryption.verifySignedNonce(session.verifyToken, publicKey, salt, signature)) {
+            val encryptionTask = LoginEncryptionTask(
+                packetEvent = packetEvent,
+                session = session,
+                player = player,
+                keyPair = keyPair,
+                sharedSecret = sharedSecret,
+            )
+
+            packetEvent.asyncMarker.incrementProcessingDelay()
+
+            scheduler.runTaskAsynchronously(plugin, encryptionTask)
+        } else {
+            player.disconnect(
+                Messages
+                    .forPlayer(player)
+                    .get(Message.LoginInvalidSession)
+            )
+        }
     }
 }

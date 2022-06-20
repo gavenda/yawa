@@ -20,6 +20,7 @@
 
 package work.gavenda.yawa.login
 
+import com.google.common.primitives.Longs
 import java.math.BigInteger
 import java.security.*
 import java.security.spec.EncodedKeySpec
@@ -93,6 +94,14 @@ object MinecraftEncryption {
         val decryptedPublicKey = decrypt(privateKey, publicKey)
         val encodedKeySpec: EncodedKeySpec = X509EncodedKeySpec(decryptedPublicKey)
         return KeyFactory.getInstance("RSA").generatePublic(encodedKeySpec)
+    }
+
+    fun verifySignedNonce(nonce: ByteArray, clientKey: PublicKey, signatureSalt: Long, signature: ByteArray): Boolean {
+        return Signature.getInstance("SHA256withRSA").apply {
+            initVerify(clientKey)
+            update(nonce)
+            update(Longs.toByteArray(signatureSalt))
+        }.verify(signature)
     }
 
     /**

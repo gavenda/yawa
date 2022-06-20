@@ -19,6 +19,7 @@ dependencies {
     compileOnly(libs.log4j2)
 
     compileOnly(mcLibs.protocol.lib)
+    compileOnly(mcLibs.datafixerupper)
     compileOnly(mcLibs.paper.api)
     compileOnly(mcLibs.bundles.adventure)
     compileOnly(project(":yawa-api", "shadow"))

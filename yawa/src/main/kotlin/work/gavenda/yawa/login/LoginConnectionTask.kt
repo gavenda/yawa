@@ -96,7 +96,7 @@ class LoginConnectionTask(
     private fun unsecureConnection(player: Player, playerName: String) {
         logger.info("Initiating unsecure connection for player $playerName")
 
-        val session = LoginSession(playerName, serverId, profileKeyData)
+        val session = LoginSession(playerName, serverId, byteArrayOf(), profileKeyData)
         Session.cache(player.address!!, session)
 
         val uuid = playerName.minecraftOfflineUuid()
@@ -132,7 +132,7 @@ class LoginConnectionTask(
             return
         }
 
-        val session = LoginSession(name, serverId, profileKeyData)
+        val session = LoginSession(name, serverId, verifyToken, profileKeyData)
 
         // Pending verification
         Session.pending(player.address!!, name)

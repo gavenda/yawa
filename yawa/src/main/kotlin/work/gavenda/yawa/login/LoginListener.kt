@@ -31,6 +31,7 @@ import work.gavenda.yawa.api.disconnect
 import java.security.KeyPair
 import java.util.concurrent.TimeUnit
 
+
 /**
  * Listens to the client login attempt and determines whether we can encrypt the connection or not.
  * Basically determines if you have paid for minecraft.

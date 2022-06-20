@@ -27,6 +27,9 @@ dependencyResolutionManagement {
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/") {
             name = "sonatype-oss-snapshots"
         }
+        maven(url = "https://libraries.minecraft.net") {
+            name = "minecraft"
+        }
     }
 
     versionCatalogs {

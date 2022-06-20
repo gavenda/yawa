@@ -35,7 +35,6 @@ import work.gavenda.yawa.api.spoofedUuid
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
-import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 
@@ -47,12 +46,12 @@ class LoginEncryptionTask(
     private val session: LoginSession,
     private val player: Player,
     private val keyPair: KeyPair,
-    private val encryptedKey: ByteArray,
+    private val sharedSecret: ByteArray,
 ) : Runnable {
 
     override fun run() {
         val decryptedKey = try {
-            MinecraftEncryption.decryptSharedKey(keyPair.private, encryptedKey)
+            MinecraftEncryption.decryptSharedKey(keyPair.private, sharedSecret)
         } catch (ex: GeneralSecurityException) {
             player.disconnect(
                 Messages
