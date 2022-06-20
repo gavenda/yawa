@@ -29,6 +29,7 @@ import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
 import java.security.KeyPair
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 
 
@@ -47,6 +48,11 @@ class LoginListener(
         .optionAsync()
 ) {
 
+    companion object {
+        const val NAME_MIN = 3
+        const val NAME_MAX = 16
+    }
+
     private val nameRegex = Regex("^[0-z_]+\$")
     private val rateLimiter = RateLimiter.create(200.0, 5, TimeUnit.MINUTES)
 
@@ -59,10 +65,22 @@ class LoginListener(
         val profileKeyData = packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).read(0)
         val player = packetEvent.player
 
+        // Public key check
+        if (profileKeyData.isPresent) {
+            if (MinecraftEncryption.verifyClientKey(profileKeyData.get()).not()) {
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginInvalidPublicKey)
+                )
+                logger.warn("Disconnected player '$name' due to invalid client public key")
+            }
+        }
+
         // Use mojang name check
         if (Config.Login.StrictNames) {
             // Validate name
-            if (name.length < 3) {
+            if (name.length < NAME_MIN) {
                 player.disconnect(
                     Messages
                         .forPlayer(player)
@@ -71,7 +89,7 @@ class LoginListener(
                 logger.warn("Disconnected player '$name' due to invalid name")
                 return
             }
-            if (name.length > 16) {
+            if (name.length > NAME_MAX) {
                 player.disconnect(
                     Messages
                         .forPlayer(player)

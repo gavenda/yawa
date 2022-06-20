@@ -42,7 +42,9 @@ fun Project.minecraftPlugin(name: String) {
     }
 
     tasks.named("processResources", ProcessResources::class) {
-        expand(project.properties)
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
     }
 
     tasks.register<Copy>("package") {

@@ -88,7 +88,7 @@ class LoginEncryptionListener(
             player.disconnect(
                 Messages
                     .forPlayer(player)
-                    .get(Message.LoginInvalidSession)
+                    .get(Message.LoginInvalidSignature)
             )
         }
     }

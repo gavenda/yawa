@@ -20,31 +20,41 @@
 
 package work.gavenda.yawa.login
 
+import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKeyData
+import com.google.common.io.Resources
 import com.google.common.primitives.Longs
 import java.math.BigInteger
 import java.security.*
-import java.security.spec.EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
+import java.time.Instant
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-
 
 /**
  * Utilities related to Minecraft Encryption.
  */
 object MinecraftEncryption {
 
-    private val secureRandom = SecureRandom()
-    private const val verifyTokenLength = 4
-    private const val keyPairAlgorithm = "RSA"
+    private const val MOJANG_CERTIFICATE = "yggdrasil_session_pubkey.der"
+    private const val LINE_LENGTH = 76
+    private const val VERIFY_TOKEN_LENGTH = 4
+    private const val KEY_PAIR_ALGORITHM = "RSA"
+    private val KEY_ENCODER = Base64.getMimeEncoder(LINE_LENGTH, "\n".toByteArray(Charsets.UTF_8))
+    private val SECURE_RANDOM = SecureRandom()
+    private val MOJANG_SESSION_KEY = KeyFactory.getInstance("RSA").generatePublic(
+        X509EncodedKeySpec(
+            Resources.getResource(MOJANG_CERTIFICATE).readBytes()
+        )
+    )
 
     /**
      * Generate an RSA key pair with a `1024` length.
      */
     fun generateKeyPair(keySize: Int = 1024): KeyPair =
-        KeyPairGenerator.getInstance(keyPairAlgorithm).apply {
+        KeyPairGenerator.getInstance(KEY_PAIR_ALGORITHM).apply {
             initialize(keySize)
         }.generateKeyPair()
 
@@ -56,8 +66,8 @@ object MinecraftEncryption {
      * @return a verify token with 4 bytes long
      */
     fun generateVerifyToken(): ByteArray {
-        val bytes = ByteArray(verifyTokenLength)
-        secureRandom.nextBytes(bytes)
+        val bytes = ByteArray(VERIFY_TOKEN_LENGTH)
+        SECURE_RANDOM.nextBytes(bytes)
         return bytes
     }
 
@@ -90,19 +100,29 @@ object MinecraftEncryption {
     fun decryptSharedKey(privateKey: PrivateKey, sharedKey: ByteArray): SecretKey =
         SecretKeySpec(decrypt(privateKey, sharedKey), "AES")
 
-    fun decryptPublicKey(privateKey: PrivateKey, publicKey: ByteArray): PublicKey {
-        val decryptedPublicKey = decrypt(privateKey, publicKey)
-        val encodedKeySpec: EncodedKeySpec = X509EncodedKeySpec(decryptedPublicKey)
-        return KeyFactory.getInstance("RSA").generatePublic(encodedKeySpec)
+    fun verifyClientKey(profileKeyData: WrappedProfileKeyData, timestamp: Instant = Instant.now()): Boolean {
+        if (!timestamp.isBefore(profileKeyData.expireTime)) {
+            return false
+        }
+
+        return Signature.getInstance("SHA1withRSA").apply {
+            initVerify(MOJANG_SESSION_KEY)
+            update(toSignable(profileKeyData).toByteArray(Charsets.UTF_8))
+        }.verify(profileKeyData.signature)
     }
 
-    fun verifySignedNonce(nonce: ByteArray, clientKey: PublicKey, signatureSalt: Long, signature: ByteArray): Boolean {
-        return Signature.getInstance("SHA256withRSA").apply {
+    fun toSignable(clientPublicKey: WrappedProfileKeyData): String {
+        val expiry = clientPublicKey.expireTime.toEpochMilli()
+        val encoded = KEY_ENCODER.encodeToString(clientPublicKey.key.encoded)
+        return "$expiry-----BEGIN RSA PUBLIC KEY-----\n$encoded\n-----END RSA PUBLIC KEY-----\n"
+    }
+
+    fun verifySignedNonce(nonce: ByteArray, clientKey: PublicKey, signatureSalt: Long, signature: ByteArray) =
+        Signature.getInstance("SHA256withRSA").apply {
             initVerify(clientKey)
             update(nonce)
             update(Longs.toByteArray(signatureSalt))
         }.verify(signature)
-    }
 
     /**
      * Decrypt the given data using the given private key.

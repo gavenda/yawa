@@ -67,6 +67,8 @@ object Message {
     const val LoginInvalidSessionRetry = "login-invalid-session-retry"
     const val LoginInvalidRequest = "login-invalid-request"
     const val LoginInvalidToken = "login-invalid-token"
+    const val LoginInvalidSignature = "login-invalid-signature"
+    const val LoginInvalidPublicKey = "login-invalid-public-key"
     const val LoginNameIllegal = "login-name-illegal"
     const val LoginNameShort = "login-name-short"
     const val LoginNameLong = "login-name-long"
