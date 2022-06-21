@@ -1,4 +1,4 @@
-## Yawa
+# Yawa
 All in one plugin for any of my personally hosted minecraft servers. 
 Most of its code bases are taken from popular plugins.
 
