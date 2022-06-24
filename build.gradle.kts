@@ -2,7 +2,6 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     base
-    alias(libs.plugins.kotlin.jvm)
 }
 
 val gitHash: String = ByteArrayOutputStream().use { outputStream ->
@@ -14,15 +13,9 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
     outputStream.toString().trim()
 }
 
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
-
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.3.4"
+    version = "1.3.5-SNAPSHOT-$gitHash"
 }
 
 tasks.register("version") {
