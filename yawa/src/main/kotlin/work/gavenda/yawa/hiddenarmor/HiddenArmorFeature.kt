@@ -1,6 +1,5 @@
 package work.gavenda.yawa.hiddenarmor
 
-import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -70,14 +69,7 @@ object HiddenArmorFeature : PluginFeature {
         }
     }
 
-    fun shouldNotHideSelf(player: Player): Boolean {
-        return !hasPlayer(player) ||
-                player.isInvisible ||
-                (player.gameMode == GameMode.CREATIVE) ||
-                ignoredPlayers.contains(player.uniqueId)
-    }
-
-    fun shouldNotHideOthers(player: Player): Boolean {
+    fun shouldNotHide(player: Player): Boolean {
         return !hasPlayer(player) || player.isInvisible || ignoredPlayers.contains(player.uniqueId)
     }
 

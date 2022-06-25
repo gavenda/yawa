@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.ListenerPriority
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
+import org.bukkit.GameMode
 import org.bukkit.inventory.ItemStack
 import work.gavenda.yawa.plugin
 
@@ -21,7 +22,7 @@ class ArmorSelfPacketListener : PacketAdapter(
         val packet = event.packet
         val player = event.player
 
-        if (HiddenArmorFeature.shouldNotHideSelf(player)) return
+        if (HiddenArmorFeature.shouldNotHide(player) || player.gameMode == GameMode.CREATIVE) return
 
         val windowId = packet.integers.read(0)
 

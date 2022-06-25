@@ -16,6 +16,7 @@ fun ItemStack.hideArmor(): ItemStack {
     if (type == Material.ELYTRA) return this
 
     // Getting item meta and lore
+    val itemMeta = itemMeta.clone()
     val lore: List<Component> = itemMeta.clone().loreCompat ?: listOf()
 
     // Changing armor material and name to its placeholder's, if it has one
@@ -26,7 +27,8 @@ fun ItemStack.hideArmor(): ItemStack {
     }
 
     // Applying item meta and lore
-    loreCompat = lore + itemDurability
+    itemMeta.loreCompat = lore + itemDurability
+    setItemMeta(itemMeta)
     return this
 }
 

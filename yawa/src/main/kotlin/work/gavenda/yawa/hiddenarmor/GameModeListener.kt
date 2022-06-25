@@ -12,7 +12,9 @@ class GameModeListener : Listener {
     fun onGameModeChange(event: PlayerGameModeChangeEvent) {
         if (!HiddenArmorFeature.hasPlayer(event.player)) return
         if (event.newGameMode == GameMode.CREATIVE) {
+            HiddenArmorFeature.addIgnoredPlayer(event.player)
             event.player.updateHiddenArmor()
+            HiddenArmorFeature.removeIgnoredPlayer(event.player)
         } else {
             scheduler.runTaskLater(plugin, { _ ->
                 event.player.updateHiddenArmor()

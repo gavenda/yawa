@@ -21,7 +21,7 @@ class ArmorOthersPacketListener : PacketAdapter(plugin, PacketType.Play.Server.E
         val entityId = packet.integers.read(0)
         val hidPlayer = protocolManager.getEntityFromID(player.world, entityId) as? Player ?: return
 
-        if (HiddenArmorFeature.shouldNotHideOthers(hidPlayer)) return
+        if (HiddenArmorFeature.shouldNotHide(hidPlayer)) return
 
         val pairList = packet.slotStackPairLists.read(0)
 
