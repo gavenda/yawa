@@ -31,6 +31,7 @@ object EssentialsFeature : PluginFeature {
     private val homeCommand = HomeCommand()
     private val setHomeCommand = SetHomeCommand()
     private val teleportSpawnCommand = TeleportSpawnCommand()
+    private val backCommand = BackCommand()
     private val locationPlaceholder = LocationPlaceholder()
 
     override fun createTables() {
@@ -51,21 +52,25 @@ object EssentialsFeature : PluginFeature {
         plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(homeCommand)
         plugin.getCommand(Command.HOME_SET)?.setExecutor(setHomeCommand)
         plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
+        plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(backCommand)
     }
 
     override fun disableCommands() {
         plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.HOME_SET)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {
         pluginManager.registerEvents(homeCommand)
         pluginManager.registerEvents(setHomeCommand)
         pluginManager.registerEvents(teleportSpawnCommand)
+        pluginManager.registerEvents(backCommand)
     }
 
     override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(backCommand)
         pluginManager.unregisterEvents(teleportSpawnCommand)
         pluginManager.unregisterEvents(setHomeCommand)
         pluginManager.unregisterEvents(homeCommand)

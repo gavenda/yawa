@@ -38,4 +38,5 @@ object Permission {
     const val ESSENTIALS_HOME_TELEPORT = "yawa.essentials.home.teleport"
     const val ESSENTIALS_HOME_SET = "yawa.essentials.home.set"
     const val ESSENTIALS_TELEPORT_SPAWN = "yawa.essentials.teleport.spawn"
+    const val ESSENTIALS_TELEPORT_DEATH = "yawa.essentials.teleport.death"
 }

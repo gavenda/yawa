@@ -85,9 +85,11 @@ object Message {
     const val EssentialsHomeSet = "essentials-home-set"
     const val EssentialsTeleportSpawn = "essentials-teleport-spawn"
     const val EssentialsTeleportHome = "essentials-teleport-home"
+    const val EssentialsTeleportDeath = "essentials-teleport-death"
     const val EssentialsTeleportErrorNoOverworld = "essentials-teleport-error-no-overworld"
     const val EssentialsTeleportErrorNoHome = "essentials-teleport-error-no-home"
     const val EssentialsTeleportErrorNoHomeWorld = "essentials-teleport-error-no-home-world"
+    const val EssentialsTeleportErrorNoDeath = "essentials-teleport-error-no-death"
 }
 
 /**

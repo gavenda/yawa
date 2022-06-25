@@ -61,6 +61,9 @@ commands:
   spawn:
     description: Teleport to spawn.
     usage: /<command>
+  back:
+    description: Teleport to death location.
+    usage: /<command>
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.
@@ -143,4 +146,7 @@ permissions:
     default: true
   yawa.essentials.teleport.spawn:
     description: Permission to teleport to world spawn.
+    default: true
+  yawa.essentials.teleport.death:
+    description: Permission to teleport to death location.
     default: true

@@ -35,4 +35,5 @@ object Command {
     const val HOME_SET = "sethome"
     const val HOME_TELEPORT = "home"
     const val TELEPORT_SPAWN = "spawn"
+    const val TELEPORT_DEATH = "back"
 }
