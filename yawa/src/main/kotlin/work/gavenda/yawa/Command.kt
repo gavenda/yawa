@@ -31,8 +31,8 @@ object Command {
     const val REPLY = "reply"
     const val CHUNK = "chunk"
     const val ROOT = "yawa"
-    const val TOGGLE_ARMOR = "toggle-armor"
-    const val HOME_SET = "set-home"
+    const val TOGGLE_ARMOR = "togglearmor"
+    const val HOME_SET = "sethome"
     const val HOME_TELEPORT = "home"
     const val TELEPORT_SPAWN = "spawn"
 }

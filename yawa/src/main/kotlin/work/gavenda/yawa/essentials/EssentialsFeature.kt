@@ -23,6 +23,7 @@ package work.gavenda.yawa.essentials
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.placeholder.Placeholders
 
 object EssentialsFeature : PluginFeature {
     override val disabled get() = Config.Essentials.Disabled
@@ -30,11 +31,20 @@ object EssentialsFeature : PluginFeature {
     private val homeCommand = HomeCommand()
     private val setHomeCommand = SetHomeCommand()
     private val teleportSpawnCommand = TeleportSpawnCommand()
+    private val locationPlaceholder = LocationPlaceholder()
 
     override fun createTables() {
         transaction {
             SchemaUtils.create(PlayerHomeSchema)
         }
+    }
+
+    override fun registerPlaceholders() {
+        Placeholders.register(locationPlaceholder)
+    }
+
+    override fun unregisterPlaceholders() {
+        Placeholders.unregister(locationPlaceholder)
     }
 
     override fun enableCommands() {

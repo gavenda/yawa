@@ -82,6 +82,7 @@ object Message {
     const val NotifyItemPickupRecent = "notify-item-pickup-recent"
     const val HiddenArmorVisible = "hidden-armor-visible"
     const val HiddenArmorInvisible = "hidden-armor-invisible"
+    const val EssentialsHomeSet = "essentials-home-set"
     const val EssentialsTeleportSpawn = "essentials-teleport-spawn"
     const val EssentialsTeleportHome = "essentials-teleport-home"
     const val EssentialsTeleportErrorNoOverworld = "essentials-teleport-error-no-overworld"

@@ -1,14 +1,11 @@
 package work.gavenda.yawa.essentials
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class TeleportSpawnCommand : Command() {

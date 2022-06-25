@@ -64,7 +64,7 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun displayName(itemMeta: ItemMeta, component: Component?) {
-        itemMeta.setDisplayNameComponent(component?.toBaseComponent())
+        itemMeta.setDisplayName(component?.toLegacyText())
     }
 
     override fun playSound(world: World, sound: Sound) {
@@ -87,7 +87,7 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun lore(meta: ItemMeta): List<Component>? {
-        return meta.loreComponents?.map {
+        return meta.lore?.map {
             it.toComponent()
         }
     }

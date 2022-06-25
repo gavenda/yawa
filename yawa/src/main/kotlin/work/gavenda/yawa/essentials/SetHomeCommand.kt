@@ -1,15 +1,10 @@
 package work.gavenda.yawa.essentials
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Permission
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.sendMessageCompat
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
 
 class SetHomeCommand : Command() {
     override val permission = Permission.ESSENTIALS_HOME_SET
@@ -29,12 +24,7 @@ class SetHomeCommand : Command() {
                 }
             }
 
-            val location = "[${sender.location.blockX}, ${sender.location.blockY}, ${sender.location.blockZ}]"
-
-            sender.sendMessageCompat(
-                Component.text("Your home has been set at ", NamedTextColor.YELLOW)
-                    .append(Component.text(location, NamedTextColor.WHITE))
-            )
+            sender.sendMessageUsingKey(Message.EssentialsHomeSet)
         }
     }
 
