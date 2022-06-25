@@ -24,13 +24,8 @@ class ArmorOthersPacketListener : PacketAdapter(plugin, PacketType.Play.Server.E
 
         pairList
             .filter { it.armorSlot }
-            .forEach { pair ->
-                if (pair.second.type == Material.ELYTRA && (hidPlayer.isGliding && !hidPlayer.isInvisible)) {
-                    pair.second = ItemStack(Material.ELYTRA)
-                } else {
-                    pair.second = ItemStack(Material.AIR)
-                }
-            }
+            .filter { it.second.type != Material.ELYTRA }
+            .forEach { it.second = ItemStack(Material.AIR) }
 
         packet.slotStackPairLists.write(0, pairList)
     }
