@@ -138,6 +138,7 @@ permissions:
       yawa.essentials.home.teleport: true
       yawa.essentials.home.set: true
       yawa.essentials.teleport.spawn: true
+      yawa.essentials.teleport.death: true
   yawa.essentials.home.teleport:
     description: Permission to teleport home.
     default: true
