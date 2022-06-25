@@ -52,6 +52,11 @@ fun URL.asHttpConnection(): HttpURLConnection {
 }
 
 @Suppress("DEPRECATION")
+fun Array<net.md_5.bungee.api.chat.BaseComponent>.toComponent(): Component {
+    return BungeeComponentSerializer.get().deserialize(this)
+}
+
+@Suppress("DEPRECATION")
 fun Component.toBaseComponent(): Array<net.md_5.bungee.api.chat.BaseComponent> {
     return BungeeComponentSerializer.get().serialize(this)
 }

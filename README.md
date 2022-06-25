@@ -12,6 +12,7 @@ All code is licensed under [GNU GPLv3](LICENSE).
 ## Feature Set
 - Sleep
 - Toggle Armor Visibility
+- Barebones Essentials (/set-home, /home, /spawn)
 - Ping in Scoreboard
 - Tab List Customization
 - Skin Changing

@@ -15,7 +15,7 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
 
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.3.5-SNAPSHOT-$gitHash"
+    version = "1.3.5"
 }
 
 tasks.register("version") {

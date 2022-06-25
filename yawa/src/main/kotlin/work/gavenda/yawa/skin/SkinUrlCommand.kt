@@ -35,8 +35,8 @@ import java.net.URISyntaxException
 /**
  * Applies a skin from a texture url.
  */
-class SkinUrlCommand : Command(Permission.SKIN_URL) {
-
+class SkinUrlCommand : Command() {
+    override val permission = Permission.SKIN_URL
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 

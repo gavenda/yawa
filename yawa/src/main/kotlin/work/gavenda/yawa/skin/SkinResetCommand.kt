@@ -28,8 +28,8 @@ import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.sendMessageUsingKey
 
-class SkinResetCommand : Command(Permission.SKIN_RESET) {
-
+class SkinResetCommand : Command() {
+    override val permission = Permission.SKIN_RESET
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
         sender.restoreSkin()

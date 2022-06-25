@@ -34,8 +34,8 @@ import work.gavenda.yawa.api.mojang.RateLimitException
 /**
  * Applies a skin from an existing minecraft account name.
  */
-class SkinPlayerCommand : Command(Permission.SKIN_PLAYER) {
-
+class SkinPlayerCommand : Command() {
+    override val permission = Permission.SKIN_PLAYER
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 

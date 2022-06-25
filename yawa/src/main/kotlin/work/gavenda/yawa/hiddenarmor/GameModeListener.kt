@@ -8,13 +8,11 @@ import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
 class GameModeListener : Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onGameModeChange(event: PlayerGameModeChangeEvent) {
         if (!HiddenArmorFeature.hasPlayer(event.player)) return
         if (event.newGameMode == GameMode.CREATIVE) {
-            HiddenArmorFeature.addIgnoredPlayer(event.player)
             event.player.updateHiddenArmor()
-            HiddenArmorFeature.removeIgnoredPlayer(event.player)
         } else {
             scheduler.runTaskLater(plugin, { _ ->
                 event.player.updateHiddenArmor()

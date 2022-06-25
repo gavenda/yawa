@@ -131,7 +131,7 @@ class LoginEncryptionTask(
             logger.error("Cannot connect to session server", ex)
         }
 
-        // This is a fake packet; it shouldn't be send to the server
+        // This is a fake packet; it shouldn't be sent to the server
         synchronized(packetEvent.asyncMarker.processingLock) {
             packetEvent.isCancelled = true
         }

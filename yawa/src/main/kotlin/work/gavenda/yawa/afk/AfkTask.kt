@@ -51,15 +51,9 @@ class AfkTask : Runnable {
                 }
 
                 if (player.isAfk) {
-                    player.playerListNameCompat(
-                        Placeholders.withContext(player)
-                            .parse(Config.Afk.PlayerListNameAfk)
-                    )
+                    player.playerListNameCompat = Placeholders.withContext(player).parse(Config.Afk.PlayerListNameAfk)
                 } else {
-                    player.playerListNameCompat(
-                        Placeholders.withContext(player)
-                            .parse(Config.Afk.PlayerListName)
-                    )
+                    player.playerListNameCompat = Placeholders.withContext(player).parse(Config.Afk.PlayerListName)
                 }
             }
     }

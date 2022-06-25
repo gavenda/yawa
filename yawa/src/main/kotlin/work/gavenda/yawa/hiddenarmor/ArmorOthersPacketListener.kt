@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.protocolManager
 
+/**
+ * Hides armor for other players.
+ */
 class ArmorOthersPacketListener : PacketAdapter(plugin, PacketType.Play.Server.ENTITY_EQUIPMENT) {
 
     override fun onPacketSending(event: PacketEvent) {
@@ -18,10 +21,11 @@ class ArmorOthersPacketListener : PacketAdapter(plugin, PacketType.Play.Server.E
         val entityId = packet.integers.read(0)
         val hidPlayer = protocolManager.getEntityFromID(player.world, entityId) as? Player ?: return
 
-        if (HiddenArmorFeature.shouldNotHide(hidPlayer)) return
+        if (HiddenArmorFeature.shouldNotHideOthers(hidPlayer)) return
 
         val pairList = packet.slotStackPairLists.read(0)
 
+        // Make sure we only replace armor slots and non elytra with air.
         pairList
             .filter { it.armorSlot }
             .filter { it.second.type != Material.ELYTRA }

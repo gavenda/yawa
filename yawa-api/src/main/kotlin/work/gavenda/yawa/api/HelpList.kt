@@ -82,7 +82,7 @@ class HelpList {
         }
 
         // We have reach here, return no permissions message
-        if (generatedList.isEmpty()) return listOf(COMMAND_NO_PERMISSION)
+        if (generatedList.isEmpty()) return listOf(Command.NO_PERMISSION)
 
         return generatedList
     }

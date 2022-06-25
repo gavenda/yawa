@@ -15,7 +15,6 @@ object HiddenArmorFeature : PluginFeature {
     private val ignoredPlayers = mutableListOf<UUID>()
 
     private val inventoryShiftClickListener = InventoryShiftClickListener()
-    private val entityToggleGlideListener = EntityToggleGlideListener()
     private val potionEffectListener = PotionEffectListener()
     private val gameModeListener = GameModeListener()
     private val toggleArmorCommand = ToggleArmorCommand()
@@ -28,7 +27,6 @@ object HiddenArmorFeature : PluginFeature {
         protocolManager.addPacketListener(armorSelfPacketListener)
 
         pluginManager.registerEvents(inventoryShiftClickListener)
-        pluginManager.registerEvents(entityToggleGlideListener)
         pluginManager.registerEvents(potionEffectListener)
         pluginManager.registerEvents(gameModeListener)
     }
@@ -36,7 +34,6 @@ object HiddenArmorFeature : PluginFeature {
     override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(gameModeListener)
         pluginManager.unregisterEvents(potionEffectListener)
-        pluginManager.unregisterEvents(entityToggleGlideListener)
         pluginManager.unregisterEvents(inventoryShiftClickListener)
 
         protocolManager.removePacketListener(armorSelfPacketListener)
@@ -44,11 +41,11 @@ object HiddenArmorFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand("toggle-armor")?.setExecutor(toggleArmorCommand)
+        plugin.getCommand(Command.TOGGLE_ARMOR)?.setExecutor(toggleArmorCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand("toggle-armor")?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.TOGGLE_ARMOR)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {
@@ -73,8 +70,15 @@ object HiddenArmorFeature : PluginFeature {
         }
     }
 
-    fun shouldNotHide(player: Player): Boolean {
-        return !hasPlayer(player) || (player.gameMode == GameMode.CREATIVE) || ignoredPlayers.contains(player.uniqueId)
+    fun shouldNotHideSelf(player: Player): Boolean {
+        return !hasPlayer(player) ||
+                player.isInvisible ||
+                (player.gameMode == GameMode.CREATIVE) ||
+                ignoredPlayers.contains(player.uniqueId)
+    }
+
+    fun shouldNotHideOthers(player: Player): Boolean {
+        return !hasPlayer(player) || player.isInvisible || ignoredPlayers.contains(player.uniqueId)
     }
 
     fun addHiddenPlayer(player: Player) {

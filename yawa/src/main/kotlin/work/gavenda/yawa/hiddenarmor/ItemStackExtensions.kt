@@ -6,9 +6,8 @@ import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import org.bukkit.inventory.meta.ItemMeta
 import work.gavenda.yawa.api.compat.displayNameCompat
-import work.gavenda.yawa.api.toLegacyText
+import work.gavenda.yawa.api.compat.loreCompat
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -17,22 +16,17 @@ fun ItemStack.hideArmor(): ItemStack {
     if (type == Material.ELYTRA) return this
 
     // Getting item meta and lore
-    val itemMeta = itemMeta.clone()
-    val lore: MutableList<String> = itemMeta.lore ?: mutableListOf()
-
-    // Adding item durability percentage to lore, if it has it
-    lore.add(itemDurability)
+    val lore: List<Component> = itemMeta.clone().loreCompat ?: listOf()
 
     // Changing armor material and name to its placeholder's, if it has one
     val button = armorButtonMaterial
     if (button != null) {
-        itemMeta.setDisplayName(armorName)
+        itemMeta.displayNameCompat = armorName
         type = button
     }
 
     // Applying item meta and lore
-    itemMeta.lore = lore
-    setItemMeta(itemMeta)
+    loreCompat = lore + itemDurability
     return this
 }
 
@@ -77,7 +71,7 @@ val ItemStack.durabilityPercentage: Int
         return -1
     }
 
-val ItemStack.itemDurability: String
+val ItemStack.itemDurability: Component
     get() {
         if (durabilityPercentage != -1) {
             val color = if (durabilityPercentage >= 70) {
@@ -90,12 +84,11 @@ val ItemStack.itemDurability: String
 
             return Component.text("Durability: ", NamedTextColor.WHITE)
                 .append(Component.text("$durabilityPercentage%", TextColor.color(color)))
-                .toLegacyText()
         }
-        return ""
+        return Component.empty()
     }
 
-val ItemStack.armorName: String?
+val ItemStack.armorName: Component?
     get() {
         val item = type
         if (!item.toString().contains("_")) return null
@@ -107,11 +100,10 @@ val ItemStack.armorName: String?
         return if (itemMeta.hasDisplayName()) {
             itemMeta.displayNameCompat
                 ?.append(Component.text(" "))
-                ?.append(Component.text("($name)", NamedTextColor.DARK_GRAY))
-                ?.toLegacyText()
+                ?.append(Component.text("(Hidden)", NamedTextColor.DARK_GRAY))
         } else {
             Component.text(name, NamedTextColor.WHITE)
                 .append(Component.text(" "))
-                .append(Component.text("(Hidden)", NamedTextColor.DARK_GRAY)).toLegacyText()
+                .append(Component.text("(Hidden)", NamedTextColor.DARK_GRAY))
         }
     }

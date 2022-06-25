@@ -61,15 +61,23 @@ class PaperEnvironment : Environment {
         return itemMeta.displayName()
     }
 
+    override fun displayName(itemMeta: ItemMeta, component: Component?) {
+        itemMeta.displayName(component)
+    }
+
     override fun lore(itemStack: ItemStack): List<Component>? {
         return itemStack.lore()?.toList()
     }
 
-    override fun lore(itemStack: ItemStack, lore: List<Component>) {
+    override fun lore(itemStack: ItemStack, lore: List<Component>?) {
         itemStack.lore(lore)
     }
 
-    override fun lore(meta: ItemMeta, lore: List<Component>) {
+    override fun lore(meta: ItemMeta): List<Component>? {
+        return meta.lore()
+    }
+
+    override fun lore(meta: ItemMeta, lore: List<Component>?) {
         meta.lore(lore)
     }
 
@@ -106,6 +114,10 @@ class PaperEnvironment : Environment {
         return deathEvent.deathMessage()
     }
 
+    override fun deathMessage(deathEvent: PlayerDeathEvent, component: Component?) {
+        deathEvent.deathMessage(component)
+    }
+
     override fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?) {
         joinEvent.joinMessage(component)
     }
@@ -126,19 +138,31 @@ class PaperEnvironment : Environment {
         world.sendActionBar(component)
     }
 
-    override fun setPlayerListHeader(player: Player, component: Component) {
+    override fun playerListHeader(player: Player, component: Component) {
         player.sendPlayerListHeader(component)
     }
 
-    override fun setPlayerListFooter(player: Player, component: Component) {
+    override fun playerListHeader(player: Player): Component {
+        return player.playerListHeader() ?: Component.empty()
+    }
+
+    override fun playerListFooter(player: Player, component: Component) {
         player.sendPlayerListFooter(component)
+    }
+
+    override fun playerListFooter(player: Player): Component {
+        return player.playerListFooter() ?: Component.empty()
     }
 
     override fun kickPlayer(player: Player, component: Component) {
         player.kick(component)
     }
 
-    override fun setPlayerListName(player: Player, component: Component?) {
+    override fun playerListName(player: Player, component: Component?) {
         player.playerListName(component)
+    }
+
+    override fun playerListName(player: Player): Component? {
+        return player.playerListName()
     }
 }

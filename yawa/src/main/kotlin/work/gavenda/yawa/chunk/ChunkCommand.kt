@@ -7,9 +7,8 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.compat.sendMessageCompat
 
-class ChunkCommand : Command(
-    commands = listOf("chunk", "yawa:chunk")
-) {
+class ChunkCommand : Command() {
+    override val commands = listOf("chunk")
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 

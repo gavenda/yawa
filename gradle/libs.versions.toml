@@ -10,6 +10,8 @@ log4j2 = "2.17.2"
 
 [libraries]
 kotlin-stdlib-jdk8 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-plugin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-json-serialization" }
 discord = { group = "net.dv8tion", name = "JDA", version.ref = "discord" }
 discord-webhooks = { group = "club.minnced", name = "discord-webhooks", version.ref = "discord-webhooks" }

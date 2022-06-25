@@ -21,8 +21,8 @@
 package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.compat.sendPlayerListFooterCompat
-import work.gavenda.yawa.api.compat.sendPlayerListHeaderCompat
+import work.gavenda.yawa.api.compat.playerListFooterCompat
+import work.gavenda.yawa.api.compat.playerListHeaderCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.server
 
@@ -31,16 +31,8 @@ class TabListTask : Runnable {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {
-            player.sendPlayerListHeaderCompat(
-                Placeholders
-                    .withContext(player)
-                    .parse(Config.TabList.Header)
-            )
-            player.sendPlayerListFooterCompat(
-                Placeholders
-                    .withContext(player)
-                    .parse(Config.TabList.Footer)
-            )
+            player.playerListHeaderCompat = Placeholders.withContext(player).parse(Config.TabList.Header)
+            player.playerListFooterCompat = Placeholders.withContext(player).parse(Config.TabList.Footer)
         }
     }
 }

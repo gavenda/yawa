@@ -52,12 +52,10 @@ class PlayerHeadListener : Listener {
         }
 
         skull.owningPlayer = victim
-        skull.loreCompat(
-            listOf(
-                Component.text("Trophy rewarded by yeeting ")
-                    .append(playerName)
-                    .append(Component.text(" out of existence"))
-            )
+        skull.loreCompat = listOf(
+            Component.text("Trophy rewarded by yeeting ")
+                .append(playerName)
+                .append(Component.text(" out of existence"))
         )
         item.itemMeta = skull
 

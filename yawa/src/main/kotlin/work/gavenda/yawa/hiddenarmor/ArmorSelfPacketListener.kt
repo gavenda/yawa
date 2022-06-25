@@ -7,6 +7,9 @@ import com.comphenix.protocol.events.PacketEvent
 import org.bukkit.inventory.ItemStack
 import work.gavenda.yawa.plugin
 
+/**
+ * Hides armor from yourself.
+ */
 class ArmorSelfPacketListener : PacketAdapter(
     params()
         .plugin(plugin)
@@ -18,11 +21,11 @@ class ArmorSelfPacketListener : PacketAdapter(
         val packet = event.packet
         val player = event.player
 
-        if (HiddenArmorFeature.shouldNotHide(player)) return
+        if (HiddenArmorFeature.shouldNotHideSelf(player)) return
 
-        // SET_SLOT
         val windowId = packet.integers.read(0)
 
+        // SET_SLOT - Change with placeholder on equip
         if (packet.type == PacketType.Play.Server.SET_SLOT && windowId == 0) {
             val slot = packet.integers.read(2)
             if (slot in 5..8) {
@@ -33,7 +36,7 @@ class ArmorSelfPacketListener : PacketAdapter(
             }
         }
 
-        // WINDOW_ITEMS
+        // WINDOW_ITEMS - Change item with placeholder on equipped slot
         if (packet.type == PacketType.Play.Server.WINDOW_ITEMS && windowId == 0) {
             val itemStacks = packet.itemListModifier.read(0)
             itemStacks.subList(5, 9).forEach { itemStack: ItemStack ->

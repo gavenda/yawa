@@ -11,10 +11,8 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.sendMessageUsingKey
 
-class ToggleArmorCommand : Command(
-    permission = Permission.TOGGLE_HIDDEN_ARMOR,
-    commands = listOf("toggle-armor")
-) {
+class ToggleArmorCommand : Command() {
+    override val permission = Permission.TOGGLE_HIDDEN_ARMOR
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
@@ -43,10 +41,6 @@ class ToggleArmorCommand : Command(
             val armorDb = PlayerArmorDb.findById(sender.uniqueId) ?: PlayerArmorDb.new(sender.uniqueId) {}
             armorDb.hidden = newHiddenValue
         }
-    }
-
-    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
-        return emptyList()
     }
 
 }

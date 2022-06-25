@@ -37,6 +37,7 @@ import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import work.gavenda.yawa.api.asAudience
+import work.gavenda.yawa.api.toBaseComponent
 import work.gavenda.yawa.api.toComponent
 import work.gavenda.yawa.api.toLegacyText
 import java.util.*
@@ -61,6 +62,11 @@ class SpigotEnvironment : Environment {
         return itemMeta.displayName.toComponent()
     }
 
+    @Suppress("DEPRECATION")
+    override fun displayName(itemMeta: ItemMeta, component: Component?) {
+        itemMeta.setDisplayNameComponent(component?.toBaseComponent())
+    }
+
     override fun playSound(world: World, sound: Sound) {
         world.players.forEach { player ->
             player.asAudience().playSound(sound)
@@ -73,16 +79,22 @@ class SpigotEnvironment : Environment {
     }
 
     @Suppress("DEPRECATION")
-    override fun lore(itemStack: ItemStack, lore: List<Component>) {
-        val meta = itemStack.itemMeta?.apply {
-            setLore(lore.map { it.toLegacyText() })
+    override fun lore(itemStack: ItemStack, lore: List<Component>?) {
+        itemStack.itemMeta = itemStack.itemMeta?.apply {
+            setLore(lore?.map { it.toLegacyText() })
         }
-        itemStack.itemMeta = meta
     }
 
     @Suppress("DEPRECATION")
-    override fun lore(meta: ItemMeta, lore: List<Component>) {
-        meta.lore = lore.map { it.toLegacyText() }
+    override fun lore(meta: ItemMeta): List<Component>? {
+        return meta.loreComponents?.map {
+            it.toComponent()
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    override fun lore(meta: ItemMeta, lore: List<Component>?) {
+        meta.lore = lore?.map { it.toLegacyText() }
     }
 
     @Suppress("DEPRECATION")
@@ -116,6 +128,11 @@ class SpigotEnvironment : Environment {
         return deathEvent.deathMessage?.let {
             Component.text(it)
         }
+    }
+
+    @Suppress("DEPRECATION")
+    override fun deathMessage(deathEvent: PlayerDeathEvent, component: Component?) {
+        deathEvent.deathMessage = component?.toLegacyText()
     }
 
     @Suppress("DEPRECATION")
@@ -162,13 +179,24 @@ class SpigotEnvironment : Environment {
     }
 
     @Suppress("DEPRECATION")
-    override fun setPlayerListHeader(player: Player, component: Component) {
+    override fun playerListHeader(player: Player, component: Component) {
         player.asAudience().sendPlayerListHeader(component)
     }
 
     @Suppress("DEPRECATION")
-    override fun setPlayerListFooter(player: Player, component: Component) {
+    override fun playerListHeader(player: Player): Component {
+        return player.playerListHeader?.toComponent() ?: Component.empty()
+    }
+
+    @Suppress("DEPRECATION")
+    override fun playerListFooter(player: Player, component: Component) {
         player.asAudience().sendPlayerListFooter(component)
+    }
+
+
+    @Suppress("DEPRECATION")
+    override fun playerListFooter(player: Player): Component {
+        return player.playerListFooter?.toComponent() ?: Component.empty()
     }
 
     @Suppress("DEPRECATION")
@@ -177,7 +205,12 @@ class SpigotEnvironment : Environment {
     }
 
     @Suppress("DEPRECATION")
-    override fun setPlayerListName(player: Player, component: Component?) {
+    override fun playerListName(player: Player, component: Component?) {
         player.setPlayerListName(component?.toLegacyText())
+    }
+
+    @Suppress("DEPRECATION")
+    override fun playerListName(player: Player): Component? {
+        return player.playerListName.toComponent()
     }
 }

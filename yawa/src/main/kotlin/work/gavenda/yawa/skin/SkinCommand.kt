@@ -27,10 +27,8 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.compat.sendMessageCompat
 
-class SkinCommand : Command(
-    commands = listOf("skin", "yawa:skin")
-) {
-
+class SkinCommand : Command() {
+    override val commands = listOf("skin")
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 

@@ -27,10 +27,9 @@ import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.sendMessageUsingKey
 
-class PingCommand : Command(
-    permission = "yawa.ping",
-    commands = listOf("ping", "yawa:ping")
-) {
+class PingCommand : Command() {
+    override val permission = "yawa.ping"
+    override val commands = listOf("ping")
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 

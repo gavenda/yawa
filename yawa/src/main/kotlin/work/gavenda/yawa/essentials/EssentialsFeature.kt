@@ -20,9 +20,44 @@
 
 package work.gavenda.yawa.essentials
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.PluginFeature
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.*
 
 object EssentialsFeature : PluginFeature {
     override val disabled get() = Config.Essentials.Disabled
+
+    private val homeCommand = HomeCommand()
+    private val setHomeCommand = SetHomeCommand()
+    private val teleportSpawnCommand = TeleportSpawnCommand()
+
+    override fun createTables() {
+        transaction {
+            SchemaUtils.create(PlayerHomeSchema)
+        }
+    }
+
+    override fun enableCommands() {
+        plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(homeCommand)
+        plugin.getCommand(Command.HOME_SET)?.setExecutor(setHomeCommand)
+        plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
+    }
+
+    override fun disableCommands() {
+        plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.HOME_SET)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
+    }
+
+    override fun registerPaperEventListeners() {
+        pluginManager.registerEvents(homeCommand)
+        pluginManager.registerEvents(setHomeCommand)
+        pluginManager.registerEvents(teleportSpawnCommand)
+    }
+
+    override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(teleportSpawnCommand)
+        pluginManager.unregisterEvents(setHomeCommand)
+        pluginManager.unregisterEvents(homeCommand)
+    }
 }

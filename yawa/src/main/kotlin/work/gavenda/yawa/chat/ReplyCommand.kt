@@ -31,10 +31,8 @@ import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
 
-class ReplyCommand : Command(
-    commands = listOf("reply", "yawa:reply", "r")
-) {
-
+class ReplyCommand : Command() {
+    override val commands = listOf("reply", "r")
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
         val message = args.joinToString(separator = " ")

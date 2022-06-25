@@ -29,19 +29,26 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import work.gavenda.yawa.api.compat.sendMessageCompat
 
-const val TEXT_NO_PERMISSION = "You do not have enough permissions to use this command"
-val COMMAND_NO_PERMISSION = Component.text(TEXT_NO_PERMISSION, NamedTextColor.RED)
-
 /**
  * Represents a command executor.
- * @param permission permission needed to execute the command,
- * @param commands list of commands or aliases for this command, required for async tab completion
  */
-abstract class Command(
-    private val permission: String = "",
-    private val commands: List<String> = emptyList()
-) : TabExecutor, Listener {
+abstract class Command : TabExecutor, Listener {
     private val subCommands = mutableMapOf<String, Command>()
+
+    companion object {
+        const val NO_PERMISSION_TEXT = "You do not have enough permissions to use this command"
+        val NO_PERMISSION = Component.text(NO_PERMISSION_TEXT, NamedTextColor.RED)
+    }
+
+    /**
+     * Permission needed to execute the command.
+     */
+    open val permission: String = ""
+
+    /**
+     * List of commands or aliases for this command, needed for async tab completion
+     */
+    open val commands = listOf<String>()
 
     val subCommandKeys
         get() = subCommands.keys.toSet()
@@ -77,7 +84,7 @@ abstract class Command(
             }
         }
         if (!hasPermission(sender, parent)) {
-            sender.sendMessageCompat(COMMAND_NO_PERMISSION)
+            sender.sendMessageCompat(NO_PERMISSION)
             return
         }
         parent.execute(sender, args)
@@ -149,5 +156,7 @@ abstract class Command(
     }
 
     abstract fun execute(sender: CommandSender, args: List<String>)
-    abstract fun onTab(sender: CommandSender, args: List<String>): List<String>
+    open fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return emptyList()
+    }
 }

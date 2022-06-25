@@ -49,42 +49,68 @@ private val pluginRuntimeEnvironment: Environment by lazy {
     }
 }
 
-val ItemMeta.displayNameCompat
+var ItemMeta.displayNameCompat
     get(): Component? {
         return pluginRuntimeEnvironment.displayName(this)
     }
+    set(value) = pluginRuntimeEnvironment.displayName(this, value)
 
-fun ItemStack.loreCompat(): List<Component>? {
-    return pluginRuntimeEnvironment.lore(this)
-}
+var ItemStack.loreCompat: List<Component>?
+    get() {
+        return pluginRuntimeEnvironment.lore(this)
+    }
+    set(lore) {
+        pluginRuntimeEnvironment.lore(this, lore)
+    }
 
-fun ItemStack.loreCompat(lore: List<Component>) {
-    pluginRuntimeEnvironment.lore(this, lore)
-}
+var ItemMeta.loreCompat: List<Component>?
+    get() {
+        return pluginRuntimeEnvironment.lore(this)
+    }
+    set(value) = pluginRuntimeEnvironment.lore(this, value)
 
-fun ItemMeta.loreCompat(lore: List<Component>) {
-    pluginRuntimeEnvironment.lore(this, lore)
-}
-
-val PlayerDeathEvent.deathMessageCompat
+var PlayerDeathEvent.deathMessageCompat
     get(): Component? {
         return pluginRuntimeEnvironment.deathMessage(this)
     }
+    set(value) = pluginRuntimeEnvironment.deathMessage(this, value)
 
 val Player.displayNameCompat
     get(): Component {
         return pluginRuntimeEnvironment.displayName(this)
     }
 
-val PlayerQuitEvent.quitMessageCompat
+var PlayerQuitEvent.quitMessageCompat
     get(): Component? {
         return pluginRuntimeEnvironment.quitMessage(this)
     }
+    set(value) = pluginRuntimeEnvironment.quitMessage(this, value)
 
-val PlayerJoinEvent.joinMessageCompat
+var PlayerJoinEvent.joinMessageCompat
     get(): Component? {
         return pluginRuntimeEnvironment.joinMessage(this)
     }
+    set(value) = pluginRuntimeEnvironment.joinMessage(this, value)
+
+val Player.localeCompat: Locale get() = pluginRuntimeEnvironment.locale(this)
+
+var Player.playerListNameCompat: Component?
+    get() = pluginRuntimeEnvironment.playerListName(this)
+    set(value) = pluginRuntimeEnvironment.playerListName(this, value)
+
+var SkullMeta.loreCompat: List<Component>?
+    get() {
+        return pluginRuntimeEnvironment.lore(this)
+    }
+    set(value) = pluginRuntimeEnvironment.lore(this, value)
+
+var Player.playerListHeaderCompat: Component
+    get() = pluginRuntimeEnvironment.playerListHeader(this)
+    set(value) = pluginRuntimeEnvironment.playerListHeader(this, value)
+
+var Player.playerListFooterCompat: Component
+    get() = pluginRuntimeEnvironment.playerListFooter(this)
+    set(value) = pluginRuntimeEnvironment.playerListFooter(this, value)
 
 fun Entity.teleportAsyncCompat(
     location: Location,
@@ -97,26 +123,9 @@ fun Entity.teleportAsyncCompat(location: Location): CompletableFuture<Boolean> {
     return pluginRuntimeEnvironment.teleportAsync(this, location)
 }
 
-fun Player.localeCompat(): Locale {
-    return pluginRuntimeEnvironment.locale(this)
-}
-
-fun SkullMeta.loreCompat(lore: List<Component>) {
-    pluginRuntimeEnvironment.lore(this, lore)
-}
-
 fun Scoreboard.registerNewObjectiveCompat(name: String, criteria: String, displayName: Component): Objective {
     return pluginRuntimeEnvironment.registerNewObjective(this, name, criteria, displayName)
 }
-
-fun PlayerQuitEvent.quitMessageCompat(component: Component?) {
-    pluginRuntimeEnvironment.quitMessage(this, component)
-}
-
-fun PlayerJoinEvent.joinMessageCompat(component: Component?) {
-    pluginRuntimeEnvironment.joinMessage(this, component)
-}
-
 fun CommandSender.sendMessageCompat(component: Component) {
     pluginRuntimeEnvironment.sendMessage(this, component)
 }
@@ -133,18 +142,6 @@ fun World.playSoundCompat(sound: Sound) {
     pluginRuntimeEnvironment.playSound(this, sound)
 }
 
-fun Player.sendPlayerListHeaderCompat(component: Component) {
-    pluginRuntimeEnvironment.setPlayerListHeader(this, component)
-}
-
-fun Player.sendPlayerListFooterCompat(component: Component) {
-    pluginRuntimeEnvironment.setPlayerListFooter(this, component)
-}
-
 fun Player.kickCompat(component: Component) {
     pluginRuntimeEnvironment.kickPlayer(this, component)
-}
-
-fun Player.playerListNameCompat(component: Component?) {
-    pluginRuntimeEnvironment.setPlayerListName(this, component)
 }

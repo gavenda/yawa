@@ -28,10 +28,9 @@ import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.isAfk
 import work.gavenda.yawa.api.placeholder.Placeholders
 
-class AfkCommand : Command(
-    permission = Permission.AFK,
-    commands = listOf("afk", "yawa:afk")
-) {
+class AfkCommand : Command() {
+    override val permission = Permission.AFK
+    override val commands = listOf("afk")
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
@@ -47,10 +46,6 @@ class AfkCommand : Command(
             sender.world.sendMessageCompat(message)
         }
         sender.sendMessageUsingKey(Message.PlayerAfkStart)
-    }
-
-    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
-        return emptyList()
     }
 
 }

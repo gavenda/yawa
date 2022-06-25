@@ -28,10 +28,8 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
 import work.gavenda.yawa.api.compat.sendMessageCompat
 
-private val permissionCommands = listOf("permission", "yawa:permission")
-
-class PermissionCommand : Command(commands = permissionCommands) {
-
+class PermissionCommand : Command() {
+    override val commands = listOf("permission")
     override fun execute(sender: CommandSender, args: List<String>) {
         HelpList()
             .command(
@@ -55,8 +53,8 @@ class PermissionCommand : Command(commands = permissionCommands) {
     }
 }
 
-class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
-
+class PermissionPlayerCommand : Command() {
+    override val permission = Permission.PERMISSION_PLAYER
     override fun execute(sender: CommandSender, args: List<String>) = scheduler.runTaskAsynchronously(plugin) { _ ->
         if (args.size == 3) {
             val nameArg = args[0]
@@ -93,7 +91,8 @@ class PermissionPlayerCommand : Command(Permission.PERMISSION_PLAYER) {
     }
 }
 
-class PermissionGroupCommand : Command(Permission.PERMISSION_GROUP) {
+class PermissionGroupCommand : Command() {
+    override val permission = Permission.PERMISSION_GROUP
     override fun execute(sender: CommandSender, args: List<String>) = scheduler.runTaskAsynchronously(plugin) { _ ->
         if (args.size == 3) {
             val groupNameArg = args[0]

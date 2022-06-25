@@ -27,8 +27,6 @@ object Permission {
     const val RELOAD = "yawa.reload"
     const val FEATURE = "yawa.feature"
     const val AFK = "yawa.afk"
-    const val IMAGE_UPLOAD = "yawa.image.upload"
-    const val IMAGE_DELETE = "yawa.image.delete"
     const val TOGGLE_HIDDEN_ARMOR = "yawa.hidden-armor.toggle"
     const val SKIN_PLAYER = "yawa.skin.player"
     const val SKIN_RESET = "yawa.skin.reset"
@@ -37,4 +35,7 @@ object Permission {
     const val PERMISSION_GROUP = "yawa.permission.group"
     const val CHUNK_MARK = "yawa.chunk.mark"
     const val CHUNK_UNMARK = "yawa.chunk.unmark"
+    const val ESSENTIALS_HOME_TELEPORT = "yawa.essentials.home.teleport"
+    const val ESSENTIALS_HOME_SET = "yawa.essentials.home.set"
+    const val ESSENTIALS_TELEPORT_SPAWN = "yawa.essentials.teleport.spawn"
 }

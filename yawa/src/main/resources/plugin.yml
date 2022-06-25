@@ -25,7 +25,7 @@ commands:
     description: Toggles being AFK. (Away from Keyboard)
     permission: yawa.afk
     usage: /<command>
-  toggle-armor:
+  togglearmor:
     description: Toggle armor visibility.
     permission: yawa.hidden-armor.toggle
     usage: /<command>
@@ -52,6 +52,15 @@ commands:
   chunk:
     description: Manages the current chunk.
     usage: /<command>
+  sethome:
+    description: Set the current location as your home.
+    usage: /<command>
+  home:
+    description: Teleport to your home.
+    usage: /<command>
+  spawn:
+    description: Teleport to spawn.
+    usage: /<command>
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.
@@ -60,18 +69,16 @@ permissions:
       yawa.ping: true
       yawa.feature: true
       yawa.afk: true
-      yawa.image.*: true
       yawa.permission.*: true
       yawa.hidden-armor.*: true
       yawa.skin.*: true
+      yawa.essentials.*: true
+  yawa.hidden-armor.*:
+    description: Gives access to all hidden-armor commands.
+    children:
+      yawa.hidden-armor.toggle: true
   yawa.hidden-armor.toggle:
     description: Permission to toggle hidden armor.
-    default: true
-  yawa.image.upload:
-    description: Permission to upload images for use by the CustomImages plugin.
-    default: true
-  yawa.image.delete:
-    description: Permission to delete images in use by the CustomImages plugin.
     default: true
   yawa.ping:
     description: Permission to check your ping.
@@ -122,3 +129,18 @@ permissions:
   yawa.chunk.unmark:
     description: Permission to unmark a chunk as always loaded.
     default: op
+  yawa.essentials.*:
+    description: Gives access to use convenience/essential commands.
+    children:
+      yawa.essentials.home.teleport: true
+      yawa.essentials.home.set: true
+      yawa.essentials.teleport.spawn: true
+  yawa.essentials.home.teleport:
+    description: Permission to teleport home.
+    default: true
+  yawa.essentials.home.set:
+    description: Permission to set home.
+    default: true
+  yawa.essentials.teleport.spawn:
+    description: Permission to teleport to world spawn.
+    default: true

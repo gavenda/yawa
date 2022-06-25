@@ -74,7 +74,7 @@ class SleepListener(
                 .withContext(player)
                 .parseUsingDefaultLocale(Message.SleepKickMessageBroadcast)
 
-            event.quitMessageCompat(kickMessageBroadcast)
+            event.quitMessageCompat = kickMessageBroadcast
         }
     }
 

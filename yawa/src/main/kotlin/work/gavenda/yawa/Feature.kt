@@ -43,7 +43,6 @@ object Feature {
     const val SKIN = "skin"
     const val SLEEP = "sleep"
     const val TAB_LIST = "tab-list"
-    const val KEEP_ALIVE = "keep-alive"
 }
 
 /**

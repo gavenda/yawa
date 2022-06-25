@@ -62,8 +62,7 @@ private val featureEnableMap = mapOf(
     Feature.SIT to { SitFeature.enable() },
     Feature.SKIN to { SkinFeature.enable() },
     Feature.SLEEP to { SleepFeature.enable() },
-    Feature.TAB_LIST to { TabListFeature.enable() },
-    Feature.KEEP_ALIVE to { Yawa.Instance.adjustKeepAliveTimeout() },
+    Feature.TAB_LIST to { TabListFeature.enable() }
 )
 
 private val featureDisableMap = mapOf(
@@ -82,18 +81,16 @@ private val featureDisableMap = mapOf(
     Feature.SIT to { SitFeature.disable() },
     Feature.SKIN to { SkinFeature.disable() },
     Feature.SLEEP to { SleepFeature.disable() },
-    Feature.TAB_LIST to { TabListFeature.disable() },
-    Feature.KEEP_ALIVE to { Yawa.Instance.resetKeepAliveTimeout() },
+    Feature.TAB_LIST to { TabListFeature.disable() }
 )
 
-private val featureSwitch = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
-private val yawaCommands = listOf("yawa", "yawa:yawa")
+private val FEATURE_SWITCH = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABLE)
 
 /**
  * Plugin main command.
  */
-class YawaCommand : Command(commands = yawaCommands) {
-
+class YawaCommand : Command() {
+    override val commands = listOf("yawa")
     override fun execute(sender: CommandSender, args: List<String>) {
         HelpList()
             .command("yawa reload", listOf("<config>"), "Reloads the plugin", Permission.RELOAD)
@@ -116,7 +113,8 @@ class YawaCommand : Command(commands = yawaCommands) {
 /**
  * Enable or disable a feature.
  */
-class YawaFeatureCommand : Command(Permission.FEATURE) {
+class YawaFeatureCommand : Command() {
+    override val permission = Permission.FEATURE
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (args.size != 2) return
@@ -124,7 +122,7 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
         val feature = args[0]
         val switch = args[1]
 
-        if (featureSwitch.contains(switch).not()) {
+        if (FEATURE_SWITCH.contains(switch).not()) {
             sender.sendMessageUsingKey(Message.FeatureValueInvalid)
             return
         }
@@ -159,7 +157,7 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> featureEnableMap.keys.toList()
-            2 -> featureSwitch
+            2 -> FEATURE_SWITCH
             else -> emptyList()
         }
     }
@@ -168,7 +166,8 @@ class YawaFeatureCommand : Command(Permission.FEATURE) {
 /**
  * Reloads the plugin.
  */
-class YawaReloadCommand : Command(Permission.RELOAD) {
+class YawaReloadCommand : Command() {
+    override val permission = Permission.RELOAD
     override fun execute(sender: CommandSender, args: List<String>) {
         when (args.size) {
             1 -> {

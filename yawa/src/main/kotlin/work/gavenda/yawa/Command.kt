@@ -29,8 +29,10 @@ object Command {
     const val PERMISSION = "permission"
     const val WHISPER = "whisper"
     const val REPLY = "reply"
-    const val IMAGE_UPLOAD = "imgup"
-    const val IMAGE_DELETE = "imgdel"
     const val CHUNK = "chunk"
     const val ROOT = "yawa"
+    const val TOGGLE_ARMOR = "toggle-armor"
+    const val HOME_SET = "set-home"
+    const val HOME_TELEPORT = "home"
+    const val TELEPORT_SPAWN = "spawn"
 }

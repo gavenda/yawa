@@ -44,23 +44,29 @@ interface Environment {
     fun sendMessage(world: World, component: Component)
     fun sendActionBar(world: World, component: Component)
     fun playSound(world: World, sound: Sound)
-    fun setPlayerListHeader(player: Player, component: Component)
-    fun setPlayerListFooter(player: Player, component: Component)
+    fun playerListHeader(player: Player, component: Component)
+    fun playerListHeader(player: Player): Component
+    fun playerListFooter(player: Player, component: Component)
+    fun playerListFooter(player: Player): Component
     fun kickPlayer(player: Player, component: Component)
-    fun setPlayerListName(player: Player, component: Component?)
+    fun playerListName(player: Player, component: Component?)
+    fun playerListName(player: Player): Component?
     fun deathMessage(deathEvent: PlayerDeathEvent): Component?
+    fun deathMessage(deathEvent: PlayerDeathEvent, component: Component?)
     fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?)
     fun joinMessage(joinEvent: PlayerJoinEvent): Component?
     fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?)
     fun quitMessage(quitEvent: PlayerQuitEvent): Component?
     fun registerNewObjective(scoreboard: Scoreboard, name: String, criteria: String, displayName: Component): Objective
     fun lore(meta: SkullMeta, lore: List<Component>)
-    fun lore(meta: ItemMeta, lore: List<Component>)
-    fun lore(itemStack: ItemStack, lore: List<Component>)
+    fun lore(meta: ItemMeta, lore: List<Component>?)
+    fun lore(meta: ItemMeta): List<Component>?
+    fun lore(itemStack: ItemStack, lore: List<Component>?)
     fun lore(itemStack: ItemStack): List<Component>?
     fun locale(player: Player): Locale
     fun displayName(player: Player): Component
     fun displayName(itemMeta: ItemMeta): Component?
+    fun displayName(itemMeta: ItemMeta, component: Component?)
     fun teleportAsync(entity: Entity, location: Location): CompletableFuture<Boolean>
     fun teleportAsync(entity: Entity, location: Location, cause: TeleportCause): CompletableFuture<Boolean>
 }

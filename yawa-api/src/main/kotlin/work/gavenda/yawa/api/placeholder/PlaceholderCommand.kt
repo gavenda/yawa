@@ -25,9 +25,9 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.sendMessageCompat
 
-private val placeholderCommands = listOf("placeholders", "yawaapi:placeholders")
-
-class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) {
+class PlaceholderCommand : Command() {
+    override var permission: String = "yawa.api.placeholder"
+    override val commands: List<String> = listOf("placeholders")
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
@@ -43,5 +43,4 @@ class PlaceholderCommand : Command("yawa.api.placeholder", placeholderCommands) 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return emptyList()
     }
-
 }

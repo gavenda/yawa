@@ -44,7 +44,6 @@ object Message {
     const val PluginReload = "plugin-reload"
     const val PluginReloadConfig = "plugin-reload-config"
     const val PermissionPlayerNotFound = "permission-player-not-found"
-    const val PermissionPlayerNotLoggedIn = "permission-player-not-logged-in"
     const val PermissionGroupNotFound = "permission-group-not-found"
     const val PermissionApplied = "permission-applied"
     const val PlayerPingResponse = "player-ping-response"
@@ -77,19 +76,17 @@ object Message {
     const val SleepKickMessageBroadcast = "sleep-kick-broadcast"
     const val SleepKickRemainingBroadcast = "sleep-kick-remaining-broadcast"
     const val SleepKickAlert = "sleep-kick-alert"
-    const val ImageUploadInvalid = "image-upload-invalid"
-    const val ImageUploadError = "image-upload-error"
-    const val ImageUploadSuccess = "image-upload-success"
-    const val ImageUploadBegin = "image-upload-begin"
-    const val ImageDeleteSuccess = "image-delete-success"
-    const val ImageDeleteNotFound = "image-delete-not-found"
-    const val ImageDeleteError = "image-delete-error"
     const val ChunkMarked = "chunk-marked"
     const val ChunkUnmarked = "chunk-unmarked"
     const val NotifyItemPickup = "notify-item-pickup"
     const val NotifyItemPickupRecent = "notify-item-pickup-recent"
     const val HiddenArmorVisible = "hidden-armor-visible"
     const val HiddenArmorInvisible = "hidden-armor-invisible"
+    const val EssentialsTeleportSpawn = "essentials-teleport-spawn"
+    const val EssentialsTeleportHome = "essentials-teleport-home"
+    const val EssentialsTeleportErrorNoOverworld = "essentials-teleport-error-no-overworld"
+    const val EssentialsTeleportErrorNoHome = "essentials-teleport-error-no-home"
+    const val EssentialsTeleportErrorNoHomeWorld = "essentials-teleport-error-no-home-world"
 }
 
 /**
@@ -146,7 +143,7 @@ class MessagesDefaultContext : MessagesContext {
 class MessagesPlayerContext(player: Player) : MessagesContext {
     private val locale = if (player is TemporaryPlayer) {
         Locale.getDefault()
-    } else player.localeCompat()
+    } else player.localeCompat
     private val messages = ResourceBundle.getBundle("i18n.messages", locale)
 
     /**

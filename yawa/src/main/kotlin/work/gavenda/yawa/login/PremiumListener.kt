@@ -36,18 +36,16 @@ class PremiumListener : Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         if (event.player.isVerified.not()) return
-        val joinMessage = event.player.verifiedName
+        event.joinMessageCompat = event.player.verifiedName
             .append(Component.text(" joined the game", NamedTextColor.YELLOW))
-        event.joinMessageCompat(joinMessage)
-        event.player.playerListNameCompat(event.player.verifiedName)
+        event.player.playerListNameCompat = event.player.verifiedName
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         if (event.player.isVerified.not()) return
-        val quitMessage = event.player.verifiedName
+        event.quitMessageCompat = event.player.verifiedName
             .append(Component.text(" left the game", NamedTextColor.YELLOW))
-        event.quitMessageCompat(quitMessage)
     }
 
 }
