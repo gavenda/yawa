@@ -56,6 +56,11 @@ interface PluginFeature {
     val disabled: Boolean
 
     /**
+     * Returns true if feature is enabled, otherwise false.
+     */
+    val enabled: Boolean get() = !disabled
+
+    /**
      * Enable this feature.
      */
     fun enable() {

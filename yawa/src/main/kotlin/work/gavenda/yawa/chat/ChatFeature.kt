@@ -20,7 +20,9 @@
 
 package work.gavenda.yawa.chat
 
+import com.comphenix.protocol.async.AsyncListenerHandler
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.placeholder.Placeholders
 
 object ChatFeature : PluginFeature {
     override val disabled get() = Config.Chat.Disabled
@@ -29,6 +31,16 @@ object ChatFeature : PluginFeature {
     private val replyCommand = ReplyCommand()
     private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
+    private val equipmentPlaceholder = EquipmentPlaceholder()
+    private lateinit var chatPreviewHandler: AsyncListenerHandler
+
+    override fun registerPlaceholders() {
+        Placeholders.register(equipmentPlaceholder)
+    }
+
+    override fun unregisterPlaceholders() {
+        Placeholders.unregister(equipmentPlaceholder)
+    }
 
     override fun enableCommands() {
         plugin.getCommand(Command.WHISPER)?.setExecutor(whisperCommand)
@@ -38,6 +50,17 @@ object ChatFeature : PluginFeature {
     override fun disableCommands() {
         plugin.getCommand(Command.WHISPER)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.REPLY)?.setExecutor(DisabledCommand)
+    }
+
+    override fun registerEventListeners() {
+        chatPreviewHandler = protocolManager
+            .asynchronousManager
+            .registerAsyncHandler(ChatPreviewListener())
+            .apply { start() }
+    }
+
+    override fun unregisterEventListeners() {
+        protocolManager.asynchronousManager.unregisterAsyncHandler(chatPreviewHandler)
     }
 
     override fun registerPaperEventListeners() {

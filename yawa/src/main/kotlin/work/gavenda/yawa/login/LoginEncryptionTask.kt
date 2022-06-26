@@ -32,9 +32,11 @@ import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
 import work.gavenda.yawa.api.spoofedUuid
+import work.gavenda.yawa.chat.ChatFeature
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 
@@ -173,7 +175,12 @@ class LoginEncryptionTask(
 
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
             strings.write(0, name)
-            getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, profileKeyData)
+
+            if (ChatFeature.disabled) {
+                getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, profileKeyData)
+            } else {
+                getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, Optional.empty())
+            }
         }
         try {
             // We don't want to handle our own packets so ignore filters

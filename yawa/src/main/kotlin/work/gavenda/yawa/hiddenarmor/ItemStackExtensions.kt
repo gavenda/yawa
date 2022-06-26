@@ -4,11 +4,12 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Material
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
+import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.compat.loreCompat
-import java.util.*
 
 @Suppress("DEPRECATION")
 fun ItemStack.hideArmor(): ItemStack {
@@ -19,20 +20,44 @@ fun ItemStack.hideArmor(): ItemStack {
     val itemMeta = itemMeta.clone()
     val lore: List<Component> = itemMeta.clone().loreCompat ?: listOf()
 
+    // Applying item meta and lore
+    itemMeta.loreCompat = lore + itemDurability
+
     // Changing armor material and name to its placeholder's, if it has one
-    val button = armorButtonMaterial
+    val button = hiddenArmorMaterial
     if (button != null) {
         itemMeta.displayNameCompat = armorName
         type = button
     }
 
-    // Applying item meta and lore
-    itemMeta.loreCompat = lore + itemDurability
     setItemMeta(itemMeta)
     return this
 }
 
-val ItemStack.armorButtonMaterial: Material?
+fun ItemStack.unhideArmor(slot: EquipmentSlot) {
+    val postfix = when (slot) {
+        EquipmentSlot.HEAD -> "HELMET"
+        EquipmentSlot.CHEST -> "CHESTPLATE"
+        EquipmentSlot.LEGS -> "LEGGINGS"
+        EquipmentSlot.FEET -> "BOOTS"
+        else -> ""
+    }
+    val prefix = when (type) {
+        Material.POLISHED_BLACKSTONE_BUTTON -> "NETHERITE_"
+        Material.WARPED_BUTTON -> "DIAMOND_"
+        Material.BIRCH_BUTTON -> "GOLDEN_"
+        Material.STONE_BUTTON -> "IRON_"
+        Material.ACACIA_BUTTON -> "LEATHER_"
+        Material.JUNGLE_BUTTON -> "CHAINMAIL_"
+        Material.CRIMSON_BUTTON -> "TURTLE_"
+        else -> ""
+    }
+    if (prefix.isNotBlank() && postfix.isNotBlank()) {
+        type = Material.valueOf(prefix + postfix)
+    }
+}
+
+val ItemStack.hiddenArmorMaterial: Material?
     get() {
         if (!armor) return null
         val m = type.toString()
@@ -84,7 +109,7 @@ val ItemStack.itemDurability: Component
                 NamedTextColor.YELLOW
             }
 
-            return Component.text("Durability: ", NamedTextColor.WHITE)
+            return Component.text("Durability: ", NamedTextColor.GRAY)
                 .append(Component.text("$durabilityPercentage%", TextColor.color(color)))
         }
         return Component.empty()
@@ -92,12 +117,9 @@ val ItemStack.itemDurability: Component
 
 val ItemStack.armorName: Component?
     get() {
-        val item = type
-        if (!item.toString().contains("_")) return null
-        val splitName = item.toString().split("_").toTypedArray()
-        val mat = splitName[0].substring(1).lowercase(Locale.getDefault())
-        val type = splitName[1].substring(1).lowercase(Locale.getDefault())
-        val name = splitName[0].substring(0, 1) + mat + " " + splitName[1].substring(0, 1) + type
+        val name = type.name
+            .replace("_", " ")
+            .capitalizeFully()
 
         return if (itemMeta.hasDisplayName()) {
             itemMeta.displayNameCompat
