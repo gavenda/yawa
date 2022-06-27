@@ -22,8 +22,10 @@ package work.gavenda.yawa.api
 
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import java.awt.Color
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -111,4 +113,33 @@ fun String.capitalizeFully(): String {
     }
 
     return stringBuilder.toString()
+}
+
+fun TextColor.asAwtColor(): Color {
+    val hsv = asHSV()
+    return Color.getHSBColor(hsv.h(), hsv.s(), hsv.v())
+}
+
+fun Int.toRomanNumeral(): String {
+    val numbers = linkedMapOf(
+        1000 to "M",
+        900 to "CM",
+        500 to "D",
+        400 to "CD",
+        100 to "C",
+        90 to "XC",
+        50 to "L",
+        40 to "XL",
+        10 to "X",
+        9 to "IX",
+        5 to "V",
+        4 to "IV",
+        1 to "I"
+    )
+    for (i in numbers.keys){
+        if (this >= i) {
+            return numbers[i] + (this - i).toRomanNumeral()
+        }
+    }
+    return ""
 }

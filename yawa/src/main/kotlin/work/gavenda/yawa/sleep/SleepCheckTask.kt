@@ -30,6 +30,7 @@ import work.gavenda.yawa.api.compat.sendActionBarCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Checks per world if there are people beginning to sleep.
@@ -41,7 +42,7 @@ class SleepCheckTask(
 
     private fun checkWorld(world: World) {
         val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
-        val sleepRequired = world.players.size / 2
+        val sleepRequired = ceil(world.players.size / 2.0)
 
         // Someone is asleep, and we lack more people.
         when {

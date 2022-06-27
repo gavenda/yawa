@@ -128,27 +128,6 @@ fun PlaceholderContext.parseUsingDefaultLocale(key: String): Component {
 }
 
 /**
- * Downloads the URL to the following file.
- * @param path the path to download into
- * @return total bytes transferred
- */
-fun URL.downloadTo(path: Path): Long {
-    var bytesTransferred = 0L
-    var availableBytes: Long
-
-    Channels.newChannel(openStream()).use { readableByteChannel ->
-        FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.WRITE).use { fileChannel ->
-            do {
-                availableBytes = fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
-                bytesTransferred += availableBytes
-            } while (availableBytes > 0)
-        }
-    }
-
-    return bytesTransferred
-}
-
-/**
  * Utility function for sending a message with locale and placeholder support depending on context.
  */
 fun CommandSender.sendMessageUsingKey(key: String) {
@@ -173,9 +152,4 @@ fun Player.discordAlert(text: String, color: TextColor = NamedTextColor.YELLOW) 
 
 fun Player.discordAlert(component: Component, color: TextColor = NamedTextColor.YELLOW) {
     discordAlert(component.toPlainText(), color)
-}
-
-fun TextColor.asAwtColor(): Color {
-    val hsv = asHSV()
-    return Color.getHSBColor(hsv.h(), hsv.s(), hsv.v())
 }

@@ -20,6 +20,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.entity.Player
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.asAwtColor
 import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders

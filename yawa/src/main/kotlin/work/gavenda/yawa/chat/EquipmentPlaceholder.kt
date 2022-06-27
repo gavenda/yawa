@@ -10,9 +10,10 @@ import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
-import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.placeholder.PlaceholderProvider
+import work.gavenda.yawa.api.clientDisplayName
+import work.gavenda.yawa.api.toRomanNumeral
 import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
 import work.gavenda.yawa.hiddenarmor.durabilityPercentage
 import work.gavenda.yawa.hiddenarmor.itemDurability
@@ -59,9 +60,7 @@ class EquipmentPlaceholder : PlaceholderProvider {
 
 val ItemStack.previewComponent: Component
     get() {
-        val materialName = Component.text(
-            type.name.replace("_", " ").capitalizeFully()
-        )
+        val materialName = Component.text(clientDisplayName)
         val displayName = if (hasItemMeta() && itemMeta.hasDisplayName()) {
             itemMeta.displayNameCompat
                 ?.color(NamedTextColor.AQUA)
@@ -85,13 +84,10 @@ val ItemStack.previewComponent: Component
                 if (enchantments.isNotEmpty()) {
                     builder.append(Component.newline())
                     enchantments.forEach { (enchantment, level) ->
+                        val enchantmentFullName = "${enchantment.clientDisplayName} ${level.toRomanNumeral()}"
+
                         builder.append(Component.newline())
-                        builder.append(
-                            Component.text(
-                                "${enchantment.key.key.capitalizeFully()} $level",
-                                NamedTextColor.GRAY
-                            )
-                        )
+                        builder.append(Component.text(enchantmentFullName, NamedTextColor.GRAY))
                     }
                 }
             }
