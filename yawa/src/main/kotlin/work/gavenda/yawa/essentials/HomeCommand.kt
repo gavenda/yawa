@@ -11,7 +11,7 @@ import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class HomeCommand : Command() {
     override val permission = Permission.ESSENTIALS_HOME_TELEPORT
-    override val commands = listOf("home")
+    override val commands = listOf("home", "h")
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
@@ -37,7 +37,7 @@ class HomeCommand : Command() {
                     scheduler.runTask(plugin) { _ ->
                         world.getChunkAtAsync(location).thenAccept {
                             sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
-                                sender.sendMessageUsingKey(Message.EssentialsTeleportHome)
+                                sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)
 
                             }
                         }

@@ -82,14 +82,17 @@ object Message {
     const val NotifyItemPickupRecent = "notify-item-pickup-recent"
     const val HiddenArmorVisible = "hidden-armor-visible"
     const val HiddenArmorInvisible = "hidden-armor-invisible"
-    const val EssentialsHomeSet = "essentials-home-set"
+    const val EssentialsLocationSet = "essentials-location-set"
+    const val EssentialsLocationTeleport = "essentials-location-teleport"
     const val EssentialsTeleportSpawn = "essentials-teleport-spawn"
-    const val EssentialsTeleportHome = "essentials-teleport-home"
+    const val EssentialsHomeTeleport = "essentials-home-teleport"
+    const val EssentialsHomeSet = "essentials-home-set"
     const val EssentialsTeleportDeath = "essentials-teleport-death"
     const val EssentialsTeleportErrorNoOverworld = "essentials-teleport-error-no-overworld"
     const val EssentialsTeleportErrorNoHome = "essentials-teleport-error-no-home"
     const val EssentialsTeleportErrorNoHomeWorld = "essentials-teleport-error-no-home-world"
     const val EssentialsTeleportErrorNoDeath = "essentials-teleport-error-no-death"
+    const val EssentialsTeleportErrorNoLocation = "essentials-teleport-error-no-location"
 }
 
 /**

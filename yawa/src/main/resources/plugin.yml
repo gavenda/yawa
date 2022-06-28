@@ -55,15 +55,26 @@ commands:
   sethome:
     description: Set the current location as your home.
     usage: /<command>
+    aliases: [ sh ]
   home:
     description: Teleport to your home.
     usage: /<command>
+    aliases: [ h ]
   spawn:
     description: Teleport to spawn.
     usage: /<command>
   back:
     description: Teleport to death location.
     usage: /<command>
+    aliases: [ b ]
+  setlocation:
+    description: Set the current location with a name.
+    usage: /<command>
+    aliases: [ sl ]
+  location:
+    description: Teleport to specified location.
+    usage: /<command>
+    aliases: [ loc ]
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.
@@ -139,6 +150,8 @@ permissions:
       yawa.essentials.home.set: true
       yawa.essentials.teleport.spawn: true
       yawa.essentials.teleport.death: true
+      yawa.essentials.location.teleport: true
+      yawa.essentials.location.set: true
   yawa.essentials.home.teleport:
     description: Permission to teleport home.
     default: true
@@ -150,4 +163,10 @@ permissions:
     default: true
   yawa.essentials.teleport.death:
     description: Permission to teleport to death location.
+    default: true
+  yawa.essentials.location.teleport:
+    description: Permission to teleport to specified location.
+    default: true
+  yawa.essentials.location.set:
+    description: Permission to teleport to set location.
     default: true

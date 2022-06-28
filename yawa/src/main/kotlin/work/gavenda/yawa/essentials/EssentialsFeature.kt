@@ -32,11 +32,14 @@ object EssentialsFeature : PluginFeature {
     private val setHomeCommand = SetHomeCommand()
     private val teleportSpawnCommand = TeleportSpawnCommand()
     private val backCommand = BackCommand()
+    private val locationCommand = LocationCommand()
+    private val setLocationCommand = SetLocationCommand()
     private val locationPlaceholder = LocationPlaceholder()
 
     override fun createTables() {
         transaction {
             SchemaUtils.create(PlayerHomeSchema)
+            SchemaUtils.create(PlayerLocationSchema)
         }
     }
 
@@ -53,6 +56,8 @@ object EssentialsFeature : PluginFeature {
         plugin.getCommand(Command.HOME_SET)?.setExecutor(setHomeCommand)
         plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
         plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(backCommand)
+        plugin.getCommand(Command.LOCATION_SET)?.setExecutor(setLocationCommand)
+        plugin.getCommand(Command.LOCATION_TELEPORT)?.setExecutor(locationCommand)
     }
 
     override fun disableCommands() {
@@ -60,6 +65,8 @@ object EssentialsFeature : PluginFeature {
         plugin.getCommand(Command.HOME_SET)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.LOCATION_SET)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.LOCATION_TELEPORT)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {
@@ -67,9 +74,13 @@ object EssentialsFeature : PluginFeature {
         pluginManager.registerEvents(setHomeCommand)
         pluginManager.registerEvents(teleportSpawnCommand)
         pluginManager.registerEvents(backCommand)
+        pluginManager.registerEvents(setLocationCommand)
+        pluginManager.registerEvents(locationCommand)
     }
 
     override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(locationCommand)
+        pluginManager.unregisterEvents(setLocationCommand)
         pluginManager.unregisterEvents(backCommand)
         pluginManager.unregisterEvents(teleportSpawnCommand)
         pluginManager.unregisterEvents(setHomeCommand)

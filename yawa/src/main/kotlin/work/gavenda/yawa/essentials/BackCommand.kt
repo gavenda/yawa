@@ -11,7 +11,7 @@ import work.gavenda.yawa.sendMessageUsingKey
 
 class BackCommand : Command() {
     override val permission = Permission.ESSENTIALS_TELEPORT_DEATH
-
+    override val commands = listOf("back", "b")
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 

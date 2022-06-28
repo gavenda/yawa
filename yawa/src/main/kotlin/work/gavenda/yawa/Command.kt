@@ -34,6 +34,8 @@ object Command {
     const val TOGGLE_ARMOR = "togglearmor"
     const val HOME_SET = "sethome"
     const val HOME_TELEPORT = "home"
+    const val LOCATION_SET = "setlocation"
+    const val LOCATION_TELEPORT = "location"
     const val TELEPORT_SPAWN = "spawn"
     const val TELEPORT_DEATH = "back"
 }

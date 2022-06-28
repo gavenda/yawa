@@ -8,6 +8,7 @@ import work.gavenda.yawa.api.Command
 
 class SetHomeCommand : Command() {
     override val permission = Permission.ESSENTIALS_HOME_SET
+    override val commands = listOf("sethome", "sh")
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
@@ -26,9 +27,5 @@ class SetHomeCommand : Command() {
 
             sender.sendMessageUsingKey(Message.EssentialsHomeSet)
         }
-    }
-
-    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
-        return emptyList()
     }
 }

@@ -39,12 +39,6 @@ import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toPlainText
 import work.gavenda.yawa.discord.DiscordFeature
 import work.gavenda.yawa.discord.avatarUrl
-import java.awt.Color
-import java.net.URL
-import java.nio.channels.Channels
-import java.nio.channels.FileChannel
-import java.nio.file.Path
-import java.nio.file.StandardOpenOption
 import java.util.concurrent.TimeUnit
 
 
@@ -108,34 +102,26 @@ fun PluginManager.unregisterEvents(listener: Listener) {
 /**
  * Extend placeholder context to parse for a player locale.
  */
-fun PlaceholderContext.parseWithLocale(player: Player, key: String): Component {
-    return parse(
-        Messages
-            .forPlayer(player)
-            .get(key)
-    )
+fun PlaceholderContext.parseWithLocale(player: Player, key: String, params: Map<String, Any?> = mapOf()): Component {
+    return parse(Messages.forPlayer(player).get(key), params)
 }
 
 /**
  * Extend placeholder context to parse for the server's default locale.
  */
-fun PlaceholderContext.parseUsingDefaultLocale(key: String): Component {
-    return parse(
-        Messages
-            .useDefault()
-            .get(key)
-    )
+fun PlaceholderContext.parseUsingDefaultLocale(key: String, params: Map<String, Any?> = mapOf()): Component {
+    return parse(Messages.useDefault().get(key), params)
 }
 
 /**
  * Utility function for sending a message with locale and placeholder support depending on context.
  */
-fun CommandSender.sendMessageUsingKey(key: String) {
+fun CommandSender.sendMessageUsingKey(key: String, params: Map<String, Any?> = mapOf()) {
     if (this is Player) {
         sendMessageCompat(
             Placeholders
                 .withContext(this)
-                .parseWithLocale(this, key)
+                .parseWithLocale(this, key, params)
         )
     } else {
         val message = Placeholders.deserialize(
