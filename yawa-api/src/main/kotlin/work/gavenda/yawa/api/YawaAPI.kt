@@ -24,7 +24,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import work.gavenda.yawa.api.compat.PluginEnvironment
-import work.gavenda.yawa.api.compat.pluginEnvironment
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.api.placeholder.PlaceholderCommand
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
@@ -52,7 +52,7 @@ class YawaAPI : JavaPlugin() {
         Placeholders.register(WorldPlaceholderProvider())
         Placeholders.register(ServerPlaceholderProvider())
 
-        if (pluginEnvironment == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             server.pluginManager.registerEvents(placeholderCommand, this)
         }
         getCommand("placeholders")?.setExecutor(placeholderCommand)
@@ -63,7 +63,7 @@ class YawaAPI : JavaPlugin() {
         adventure.close()
 
         getCommand("placeholders")?.setExecutor(null)
-        if (pluginEnvironment == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             HandlerList.unregisterAll(placeholderCommand)
         }
     }

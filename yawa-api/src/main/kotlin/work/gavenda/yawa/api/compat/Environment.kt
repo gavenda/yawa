@@ -22,8 +22,10 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World
+import org.bukkit.advancement.Advancement
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -50,7 +52,7 @@ interface Environment {
     fun playerListFooter(player: Player): Component
     fun kickPlayer(player: Player, component: Component)
     fun playerListName(player: Player, component: Component?)
-    fun playerListName(player: Player): Component?
+    fun playerListName(player: Player): Component
     fun deathMessage(deathEvent: PlayerDeathEvent): Component?
     fun deathMessage(deathEvent: PlayerDeathEvent, component: Component?)
     fun joinMessage(joinEvent: PlayerJoinEvent, component: Component?)
@@ -69,4 +71,6 @@ interface Environment {
     fun displayName(itemMeta: ItemMeta, component: Component?)
     fun teleportAsync(entity: Entity, location: Location): CompletableFuture<Boolean>
     fun teleportAsync(entity: Entity, location: Location, cause: TeleportCause): CompletableFuture<Boolean>
+    fun title(advancement: Advancement): Component
+    fun getChunkAtAsync(world: World, location: Location): CompletableFuture<Chunk>
 }

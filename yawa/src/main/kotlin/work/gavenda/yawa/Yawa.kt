@@ -20,7 +20,6 @@
 
 package work.gavenda.yawa
 
-import com.comphenix.protocol.utility.MinecraftReflection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import net.milkbowl.vault.chat.Chat
@@ -31,7 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.compat.PluginEnvironment
-import work.gavenda.yawa.api.compat.pluginEnvironment
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.discord.DiscordFeature
@@ -47,8 +46,6 @@ import work.gavenda.yawa.sit.SitFeature
 import work.gavenda.yawa.skin.SkinFeature
 import work.gavenda.yawa.sleep.SleepFeature
 import work.gavenda.yawa.tablist.TabListFeature
-import java.lang.reflect.Field
-import java.lang.reflect.Modifier
 
 
 /**
@@ -159,7 +156,7 @@ class Yawa : JavaPlugin() {
     }
 
     private fun registerRootCommand() {
-        if (pluginEnvironment == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             server.pluginManager.registerEvents(rootCommand, this)
         }
         getCommand(Command.ROOT)?.setExecutor(rootCommand)
@@ -167,7 +164,7 @@ class Yawa : JavaPlugin() {
 
     private fun unregisterRootCommand() {
         getCommand(Command.ROOT)?.setExecutor(null)
-        if (pluginEnvironment == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             HandlerList.unregisterAll(rootCommand)
         }
     }

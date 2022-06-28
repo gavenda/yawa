@@ -30,12 +30,19 @@ import work.gavenda.yawa.api.placeholder.PlaceholderProvider
  */
 class SleepPlaceholderProvider : PlaceholderProvider {
 
+    companion object {
+        const val SLEEPING = "world-sleeping"
+        const val SLEEPING_NEEDED = "world-sleeping-needed"
+        const val KICK_REMAINING = "sleep-kick-remaining"
+        const val KICK_SECONDS = "sleep-kick-seconds"
+    }
+
     override fun provideString(player: Player?, world: World?): Map<String, String?> {
         return mapOf(
-            "world-sleeping" to world?.sleepingPlayers?.size.toString(),
-            "world-sleeping-needed" to world?.sleepingNeeded.toString(),
-            "sleep-kick-remaining" to world?.remainingSeconds.toString(),
-            "sleep-kick-seconds" to Config.Sleep.KickSeconds.toString()
+            SLEEPING to world?.sleepingPlayers?.size.toString(),
+            SLEEPING_NEEDED to world?.sleepingNeeded.toString(),
+            KICK_REMAINING to world?.remainingSeconds.toString(),
+            KICK_SECONDS to Config.Sleep.KickSeconds.toString()
         )
     }
 }

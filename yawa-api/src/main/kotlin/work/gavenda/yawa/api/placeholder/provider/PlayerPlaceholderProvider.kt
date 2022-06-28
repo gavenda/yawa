@@ -24,6 +24,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.compat.displayNameCompat
+import work.gavenda.yawa.api.latencyInMillis
 import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 
 /**
@@ -32,8 +33,10 @@ import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 class PlayerPlaceholderProvider : PlaceholderProvider {
 
     companion object {
-        const val PLAYER_DISPLAY_NAME = "player-display-name"
-        const val PLAYER_NAME = "player-name"
+        const val LEVEL = "player-level"
+        const val DISPLAY_NAME = "player-display-name"
+        const val NAME = "player-name"
+        const val PING = "player-ping"
     }
 
     @Suppress("DEPRECATION")
@@ -41,13 +44,15 @@ class PlayerPlaceholderProvider : PlaceholderProvider {
         val displayName = player?.displayNameCompat
 
         return mapOf(
-            PLAYER_DISPLAY_NAME to displayName
+            DISPLAY_NAME to displayName
         )
     }
 
     override fun provideString(player: Player?, world: World?): Map<String, String?> {
         return mapOf(
-            PLAYER_NAME to player?.name,
+            NAME to player?.name,
+            LEVEL to player?.level.toString().padStart(2, '0'),
+            PING to player?.latencyInMillis.toString()
         )
     }
 }

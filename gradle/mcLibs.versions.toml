@@ -7,6 +7,7 @@ adventure-bukkit = "4.1.1"
 protocol-lib = "5.0.0-SNAPSHOT"
 vault = "1.7"
 datafixerupper = "1.0.20"
+nbtapi = "2.10.0"
 
 [libraries]
 paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
@@ -21,6 +22,7 @@ adventure-text-serializer-plain = { group = "net.kyori", name = "adventure-text-
 adventure-text-serializer-gson = { group = "net.kyori", name = "adventure-text-serializer-gson", version.ref = "adventure" }
 adventure-platform-bukkit = { group = "net.kyori", name = "adventure-platform-bukkit", version.ref = "adventure-bukkit" }
 datafixerupper = { group = "com.mojang", name = "datafixerupper", version.ref = "datafixerupper" }
+nbtapi = { group = "de.tr7zw", name = "item-nbt-api-plugin", version.ref = "nbtapi" }
 
 [bundles]
 adventure = ["adventure-api", "adventure-text-minimessage", "adventure-text-serializer-plain", "adventure-text-serializer-gson", "adventure-platform-bukkit"]

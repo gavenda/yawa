@@ -22,8 +22,10 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World
+import org.bukkit.advancement.Advancement
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -162,7 +164,15 @@ class PaperEnvironment : Environment {
         player.playerListName(component)
     }
 
-    override fun playerListName(player: Player): Component? {
+    override fun playerListName(player: Player): Component {
         return player.playerListName()
+    }
+
+    override fun title(advancement: Advancement): Component {
+        return advancement.display?.title() ?: error("No advancement display!")
+    }
+
+    override fun getChunkAtAsync(world: World, location: Location): CompletableFuture<Chunk> {
+        return world.getChunkAtAsync(location)
     }
 }

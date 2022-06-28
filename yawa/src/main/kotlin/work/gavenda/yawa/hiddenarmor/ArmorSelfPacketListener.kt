@@ -32,7 +32,7 @@ class ArmorSelfPacketListener : PacketAdapter(
             if (slot in 5..8) {
                 val itemStack = packet.itemModifier.read(0)
                 if (itemStack != null) {
-                    packet.itemModifier.write(0, itemStack.hideArmor())
+                    packet.itemModifier.write(0, itemStack.asArmorPlaceholder())
                 }
             }
         }
@@ -41,7 +41,7 @@ class ArmorSelfPacketListener : PacketAdapter(
         if (packet.type == PacketType.Play.Server.WINDOW_ITEMS && windowId == 0) {
             val itemStacks = packet.itemListModifier.read(0)
             itemStacks.subList(5, 9).forEach { itemStack: ItemStack ->
-                itemStack.itemMeta = itemStack.hideArmor().itemMeta
+                itemStack.itemMeta = itemStack.asArmorPlaceholder().itemMeta
             }
         }
     }

@@ -1,7 +1,6 @@
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
-    alias(libs.plugins.shadow)
 }
 
 minecraftPlugin(name = "YawaAPI")
@@ -12,6 +11,7 @@ dependencies {
     compileOnly(libs.log4j2)
 
     compileOnly(mcLibs.paper.api)
+    compileOnly(mcLibs.nbtapi)
     compileOnly(mcLibs.protocol.lib)
     compileOnly(mcLibs.bundles.adventure)
 }

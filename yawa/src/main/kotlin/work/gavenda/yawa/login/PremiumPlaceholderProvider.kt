@@ -13,7 +13,7 @@ class PremiumPlaceholderProvider : PlaceholderProvider {
 
     override fun provide(player: Player?, world: World?): Map<String, Component?> {
         return mapOf(
-            PlayerPlaceholderProvider.PLAYER_NAME to player?.verifiedName
+            PlayerPlaceholderProvider.NAME to player?.verifiedName
         )
     }
 

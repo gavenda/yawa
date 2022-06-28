@@ -21,6 +21,7 @@
 package work.gavenda.yawa.api.placeholder
 
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.ComponentLike
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage.miniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -128,7 +129,7 @@ class PlaceholderContext(
                     is String -> Component.text(value, NamedTextColor.WHITE)
                     is Component -> value
                     else -> Component.text("None", NamedTextColor.WHITE)
-                }
+                } as ComponentLike
             )
         }
     }
@@ -138,12 +139,12 @@ class PlaceholderContext(
             .map { it.provideString(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
-            .filter { entry -> entry.value != null }
+            .filter { it.value != null }
         val componentPlaceholders = providers
             .map { it.provide(player, world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
-            .filter { entry -> entry.value != null }
+            .filter { it.value != null }
         return mapOf(
             *stringPlaceholders.toList().toTypedArray(),
             *componentPlaceholders.toList().toTypedArray(),

@@ -39,8 +39,8 @@ class ServerPlaceholderProvider : PlaceholderProvider {
         val server = Bukkit.getServer()
 
         return mapOf(
-            "server-player-count" to server.onlinePlayers.size.toString(),
-            "server-player-max" to server.maxPlayers.toString(),
+            SERVER_PLAYER_COUNT to server.onlinePlayers.size.toString(),
+            SERVER_PLAYER_MAX to server.maxPlayers.toString(),
         )
     }
 }

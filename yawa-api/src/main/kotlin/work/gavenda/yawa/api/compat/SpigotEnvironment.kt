@@ -22,8 +22,11 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
+import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World
+import org.bukkit.advancement.Advancement
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -36,14 +39,18 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
+import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asAudience
-import work.gavenda.yawa.api.toBaseComponent
 import work.gavenda.yawa.api.toComponent
 import work.gavenda.yawa.api.toLegacyText
+import java.lang.reflect.Field
 import java.util.*
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ConcurrentHashMap
 
 class SpigotEnvironment : Environment {
+
+    private val advancementTitleCache = ConcurrentHashMap<Advancement, String>()
 
     override fun teleportAsync(entity: Entity, location: Location): CompletableFuture<Boolean> {
         return CompletableFuture.completedFuture(entity.teleport(location))
@@ -68,9 +75,7 @@ class SpigotEnvironment : Environment {
     }
 
     override fun playSound(world: World, sound: Sound) {
-        world.players.forEach { player ->
-            player.asAudience().playSound(sound)
-        }
+        world.asAudience().playSound(sound)
     }
 
     @Suppress("DEPRECATION")
@@ -166,9 +171,7 @@ class SpigotEnvironment : Environment {
 
     @Suppress("DEPRECATION")
     override fun sendMessage(world: World, component: Component) {
-        world.players.forEach { player ->
-            player.asAudience().sendMessage(component)
-        }
+        world.asAudience().sendMessage(component)
     }
 
     @Suppress("DEPRECATION")
@@ -210,7 +213,58 @@ class SpigotEnvironment : Environment {
     }
 
     @Suppress("DEPRECATION")
-    override fun playerListName(player: Player): Component? {
+    override fun playerListName(player: Player): Component {
         return player.playerListName.toComponent()
+    }
+
+    override fun title(advancement: Advancement): Component {
+        val advancementTitle = advancementTitleCache.computeIfAbsent(advancement) {
+            try {
+                val handle = this.javaClass.getMethod("getHandle").invoke(this)
+                val advancementDisplay = Arrays.stream(handle.javaClass.methods)
+                    .filter { method -> method.returnType.simpleName.equals("AdvancementDisplay") }
+                    .filter { method -> method.parameterCount == 0 }
+                    .findFirst()
+                    .orElseThrow { RuntimeException("Failed to find AdvancementDisplay getter for advancement handle") }
+                    .invoke(handle) ?: error("Advancement doesn't have display properties")
+
+                try {
+                    val advancementMessageField: Field = advancementDisplay.javaClass.getDeclaredField("a")
+                    advancementMessageField.isAccessible = true
+                    val advancementMessage = advancementMessageField.get(advancementDisplay)
+                    val advancementTitle =
+                        advancementMessage.javaClass.getMethod("getString").invoke(advancementMessage)
+                    return@computeIfAbsent advancementTitle as String
+                } catch (_: Exception) {
+                    apiLogger.info("Failed to get title of advancement using getString, trying JSON method")
+                }
+
+                val titleComponentField = Arrays.stream(advancementDisplay.javaClass.declaredFields)
+                    .filter { field -> field.type.simpleName.equals("IChatBaseComponent") }
+                    .findFirst().orElseThrow { RuntimeException("Failed to find advancement display properties field") }
+                titleComponentField.isAccessible = true
+                val titleChatBaseComponent = titleComponentField.get(advancementDisplay)
+                val title =
+                    titleChatBaseComponent.javaClass.getMethod("getText").invoke(titleChatBaseComponent) as String
+                if (title.isNotBlank()) {
+                    return@computeIfAbsent title
+                }
+                val chatSerializerClass = Arrays.stream(titleChatBaseComponent.javaClass.declaredClasses)
+                    .filter { clazz -> clazz.simpleName.equals("ChatSerializer") }
+                    .findFirst().orElseThrow { RuntimeException("Couldn't get component ChatSerializer class") }
+                val componentJson = chatSerializerClass.getMethod("a", titleChatBaseComponent.javaClass)
+                    .invoke(null, titleChatBaseComponent) as String
+
+                return@computeIfAbsent GsonComponentSerializer.gson().deserialize(componentJson).toLegacyText()
+            } catch (e: Exception) {
+                throw Error("No advancement display!")
+            }
+        }
+
+        return advancementTitle.toComponent()
+    }
+
+    override fun getChunkAtAsync(world: World, location: Location): CompletableFuture<Chunk> {
+        return CompletableFuture.completedFuture(world.getChunkAt(location))
     }
 }

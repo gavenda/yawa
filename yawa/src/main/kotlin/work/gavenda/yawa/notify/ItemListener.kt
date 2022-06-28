@@ -56,10 +56,12 @@ class ItemListener : Listener {
 
             loots.forEach { (material, amount) ->
                 val recentPlaceholderParams = mapOf(
-                    "item-stack-amount" to amount.toString(),
-                    "item-name" to material.name
-                        .replace("_", " ")
-                        .capitalizeFully()
+                    "item-stack-amount" to lazy { amount.toString() },
+                    "item-name" to lazy {
+                        material.name
+                            .replace("_", " ")
+                            .capitalizeFully()
+                    }
                 )
 
                 val recentPickupMessage = Messages.forPlayer(player)
@@ -83,10 +85,12 @@ class ItemListener : Listener {
 
         if (matches) {
             val placeholderParams = mapOf(
-                "item-stack-amount" to itemStack.amount.toString(),
-                "item-name" to itemStack.type.name
-                    .replace("_", " ")
-                    .capitalizeFully()
+                "item-stack-amount" to lazy { itemStack.amount.toString() },
+                "item-name" to lazy {
+                    itemStack.type.name
+                        .replace("_", " ")
+                        .capitalizeFully()
+                }
             )
 
             val message = Placeholders.withContext(player)

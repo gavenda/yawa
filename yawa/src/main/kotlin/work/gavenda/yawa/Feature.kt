@@ -21,7 +21,7 @@
 package work.gavenda.yawa
 
 import work.gavenda.yawa.api.compat.PluginEnvironment
-import work.gavenda.yawa.api.compat.pluginEnvironment
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 
 /**
  * Constants for features.
@@ -74,7 +74,7 @@ interface PluginFeature {
         registerPlaceholders()
         registerEventListeners()
 
-        if (pluginEnvironment == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             registerPaperEventListeners()
         } else {
             registerBukkitEventListeners()
@@ -96,7 +96,7 @@ interface PluginFeature {
         unregisterTasks()
         unregisterEventListeners()
 
-        if (pluginEnvironment == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             unregisterPaperEventListeners()
         } else {
             unregisterBukkitEventListeners()

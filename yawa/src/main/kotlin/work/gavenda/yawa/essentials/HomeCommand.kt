@@ -35,9 +35,11 @@ class HomeCommand : Command() {
                     val location = Location(world, x, y, z)
 
                     scheduler.runTask(plugin) { _ ->
-                        world.getBlockAt(playerHomeDb.x, playerHomeDb.y, playerHomeDb.z)
-                        sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenRun {
-                            sender.sendMessageUsingKey(Message.EssentialsTeleportHome)
+                        world.getChunkAtAsync(location).thenAccept {
+                            sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
+                                sender.sendMessageUsingKey(Message.EssentialsTeleportHome)
+
+                            }
                         }
                     }
                 } else {

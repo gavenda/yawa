@@ -8,6 +8,7 @@ main: work.gavenda.yawa.api.YawaAPI
 load: STARTUP
 depend:
   - ProtocolLib
+  - NBTAPI
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0
   - org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3

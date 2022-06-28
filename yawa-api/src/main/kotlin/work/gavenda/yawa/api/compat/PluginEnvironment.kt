@@ -4,7 +4,7 @@ enum class PluginEnvironment {
     SPIGOT, PAPER
 }
 
-val pluginEnvironment by lazy {
+val PLUGIN_ENVIRONMENT by lazy {
     try {
         Class.forName("com.destroystokyo.paper.PaperConfig")
         PluginEnvironment.PAPER

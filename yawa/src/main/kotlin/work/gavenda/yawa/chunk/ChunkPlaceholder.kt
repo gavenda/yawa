@@ -6,14 +6,19 @@ import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 
 class ChunkPlaceholder : PlaceholderProvider {
 
+    companion object {
+        const val CURRENT_CHUNK_X = "current-chunk-x"
+        const val CURRENT_CHUNK_Z = "current-chunk-x"
+    }
+
     override fun provideString(player: Player?, world: World?): Map<String, String?> {
         val currentChunk = player?.location?.chunk
         val currentChunkX = currentChunk?.x
         val currentChunkZ = currentChunk?.z
 
         return mapOf(
-            "current-chunk-x" to currentChunkX.toString(),
-            "current-chunk-z" to currentChunkZ.toString()
+            CURRENT_CHUNK_X to currentChunkX.toString(),
+            CURRENT_CHUNK_Z to currentChunkZ.toString()
         )
     }
 }

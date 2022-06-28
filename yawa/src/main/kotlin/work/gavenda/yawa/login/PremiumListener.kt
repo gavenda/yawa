@@ -38,7 +38,6 @@ class PremiumListener : Listener {
         if (event.player.isVerified.not()) return
         event.joinMessageCompat = event.player.verifiedName
             .append(Component.text(" joined the game", NamedTextColor.YELLOW))
-        event.player.playerListNameCompat = event.player.verifiedName
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

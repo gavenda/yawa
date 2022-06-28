@@ -24,6 +24,7 @@ import work.gavenda.yawa.api.asAwtColor
 import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
+import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 import work.gavenda.yawa.api.toPlainText
 
 object DiscordFeature : PluginFeature, EventListener {
@@ -65,7 +66,7 @@ object DiscordFeature : PluginFeature, EventListener {
             textChannel.manager
                 .setTopic("${server.onlinePlayers.size} / ${server.maxPlayers} online")
                 .queue()
-        }, 0, 20 * 120).taskId
+        }, 0, 20 * 300).taskId
 
         // Check existing webhooks
         guild.retrieveWebhooks().queue { webhooks ->
@@ -148,7 +149,7 @@ object DiscordFeature : PluginFeature, EventListener {
                 val message = Placeholders.noContext()
                     .parse(
                         messageRaw, mapOf(
-                            "player-name" to event.member?.effectiveName
+                            PlayerPlaceholderProvider.NAME to lazy { event.member?.effectiveName }
                         )
                     )
 

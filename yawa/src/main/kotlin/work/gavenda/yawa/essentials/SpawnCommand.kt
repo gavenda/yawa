@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class TeleportSpawnCommand : Command() {
@@ -17,9 +18,10 @@ class TeleportSpawnCommand : Command() {
             it.environment == World.Environment.NORMAL
         }
         if (world != null) {
-            world.getBlockAt(world.spawnLocation)
-            sender.teleportAsyncCompat(world.spawnLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenRun {
-                sender.sendMessageUsingKey(Message.EssentialsTeleportSpawn)
+            world.getChunkAtAsyncCompat(world.spawnLocation).thenAccept {
+                sender.teleportAsyncCompat(world.spawnLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
+                    sender.sendMessageUsingKey(Message.EssentialsTeleportSpawn)
+                }
             }
         } else {
             sender.sendMessageUsingKey(Message.EssentialsTeleportErrorNoOverworld)

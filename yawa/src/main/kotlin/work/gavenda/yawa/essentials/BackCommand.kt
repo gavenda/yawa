@@ -18,7 +18,7 @@ class BackCommand : Command() {
         val lastDeathLocation = sender.lastDeathLocation
 
         if (lastDeathLocation != null) {
-            sender.teleportAsyncCompat(lastDeathLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenRun {
+            sender.teleportAsyncCompat(lastDeathLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                 sender.sendMessageUsingKey(Message.EssentialsTeleportDeath)
             }
         } else {

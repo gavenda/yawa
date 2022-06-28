@@ -79,6 +79,7 @@ object Config {
         var Disabled
             get() = config.getBoolean("tab-list.disabled", false)
             set(value) = config.set("tab-list.disabled", value)
+        val PlayerListName get() = config.getString("tab-list.player-list-name", "<white>[</white><green><player-level></green><white>]</white> <player-name>")!!
         val Header get() = config.getString("tab-list.header", "<gold>Yawa</gold>")!!
         val Footer get() = config.getString("tab-list.footer", "<server-player-count> / <server-player-max>")!!
     }

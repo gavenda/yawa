@@ -1,116 +1,56 @@
 package work.gavenda.yawa.chat
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.event.HoverEvent
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.inventory.ItemStack
-import work.gavenda.yawa.api.compat.displayNameCompat
 import work.gavenda.yawa.api.placeholder.PlaceholderProvider
-import work.gavenda.yawa.api.clientDisplayName
-import work.gavenda.yawa.api.toRomanNumeral
+import work.gavenda.yawa.api.previewComponent
 import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
-import work.gavenda.yawa.hiddenarmor.durabilityPercentage
-import work.gavenda.yawa.hiddenarmor.itemDurability
 import work.gavenda.yawa.hiddenarmor.unhideArmor
 
 class EquipmentPlaceholder : PlaceholderProvider {
 
+    companion object {
+        const val HELM = "helm"
+        const val CHESTPLATE = "chestplate"
+        const val LEGGINGS = "leggings"
+        const val BOOTS = "boots"
+        const val HAND = "hand"
+        const val OFF_HAND = "offhand"
+    }
+
+    private fun provideBySlot(player: Player, slot: EquipmentSlot): Component? {
+        val itemStack = when(slot) {
+            EquipmentSlot.HEAD -> player.inventory.helmet
+            EquipmentSlot.CHEST -> player.inventory.chestplate
+            EquipmentSlot.LEGS -> player.inventory.leggings
+            EquipmentSlot.FEET -> player.inventory.boots
+            else -> return null
+        }
+
+        if (HiddenArmorFeature.enabled && HiddenArmorFeature.hasPlayer(player)) {
+            itemStack?.unhideArmor(slot)
+        }
+
+        return itemStack?.previewComponent
+    }
+
     override fun provide(player: Player?, world: World?): Map<String, Component?> {
         if (player == null) return mapOf()
 
-        val helmItemStack = player.inventory.helmet?.clone()
-        val chestplateItemStack = player.inventory.chestplate?.clone()
-        val leggingsItemStack = player.inventory.leggings?.clone()
-        val bootsItemStack = player.inventory.boots?.clone()
-
-        if (HiddenArmorFeature.enabled && HiddenArmorFeature.hasPlayer(player)) {
-            helmItemStack?.unhideArmor(EquipmentSlot.HEAD)
-            chestplateItemStack?.unhideArmor(EquipmentSlot.CHEST)
-            leggingsItemStack?.unhideArmor(EquipmentSlot.LEGS)
-            bootsItemStack?.unhideArmor(EquipmentSlot.FEET)
-        }
-
-        val helm = helmItemStack?.previewComponent
-        val chestplate = chestplateItemStack?.previewComponent
-        val leggings = leggingsItemStack?.previewComponent
-        val boots = bootsItemStack?.previewComponent
-        val hand = if (player.inventory.itemInMainHand.type != Material.AIR) {
-            player.inventory.itemInMainHand.previewComponent
-        } else null
-        val offhand = if (player.inventory.itemInOffHand.type != Material.AIR) {
-            player.inventory.itemInOffHand.previewComponent
-        } else null
-
         return mapOf(
-            "helm" to helm,
-            "chestplate" to chestplate,
-            "leggings" to leggings,
-            "boots" to boots,
-            "hand" to hand,
-            "offhand" to offhand
+            HELM to provideBySlot(player, EquipmentSlot.HEAD),
+            CHESTPLATE to provideBySlot(player, EquipmentSlot.CHEST),
+            LEGGINGS to provideBySlot(player, EquipmentSlot.LEGS),
+            BOOTS to provideBySlot(player, EquipmentSlot.FEET),
+            HAND to if (player.inventory.itemInMainHand.type != Material.AIR) {
+                player.inventory.itemInMainHand.previewComponent
+            } else null,
+            OFF_HAND to if (player.inventory.itemInOffHand.type != Material.AIR) {
+                player.inventory.itemInOffHand.previewComponent
+            } else null
         )
     }
 }
-
-val ItemStack.previewComponent: Component
-    get() {
-        val materialName = Component.text(clientDisplayName)
-        val displayName = if (hasItemMeta() && itemMeta.hasDisplayName()) {
-            itemMeta.displayNameCompat
-                ?.color(NamedTextColor.AQUA)
-                ?.decorate(TextDecoration.ITALIC)
-                ?: Component.empty()
-        } else materialName
-        val displayNameHover = HoverEvent.showText(
-            Component.text { builder ->
-                builder.append(displayName)
-
-                if (hasItemMeta() && itemMeta.hasDisplayName()) {
-                    builder.append(Component.newline())
-                    builder.append(materialName)
-                }
-
-                if (durabilityPercentage != -1) {
-                    builder.append(Component.newline())
-                    builder.append(itemDurability)
-                }
-
-                if (enchantments.isNotEmpty()) {
-                    builder.append(Component.newline())
-                    enchantments.forEach { (enchantment, level) ->
-                        val enchantmentFullName = "${enchantment.clientDisplayName} ${level.toRomanNumeral()}"
-
-                        builder.append(Component.newline())
-                        builder.append(Component.text(enchantmentFullName, NamedTextColor.GRAY))
-                    }
-                }
-            }
-        )
-
-        return Component.text("[", NamedTextColor.WHITE)
-            .append(
-                displayName
-                    .color(materialColor)
-                    .hoverEvent(displayNameHover)
-            )
-            .append(Component.text("]", NamedTextColor.WHITE))
-    }
-
-
-val ItemStack.materialColor: TextColor
-    get() {
-        val m = type.toString()
-        return if (m.startsWith("NETHERITE_"))
-            NamedTextColor.DARK_PURPLE
-        else if (m.startsWith("DIAMOND_"))
-            NamedTextColor.AQUA
-        else if (m.startsWith("GOLDEN_"))
-            NamedTextColor.GOLD
-        else NamedTextColor.WHITE
-    }

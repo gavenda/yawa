@@ -22,6 +22,8 @@ package work.gavenda.yawa.api
 
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
+import net.kyori.adventure.audience.Audience
+import net.kyori.adventure.key.Key
 import org.bukkit.World
 
 /**
@@ -36,3 +38,11 @@ val World.debugMode: Boolean
         }
         return localDebugWorld.getBoolean(BukkitConverters.getWorldConverter().getGeneric(this))
     }
+
+/**
+ * Returns this world as an audience.
+ */
+fun World.asAudience(): Audience {
+    val namespaceKey = key.toString()
+    return YawaAPI.Instance.adventure.world(Key.key(namespaceKey))
+}

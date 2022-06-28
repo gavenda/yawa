@@ -6,13 +6,19 @@ import work.gavenda.yawa.api.placeholder.PlaceholderProvider
 
 class LocationPlaceholder : PlaceholderProvider {
 
+    companion object {
+        const val X = "location-x"
+        const val Y = "location-y"
+        const val Z = "location-z"
+    }
+
     override fun provideString(player: Player?, world: World?): Map<String, String?> {
         val location = player?.location
 
         return mapOf(
-            "location-x" to location?.blockX.toString(),
-            "location-y" to location?.blockY.toString(),
-            "location-z" to location?.blockZ.toString(),
+            X to location?.blockX.toString(),
+            Y to location?.blockY.toString(),
+            Z to location?.blockZ.toString(),
         )
     }
 }

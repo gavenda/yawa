@@ -25,6 +25,7 @@ import org.gradle.api.tasks.Copy
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import org.gradle.language.jvm.tasks.ProcessResources
+import java.io.File
 
 /**
  * Configures the project as a Minecraft plugin.
@@ -56,10 +57,10 @@ fun Project.minecraftPlugin(name: String) {
         from(srcDir)
         into(distDir)
 
-        dependsOn("shadowJar")
+        dependsOn("build")
     }
 
-    tasks.named("shadowJar", Jar::class) {
+    tasks.named("jar", Jar::class) {
         archiveFileName.set("$name.${archiveExtension.get()}")
 
         val sys = System.getProperties().toMap()

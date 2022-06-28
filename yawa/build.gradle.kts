@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    alias(libs.plugins.shadow)
 }
 
 minecraftPlugin(name = "Yawa")
@@ -22,6 +21,6 @@ dependencies {
     compileOnly(mcLibs.datafixerupper)
     compileOnly(mcLibs.paper.api)
     compileOnly(mcLibs.bundles.adventure)
-    compileOnly(project(path = ":yawa-api", configuration = "shadow"))
+    compileOnly(project(path = ":yawa-api"))
     compileOnly(mcLibs.vault)
 }

@@ -17,20 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+package work.gavenda.yawa.api
 
-package work.gavenda.yawa.ping
+import org.bukkit.advancement.Advancement
 
-import org.bukkit.World
-import org.bukkit.entity.Player
-import work.gavenda.yawa.api.latencyInMillis
-import work.gavenda.yawa.api.placeholder.PlaceholderProvider
-
-class PlayerPingPlaceholder : PlaceholderProvider {
-
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
-        return mapOf(
-            "player-ping" to player?.latencyInMillis.toString()
-        )
+/**
+ * Returns true if the advancement will be displayed chat, toast and advancement screen.
+ */
+val Advancement.displayAdvancement: Boolean
+    get() {
+        try {
+            val craftAdvancement = (this as Any).javaClass.getMethod("getHandle").invoke(this)
+            val advancementDisplay = craftAdvancement.javaClass.getMethod("c").invoke(craftAdvancement)
+            return advancementDisplay.javaClass.getMethod("i").invoke(advancementDisplay) as Boolean
+        } catch (e: NullPointerException) {
+            return false
+        } catch (e: Exception) {
+            apiLogger.info("Failed to check if advancement should be displayed: $e")
+        }
+        return false
     }
-
-}

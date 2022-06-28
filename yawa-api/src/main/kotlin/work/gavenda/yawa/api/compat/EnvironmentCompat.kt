@@ -21,8 +21,10 @@ package work.gavenda.yawa.api.compat
 
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.World
+import org.bukkit.advancement.Advancement
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -36,11 +38,12 @@ import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
 import work.gavenda.yawa.api.apiLogger
+import work.gavenda.yawa.api.displayAdvancement
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
-private val pluginRuntimeEnvironment: Environment by lazy {
-    if (pluginEnvironment == PluginEnvironment.PAPER) {
+private val runtimeEnvironment: Environment by lazy {
+    if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
         apiLogger.info("Paper detected, using paper as platform for all bukkit calls")
         PaperEnvironment()
     } else {
@@ -51,97 +54,108 @@ private val pluginRuntimeEnvironment: Environment by lazy {
 
 var ItemMeta.displayNameCompat
     get(): Component? {
-        return pluginRuntimeEnvironment.displayName(this)
+        return runtimeEnvironment.displayName(this)
     }
-    set(value) = pluginRuntimeEnvironment.displayName(this, value)
+    set(value) = runtimeEnvironment.displayName(this, value)
 
 var ItemStack.loreCompat: List<Component>?
     get() {
-        return pluginRuntimeEnvironment.lore(this)
+        return runtimeEnvironment.lore(this)
     }
     set(lore) {
-        pluginRuntimeEnvironment.lore(this, lore)
+        runtimeEnvironment.lore(this, lore)
     }
 
 var ItemMeta.loreCompat: List<Component>?
     get() {
-        return pluginRuntimeEnvironment.lore(this)
+        return runtimeEnvironment.lore(this)
     }
-    set(value) = pluginRuntimeEnvironment.lore(this, value)
+    set(value) = runtimeEnvironment.lore(this, value)
 
 var PlayerDeathEvent.deathMessageCompat
     get(): Component? {
-        return pluginRuntimeEnvironment.deathMessage(this)
+        return runtimeEnvironment.deathMessage(this)
     }
-    set(value) = pluginRuntimeEnvironment.deathMessage(this, value)
+    set(value) = runtimeEnvironment.deathMessage(this, value)
 
 val Player.displayNameCompat
     get(): Component {
-        return pluginRuntimeEnvironment.displayName(this)
+        return runtimeEnvironment.displayName(this)
     }
 
 var PlayerQuitEvent.quitMessageCompat
     get(): Component? {
-        return pluginRuntimeEnvironment.quitMessage(this)
+        return runtimeEnvironment.quitMessage(this)
     }
-    set(value) = pluginRuntimeEnvironment.quitMessage(this, value)
+    set(value) = runtimeEnvironment.quitMessage(this, value)
 
 var PlayerJoinEvent.joinMessageCompat
     get(): Component? {
-        return pluginRuntimeEnvironment.joinMessage(this)
+        return runtimeEnvironment.joinMessage(this)
     }
-    set(value) = pluginRuntimeEnvironment.joinMessage(this, value)
+    set(value) = runtimeEnvironment.joinMessage(this, value)
 
-val Player.localeCompat: Locale get() = pluginRuntimeEnvironment.locale(this)
+val Player.localeCompat: Locale get() = runtimeEnvironment.locale(this)
 
 var Player.playerListNameCompat: Component?
-    get() = pluginRuntimeEnvironment.playerListName(this)
-    set(value) = pluginRuntimeEnvironment.playerListName(this, value)
+    get() = runtimeEnvironment.playerListName(this)
+    set(value) = runtimeEnvironment.playerListName(this, value)
 
 var SkullMeta.loreCompat: List<Component>?
     get() {
-        return pluginRuntimeEnvironment.lore(this)
+        return runtimeEnvironment.lore(this)
     }
-    set(value) = pluginRuntimeEnvironment.lore(this, value)
+    set(value) = runtimeEnvironment.lore(this, value)
 
 var Player.playerListHeaderCompat: Component
-    get() = pluginRuntimeEnvironment.playerListHeader(this)
-    set(value) = pluginRuntimeEnvironment.playerListHeader(this, value)
+    get() = runtimeEnvironment.playerListHeader(this)
+    set(value) = runtimeEnvironment.playerListHeader(this, value)
 
 var Player.playerListFooterCompat: Component
-    get() = pluginRuntimeEnvironment.playerListFooter(this)
-    set(value) = pluginRuntimeEnvironment.playerListFooter(this, value)
+    get() = runtimeEnvironment.playerListFooter(this)
+    set(value) = runtimeEnvironment.playerListFooter(this, value)
+
+/**
+ * Returns the display title. Make sure to check [displayAdvancement] before calling.
+ */
+val Advancement.displayTitle: Component
+    get() = runtimeEnvironment.title(this)
 
 fun Entity.teleportAsyncCompat(
     location: Location,
     cause: PlayerTeleportEvent.TeleportCause
 ): CompletableFuture<Boolean> {
-    return pluginRuntimeEnvironment.teleportAsync(this, location, cause)
+    return runtimeEnvironment.teleportAsync(this, location, cause)
 }
 
 fun Entity.teleportAsyncCompat(location: Location): CompletableFuture<Boolean> {
-    return pluginRuntimeEnvironment.teleportAsync(this, location)
+    return runtimeEnvironment.teleportAsync(this, location)
 }
 
 fun Scoreboard.registerNewObjectiveCompat(name: String, criteria: String, displayName: Component): Objective {
-    return pluginRuntimeEnvironment.registerNewObjective(this, name, criteria, displayName)
+    return runtimeEnvironment.registerNewObjective(this, name, criteria, displayName)
 }
+
 fun CommandSender.sendMessageCompat(component: Component) {
-    pluginRuntimeEnvironment.sendMessage(this, component)
+    runtimeEnvironment.sendMessage(this, component)
 }
 
 fun World.sendMessageCompat(component: Component) {
-    pluginRuntimeEnvironment.sendMessage(this, component)
+    runtimeEnvironment.sendMessage(this, component)
 }
 
 fun World.sendActionBarCompat(component: Component) {
-    pluginRuntimeEnvironment.sendActionBar(this, component)
+    runtimeEnvironment.sendActionBar(this, component)
 }
 
 fun World.playSoundCompat(sound: Sound) {
-    pluginRuntimeEnvironment.playSound(this, sound)
+    runtimeEnvironment.playSound(this, sound)
 }
 
 fun Player.kickCompat(component: Component) {
-    pluginRuntimeEnvironment.kickPlayer(this, component)
+    runtimeEnvironment.kickPlayer(this, component)
+}
+
+fun World.getChunkAtAsyncCompat(location: Location): CompletableFuture<Chunk> {
+    return runtimeEnvironment.getChunkAtAsync(this, location)
 }

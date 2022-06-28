@@ -91,6 +91,9 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
     }
 }
 
+/**
+ * Update scaled health.
+ */
 fun Player.updateScaledHealth() {
     val updateScaledHealth = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
     updateScaledHealth.invoke(this)
