@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class LocationCommand : Command() {
@@ -43,7 +44,7 @@ class LocationCommand : Command() {
                     val location = Location(world, x, y, z)
 
                     scheduler.runTask(plugin) { _ ->
-                        world.getChunkAtAsync(location).thenAccept {
+                        world.getChunkAtAsyncCompat(location).thenAccept {
                             sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                                 sender.sendMessageUsingKey(
                                     Message.EssentialsLocationTeleport, mapOf(
@@ -62,18 +63,18 @@ class LocationCommand : Command() {
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         if (sender !is Player) return emptyList()
-        when (args.size) {
+        return when (args.size) {
             0 -> transaction {
-                return@transaction PlayerLocationDb
+                PlayerLocationDb
                     .find { PlayerLocationSchema.playerUuid eq sender.uniqueId }
                     .map { it.name }
             }
             1 -> transaction {
-                return@transaction PlayerLocationDb
+                PlayerLocationDb
                     .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name like args[0] + "%") }
                     .map { it.name }
             }
+            else -> emptyList()
         }
-        return emptyList()
     }
 }

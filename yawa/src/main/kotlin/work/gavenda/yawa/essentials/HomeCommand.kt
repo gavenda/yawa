@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class HomeCommand : Command() {
@@ -35,7 +36,7 @@ class HomeCommand : Command() {
                     val location = Location(world, x, y, z)
 
                     scheduler.runTask(plugin) { _ ->
-                        world.getChunkAtAsync(location).thenAccept {
+                        world.getChunkAtAsyncCompat(location).thenAccept {
                             sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                                 sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)
 
