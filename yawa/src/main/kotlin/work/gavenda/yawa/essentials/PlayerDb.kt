@@ -28,6 +28,7 @@ object PlayerHomeSchema : UUIDTable("yawa_player_home", "uuid") {
 class PlayerLocationDb(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
     companion object : UUIDEntityClass<PlayerLocationDb>(PlayerLocationSchema)
 
+    var playerUuid by PlayerLocationSchema.playerUuid
     var name by PlayerLocationSchema.name
     var world by PlayerLocationSchema.world
     var x by PlayerLocationSchema.x
@@ -36,6 +37,7 @@ class PlayerLocationDb(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
 }
 
 object PlayerLocationSchema : UUIDTable("yawa_player_location", "uuid") {
+    val playerUuid = uuid("player_uuid")
     val name = varchar("name", 64)
     val world = uuid("world_uuid")
     val x = integer("x")

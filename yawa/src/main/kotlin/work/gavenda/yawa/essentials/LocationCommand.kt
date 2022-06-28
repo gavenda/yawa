@@ -25,7 +25,7 @@ class LocationCommand : Command() {
         scheduler.runTaskAsynchronously(plugin) { _ ->
             transaction {
                 val playerLocationDb = PlayerLocationDb
-                    .find { (PlayerLocationSchema.id eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }
+                    .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }
                     .firstOrNull()
 
                 if (playerLocationDb != null) {

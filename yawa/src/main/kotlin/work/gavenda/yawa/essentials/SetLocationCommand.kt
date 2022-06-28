@@ -21,10 +21,11 @@ class SetLocationCommand: Command() {
         scheduler.runTaskAsynchronously(plugin) { _ ->
             transaction {
                 val playerLocation = PlayerLocationDb
-                    .find { (PlayerLocationSchema.id eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }
-                    .firstOrNull() ?: PlayerLocationDb.new(sender.uniqueId) {}
+                    .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }
+                    .firstOrNull() ?: PlayerLocationDb.new() {}
 
                 playerLocation.apply {
+                    playerUuid = sender.uniqueId
                     name = locationName
                     world = sender.location.world.uid
                     x = sender.location.blockX
@@ -37,5 +38,9 @@ class SetLocationCommand: Command() {
                 "location-name" to Component.text(locationName, NamedTextColor.WHITE)
             ))
         }
+    }
+
+    override fun onTab(sender: CommandSender, args: List<String>): List<String> {
+        return listOf("<location-name>")
     }
 }
