@@ -149,7 +149,7 @@ object DiscordFeature : PluginFeature, EventListener {
                 val message = Placeholders.noContext()
                     .parse(
                         messageRaw, mapOf(
-                            PlayerPlaceholderProvider.NAME to lazy { event.member?.effectiveName }
+                            PlayerPlaceholderProvider.NAME to event.member?.effectiveName
                         )
                     )
 
