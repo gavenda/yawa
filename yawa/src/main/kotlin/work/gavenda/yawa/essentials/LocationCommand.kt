@@ -62,10 +62,18 @@ class LocationCommand : Command() {
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         if (sender !is Player) return emptyList()
-        return transaction {
-            PlayerLocationDb
-                .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq args[0]) }
-                .map { it.name }
+        when (args.size) {
+            0 -> transaction {
+                return@transaction PlayerLocationDb
+                    .find { PlayerLocationSchema.playerUuid eq sender.uniqueId }
+                    .map { it.name }
+            }
+            1 -> transaction {
+                return@transaction PlayerLocationDb
+                    .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name like args[0] + "%") }
+                    .map { it.name }
+            }
         }
+        return emptyList()
     }
 }
