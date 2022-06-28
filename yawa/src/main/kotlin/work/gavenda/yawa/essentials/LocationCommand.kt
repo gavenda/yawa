@@ -65,7 +65,7 @@ class LocationCommand : Command() {
         when (args.size) {
             1 -> transaction {
                 return@transaction PlayerLocationDb
-                    .find { (PlayerLocationSchema.id eq sender.uniqueId) and (PlayerLocationSchema.name eq args[0]) }
+                    .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq args[0]) }
                     .map { it.name }
             }
         }

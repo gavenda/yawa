@@ -69,7 +69,7 @@ commands:
     aliases: [ b ]
   setlocation:
     description: Set the current location with a name.
-    usage: /<command>
+    usage: /<command> <location-name>
     aliases: [ sl ]
   location:
     description: Teleport to specified location.
