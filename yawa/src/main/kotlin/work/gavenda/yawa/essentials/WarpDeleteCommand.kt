@@ -63,6 +63,19 @@ class WarpDeleteCommand : Command() {
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
-        return listOf("<location-name>")
+        if (sender !is Player) return emptyList()
+        return when (args.size) {
+            0 -> transaction {
+                PlayerLocationDb
+                    .find { PlayerLocationSchema.playerUuid eq sender.uniqueId }
+                    .map { it.name }
+            }
+            1 -> transaction {
+                PlayerLocationDb
+                    .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name like args[0] + "%") }
+                    .map { it.name }
+            }
+            else -> emptyList()
+        }
     }
 }
