@@ -67,9 +67,7 @@ class LoginEncryptionListener(
             return
         }
 
-        val publicKey = session.profileKeyData.get().key
-
-        if (MinecraftEncryption.verifySignedNonce(session.verifyToken, publicKey, salt, signature)) {
+        val proceed: () -> Unit = {
             val encryptionTask = LoginEncryptionTask(
                 packetEvent = packetEvent,
                 session = session,
@@ -81,12 +79,22 @@ class LoginEncryptionListener(
             packetEvent.asyncMarker.incrementProcessingDelay()
 
             scheduler.runTaskAsynchronously(plugin, encryptionTask)
-        } else {
-            player.disconnect(
-                Messages
-                    .forPlayer(player)
-                    .get(Message.LoginInvalidSignature)
-            )
+        }
+
+        if (session.profileKeyData.isEmpty) {
+            proceed()
+        } else if (session.profileKeyData.isPresent) {
+            val publicKey = session.profileKeyData.get().key
+
+            if (MinecraftEncryption.verifySignedNonce(session.verifyToken, publicKey, salt, signature)) {
+                proceed()
+            } else {
+                player.disconnect(
+                    Messages
+                        .forPlayer(player)
+                        .get(Message.LoginInvalidSignature)
+                )
+            }
         }
     }
 }
