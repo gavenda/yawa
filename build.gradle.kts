@@ -1,10 +1,8 @@
-import java.io.ByteArrayOutputStream
-
 plugins {
     base
 }
 
-val gitHash: String = ByteArrayOutputStream().use { outputStream ->
+val gitHash: String = java.io.ByteArrayOutputStream().use { outputStream ->
     project.exec {
         commandLine("git")
         args("rev-parse", "--short", "HEAD")
@@ -15,7 +13,7 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
 
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.3.6-SNAPSHOT-$gitHash"
+    version = "1.3.6"
 }
 
 tasks.register("version") {

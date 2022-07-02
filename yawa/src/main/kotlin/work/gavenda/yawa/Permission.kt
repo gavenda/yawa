@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa
@@ -39,6 +38,7 @@ object Permission {
     const val ESSENTIALS_HOME_SET = "yawa.essentials.home.set"
     const val ESSENTIALS_TELEPORT_SPAWN = "yawa.essentials.teleport.spawn"
     const val ESSENTIALS_TELEPORT_DEATH = "yawa.essentials.teleport.death"
-    const val ESSENTIALS_LOCATION_TELEPORT = "yawa.essentials.location.teleport"
-    const val ESSENTIALS_LOCATION_SET = "yawa.essentials.location.set"
+    const val ESSENTIALS_WARP_TELEPORT = "yawa.essentials.warp.teleport"
+    const val ESSENTIALS_WARP_SET = "yawa.essentials.warp.set"
+    const val ESSENTIALS_WARP_DELETE = "yawa.essentials.warp.delete"
 }

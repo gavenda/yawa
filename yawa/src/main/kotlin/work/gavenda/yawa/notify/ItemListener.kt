@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa.notify
@@ -58,8 +57,8 @@ class ItemListener : Listener {
                 val recentPlaceholderParams = mapOf(
                     "item-stack-amount" to amount.toString(),
                     "item-name" to material.name
-                            .replace("_", " ")
-                            .capitalizeFully()
+                        .replace("_", " ")
+                        .capitalizeFully()
                 )
 
                 val recentPickupMessage = Messages.forPlayer(player)
@@ -85,8 +84,8 @@ class ItemListener : Listener {
             val placeholderParams = mapOf(
                 "item-stack-amount" to itemStack.amount.toString(),
                 "item-name" to itemStack.type.name
-                        .replace("_", " ")
-                        .capitalizeFully()
+                    .replace("_", " ")
+                    .capitalizeFully()
             )
 
             val message = Placeholders.withContext(player)

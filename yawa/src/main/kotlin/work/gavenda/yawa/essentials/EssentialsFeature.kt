@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa.essentials
@@ -29,12 +28,13 @@ object EssentialsFeature : PluginFeature {
     override val disabled get() = Config.Essentials.Disabled
 
     private val homeCommand = HomeCommand()
-    private val setHomeCommand = SetHomeCommand()
+    private val homeSetCommand = HomeSetCommand()
     private val teleportSpawnCommand = TeleportSpawnCommand()
     private val backCommand = BackCommand()
-    private val locationCommand = LocationCommand()
-    private val setLocationCommand = SetLocationCommand()
+    private val warpCommand = WarpCommand()
+    private val warpSetCommand = WarpSetCommand()
     private val locationPlaceholder = LocationPlaceholder()
+    private val warpDeleteCommand = WarpDeleteCommand()
 
     override fun createTables() {
         transaction {
@@ -53,11 +53,12 @@ object EssentialsFeature : PluginFeature {
 
     override fun enableCommands() {
         plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(homeCommand)
-        plugin.getCommand(Command.HOME_SET)?.setExecutor(setHomeCommand)
+        plugin.getCommand(Command.HOME_SET)?.setExecutor(homeSetCommand)
         plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
         plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(backCommand)
-        plugin.getCommand(Command.LOCATION_SET)?.setExecutor(setLocationCommand)
-        plugin.getCommand(Command.LOCATION_TELEPORT)?.setExecutor(locationCommand)
+        plugin.getCommand(Command.WARP_SET)?.setExecutor(warpSetCommand)
+        plugin.getCommand(Command.WARP_TELEPORT)?.setExecutor(warpCommand)
+        plugin.getCommand(Command.WARP_DELETE)?.setExecutor(warpDeleteCommand)
     }
 
     override fun disableCommands() {
@@ -65,25 +66,28 @@ object EssentialsFeature : PluginFeature {
         plugin.getCommand(Command.HOME_SET)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
         plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.LOCATION_SET)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.LOCATION_TELEPORT)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.WARP_SET)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.WARP_TELEPORT)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Command.WARP_DELETE)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {
         pluginManager.registerEvents(homeCommand)
-        pluginManager.registerEvents(setHomeCommand)
+        pluginManager.registerEvents(homeSetCommand)
         pluginManager.registerEvents(teleportSpawnCommand)
         pluginManager.registerEvents(backCommand)
-        pluginManager.registerEvents(setLocationCommand)
-        pluginManager.registerEvents(locationCommand)
+        pluginManager.registerEvents(warpSetCommand)
+        pluginManager.registerEvents(warpCommand)
+        pluginManager.registerEvents(warpDeleteCommand)
     }
 
     override fun unregisterPaperEventListeners() {
-        pluginManager.unregisterEvents(locationCommand)
-        pluginManager.unregisterEvents(setLocationCommand)
+        pluginManager.unregisterEvents(warpDeleteCommand)
+        pluginManager.unregisterEvents(warpCommand)
+        pluginManager.unregisterEvents(warpSetCommand)
         pluginManager.unregisterEvents(backCommand)
         pluginManager.unregisterEvents(teleportSpawnCommand)
-        pluginManager.unregisterEvents(setHomeCommand)
+        pluginManager.unregisterEvents(homeSetCommand)
         pluginManager.unregisterEvents(homeCommand)
     }
 }

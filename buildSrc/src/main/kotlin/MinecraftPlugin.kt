@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 import org.gradle.accessors.dm.LibrariesForLibs
@@ -23,9 +22,11 @@ import org.gradle.accessors.dm.LibrariesForMcLibs
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
 import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.attributes
+import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.the
 import org.gradle.language.jvm.tasks.ProcessResources
-import java.io.File
 
 /**
  * Configures the project as a Minecraft plugin.

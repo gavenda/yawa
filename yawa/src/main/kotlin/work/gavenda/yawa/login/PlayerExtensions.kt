@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa.login
@@ -41,14 +40,15 @@ val Player.isVerified: Boolean
 /**
  * Returns a component with a hover for verified accounts.
  */
-val Player.verifiedName: Component get() {
-    return if (isVerified) {
-        val hover = HoverEvent.showText(
-            Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
-        )
-        Component.text(name, NamedTextColor.GOLD)
-            .hoverEvent(hover)
-    } else {
-        Component.text(name)
+val Player.verifiedName: Component
+    get() {
+        return if (isVerified) {
+            val hover = HoverEvent.showText(
+                Component.text("Verified Minecraft Account", NamedTextColor.GREEN)
+            )
+            Component.text(name, NamedTextColor.GOLD)
+                .hoverEvent(hover)
+        } else {
+            Component.text(name)
+        }
     }
-}

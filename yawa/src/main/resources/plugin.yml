@@ -67,14 +67,18 @@ commands:
     description: Teleport to death location.
     usage: /<command>
     aliases: [ b ]
-  setlocation:
-    description: Set the current location with a name.
+  setwarp:
+    description: Set the current location as a warp with a name.
     usage: /<command> <location-name>
-    aliases: [ sl ]
-  location:
-    description: Teleport to specified location.
+    aliases: [ setlocation, sl, setloc ]
+  delwarp:
+    description: Delete the warp specified with a name.
+    usage: /<command> <location-name>
+    aliases: [ dellocation, dl, delloc ]
+  warp:
+    description: Warp to specified location.
     usage: /<command>
-    aliases: [ loc ]
+    aliases: [ location, l, loc ]
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.
@@ -150,8 +154,9 @@ permissions:
       yawa.essentials.home.set: true
       yawa.essentials.teleport.spawn: true
       yawa.essentials.teleport.death: true
-      yawa.essentials.location.teleport: true
-      yawa.essentials.location.set: true
+      yawa.essentials.warp.teleport: true
+      yawa.essentials.warp.set: true
+      yawa.essentials.warp.delete: true
   yawa.essentials.home.teleport:
     description: Permission to teleport home.
     default: true
@@ -164,9 +169,12 @@ permissions:
   yawa.essentials.teleport.death:
     description: Permission to teleport to death location.
     default: true
-  yawa.essentials.location.teleport:
-    description: Permission to teleport to specified location.
+  yawa.essentials.warp.teleport:
+    description: Permission to warp to specified location.
     default: true
-  yawa.essentials.location.set:
-    description: Permission to teleport to set location.
+  yawa.essentials.warp.set:
+    description: Permission to set a warp location.
+    default: true
+  yawa.essentials.warp.delete:
+    description: Permission to delete a warp location.
     default: true

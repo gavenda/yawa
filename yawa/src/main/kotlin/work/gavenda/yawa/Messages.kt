@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa
@@ -82,8 +81,9 @@ object Message {
     const val NotifyItemPickupRecent = "notify-item-pickup-recent"
     const val HiddenArmorVisible = "hidden-armor-visible"
     const val HiddenArmorInvisible = "hidden-armor-invisible"
-    const val EssentialsLocationSet = "essentials-location-set"
-    const val EssentialsLocationTeleport = "essentials-location-teleport"
+    const val EssentialsWarpSet = "essentials-warp-set"
+    const val EssentialsWarpTeleport = "essentials-warp-teleport"
+    const val EssentialsWarpDelete = "essentials-warp-delete"
     const val EssentialsTeleportSpawn = "essentials-teleport-spawn"
     const val EssentialsHomeTeleport = "essentials-home-teleport"
     const val EssentialsHomeSet = "essentials-home-set"

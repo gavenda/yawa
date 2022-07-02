@@ -1,3 +1,22 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package work.gavenda.yawa.chat
 
 import com.comphenix.protocol.PacketType
@@ -18,20 +37,20 @@ class ChatPreviewListener : PacketAdapter(
         .plugin(plugin)
         .listenerPriority(ListenerPriority.MONITOR)
         .types(PacketType.Play.Client.CHAT_PREVIEW, PacketType.Login.Client.START)
-        .optionAsync()
 ) {
 
     private fun isClientStart(event: PacketEvent): Boolean {
         if (event.packetType == PacketType.Login.Client.START) {
-            event.packet.modifier.write(1, Optional.empty<Any>());
+            event.packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, Optional.empty())
             return true
         }
         return false
     }
 
     override fun onPacketReceiving(event: PacketEvent) {
-        if (event.isPlayerTemporary || event.isCancelled) return
+        if (event.isCancelled) return
         if (isClientStart(event)) return
+        if (event.isPlayerTemporary) return
 
         val packet = event.packet
         val player = event.player
@@ -49,5 +68,9 @@ class ChatPreviewListener : PacketAdapter(
 
             protocolManager.sendServerPacket(player, previewPacket)
         }
+    }
+
+    override fun onPacketSending(event: PacketEvent) {
+        //do nothing
     }
 }

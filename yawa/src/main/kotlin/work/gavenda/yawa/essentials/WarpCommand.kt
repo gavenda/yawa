@@ -1,3 +1,21 @@
+/*
+ * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
+ *
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package work.gavenda.yawa.essentials
 
 import net.kyori.adventure.text.Component
@@ -13,9 +31,9 @@ import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
-class LocationCommand : Command() {
-    override val permission = Permission.ESSENTIALS_LOCATION_TELEPORT
-    override val commands = listOf("location", "loc")
+class WarpCommand : Command() {
+    override val permission = Permission.ESSENTIALS_WARP_TELEPORT
+    override val commands = listOf("warp", "location", "loc", "l")
 
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
@@ -38,16 +56,13 @@ class LocationCommand : Command() {
                         return@transaction
                     }
 
-                    val x = playerLocationDb.x.toDouble()
-                    val y = playerLocationDb.y.toDouble()
-                    val z = playerLocationDb.z.toDouble()
-                    val location = Location(world, x, y, z)
+                    val location = Location(world, playerLocationDb.x, playerLocationDb.y, playerLocationDb.z)
 
                     scheduler.runTask(plugin) { _ ->
                         world.getChunkAtAsyncCompat(location).thenAccept {
                             sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                                 sender.sendMessageUsingKey(
-                                    Message.EssentialsLocationTeleport, mapOf(
+                                    Message.EssentialsWarpTeleport, mapOf(
                                         "location-name" to Component.text(playerLocationDb.name, NamedTextColor.WHITE)
                                     )
                                 )
@@ -55,7 +70,11 @@ class LocationCommand : Command() {
                         }
                     }
                 } else {
-                    sender.sendMessageUsingKey(Message.EssentialsTeleportErrorNoLocation)
+                    sender.sendMessageUsingKey(
+                        Message.EssentialsTeleportErrorNoLocation, mapOf(
+                            "location-name" to Component.text(locationName, NamedTextColor.WHITE)
+                        )
+                    )
                 }
             }
         }

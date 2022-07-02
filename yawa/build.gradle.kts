@@ -24,3 +24,9 @@ dependencies {
     compileOnly(project(path = ":yawa-api"))
     compileOnly(mcLibs.vault)
 }
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}

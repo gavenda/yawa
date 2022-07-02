@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa.chat
 
-import com.comphenix.protocol.async.AsyncListenerHandler
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.placeholder.Placeholders
 
@@ -32,7 +30,7 @@ object ChatFeature : PluginFeature {
     private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
     private val equipmentPlaceholder = EquipmentPlaceholder()
-    private lateinit var chatPreviewHandler: AsyncListenerHandler
+    private val chatPreviewListener = ChatPreviewListener()
 
     override fun registerPlaceholders() {
         Placeholders.register(equipmentPlaceholder)
@@ -53,14 +51,11 @@ object ChatFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
-        chatPreviewHandler = protocolManager
-            .asynchronousManager
-            .registerAsyncHandler(ChatPreviewListener())
-            .apply { start() }
+        protocolManager.addPacketListener(chatPreviewListener)
     }
 
     override fun unregisterEventListeners() {
-        protocolManager.asynchronousManager.unregisterAsyncHandler(chatPreviewHandler)
+        protocolManager.removePacketListener(chatPreviewListener)
     }
 
     override fun registerPaperEventListeners() {

@@ -15,3 +15,9 @@ dependencies {
     compileOnly(mcLibs.protocol.lib)
     compileOnly(mcLibs.bundles.adventure)
 }
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}

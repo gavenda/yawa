@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- *  Copyright (C) 2021 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package work.gavenda.yawa
@@ -79,7 +78,11 @@ object Config {
         var Disabled
             get() = config.getBoolean("tab-list.disabled", false)
             set(value) = config.set("tab-list.disabled", value)
-        val PlayerListName get() = config.getString("tab-list.player-list-name", "<white>[</white><green><player-level></green><white>]</white> <player-name>")!!
+        val PlayerListName
+            get() = config.getString(
+                "tab-list.player-list-name",
+                "<white>[</white><green><player-level></green><white>]</white> <player-name>"
+            )!!
         val Header get() = config.getString("tab-list.header", "<gold>Yawa</gold>")!!
         val Footer get() = config.getString("tab-list.footer", "<server-player-count> / <server-player-max>")!!
     }
