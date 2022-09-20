@@ -38,11 +38,7 @@ class SlashCommandListener : ListenerAdapter() {
     }
 
     private fun showOnline(event: SlashCommandInteractionEvent) {
-        val onlinePlayers = server.onlinePlayers.joinToString(
-            separator = "\n",
-            prefix = "- "
-        ) { it.name }
-
+        val onlinePlayers = server.onlinePlayers.joinToString(separator = "\n") { "- ${it.name}" }
         val embed = EmbedBuilder()
             .setTitle("Online Players")
             .setDescription(onlinePlayers)
@@ -58,9 +54,7 @@ class SlashCommandListener : ListenerAdapter() {
             .setTitle("Server Information")
             .addField("Name", server.name, false)
             .addField("Server", server.version, false)
-            .addField("Average Tickrate", server.averageTickTime.toString(), true)
-            .addField("Current Tick", server.currentTick.toString(), true)
-            .addField("Online Players", "${server.onlinePlayers.size} / ${server.maxPlayers}", true)
+            .addField("Online Players", "${server.onlinePlayers.size} / ${server.maxPlayers}", false)
             .build()
 
         event.hook.sendMessageEmbeds(embed).queue()
