@@ -25,6 +25,7 @@ import com.neovisionaries.ws.client.WebSocketFactory
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.entities.Webhook
@@ -110,6 +111,9 @@ object DiscordFeature : PluginFeature, EventListener {
 
         // Register discord events
         jda.addEventListener(SlashCommandListener())
+
+        // Update status
+        jda.presence.activity = Activity.playing("Minecraft")
     }
 
     fun sendMessage(player: Player, component: Component) {
