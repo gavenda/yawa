@@ -31,6 +31,9 @@ import net.dv8tion.jda.api.entities.Webhook
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.EventListener
+import net.dv8tion.jda.api.interactions.commands.OptionType
+import net.dv8tion.jda.api.interactions.commands.build.Commands
+import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.MemberCachePolicy
 import net.kyori.adventure.text.Component
@@ -44,6 +47,7 @@ import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 import work.gavenda.yawa.api.toPlainText
+
 
 object DiscordFeature : PluginFeature, EventListener {
     override val disabled: Boolean
@@ -63,7 +67,7 @@ object DiscordFeature : PluginFeature, EventListener {
     override fun registerHooks() {
         jda = JDABuilder.createDefault(Config.Discord.Token)
             .setWebsocketFactory(
-                WebSocketFactory().setDualStackMode(DualStackMode.IPV4_ONLY)
+                WebSocketFactory().setDualStackMode(DualStackMode.BOTH)
             )
             .setMemberCachePolicy(MemberCachePolicy.ONLINE)
             .setAutoReconnect(true)
@@ -97,6 +101,15 @@ object DiscordFeature : PluginFeature, EventListener {
                 }
             }
         }
+
+        // Register slash commands
+        jda.updateCommands().addCommands(
+            Commands.slash("online", "Show online players."),
+            Commands.slash("server", "Show server information.")
+        ).queue()
+
+        // Register discord events
+        jda.addEventListener(SlashCommandListener())
     }
 
     fun sendMessage(player: Player, component: Component) {

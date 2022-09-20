@@ -23,6 +23,7 @@ import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.logger
 
 /**
@@ -33,7 +34,7 @@ fun updateChunkMark(location: Location, marked: Boolean) {
     val chunkX = location.chunk.x
     val chunkZ = location.chunk.z
 
-    world.loadChunk(chunkX, chunkZ)
+    world.getChunkAtAsyncCompat(location).get()
     world.setChunkForceLoaded(chunkX, chunkZ, marked)
 
     if (marked) {
