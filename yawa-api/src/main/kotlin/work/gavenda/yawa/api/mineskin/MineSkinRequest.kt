@@ -19,5 +19,11 @@
 
 package work.gavenda.yawa.api.mineskin
 
-const val VARIANT_SLIM = "slim"
-const val VARIANT_CLASSIC = "classic"
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class MineSkinRequest(
+    val variant: String,
+    val url: String,
+    val visibility: Int
+)

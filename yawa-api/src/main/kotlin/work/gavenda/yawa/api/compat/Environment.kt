@@ -35,7 +35,9 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.RenderType
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -58,7 +60,14 @@ interface Environment {
     fun joinMessage(joinEvent: PlayerJoinEvent): Component?
     fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?)
     fun quitMessage(quitEvent: PlayerQuitEvent): Component?
-    fun registerNewObjective(scoreboard: Scoreboard, name: String, criteria: String, displayName: Component): Objective
+    fun registerNewObjective(
+        scoreboard: Scoreboard,
+        name: String,
+        criteria: Criteria,
+        displayName: Component,
+        renderType: RenderType = RenderType.INTEGER
+    ): Objective
+
     fun lore(meta: SkullMeta, lore: List<Component>)
     fun lore(meta: ItemMeta, lore: List<Component>?)
     fun lore(meta: ItemMeta): List<Component>?

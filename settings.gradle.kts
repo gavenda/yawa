@@ -9,9 +9,6 @@ dependencyResolutionManagement {
 
     repositories {
         mavenCentral()
-        maven(url = "https://repo.codemc.org/repository/maven-public/") {
-            name = "codemc"
-        }
         maven(url = "https://papermc.io/repo/repository/maven-public") {
             name = "paper-snapshots"
         }
@@ -32,6 +29,9 @@ dependencyResolutionManagement {
         }
         maven(url = "https://libraries.minecraft.net") {
             name = "minecraft"
+        }
+        maven(url = "https://repo.codemc.org/repository/maven-public/") {
+            name = "codemc"
         }
     }
 

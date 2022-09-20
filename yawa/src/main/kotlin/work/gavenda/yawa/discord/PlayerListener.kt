@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import work.gavenda.yawa.api.compat.deathMessageCompat
 import work.gavenda.yawa.api.compat.displayTitle
 import work.gavenda.yawa.api.displayAdvancement
+import work.gavenda.yawa.api.toPlainText
 import work.gavenda.yawa.discordAlert
 import work.gavenda.yawa.sleep.sleepKicked
 
@@ -48,7 +49,8 @@ class PlayerListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerAdvancement(e: PlayerAdvancementDoneEvent) {
         if (!e.advancement.displayAdvancement) return
-        e.player.discordAlert("${e.player.name} has made the advancement '${e.advancement.displayTitle}'")
+        val advancementTitle = e.advancement.displayTitle.toPlainText()
+        e.player.discordAlert("${e.player.name} has made the advancement '${advancementTitle}'")
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

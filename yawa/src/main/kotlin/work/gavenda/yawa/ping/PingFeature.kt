@@ -20,13 +20,13 @@
 package work.gavenda.yawa.ping
 
 import net.kyori.adventure.text.Component
+import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.registerNewObjectiveCompat
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
-const val SB_CRITERIA = "dummy"
 const val SB_DISPLAY_NAME = "ms"
 
 object PingFeature : PluginFeature {
@@ -39,7 +39,7 @@ object PingFeature : PluginFeature {
     private val scoreboard = server.scoreboardManager.newScoreboard
     private val objective = scoreboard.registerNewObjectiveCompat(
         SB_NAME,
-        SB_CRITERIA,
+        Criteria.DUMMY,
         Component.text(SB_DISPLAY_NAME)
     ).apply {
         displaySlot = DisplaySlot.PLAYER_LIST

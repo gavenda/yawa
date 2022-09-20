@@ -54,7 +54,7 @@ sleep:
 
 # Ender dragon battle configuration
 ender:
-  disabled: false
+  disabled: true
 
 # Sit feature configuration
 sit:

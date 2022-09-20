@@ -20,6 +20,7 @@
 package work.gavenda.yawa.api.mineskin
 
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
@@ -46,29 +47,18 @@ object MineSkinApi {
             requestMethod = "POST"
 
             val charset = Charsets.UTF_8
-            val charsetStr = Charsets.UTF_8.toString()
-            val postParams = mapOf(
-                MINESKIN_KEY_MODEL to if (slim) "slim" else "",
-                MINESKIN_KEY_URL to url.toString()
+            val request = MineSkinRequest(
+                url = url.toString(),
+                variant = if (slim) VARIANT_SLIM else VARIANT_CLASSIC,
+                visibility = 1
             )
-            val postData = StringBuilder()
-
-            postParams.forEach {
-                if (postData.isNotEmpty()) {
-                    postData.append('&')
-                }
-                postData.append(URLEncoder.encode(it.key, charsetStr))
-                postData.append('=')
-                postData.append(URLEncoder.encode(it.value, charsetStr))
-            }
-
-            val postDataBytes = postData.toString().toByteArray(charset)
+            val postDataBytes = json.encodeToString(request).toByteArray(charset)
 
             // Headers
             addRequestProperty("Accept", "application/json")
-            addRequestProperty("User-Agent", "YawaAPI")
+            addRequestProperty("User-Agent", "YawaAPI/v1.0")
             addRequestProperty("Charset", "UTF-8")
-            addRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+            addRequestProperty("Content-Type", "application/json")
             addRequestProperty("Content-Length", postDataBytes.size.toString())
 
             // Write body

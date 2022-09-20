@@ -35,7 +35,9 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.RenderType
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -97,10 +99,11 @@ class PaperEnvironment : Environment {
     override fun registerNewObjective(
         scoreboard: Scoreboard,
         name: String,
-        criteria: String,
-        displayName: Component
+        criteria: Criteria,
+        displayName: Component,
+        renderType: RenderType
     ): Objective {
-        return scoreboard.registerNewObjective(name, criteria, displayName)
+        return scoreboard.registerNewObjective(name, criteria, displayName, renderType)
     }
 
     override fun quitMessage(quitEvent: PlayerQuitEvent, component: Component?) {

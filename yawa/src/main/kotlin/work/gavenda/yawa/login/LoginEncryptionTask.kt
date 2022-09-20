@@ -23,6 +23,7 @@ import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
+import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -148,8 +149,7 @@ class LoginEncryptionTask(
      */
     private fun enableEncryption(player: Player, loginKey: SecretKey): Boolean {
         try {
-            val encryptMethod = FuzzyReflection
-                .fromObject(player.networkManager)
+            val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
                 .getMethodByParameters("a", Cipher::class.java, Cipher::class.java)
 
             val decryptCipher = MinecraftEncryption.asCipher(Cipher.DECRYPT_MODE, loginKey)

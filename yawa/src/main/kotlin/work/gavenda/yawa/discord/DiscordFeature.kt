@@ -143,6 +143,8 @@ object DiscordFeature : PluginFeature, EventListener {
     fun sendAlert(alert: String, avatarUrl: String = defaultAvatarUrl, color: TextColor = NamedTextColor.BLACK) {
         if (disabled) return
 
+        logger.info(alert)
+
         val embed = EmbedBuilder()
             .setAuthor(alert, null, avatarUrl)
             .setColor(color.asAwtColor())

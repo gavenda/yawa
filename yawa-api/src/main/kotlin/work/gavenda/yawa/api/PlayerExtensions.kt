@@ -20,8 +20,8 @@
 package work.gavenda.yawa.api
 
 import com.comphenix.protocol.injector.temporary.TemporaryPlayerFactory
-import com.comphenix.protocol.reflect.FieldUtils
 import com.comphenix.protocol.reflect.FuzzyReflection
+import com.comphenix.protocol.reflect.accessors.Accessors
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.ADD_PLAYER
@@ -43,6 +43,7 @@ import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
 import work.gavenda.yawa.api.wrapper.WrapperPlayServerRespawn
 import java.util.*
+
 
 const val META_AFK = "Afk"
 
@@ -178,20 +179,28 @@ fun Player.updateSkin() {
  */
 val Player.networkManager: Any
     get() {
-        val socketInjector = TemporaryPlayerFactory.getInjectorFromPlayer(player)
-        val injectorClass = Class.forName("com.comphenix.protocol.injector.netty.Injector")
-        val rawInjector = FuzzyReflection.getFieldValue(socketInjector, injectorClass, true)
-        return FieldUtils.readField(rawInjector, "networkManager", true)
+        val injectorContainer = TemporaryPlayerFactory.getInjectorFromPlayer(this);
+        val injectorClass = Class.forName("com.comphenix.protocol.injector.netty.Injector");
+        val rawInjector = FuzzyReflection.getFieldValue(injectorContainer, injectorClass, true)
+        val rawInjectorClass = rawInjector.javaClass
+        val accessor = Accessors.getFieldAccessorOrNull(rawInjectorClass, "networkManager", Any::class.java)
+        return accessor.get(rawInjector)
     }
 
 /**
  * Retrieves the spoofed uuid for this player.
  */
 var Player.spoofedUuid: UUID
-    get() = FieldUtils.readField(networkManager, "spoofedUUID", true) as UUID
+    get() {
+        val managerClass = networkManager.javaClass
+        val accessor = Accessors.getFieldAccessorOrNull(managerClass, "spoofedUUID", UUID::class.java)
+        return accessor.get(networkManager) as UUID
+    }
     set(value) {
         //https://github.com/bergerkiller/CraftSource/blob/master/net.minecraft.server/NetworkManager.java#L69
-        FieldUtils.writeField(networkManager, "spoofedUUID", value, true)
+        val managerClass = networkManager.javaClass
+        val accessor = Accessors.getFieldAccessorOrNull(managerClass, "spoofedUUID", UUID::class.java)
+        return accessor.set(networkManager, value)
     }
 
 /**

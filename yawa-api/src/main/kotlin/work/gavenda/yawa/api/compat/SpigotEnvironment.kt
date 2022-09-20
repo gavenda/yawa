@@ -36,7 +36,9 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.RenderType
 import org.bukkit.scoreboard.Scoreboard
 import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asAudience
@@ -46,6 +48,7 @@ import java.lang.reflect.Field
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
+import java.util.stream.Collectors
 
 class SpigotEnvironment : Environment {
 
@@ -74,7 +77,7 @@ class SpigotEnvironment : Environment {
     }
 
     override fun playSound(world: World, sound: Sound) {
-        world.players.forEach{ player -> player.asAudience().playSound(sound) }
+        world.players.forEach { player -> player.asAudience().playSound(sound) }
     }
 
     @Suppress("DEPRECATION")
@@ -121,10 +124,11 @@ class SpigotEnvironment : Environment {
     override fun registerNewObjective(
         scoreboard: Scoreboard,
         name: String,
-        criteria: String,
-        displayName: Component
+        criteria: Criteria,
+        displayName: Component,
+        renderType: RenderType
     ): Objective {
-        return scoreboard.registerNewObjective(name, criteria, displayName.toLegacyText())
+        return scoreboard.registerNewObjective(name, criteria, displayName.toLegacyText(), renderType)
     }
 
     @Suppress("DEPRECATION")
@@ -254,7 +258,13 @@ class SpigotEnvironment : Environment {
 
                 return@computeIfAbsent GsonComponentSerializer.gson().deserialize(componentJson).toLegacyText()
             } catch (e: Exception) {
-                throw Error("No advancement display!")
+                val rawAdvancementName = advancement.key.key
+                return@computeIfAbsent Arrays.stream(
+                    rawAdvancementName.substring(rawAdvancementName.lastIndexOf("/") + 1).lowercase(Locale.getDefault())
+                        .split("_".toRegex()).dropLastWhile { it.isEmpty() }
+                        .toTypedArray())
+                    .map { s -> s.substring(0, 1).uppercase(Locale.getDefault()) + s.substring(1) }
+                    .collect(Collectors.joining(" "))
             }
         }
 

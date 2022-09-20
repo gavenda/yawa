@@ -132,6 +132,7 @@ fun CommandSender.sendMessageUsingKey(key: String, params: Map<String, Any?> = m
 }
 
 fun Player.discordAlert(text: String, color: TextColor = NamedTextColor.YELLOW) {
+    logger.info(text)
     DiscordFeature.sendAlert(text, avatarUrl, color)
 }
 

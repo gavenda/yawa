@@ -34,7 +34,9 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.Objective
+import org.bukkit.scoreboard.RenderType
 import org.bukkit.scoreboard.Scoreboard
 import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.displayAdvancement
@@ -131,8 +133,13 @@ fun Entity.teleportAsyncCompat(location: Location): CompletableFuture<Boolean> {
     return runtimeEnvironment.teleportAsync(this, location)
 }
 
-fun Scoreboard.registerNewObjectiveCompat(name: String, criteria: String, displayName: Component): Objective {
-    return runtimeEnvironment.registerNewObjective(this, name, criteria, displayName)
+fun Scoreboard.registerNewObjectiveCompat(
+    name: String,
+    criteria: Criteria,
+    displayName: Component,
+    renderType: RenderType = RenderType.INTEGER
+): Objective {
+    return runtimeEnvironment.registerNewObjective(this, name, criteria, displayName, renderType)
 }
 
 fun CommandSender.sendMessageCompat(component: Component) {
