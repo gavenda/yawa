@@ -24,7 +24,7 @@ import org.bukkit.event.Listener
 
 class BukkitChatListener : Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     @Suppress("DEPRECATION")
     fun onPlayerChat(e: org.bukkit.event.player.AsyncPlayerChatEvent) {
         DiscordFeature.sendMessage(e.player, e.message)

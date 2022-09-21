@@ -30,6 +30,7 @@ data class LoginSession(
     val serverId: String,
     val verifyToken: ByteArray,
     val profileKeyData: Optional<WrappedProfileKeyData>,
+    val uuid: Optional<UUID>,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -39,6 +40,7 @@ data class LoginSession(
 
         if (name != other.name) return false
         if (serverId != other.serverId) return false
+        if (uuid != other.uuid) return false
         if (!verifyToken.contentEquals(other.verifyToken)) return false
         if (profileKeyData != other.profileKeyData) return false
 
@@ -48,6 +50,7 @@ data class LoginSession(
     override fun hashCode(): Int {
         var result = name.hashCode()
         result = 31 * result + serverId.hashCode()
+        result = 31 * result + uuid.hashCode()
         result = 31 * result + verifyToken.contentHashCode()
         result = 31 * result + profileKeyData.hashCode()
         return result

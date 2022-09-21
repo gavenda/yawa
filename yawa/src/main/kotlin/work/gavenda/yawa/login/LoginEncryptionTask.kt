@@ -25,19 +25,17 @@ import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
+import com.comphenix.protocol.wrappers.Converters
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.Environment
 import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
 import work.gavenda.yawa.api.spoofedUuid
-import work.gavenda.yawa.chat.ChatFeature
 import java.io.IOException
-import java.lang.reflect.Method
 import java.security.GeneralSecurityException
 import java.security.KeyPair
 import java.util.*
@@ -181,16 +179,12 @@ class LoginEncryptionTask(
      * @param name login name
      */
     private fun receiveFakeStartPacket(player: Player, name: String) {
-        val profileKeyData = Session.find(player.address!!)!!.profileKeyData
+        val loginSession = Session.find(player.address!!)!!
 
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
             strings.write(0, name)
-
-            if (ChatFeature.disabled) {
-                getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, profileKeyData)
-            } else {
-                getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, Optional.empty())
-            }
+            getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, loginSession.profileKeyData)
+            getOptionals(Converters.passthrough(UUID::class.java)).write(1, loginSession.uuid)
         }
         try {
             // We don't want to handle our own packets so ignore filters

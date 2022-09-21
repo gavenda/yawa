@@ -22,8 +22,6 @@ package work.gavenda.yawa.login
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
-import com.comphenix.protocol.reflect.FuzzyReflection
-import com.mojang.datafixers.util.Either
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
@@ -48,10 +46,10 @@ class LoginEncryptionListener(
 
     override fun onPacketReceiving(packetEvent: PacketEvent) {
         val sharedSecret = packetEvent.packet.byteArrays.read(0).copyOf()
-        val either = packetEvent.packet.getSpecificModifier(Either::class.java).read(0)
+        val either = packetEvent.packet.loginSignatures.read(0)
         val signatureData = either.right().get()
-        val salt = FuzzyReflection.getFieldValue(signatureData, Long::class.java, true)
-        val signature = FuzzyReflection.getFieldValue(signatureData, ByteArray::class.java, true)
+        val salt = signatureData.salt
+        val signature = signatureData.signature
         val player = packetEvent.player
 
         packetEvent.asyncMarker.incrementProcessingDelay()

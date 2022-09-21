@@ -23,11 +23,13 @@ import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.BukkitConverters
+import com.comphenix.protocol.wrappers.Converters
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
 import java.security.KeyPair
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -61,11 +63,12 @@ class LoginListener(
         val packet = packetEvent.packet
         val name = packet.strings.read(0)
         val profileKeyData = packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).read(0)
+        val uuid = packet.getOptionals(Converters.passthrough(UUID::class.java)).readSafely(1)
         val player = packetEvent.player
 
         // Public key check
-        if (profileKeyData.isPresent) {
-            if (MinecraftEncryption.verifyClientKey(profileKeyData.get()).not()) {
+        if (profileKeyData.isPresent && uuid.isPresent) {
+            if (MinecraftEncryption.verifyClientKey(profileKeyData.get(), uuid = uuid.get()).not()) {
                 player.disconnect(
                     Messages
                         .forPlayer(player)
@@ -117,6 +120,7 @@ class LoginListener(
             packetEvent = packetEvent,
             player = player,
             name = name,
+            uuid = uuid,
             keyPair = keyPair,
             profileKeyData = profileKeyData
         )

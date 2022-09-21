@@ -30,7 +30,7 @@ object ChatFeature : PluginFeature {
     private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
     private val equipmentPlaceholder = EquipmentPlaceholder()
-    private val chatPreviewListener = ChatPreviewListener()
+    // private val popupDisabler = PopupDisabler()
 
     override fun registerPlaceholders() {
         Placeholders.register(equipmentPlaceholder)
@@ -51,11 +51,11 @@ object ChatFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
-        protocolManager.addPacketListener(chatPreviewListener)
+        // protocolManager.addPacketListener(popupDisabler)
     }
 
     override fun unregisterEventListeners() {
-        protocolManager.removePacketListener(chatPreviewListener)
+        // protocolManager.removePacketListener(popupDisabler)
     }
 
     override fun registerPaperEventListeners() {

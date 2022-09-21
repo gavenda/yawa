@@ -23,6 +23,7 @@ import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKey
 import com.google.common.io.Resources
 import com.google.common.primitives.Longs
 import java.math.BigInteger
+import java.nio.ByteBuffer
 import java.security.*
 import java.security.spec.X509EncodedKeySpec
 import java.time.Instant
@@ -38,10 +39,10 @@ import javax.crypto.spec.SecretKeySpec
 object MinecraftEncryption {
 
     private const val MOJANG_CERTIFICATE = "yggdrasil_session_pubkey.der"
-    private const val LINE_LENGTH = 76
     private const val VERIFY_TOKEN_LENGTH = 4
+    private const val MILLISECOND_SIZE = 8
+    private const val UUID_SIZE = 2 * MILLISECOND_SIZE
     private const val KEY_PAIR_ALGORITHM = "RSA"
-    private val KEY_ENCODER = Base64.getMimeEncoder(LINE_LENGTH, "\n".toByteArray(Charsets.UTF_8))
     private val SECURE_RANDOM = SecureRandom()
     private val MOJANG_SESSION_KEY = KeyFactory.getInstance("RSA").generatePublic(
         X509EncodedKeySpec(
@@ -99,21 +100,29 @@ object MinecraftEncryption {
     fun decryptSharedKey(privateKey: PrivateKey, sharedKey: ByteArray): SecretKey =
         SecretKeySpec(decrypt(privateKey, sharedKey), "AES")
 
-    fun verifyClientKey(profileKeyData: WrappedProfileKeyData, timestamp: Instant = Instant.now()): Boolean {
+    fun verifyClientKey(
+        profileKeyData: WrappedProfileKeyData,
+        timestamp: Instant = Instant.now(),
+        uuid: UUID
+    ): Boolean {
         if (!timestamp.isBefore(profileKeyData.expireTime)) {
             return false
         }
 
         return Signature.getInstance("SHA1withRSA").apply {
             initVerify(MOJANG_SESSION_KEY)
-            update(toSignable(profileKeyData).toByteArray(Charsets.UTF_8))
+            update(toSignable(profileKeyData, uuid))
         }.verify(profileKeyData.signature)
     }
 
-    fun toSignable(clientPublicKey: WrappedProfileKeyData): String {
-        val expiry = clientPublicKey.expireTime.toEpochMilli()
-        val encoded = KEY_ENCODER.encodeToString(clientPublicKey.key.encoded)
-        return "$expiry-----BEGIN RSA PUBLIC KEY-----\n$encoded\n-----END RSA PUBLIC KEY-----\n"
+    private fun toSignable(clientPublicKey: WrappedProfileKeyData, uuid: UUID): ByteArray {
+        val keyData: ByteArray = clientPublicKey.key.encoded
+        return ByteBuffer.allocate(keyData.size + UUID_SIZE + MILLISECOND_SIZE)
+            .putLong(uuid.mostSignificantBits)
+            .putLong(uuid.leastSignificantBits)
+            .putLong(clientPublicKey.expireTime.toEpochMilli())
+            .put(keyData)
+            .array()
     }
 
     fun verifySignedNonce(nonce: ByteArray, clientKey: PublicKey, signatureSalt: Long, signature: ByteArray) =

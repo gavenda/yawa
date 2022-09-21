@@ -23,8 +23,9 @@ import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.ListenerPriority
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
-import com.comphenix.protocol.wrappers.BukkitConverters
+import com.comphenix.protocol.wrappers.Converters
 import com.comphenix.protocol.wrappers.WrappedChatComponent
+import com.comphenix.protocol.wrappers.WrappedSaltedSignature
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toLegacyText
 import work.gavenda.yawa.plugin
@@ -32,45 +33,19 @@ import work.gavenda.yawa.protocolManager
 import work.gavenda.yawa.scheduler
 import java.util.*
 
-class ChatPreviewListener : PacketAdapter(
+class PopupDisabler : PacketAdapter(
     params()
         .plugin(plugin)
         .listenerPriority(ListenerPriority.MONITOR)
-        .types(PacketType.Play.Client.CHAT_PREVIEW, PacketType.Login.Client.START)
+        .types(PacketType.Play.Server.SERVER_DATA, PacketType.Play.Server.CHAT)
 ) {
 
-    private fun isClientStart(event: PacketEvent): Boolean {
-        if (event.packetType == PacketType.Login.Client.START) {
-            event.packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, Optional.empty())
-            return true
-        }
-        return false
-    }
-
-    override fun onPacketReceiving(event: PacketEvent) {
-        if (event.isCancelled) return
-        if (isClientStart(event)) return
-        if (event.isPlayerTemporary) return
-
-        val packet = event.packet
-        val player = event.player
-        val id = packet.integers.read(0)
-        val chat = packet.strings.read(0)
-
-        scheduler.runTaskAsynchronously(plugin) { _ ->
-            val previewPacket = protocolManager.createPacket(PacketType.Play.Server.CHAT_PREVIEW)
-
-            previewPacket.integers.write(0, id)
-
-            val previewComponent = Placeholders.withContext(player).parse(chat)
-            val previewLegacyText = previewComponent.toLegacyText()
-            previewPacket.chatComponents.write(0, WrappedChatComponent.fromLegacyText(previewLegacyText))
-
-            protocolManager.sendServerPacket(player, previewPacket)
-        }
-    }
-
     override fun onPacketSending(event: PacketEvent) {
-        //do nothing
+        if (event.packetType == PacketType.Play.Server.SERVER_DATA) {
+            event.packet.booleans.write(1, true)
+        }
+//        if (event.packetType == PacketType.Play.Server.CHAT) {
+//            event.packet.signatures.write(0, WrappedSaltedSignature(0, byteArrayOf()))
+//        }
     }
 }

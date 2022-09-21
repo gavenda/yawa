@@ -34,8 +34,9 @@ fun updateChunkMark(location: Location, marked: Boolean) {
     val chunkX = location.chunk.x
     val chunkZ = location.chunk.z
 
-    world.getChunkAtAsyncCompat(location).get()
-    world.setChunkForceLoaded(chunkX, chunkZ, marked)
+    world.getChunkAtAsyncCompat(location).thenAccept {
+        world.setChunkForceLoaded(chunkX, chunkZ, marked)
+    }
 
     if (marked) {
         logger.info("Chunk ($chunkX, $chunkZ) is marked to keep running")

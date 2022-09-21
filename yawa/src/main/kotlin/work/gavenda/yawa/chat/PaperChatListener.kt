@@ -19,12 +19,14 @@
 
 package work.gavenda.yawa.chat
 
+import io.papermc.paper.event.player.AsyncChatDecorateEvent
 import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.placeholder.Placeholders
+import work.gavenda.yawa.api.toPlainText
 
 class PaperChatListener : Listener {
 
@@ -35,6 +37,15 @@ class PaperChatListener : Listener {
                 .withContext(source)
                 .parse(Config.Chat.FormatMessage)
                 .append(message)
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    fun onChatPreview(e: AsyncChatDecorateEvent) {
+        val player = e.player()
+        if (player != null) {
+            val message = e.originalMessage().toPlainText()
+            e.result(Placeholders.withContext(player).parse(message))
         }
     }
 
