@@ -28,12 +28,16 @@ import com.comphenix.protocol.wrappers.BukkitConverters
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.Environment
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
+import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
 import work.gavenda.yawa.api.spoofedUuid
 import work.gavenda.yawa.chat.ChatFeature
 import java.io.IOException
+import java.lang.reflect.Method
 import java.security.GeneralSecurityException
 import java.security.KeyPair
 import java.util.*
@@ -149,14 +153,21 @@ class LoginEncryptionTask(
      */
     private fun enableEncryption(player: Player, loginKey: SecretKey): Boolean {
         try {
-            val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
-                .getMethodByParameters("a", Cipher::class.java, Cipher::class.java)
-
-            val decryptCipher = MinecraftEncryption.asCipher(Cipher.DECRYPT_MODE, loginKey)
-            val encryptCipher = MinecraftEncryption.asCipher(Cipher.ENCRYPT_MODE, loginKey)
-
             // Encrypt/decrypt following packets
-            encryptMethod.invoke(player.networkManager, decryptCipher, encryptCipher)
+            if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+                logger.info("Paper detected, using paper encryption")
+                val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
+                    .getMethodByParameters("setupEncryption", SecretKey::class.java)
+
+                encryptMethod.invoke(player.networkManager, loginKey)
+            } else {
+                val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
+                    .getMethodByParameters("a", Cipher::class.java, Cipher::class.java)
+                val decryptCipher = MinecraftEncryption.asCipher(Cipher.DECRYPT_MODE, loginKey)
+                val encryptCipher = MinecraftEncryption.asCipher(Cipher.ENCRYPT_MODE, loginKey)
+
+                encryptMethod.invoke(player.networkManager, decryptCipher, encryptCipher)
+            }
         } catch (ex: Exception) {
             logger.error("Cannot enable encryption", ex)
             return false

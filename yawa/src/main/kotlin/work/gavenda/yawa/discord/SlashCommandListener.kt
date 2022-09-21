@@ -22,6 +22,8 @@ package work.gavenda.yawa.discord
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
+import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.logger
 import work.gavenda.yawa.server
 
@@ -38,7 +40,11 @@ class SlashCommandListener : ListenerAdapter() {
     }
 
     private fun showOnline(event: SlashCommandInteractionEvent) {
-        val onlinePlayers = server.onlinePlayers.joinToString(separator = "\n") { "- ${it.name}" }
+        val onlinePlayers = if (server.onlinePlayers.size > 0) {
+            server.onlinePlayers.joinToString(separator = "\n") { "- ${it.name}" }
+        } else {
+            "There are no online players."
+        }
         val embed = EmbedBuilder()
             .setTitle("Online Players")
             .setDescription(onlinePlayers)
@@ -52,11 +58,15 @@ class SlashCommandListener : ListenerAdapter() {
     private fun showServer(event: SlashCommandInteractionEvent) {
         val embed = EmbedBuilder()
             .setTitle("Server Information")
-            .addField("Name", server.name, false)
             .addField("Server", server.version, false)
             .addField("Online Players", "${server.onlinePlayers.size} / ${server.maxPlayers}", false)
-            .build()
 
-        event.hook.sendMessageEmbeds(embed).queue()
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+            embed.addField("Version", server.minecraftVersion, false)
+            embed.addField("Average Tick Time", "${server.averageTickTime}ms", true)
+            embed.addField("Ticks Per Second", "${server.tps[0]} (1m), ${server.tps[1]} (5m), ${server.tps[2]} (15m)", true)
+        }
+
+        event.hook.sendMessageEmbeds(embed.build()).queue()
     }
 }
