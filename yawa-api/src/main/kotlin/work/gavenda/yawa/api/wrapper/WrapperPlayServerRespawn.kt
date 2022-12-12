@@ -133,10 +133,6 @@ class WrapperPlayServerRespawn : AbstractPacket(PacketContainer(type), type) {
         handle.booleans.write(1, value)
     }
 
-    fun writeCopyMetadata(value: Boolean) {
-        handle.booleans.write(2, value)
-    }
-
     companion object {
         val type: PacketType = PacketType.Play.Server.RESPAWN
     }

@@ -46,10 +46,11 @@ class LoginEncryptionListener(
 
     override fun onPacketReceiving(packetEvent: PacketEvent) {
         val sharedSecret = packetEvent.packet.byteArrays.read(0).copyOf()
-        val either = packetEvent.packet.loginSignatures.read(0)
-        val signatureData = either.right().get()
-        val salt = signatureData.salt
-        val signature = signatureData.signature
+        // 1.19.3 disabled this
+        // val either = packetEvent.packet.loginSignatures.read(0)
+        // val signatureData = either.right().get()
+        // val salt = signatureData.salt
+        // val signature = signatureData.signature
         val player = packetEvent.player
 
         packetEvent.asyncMarker.incrementProcessingDelay()
@@ -79,20 +80,21 @@ class LoginEncryptionListener(
             scheduler.runTaskAsynchronously(plugin, encryptionTask)
         }
 
-        if (session.profileKeyData.isEmpty) {
-            proceed()
-        } else if (session.profileKeyData.isPresent) {
-            val publicKey = session.profileKeyData.get().key
-
-            if (MinecraftEncryption.verifySignedNonce(session.verifyToken, publicKey, salt, signature)) {
-                proceed()
-            } else {
-                player.disconnect(
-                    Messages
-                        .forPlayer(player)
-                        .get(Message.LoginInvalidSignature)
-                )
-            }
-        }
+        // if (session.profileKeyData.isEmpty) {
+        proceed()
+        // }
+        // else if (session.profileKeyData.isPresent) {
+        //    val publicKey = session.profileKeyData.get().key
+        //
+        //    if (MinecraftEncryption.verifySignedNonce(session.verifyToken, publicKey, salt, signature)) {
+        //        proceed()
+        //    } else {
+        //        player.disconnect(
+        //            Messages
+        //                .forPlayer(player)
+        //                .get(Message.LoginInvalidSignature)
+        //        )
+        //    }
+        //}
     }
 }

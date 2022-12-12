@@ -138,6 +138,10 @@ class Yawa : JavaPlugin() {
         config.username = Config.Database.Username
         config.password = Config.Database.Password
 
+        if (config.jdbcUrl.contains("postgres")) {
+            config.driverClassName = "org.postgresql.Driver"
+        }
+
         dataSource = HikariDataSource(config)
 
         // Use data source in Exposed

@@ -27,14 +27,12 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.entities.Guild
-import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.entities.Webhook
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.EventListener
-import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.Commands
-import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.MemberCachePolicy
 import net.kyori.adventure.text.Component
@@ -72,12 +70,12 @@ object DiscordFeature : PluginFeature, EventListener {
             )
             .setMemberCachePolicy(MemberCachePolicy.ONLINE)
             .setAutoReconnect(true)
-            .setEnableShutdownHook(true)
+            .setEnableShutdownHook(false)
             .enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.GUILD_EMOJIS
+                GatewayIntent.GUILD_EMOJIS_AND_STICKERS
             )
             .build()
             .awaitReady()
@@ -89,7 +87,7 @@ object DiscordFeature : PluginFeature, EventListener {
             textChannel.manager
                 .setTopic("${server.onlinePlayers.size} / ${server.maxPlayers} online")
                 .queue()
-        }, 0, 20 * 300).taskId
+        }, 0, 20 * 1200).taskId
 
         // Check existing webhooks
         guild.retrieveWebhooks().queue { webhooks ->
@@ -114,6 +112,9 @@ object DiscordFeature : PluginFeature, EventListener {
 
         // Update status
         jda.presence.activity = Activity.playing("Minecraft")
+
+        // Send online message
+        sendAlert("Server online", Config.Discord.ServerAvatarUrl, NamedTextColor.GREEN)
     }
 
     fun sendMessage(player: Player, component: Component) {
@@ -128,7 +129,7 @@ object DiscordFeature : PluginFeature, EventListener {
         emojiRegex.findAll(message).forEach {
             val emoteName = it.value.removeSurrounding(":")
             val emote = guild
-                .getEmotesByName(emoteName, true)
+                .getEmojisByName(emoteName, true)
                 .firstOrNull()
 
             if (emote != null) {
@@ -159,8 +160,6 @@ object DiscordFeature : PluginFeature, EventListener {
 
     fun sendAlert(alert: String, avatarUrl: String = defaultAvatarUrl, color: TextColor = NamedTextColor.BLACK) {
         if (disabled) return
-
-        logger.info(alert)
 
         val embed = EmbedBuilder()
             .setAuthor(alert, null, avatarUrl)
@@ -201,6 +200,9 @@ object DiscordFeature : PluginFeature, EventListener {
         textChannel.manager
             .setTopic("Server offline")
             .complete()
+
+        sendAlert("Server offline", Config.Discord.ServerAvatarUrl, NamedTextColor.RED)
+
         jda.shutdown()
         scheduler.cancelTask(topicTaskId)
     }

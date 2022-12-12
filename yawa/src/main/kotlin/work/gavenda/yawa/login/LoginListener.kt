@@ -24,6 +24,7 @@ import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.BukkitConverters
 import com.comphenix.protocol.wrappers.Converters
+import com.comphenix.protocol.wrappers.WrappedProfilePublicKey
 import com.google.common.util.concurrent.RateLimiter
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.*
@@ -62,21 +63,24 @@ class LoginListener(
 
         val packet = packetEvent.packet
         val name = packet.strings.read(0)
-        val profileKeyData = packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).read(0)
-        val uuid = packet.getOptionals(Converters.passthrough(UUID::class.java)).readSafely(1)
+        // Disabled in 1.19.3
+        // val profileKeyData = packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).read(0)
+        val profileKeyData = Optional.empty<WrappedProfilePublicKey.WrappedProfileKeyData>()
+        val uuid = packet.getOptionals(Converters.passthrough(UUID::class.java)).readSafely(0)
         val player = packetEvent.player
 
         // Public key check
-        if (profileKeyData.isPresent && uuid.isPresent) {
-            if (MinecraftEncryption.verifyClientKey(profileKeyData.get(), uuid = uuid.get()).not()) {
-                player.disconnect(
-                    Messages
-                        .forPlayer(player)
-                        .get(Message.LoginInvalidPublicKey)
-                )
-                logger.warn("Disconnected player '$name' due to invalid client public key")
-            }
-        }
+        // Disabled in 1.19.3
+        // if (profileKeyData.isPresent && uuid.isPresent) {
+        //     if (MinecraftEncryption.verifyClientKey(profileKeyData.get(), uuid = uuid.get()).not()) {
+        //         player.disconnect(
+        //             Messages
+        //                 .forPlayer(player)
+        //                 .get(Message.LoginInvalidPublicKey)
+        //         )
+        //         logger.warn("Disconnected player '$name' due to invalid client public key")
+        //     }
+        // }
 
         // Use mojang name check
         if (Config.Login.StrictNames) {

@@ -183,8 +183,10 @@ class LoginEncryptionTask(
 
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
             strings.write(0, name)
-            getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, loginSession.profileKeyData)
-            getOptionals(Converters.passthrough(UUID::class.java)).write(1, loginSession.uuid)
+            // 1.19.2
+            // getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, loginSession.profileKeyData)
+            // getOptionals(Converters.passthrough(UUID::class.java)).write(1, loginSession.uuid)
+            getOptionals(Converters.passthrough(UUID::class.java)).write(0, loginSession.uuid)
         }
         try {
             // We don't want to handle our own packets so ignore filters

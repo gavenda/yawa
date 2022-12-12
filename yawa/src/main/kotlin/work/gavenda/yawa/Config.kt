@@ -36,6 +36,7 @@ object Config {
             set(value) = config.set("discord.disabled", value)
 
         val Token get() = config.getString("discord.token")!!
+        val ServerAvatarUrl get() = config.getString("discord.server-avatar-url")!!
         val AvatarUrl get() = config.getString("discord.avatar-url")!!
         val GuildId get() = config.getLong("discord.guild.id")
         val GuildChannel get() = config.getLong("discord.guild.channel")

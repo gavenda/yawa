@@ -83,6 +83,7 @@ afk:
 discord:
   disabled: false
   token: ""
+  server-avatar-url: "https://minions.ddns.net/minecraft/server-icon.png"
   avatar-url: "https://mineskin.eu/helm/<player-name>.png"
   guild:
     id: 672642223942139915

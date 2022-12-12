@@ -30,12 +30,15 @@ import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
+import com.destroystokyo.paper.profile.ProfileProperty
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
+import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerDisconnect
@@ -81,12 +84,14 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
         val gameProfile = WrappedGameProfile.fromPlayer(this)
         val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
 
-        // Clear and re-assign textures with valid signature
         gameProfile.properties.clear()
         gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
 
-        if (!isDead) {
-            updateSkin()
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+            refreshPlayer()
+            updateScaledHealth()
+            exp = exp
+            level = level
         }
     }
 }
@@ -95,83 +100,15 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
  * Update scaled health.
  */
 fun Player.updateScaledHealth() {
-    val updateScaledHealth = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
-    updateScaledHealth.invoke(this)
+    val updateScaledHealthMethod = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
+    updateScaledHealthMethod.isAccessible = true
+    updateScaledHealthMethod.invoke(this)
 }
 
-/**
- * Does a refresh of the player, applying the currently set skin if changed.
- */
-@Suppress("DEPRECATION", "UNUSED")
-fun Player.updateSkin() {
-    val wrappedGameProfile = WrappedGameProfile.fromPlayer(this)
-    val enumGameMode = NativeGameMode.fromBukkit(gameMode)
-    val displayName = WrappedChatComponent.fromText(playerListName)
-    val playerInfoData = PlayerInfoData(wrappedGameProfile, 0, enumGameMode, displayName)
-
-    val removeInfo = WrapperPlayServerPlayerInfo().apply {
-        writeAction(REMOVE_PLAYER)
-        writeData(listOf(playerInfoData))
-    }
-    val addInfo = WrapperPlayServerPlayerInfo().apply {
-        writeAction(ADD_PLAYER)
-        writeData(listOf(playerInfoData))
-    }
-    val respawn = WrapperPlayServerRespawn().apply {
-        writeResourceKey(world)
-        writeDimensionTypes(world)
-        writeGameMode(NativeGameMode.fromBukkit(gameMode))
-        writePreviousGameMode(NativeGameMode.fromBukkit(previousGameMode ?: gameMode))
-        writeSeed(world.seed)
-        writeIsDebug(world.debugMode)
-        writeIsWorldFlat(world.worldType == WorldType.FLAT)
-        // true = teleport like, false = player actually died
-        writeCopyMetadata(true)
-    }
-    val position = WrapperPlayServerPosition().apply {
-        writeX(location.x)
-        writeY(location.y)
-        writeZ(location.z)
-        writeYaw(location.yaw)
-        writePitch(location.pitch)
-
-        // send an invalid teleport id in order to let Bukkit ignore the incoming confirm packet
-        handle.integers.write(0, -1337)
-    }
-
-    // Refresh
-    // - removePlayer
-    // - addPlayer
-    // - respawn
-    // - updateAbilities
-    // - position
-    // - slot
-    // - updateScaledHealth
-    // - updateInventory
-    // - triggerHealthUpdate
-
-    // Send
-    removeInfo.sendPacket(this)
-    addInfo.sendPacket(this)
-    respawn.sendPacket(this)
-    position.sendPacket(this)
-
-    // trigger update exp
-    exp = exp
-    // triggers updateAbilities
-    walkSpeed = walkSpeed
-    // update inventory
-    updateInventory()
-    // update held item
-    inventory.heldItemSlot = inventory.heldItemSlot
-    // update scaled health
-    updateScaledHealth()
-
-    // Show update to other players
-    for (p in Bukkit.getOnlinePlayers()) {
-        p.hidePlayer(YawaAPI.Instance, this)
-        p.showPlayer(YawaAPI.Instance, this)
-    }
+fun Player.refreshPlayer() {
+    val refreshPlayerMethod  = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("refreshPlayer")
+    refreshPlayerMethod.isAccessible = true
+    refreshPlayerMethod.invoke(this)
 }
 
 /**

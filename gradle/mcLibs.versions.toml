@@ -1,13 +1,13 @@
 [versions]
-paper = "1.19.2-R0.1-SNAPSHOT"
+paper = "1.19.3-R0.1-SNAPSHOT"
 paper-lib = "1.0.7"
-spigot = "1.19.2-R0.1-SNAPSHOT"
-adventure = "4.11.0"
-adventure-bukkit = "4.1.2"
+spigot = "1.19.3-R0.1-SNAPSHOT"
+adventure = "4.12.0"
+adventure-bukkit = "4.2.0"
 protocol-lib = "5.0.0-SNAPSHOT"
 vault = "1.7"
 datafixerupper = "1.0.20"
-nbtapi = "2.10.0"
+nbtapi = "2.11.0"
 
 [libraries]
 paper-api = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }

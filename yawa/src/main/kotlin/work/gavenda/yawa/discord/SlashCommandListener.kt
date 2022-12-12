@@ -26,6 +26,8 @@ import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.logger
 import work.gavenda.yawa.server
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class SlashCommandListener : ListenerAdapter() {
 
@@ -40,7 +42,7 @@ class SlashCommandListener : ListenerAdapter() {
     }
 
     private fun showOnline(event: SlashCommandInteractionEvent) {
-        val onlinePlayers = if (server.onlinePlayers.size > 0) {
+        val onlinePlayers = if (server.onlinePlayers.isNotEmpty()) {
             server.onlinePlayers.joinToString(separator = "\n") { "- ${it.name}" }
         } else {
             "There are no online players."
@@ -62,9 +64,18 @@ class SlashCommandListener : ListenerAdapter() {
             .addField("Online Players", "${server.onlinePlayers.size} / ${server.maxPlayers}", false)
 
         if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+            val df = DecimalFormat("#.##").apply {
+                roundingMode = RoundingMode.CEILING
+            }
+
+            val averageTickTime = df.format(server.averageTickTime)
+            val tps1m = df.format(server.tps[0])
+            val tps5m = df.format(server.tps[1])
+            val tps15m = df.format(server.tps[2])
+
             embed.addField("Version", server.minecraftVersion, false)
-            embed.addField("Average Tick Time", "${server.averageTickTime}ms", true)
-            embed.addField("Ticks Per Second", "${server.tps[0]} (1m), ${server.tps[1]} (5m), ${server.tps[2]} (15m)", true)
+            embed.addField("Average Tick Time", "${averageTickTime}ms", true)
+            embed.addField("Ticks Per Second", "$tps1m (1m), $tps5m (5m), $tps15m (15m)", true)
         }
 
         event.hook.sendMessageEmbeds(embed.build()).queue()

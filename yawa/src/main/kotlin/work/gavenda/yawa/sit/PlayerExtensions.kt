@@ -146,7 +146,7 @@ fun Player.sit(block: Block) {
 
         // Resit before arrow de-spawns
         val resitTask = ResitTask(this)
-        val secondsInTicks = TimeUnit.SECONDS.toTicks(50)
+        val secondsInTicks = 1000L
 
         sitTaskId = scheduler.runTaskTimer(plugin, resitTask, secondsInTicks, secondsInTicks).taskId
 
