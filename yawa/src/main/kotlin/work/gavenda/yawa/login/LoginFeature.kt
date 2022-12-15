@@ -62,7 +62,7 @@ object LoginFeature : PluginFeature {
 
     override fun createTables() {
         transaction {
-            SchemaUtils.create(PlayerLoginSchema)
+            SchemaUtils.create(PlayerLoginSchema, PlayerIpSchema)
         }
     }
 

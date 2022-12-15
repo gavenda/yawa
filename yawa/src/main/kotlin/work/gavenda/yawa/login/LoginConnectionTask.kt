@@ -22,6 +22,7 @@ package work.gavenda.yawa.login
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKeyData
 import org.bukkit.entity.Player
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
@@ -30,6 +31,7 @@ import work.gavenda.yawa.logger
 import work.gavenda.yawa.protocolManager
 import java.security.KeyPair
 import java.security.PublicKey
+import java.time.Instant
 import java.util.*
 
 /**
@@ -103,12 +105,22 @@ class LoginConnectionTask(
 
         // Remember unsecure login
         transaction {
+            val hostAddress = player.address!!.address.hostAddress
             val userLogin = PlayerLogin.findById(uuid) ?: PlayerLogin.new(uuid) {
                 name = playerName
                 premiumUuid = null
             }
 
-            userLogin.lastLoginAddress = player.address!!.address.hostAddress
+            userLogin.lastLoginAddress = hostAddress
+
+            val userIp = PlayerIp.find {
+                (PlayerIpSchema.offlineUuid) eq uuid and (PlayerIpSchema.ipAddress eq hostAddress)
+            }.firstOrNull() ?: PlayerIp.new(UUID.randomUUID()) {
+                offlineUuid = uuid
+                ipAddress = hostAddress
+            }
+
+            userIp.lastSeen = Instant.now()
         }
     }
 

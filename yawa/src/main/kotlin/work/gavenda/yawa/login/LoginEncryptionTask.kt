@@ -24,9 +24,9 @@ import com.comphenix.protocol.events.PacketContainer
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.utility.MinecraftReflection
-import com.comphenix.protocol.wrappers.BukkitConverters
 import com.comphenix.protocol.wrappers.Converters
 import org.bukkit.entity.Player
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
@@ -38,6 +38,7 @@ import work.gavenda.yawa.api.spoofedUuid
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.KeyPair
+import java.time.Instant
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -82,6 +83,7 @@ class LoginEncryptionTask(
         val socketAddress = player.address
         try {
             val address = socketAddress!!.address
+            val hostAddress = address.hostAddress
             val profile = MojangApi.hasJoined(session.name, serverId, address)
             val uuid = session.name.minecraftOfflineUuid()
 
@@ -97,7 +99,17 @@ class LoginEncryptionTask(
                         premiumUuid = profile.id
                     }
 
-                    userLogin.lastLoginAddress = player.address!!.address.hostAddress
+                    userLogin.lastLoginAddress = hostAddress
+
+                    val userIp = PlayerIp.find {
+                        (PlayerIpSchema.offlineUuid) eq uuid and (PlayerIpSchema.ipAddress eq hostAddress)
+                    }.firstOrNull() ?: PlayerIp.new(UUID.randomUUID()) {
+                        offlineUuid = uuid
+                        premiumUuid = profile.id
+                        ipAddress = hostAddress
+                    }
+
+                    userIp.lastSeen = Instant.now()
                 }
 
                 logger.info("Connection encrypted for player ${session.name}")

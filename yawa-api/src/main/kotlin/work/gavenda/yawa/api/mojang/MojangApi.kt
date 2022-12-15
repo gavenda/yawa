@@ -95,8 +95,9 @@ object MojangApi {
      * Retrieves the minecraft profile by confirming the username, server hash, and host ip.
      */
     fun hasJoined(username: String, serverHash: String, hostIp: InetAddress): MojangProfile? {
-        val encodedIP = URLEncoder.encode(hostIp.hostAddress, "UTF-8")
-        val httpConnection = URL("$URI_API_HAS_JOIN?username=$username&serverId=$serverHash&ip=$encodedIP")
+        // apiLogger.info("hasJoined, username: $username, serverHash: $serverHash, hostIp: ${hostIp.hostAddress}")
+        // val encodedIP = URLEncoder.encode(hostIp.hostAddress, "UTF-8")
+        val httpConnection = URL("$URI_API_HAS_JOIN?username=$username&serverId=$serverHash")
             .asHttpConnection()
         val responseCode = httpConnection.responseCode
 

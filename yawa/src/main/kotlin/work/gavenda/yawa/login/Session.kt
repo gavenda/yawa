@@ -20,6 +20,7 @@
 package work.gavenda.yawa.login
 
 import com.google.common.cache.CacheBuilder
+import work.gavenda.yawa.logger
 import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 
@@ -53,6 +54,7 @@ object Session {
      * Mark address and logging in user as pending.
      */
     fun pending(address: InetSocketAddress, name: String) {
+        logger.info("Pending session, address: $address, name: $name")
         pendingSession.put(address.address.hostAddress, name)
     }
 
@@ -60,8 +62,10 @@ object Session {
      * Cache a session.
      * @param address socket address of session
      */
-    fun cache(address: InetSocketAddress, session: LoginSession) =
+    fun cache(address: InetSocketAddress, session: LoginSession) {
+        logger.info("Caching session, address: $address, name: $session")
         sessionCache.put(address.asSessionId(), session)
+    }
 
     /**
      * Invalidate a session in the cache.

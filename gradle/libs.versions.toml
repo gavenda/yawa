@@ -19,6 +19,7 @@ hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
 exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
+exposed-java-time = { group = "org.jetbrains.exposed", name = "exposed-java-time", version.ref = "exposed" }
 log4j2 = { group = "org.apache.logging.log4j", name = "log4j-api", version.ref = "log4j2" }
 
 [plugins]
@@ -27,4 +28,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 
 [bundles]
-exposed = ["exposed-core", "exposed-dao", "exposed-jdbc"]
+exposed = ["exposed-core", "exposed-dao", "exposed-jdbc", "exposed-java-time"]

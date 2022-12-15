@@ -23,6 +23,8 @@ import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
+import org.jetbrains.exposed.sql.javatime.timestamp
+import work.gavenda.yawa.login.PlayerLoginSchema.nullable
 import java.util.*
 
 /**
@@ -43,5 +45,22 @@ class PlayerLogin(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
 object PlayerLoginSchema : UUIDTable("yawa_player_login", "uuid") {
     val premiumUuid = uuid("premium_uuid").nullable()
     val name = varchar("name", 16)
-    val lastLoginAddress = varchar("last_login_address", 15)
+    val lastLoginAddress = varchar("last_login_address", 40)
+}
+
+class PlayerIp(uuid: EntityID<UUID>) : UUIDEntity(uuid) {
+    companion object : UUIDEntityClass<PlayerIp>(PlayerIpSchema)
+
+    val premium get() = premiumUuid != null
+    var offlineUuid by PlayerIpSchema.offlineUuid
+    var premiumUuid by PlayerIpSchema.premiumUuid
+    var lastSeen by PlayerIpSchema.lastSeen
+    var ipAddress by PlayerIpSchema.ipAddress
+}
+
+object PlayerIpSchema : UUIDTable("yawa_player_ip", "uuid") {
+    val offlineUuid = uuid("offline_uuid")
+    val premiumUuid = uuid("premium_uuid").nullable()
+    val lastSeen = timestamp("last_seen")
+    val ipAddress = varchar("address", 40)
 }
