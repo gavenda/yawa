@@ -41,4 +41,5 @@ object Permission {
     const val ESSENTIALS_WARP_TELEPORT = "yawa.essentials.warp.teleport"
     const val ESSENTIALS_WARP_SET = "yawa.essentials.warp.set"
     const val ESSENTIALS_WARP_DELETE = "yawa.essentials.warp.delete"
+    const val ESSENTIALS_GIVE_LEVEL = "yawa.essentials.give.level"
 }

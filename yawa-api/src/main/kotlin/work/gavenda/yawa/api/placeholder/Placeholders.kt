@@ -99,6 +99,9 @@ class PlaceholderContext(
     fun parse(text: String, params: Map<String, Any?> = mapOf()): Component {
         val providers = mergeWithProviders(params).map { (placeholder, value) ->
             when (value) {
+                is Int -> {
+                    Placeholder.unparsed(placeholder, value.toString())
+                }
                 is String -> {
                     Placeholder.unparsed(placeholder, value)
                 }

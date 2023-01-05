@@ -39,13 +39,13 @@ object ChatFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.WHISPER)?.setExecutor(whisperCommand)
-        plugin.getCommand(Command.REPLY)?.setExecutor(replyCommand)
+        plugin.getCommand(Commands.WHISPER)?.setExecutor(whisperCommand)
+        plugin.getCommand(Commands.REPLY)?.setExecutor(replyCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.WHISPER)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.REPLY)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.WHISPER)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.REPLY)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {

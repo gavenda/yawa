@@ -55,9 +55,9 @@ object DiscordFeature : PluginFeature, EventListener {
     private val emojiRegex = Regex("(<a?)?:\\w+:(\\d{18}>)?")
     private const val defaultAvatarUrl = "https://cravatar.eu/avatar/shirobiru/50.png"
     private val playerListener = PlayerListener()
-    private var topicTaskId = -1
     private val paperChatListener = PaperChatListener()
     private val bukkitChatListener = BukkitChatListener()
+    private val slashCommandListener = SlashCommandListener()
     private lateinit var jda: JDA
     private lateinit var guild: Guild
     private lateinit var textChannel: TextChannel
@@ -75,19 +75,14 @@ object DiscordFeature : PluginFeature, EventListener {
                 GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.GUILD_EMOJIS_AND_STICKERS
+                GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
+                GatewayIntent.MESSAGE_CONTENT
             )
             .build()
             .awaitReady()
 
         guild = jda.getGuildById(Config.Discord.GuildId) ?: error("Unknown guild")
         textChannel = guild.getTextChannelById(Config.Discord.GuildChannel) ?: error("Unknown text channel")
-
-        topicTaskId = scheduler.runTaskTimerAsynchronously(plugin, { ->
-            textChannel.manager
-                .setTopic("${server.onlinePlayers.size} / ${server.maxPlayers} online")
-                .queue()
-        }, 0, 20 * 1200).taskId
 
         // Check existing webhooks
         guild.retrieveWebhooks().queue { webhooks ->
@@ -107,14 +102,8 @@ object DiscordFeature : PluginFeature, EventListener {
             Commands.slash("server", "Show server information.")
         ).queue()
 
-        // Register discord events
-        jda.addEventListener(SlashCommandListener())
-
         // Update status
         jda.presence.activity = Activity.playing("Minecraft")
-
-        // Send online message
-        sendAlert("Server online", Config.Discord.ServerAvatarUrl, NamedTextColor.GREEN)
     }
 
     fun sendMessage(player: Player, component: Component) {
@@ -197,23 +186,16 @@ object DiscordFeature : PluginFeature, EventListener {
     }
 
     override fun unregisterHooks() {
-        textChannel.manager
-            .setTopic("Server offline")
-            .complete()
-
-        sendAlert("Server offline", Config.Discord.ServerAvatarUrl, NamedTextColor.RED)
-
         jda.shutdown()
-        scheduler.cancelTask(topicTaskId)
     }
 
     override fun registerEventListeners() {
-        jda.addEventListener(this)
+        jda.addEventListener(this, slashCommandListener)
         pluginManager.registerEvents(playerListener)
     }
 
     override fun unregisterEventListeners() {
-        jda.removeEventListener(this)
+        jda.removeEventListener(this, slashCommandListener)
         pluginManager.unregisterEvents(playerListener)
     }
 

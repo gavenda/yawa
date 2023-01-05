@@ -58,11 +58,11 @@ object HiddenArmorFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.TOGGLE_ARMOR)?.setExecutor(toggleArmorCommand)
+        plugin.getCommand(Commands.TOGGLE_ARMOR)?.setExecutor(toggleArmorCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.TOGGLE_ARMOR)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.TOGGLE_ARMOR)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {

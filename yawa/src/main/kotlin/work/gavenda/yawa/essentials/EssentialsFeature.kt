@@ -35,6 +35,7 @@ object EssentialsFeature : PluginFeature {
     private val warpSetCommand = WarpSetCommand()
     private val locationPlaceholder = LocationPlaceholder()
     private val warpDeleteCommand = WarpDeleteCommand()
+    private val giveLevelCommand = GiveLevelCommand()
 
     override fun createTables() {
         transaction {
@@ -52,23 +53,25 @@ object EssentialsFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(homeCommand)
-        plugin.getCommand(Command.HOME_SET)?.setExecutor(homeSetCommand)
-        plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
-        plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(backCommand)
-        plugin.getCommand(Command.WARP_SET)?.setExecutor(warpSetCommand)
-        plugin.getCommand(Command.WARP_TELEPORT)?.setExecutor(warpCommand)
-        plugin.getCommand(Command.WARP_DELETE)?.setExecutor(warpDeleteCommand)
+        plugin.getCommand(Commands.HOME_TELEPORT)?.setExecutor(homeCommand)
+        plugin.getCommand(Commands.HOME_SET)?.setExecutor(homeSetCommand)
+        plugin.getCommand(Commands.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
+        plugin.getCommand(Commands.TELEPORT_DEATH)?.setExecutor(backCommand)
+        plugin.getCommand(Commands.WARP_SET)?.setExecutor(warpSetCommand)
+        plugin.getCommand(Commands.WARP_TELEPORT)?.setExecutor(warpCommand)
+        plugin.getCommand(Commands.WARP_DELETE)?.setExecutor(warpDeleteCommand)
+        plugin.getCommand(Commands.GIVE_LEVEL)?.setExecutor(giveLevelCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.HOME_TELEPORT)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.HOME_SET)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.TELEPORT_DEATH)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.WARP_SET)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.WARP_TELEPORT)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Command.WARP_DELETE)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.HOME_TELEPORT)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.HOME_SET)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.TELEPORT_DEATH)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.WARP_SET)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.WARP_TELEPORT)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.WARP_DELETE)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.GIVE_LEVEL)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {
@@ -79,9 +82,11 @@ object EssentialsFeature : PluginFeature {
         pluginManager.registerEvents(warpSetCommand)
         pluginManager.registerEvents(warpCommand)
         pluginManager.registerEvents(warpDeleteCommand)
+        pluginManager.registerEvents(giveLevelCommand)
     }
 
     override fun unregisterPaperEventListeners() {
+        pluginManager.unregisterEvents(giveLevelCommand)
         pluginManager.unregisterEvents(warpDeleteCommand)
         pluginManager.unregisterEvents(warpCommand)
         pluginManager.unregisterEvents(warpSetCommand)

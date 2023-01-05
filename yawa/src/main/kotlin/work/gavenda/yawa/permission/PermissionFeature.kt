@@ -84,11 +84,11 @@ object PermissionFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.PERMISSION)?.setExecutor(permissionCommand)
+        plugin.getCommand(Commands.PERMISSION)?.setExecutor(permissionCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.PERMISSION)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.PERMISSION)?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {

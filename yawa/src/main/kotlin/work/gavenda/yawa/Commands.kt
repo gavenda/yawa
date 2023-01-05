@@ -22,7 +22,7 @@ package work.gavenda.yawa
 /**
  * Plugin commands.
  */
-object Command {
+object Commands {
     const val SKIN = "skin"
     const val AFK = "afk"
     const val PERMISSION = "permission"
@@ -38,4 +38,5 @@ object Command {
     const val WARP_DELETE = "delwarp"
     const val TELEPORT_SPAWN = "spawn"
     const val TELEPORT_DEATH = "back"
+    const val GIVE_LEVEL = "givelevel"
 }

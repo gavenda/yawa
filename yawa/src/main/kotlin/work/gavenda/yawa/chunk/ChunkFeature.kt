@@ -60,11 +60,11 @@ object ChunkFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.CHUNK)?.setExecutor(chunkCommand)
+        plugin.getCommand(Commands.CHUNK)?.setExecutor(chunkCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.CHUNK)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.CHUNK)?.setExecutor(DisabledCommand)
     }
 
     override fun registerPaperEventListeners() {

@@ -81,6 +81,9 @@ commands:
     description: Warp to specified location.
     usage: /<command>
     aliases: [ location, l, loc ]
+  givelevel:
+    description: Give a specified amount of levels to target player.
+    usage: /<command> <player-name> <levels>
 permissions:
   yawa.*:
     description: Gives access to all plugin commands.
@@ -159,6 +162,7 @@ permissions:
       yawa.essentials.warp.teleport: true
       yawa.essentials.warp.set: true
       yawa.essentials.warp.delete: true
+      yawa.essentials.give.level: true
   yawa.essentials.home.teleport:
     description: Permission to teleport home.
     default: true
@@ -179,4 +183,7 @@ permissions:
     default: true
   yawa.essentials.warp.delete:
     description: Permission to delete a warp location.
+    default: true
+  yawa.essentials.give.level:
+    description: Permission to give a certain amount of levels.
     default: true

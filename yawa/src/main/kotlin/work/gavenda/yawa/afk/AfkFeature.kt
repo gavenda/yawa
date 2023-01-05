@@ -39,11 +39,11 @@ object AfkFeature : PluginFeature {
     }
 
     override fun enableCommands() {
-        plugin.getCommand(Command.AFK)?.setExecutor(afkCommand)
+        plugin.getCommand(Commands.AFK)?.setExecutor(afkCommand)
     }
 
     override fun disableCommands() {
-        plugin.getCommand(Command.AFK)?.setExecutor(DisabledCommand)
+        plugin.getCommand(Commands.AFK)?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {

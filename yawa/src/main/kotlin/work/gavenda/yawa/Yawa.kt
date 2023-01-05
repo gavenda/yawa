@@ -162,11 +162,11 @@ class Yawa : JavaPlugin() {
         if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             server.pluginManager.registerEvents(rootCommand, this)
         }
-        getCommand(Command.ROOT)?.setExecutor(rootCommand)
+        getCommand(Commands.ROOT)?.setExecutor(rootCommand)
     }
 
     private fun unregisterRootCommand() {
-        getCommand(Command.ROOT)?.setExecutor(null)
+        getCommand(Commands.ROOT)?.setExecutor(null)
         if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
             HandlerList.unregisterAll(rootCommand)
         }

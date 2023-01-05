@@ -93,6 +93,9 @@ object Message {
     const val EssentialsTeleportErrorNoHomeWorld = "essentials-teleport-error-no-home-world"
     const val EssentialsTeleportErrorNoDeath = "essentials-teleport-error-no-death"
     const val EssentialsTeleportErrorNoLocation = "essentials-teleport-error-no-location"
+    const val EssentialsGiveLevel = "essentials-give-level"
+    const val EssentialsGiveLevelErrorNotEnoughLevel = "essentials-give-level-error-not-enough-level"
+    const val EssentialsGiveLevelErrorInvalidLevel = "essentials-give-level-error-invalid-level"
 }
 
 /**
