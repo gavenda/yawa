@@ -32,5 +32,5 @@ jobs:
           prerelease: true
           title: ${{ steps.vars.outputs.version }}
           files: |
-            yawa/build/libs/Yawa.jar
-            yawa-api/build/libs/YawaAPI.jar
+            yawa/build/libs/yawa-${{ steps.vars.outputs.version }}.jar
+            yawa-api/build/libs/yawa-api-${{ steps.vars.outputs.version }}.jar
