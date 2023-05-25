@@ -1,9 +1,8 @@
 plugins {
-    kotlin("jvm")
+    id("yawa.kotlin-conventions")
+    id("yawa.paper-plugin")
     kotlin("plugin.serialization")
 }
-
-minecraftPlugin(name = "YawaAPI")
 
 dependencies {
     compileOnly(libs.kotlin.stdlib.jdk8)
@@ -14,10 +13,4 @@ dependencies {
     compileOnly(mcLibs.nbtapi)
     compileOnly(mcLibs.protocol.lib)
     compileOnly(mcLibs.bundles.adventure)
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
 }

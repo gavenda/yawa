@@ -1,8 +1,7 @@
 plugins {
-    kotlin("jvm")
+    id("yawa.kotlin-conventions")
+    id("yawa.paper-plugin")
 }
-
-minecraftPlugin(name = "Yawa")
 
 dependencies {
     compileOnly(libs.kotlin.stdlib.jdk8)
@@ -23,10 +22,4 @@ dependencies {
     compileOnly(mcLibs.bundles.adventure)
     compileOnly(project(path = ":yawa-api"))
     compileOnly(mcLibs.vault)
-}
-
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
 }

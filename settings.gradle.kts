@@ -4,6 +4,7 @@ rootProject.name = "yawa"
 include("yawa")
 include("yawa-api")
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 

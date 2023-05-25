@@ -21,11 +21,12 @@ package work.gavenda.yawa.api.mojang
 
 import com.google.common.cache.CacheBuilder
 import com.google.common.util.concurrent.RateLimiter
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import work.gavenda.yawa.api.apiLogger
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
+import java.io.FileNotFoundException
+import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.URL
 import java.net.URLEncoder
@@ -75,29 +76,41 @@ object MojangApi {
      * @return an instance of [UUID], will return null when not found
      */
     fun findUuidByName(username: String): UUID? {
-        if (!rateLimiter.tryAcquire()) {
-            throw RateLimitException()
-        }
+        try {
+            if (!rateLimiter.tryAcquire()) {
+                throw RateLimitException()
+            }
 
-        val httpConnection = URL("$URI_API_USERNAME_UUID/$username").asHttpConnection()
+            val httpConnection = URL("$URI_API_USERNAME_UUID/$username").asHttpConnection()
 
-        if (httpConnection.responseCode == HTTP_NO_CONTENT) {
-            return null
+            if (httpConnection.responseCode == HTTP_NO_CONTENT) {
+                return null
+            }
+            if (httpConnection.responseCode == HTTP_TOO_MANY_REQUESTS) {
+                throw RateLimitException()
+            }
+            return json.decodeFromString<MojangProfile>(httpConnection.asText()).id
+        } catch (ex: FileNotFoundException) {
+            apiLogger.trace("Cannot find uuid for username: $username")
         }
-        if (httpConnection.responseCode == HTTP_TOO_MANY_REQUESTS) {
-            throw RateLimitException()
-        }
-
-        return json.decodeFromString<MojangProfile>(httpConnection.asText()).id
+        return null
     }
 
     /**
      * Retrieves the minecraft profile by confirming the username, server hash, and host ip.
      */
     fun hasJoined(username: String, serverHash: String, hostIp: InetAddress): MojangProfile? {
-        // apiLogger.info("hasJoined, username: $username, serverHash: $serverHash, hostIp: ${hostIp.hostAddress}")
-        // val encodedIP = URLEncoder.encode(hostIp.hostAddress, "UTF-8")
-        val httpConnection = URL("$URI_API_HAS_JOIN?username=$username&serverId=$serverHash")
+        apiLogger.info("hasJoined, username: $username, serverHash: $serverHash, hostIp: ${hostIp.hostAddress}")
+
+        // Do not use ip field, since most of the time, ipv6 is probably not a proxy
+        val hasJoinedUrl = if (hostIp is Inet6Address) {
+            "$URI_API_HAS_JOIN?username=$username&serverId=$serverHash"
+        } else {
+            val encodedIP = URLEncoder.encode(hostIp.hostAddress, "UTF-8")
+            "$URI_API_HAS_JOIN?username=$username&serverId=$serverHash&ip=$encodedIP"
+        }
+
+        val httpConnection = URL(hasJoinedUrl)
             .asHttpConnection()
         val responseCode = httpConnection.responseCode
 

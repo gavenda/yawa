@@ -23,18 +23,12 @@ import com.comphenix.protocol.injector.temporary.TemporaryPlayerFactory
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.reflect.accessors.Accessors
 import com.comphenix.protocol.utility.MinecraftReflection
-import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode
-import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.ADD_PLAYER
-import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction.REMOVE_PLAYER
-import com.comphenix.protocol.wrappers.PlayerInfoData
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
-import com.destroystokyo.paper.profile.ProfileProperty
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
-import org.bukkit.WorldType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
@@ -42,9 +36,6 @@ import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerDisconnect
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerPlayerInfo
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerPosition
-import work.gavenda.yawa.api.wrapper.WrapperPlayServerRespawn
 import java.util.*
 
 
