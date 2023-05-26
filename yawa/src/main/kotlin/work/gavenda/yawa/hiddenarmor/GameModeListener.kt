@@ -22,6 +22,7 @@ import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerGameModeChangeEvent
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
@@ -34,9 +35,9 @@ class GameModeListener : Listener {
             event.player.updateHiddenArmor()
             HiddenArmorFeature.removeIgnoredPlayer(event.player)
         } else {
-            scheduler.runTaskLater(plugin, { _ ->
+            event.player.schedulerCompat.runAtNextTick(plugin) {
                 event.player.updateHiddenArmor()
-            }, 1L)
+            }
         }
     }
 }

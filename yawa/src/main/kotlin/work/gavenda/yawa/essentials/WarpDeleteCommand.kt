@@ -27,6 +27,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.compat.schedulerCompat
 
 class WarpDeleteCommand : Command() {
     override val permission = Permission.ESSENTIALS_WARP_DELETE
@@ -38,7 +39,7 @@ class WarpDeleteCommand : Command() {
 
         val locationName = args[0]
 
-        scheduler.runTaskAsynchronously(plugin) { _ ->
+        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
             transaction {
                 val playerLocation = PlayerLocationDb
                     .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }

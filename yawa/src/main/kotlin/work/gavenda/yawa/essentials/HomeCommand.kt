@@ -26,6 +26,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class HomeCommand : Command() {
@@ -35,7 +36,7 @@ class HomeCommand : Command() {
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
-        scheduler.runTaskAsynchronously(plugin) { _ ->
+        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
             transaction {
                 val playerHomeDb = PlayerHomeDb.findById(sender.uniqueId)
 
@@ -50,7 +51,7 @@ class HomeCommand : Command() {
 
                     val location = Location(world, playerHomeDb.x, playerHomeDb.y, playerHomeDb.z)
 
-                    scheduler.runTask(plugin) { _ ->
+                    sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
                         world.getChunkAtAsyncCompat(location).thenAccept {
                             sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                                 sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)

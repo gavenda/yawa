@@ -22,6 +22,7 @@ package work.gavenda.yawa.permission
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.logger
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
@@ -51,7 +52,8 @@ fun Player.calculatePermissions() {
         return
     }
 
-    scheduler.runTaskAsynchronously(plugin) { _ ->
+    @Suppress("DEPRECATION")
+    schedulerCompat.runAtNextTickAsynchronously(plugin) {
         transaction {
             val permissionList = Bukkit.getServer().pluginManager.plugins
                 .flatMap { it.description.permissions }
@@ -95,7 +97,7 @@ fun Player.calculatePermissions() {
             logger.info("Effective permissions: ${attachment.permissions}")
 
             // Recalculate
-            scheduler.runTask(plugin) { _ ->
+            schedulerCompat.runAtNextTick(plugin) {
                 recalculatePermissions()
                 updateCommands()
             }

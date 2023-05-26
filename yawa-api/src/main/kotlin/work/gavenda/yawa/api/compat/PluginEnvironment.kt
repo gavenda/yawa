@@ -19,15 +19,32 @@
 
 package work.gavenda.yawa.api.compat
 
+import work.gavenda.yawa.api.apiLogger
+
 enum class PluginEnvironment {
-    SPIGOT, PAPER
+    SPIGOT, PAPER, FOLIA
 }
 
 val PLUGIN_ENVIRONMENT by lazy {
     try {
-        Class.forName("com.destroystokyo.paper.PaperConfig")
-        PluginEnvironment.PAPER
+        Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler")
+        PluginEnvironment.FOLIA
     } catch (e: ClassNotFoundException) {
-        PluginEnvironment.SPIGOT
+        try {
+            Class.forName("com.destroystokyo.paper.PaperConfig")
+            PluginEnvironment.PAPER
+        } catch (e: ClassNotFoundException) {
+            PluginEnvironment.SPIGOT
+        }
+    }
+}
+
+val pluginEnvironment: Environment by lazy {
+    if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+        apiLogger.info("Paper/Folia detected, using paper as platform for all bukkit calls")
+        PaperEnvironment()
+    } else {
+        apiLogger.info("Spigot detected, using spigot as platform for all bukkit calls")
+        SpigotEnvironment()
     }
 }

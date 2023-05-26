@@ -21,14 +21,16 @@ package work.gavenda.yawa.ping
 
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.latencyInMillis
 import work.gavenda.yawa.server
+import java.util.function.Consumer
 
 class PingTask(
     private val scoreboard: Scoreboard,
     private val objective: Objective
-) : Runnable {
-    override fun run() {
+): Consumer<ScheduledTaskCompat> {
+    override fun accept(task: ScheduledTaskCompat) {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {

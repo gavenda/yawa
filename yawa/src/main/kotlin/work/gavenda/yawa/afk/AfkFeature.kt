@@ -20,13 +20,14 @@
 package work.gavenda.yawa.afk
 
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 
 /**
  * Represents the afk feature.
  */
 object AfkFeature : PluginFeature {
 
-    private var afkTaskId = -1
+    private lateinit var afkTask: ScheduledTaskCompat
     private val afkListener = AfkListener()
     private val bukkitAfkListener = BukkitAfkListener()
     private val paperAfkListener = PaperAfkListener()
@@ -35,7 +36,7 @@ object AfkFeature : PluginFeature {
     override val disabled get() = Config.Afk.Disabled
 
     override fun registerTasks() {
-        afkTaskId = scheduler.runTaskTimer(plugin, AfkTask(), 0, 20).taskId
+        afkTask = scheduler.runAtFixedRate(plugin, 0, 20L, AfkTask()::accept)
     }
 
     override fun enableCommands() {
@@ -60,7 +61,7 @@ object AfkFeature : PluginFeature {
     }
 
     override fun unregisterTasks() {
-        scheduler.cancelTask(afkTaskId)
+        afkTask.cancel()
     }
 
     override fun unregisterEventListeners() {

@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.tablist
+package work.gavenda.yawa.api.compat
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.PluginFeature
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
+import net.kyori.adventure.sound.Sound
+import net.kyori.adventure.text.Component
+import org.bukkit.Chunk
+import org.bukkit.Location
+import org.bukkit.World
+import java.util.concurrent.CompletableFuture
 
-object TabListFeature : PluginFeature {
-    override val disabled get() = Config.TabList.Disabled
+fun World.sendMessageCompat(component: Component) {
+    pluginEnvironment.sendMessage(this, component)
+}
 
-    private lateinit var tabListTask: ScheduledTaskCompat
+fun World.sendActionBarCompat(component: Component) {
+    pluginEnvironment.sendActionBar(this, component)
+}
 
-    override fun registerTasks() {
-        tabListTask = scheduler.runAtFixedRate(plugin, 0, 20L, TabListTask()::accept)
-    }
+fun World.playSoundCompat(sound: Sound) {
+    pluginEnvironment.playSound(this, sound)
+}
 
-    override fun unregisterTasks() {
-        tabListTask.cancel()
-    }
+fun World.getChunkAtAsyncCompat(location: Location): CompletableFuture<Chunk> {
+    return pluginEnvironment.getChunkAtAsync(this, location)
 }

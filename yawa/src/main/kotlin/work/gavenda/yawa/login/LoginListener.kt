@@ -22,7 +22,6 @@ package work.gavenda.yawa.login
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
-import com.comphenix.protocol.wrappers.BukkitConverters
 import com.comphenix.protocol.wrappers.Converters
 import com.comphenix.protocol.wrappers.WrappedProfilePublicKey
 import com.google.common.util.concurrent.RateLimiter
@@ -129,6 +128,6 @@ class LoginListener(
             profileKeyData = profileKeyData
         )
 
-        scheduler.runTaskAsynchronously(plugin, loginConnectionTask)
+        scheduler.runAtNextTickAsynchronously(plugin, loginConnectionTask::accept)
     }
 }

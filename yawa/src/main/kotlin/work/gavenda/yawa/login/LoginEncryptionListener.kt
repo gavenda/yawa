@@ -77,7 +77,7 @@ class LoginEncryptionListener(
 
             packetEvent.asyncMarker.incrementProcessingDelay()
 
-            scheduler.runTaskAsynchronously(plugin, encryptionTask)
+            scheduler.runAtNextTickAsynchronously(plugin, encryptionTask::accept)
         }
 
         // if (session.profileKeyData.isEmpty) {

@@ -18,7 +18,7 @@ dependencies {
 
     compileOnly(mcLibs.protocol.lib)
     compileOnly(mcLibs.datafixerupper)
-    compileOnly(mcLibs.paper.api)
+    compileOnly(mcLibs.folia.api)
     compileOnly(mcLibs.bundles.adventure)
     compileOnly(project(path = ":yawa-api"))
     compileOnly(mcLibs.vault)

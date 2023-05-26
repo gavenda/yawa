@@ -27,6 +27,8 @@ import org.bukkit.block.data.type.Stairs
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 import java.util.concurrent.TimeUnit
 
@@ -145,10 +147,21 @@ fun Player.sit(block: Block) {
         isSitting = true
 
         // Resit before arrow de-spawns
-        val resitTask = ResitTask(this)
         val secondsInTicks = 1000L
 
-        sitTaskId = scheduler.runTaskTimer(plugin, resitTask, secondsInTicks, secondsInTicks).taskId
+        schedulerCompat.runAtFixedRate(plugin, secondsInTicks, secondsInTicks) { task ->
+            if (isSitting.not()) {
+                task.cancel()
+                return@runAtFixedRate
+            }
+
+            val oldChairEntity = vehicle
+            val newChairEntity = oldChairEntity?.location?.spawnChairEntity()
+            isSitting = false
+            newChairEntity?.addPassenger(this)
+            oldChairEntity?.remove()
+            isSitting = true
+        }
 
         sendMessageUsingKey(Message.PlayerSitStart)
     }
@@ -166,10 +179,6 @@ fun Player.standUpFromSit() {
     sittingBlock?.sittingPlayer = null
     isSneaking = false
     isSitting = false
-
-    // Cancel tasks
-    server.scheduler.cancelTask(sitTaskId)
-    sitTaskId = -1
 
     sendMessageUsingKey(Message.PlayerSitEnd)
 }

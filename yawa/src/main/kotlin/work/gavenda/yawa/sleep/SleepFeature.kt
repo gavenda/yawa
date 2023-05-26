@@ -21,15 +21,15 @@ package work.gavenda.yawa.sleep
 
 import org.bukkit.GameRule
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 
 object SleepFeature : PluginFeature {
     override val disabled get() = Config.Sleep.Disabled
 
-    private var sleepTaskId = -1
+    private lateinit var sleepTask: ScheduledTaskCompat
     private val sleepPlaceholderProvider = SleepPlaceholderProvider()
-    private val sleepAnimationTaskIds = mutableMapOf<UUID, Int>()
     private val sleepingWorlds = mutableSetOf<UUID>()
     private val sleepBedListener = SleepListener(sleepingWorlds)
 
@@ -48,13 +48,13 @@ object SleepFeature : PluginFeature {
     }
 
     override fun registerTasks() {
-        val sleepCheckTask = SleepCheckTask(sleepAnimationTaskIds, sleepingWorlds)
+        val sleepCheckTask = SleepCheckTask(sleepingWorlds)
 
-        sleepTaskId = scheduler.runTaskTimerAsynchronously(plugin, sleepCheckTask, 0, 20).taskId
+        sleepTask = scheduler.runAtFixedRate(plugin, 0, 20, sleepCheckTask::accept)
     }
 
     override fun unregisterTasks() {
-        scheduler.cancelTask(sleepTaskId)
+        sleepTask.cancel()
     }
 
     override fun registerEventListeners() {

@@ -20,14 +20,16 @@
 package work.gavenda.yawa.tablist
 
 import work.gavenda.yawa.Config
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.compat.playerListFooterCompat
 import work.gavenda.yawa.api.compat.playerListHeaderCompat
 import work.gavenda.yawa.api.compat.playerListNameCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.server
+import java.util.function.Consumer
 
-class TabListTask : Runnable {
-    override fun run() {
+class TabListTask : Consumer<ScheduledTaskCompat> {
+    override fun accept(task: ScheduledTaskCompat) {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {

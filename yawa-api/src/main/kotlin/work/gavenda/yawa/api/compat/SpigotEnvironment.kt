@@ -167,22 +167,18 @@ class SpigotEnvironment : Environment {
         }
     }
 
-    @Suppress("DEPRECATION")
     override fun sendMessage(sender: CommandSender, component: Component) {
         sender.asAudience().sendMessage(component)
     }
 
-    @Suppress("DEPRECATION")
     override fun sendMessage(world: World, component: Component) {
         world.players.forEach { it.asAudience().sendMessage(component) }
     }
 
-    @Suppress("DEPRECATION")
     override fun sendActionBar(world: World, component: Component) {
         world.players.forEach { it.asAudience().sendActionBar(component) }
     }
 
-    @Suppress("DEPRECATION")
     override fun playerListHeader(player: Player, component: Component) {
         player.asAudience().sendPlayerListHeader(component)
     }
@@ -192,7 +188,6 @@ class SpigotEnvironment : Environment {
         return player.playerListHeader?.toComponent() ?: Component.empty()
     }
 
-    @Suppress("DEPRECATION")
     override fun playerListFooter(player: Player, component: Component) {
         player.asAudience().sendPlayerListFooter(component)
     }

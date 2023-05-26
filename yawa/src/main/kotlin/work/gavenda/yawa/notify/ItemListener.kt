@@ -32,6 +32,8 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantInventory
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.capitalizeFully
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
@@ -44,7 +46,7 @@ class ItemListener : Listener {
 
     private val playerStacks = ConcurrentHashMap<UUID, ConcurrentHashMap<Material, Int>>()
 
-    private val recentLootTask = Runnable {
+    private val recentLootTask = fun(_: ScheduledTaskCompat) {
         playerStacks.forEach { (playerId, loots) ->
             val player = server.getPlayer(playerId)
 
@@ -100,7 +102,7 @@ class ItemListener : Listener {
                 materialMap.compute(itemStack.type) { _, amount ->
                     (amount ?: 0) + itemStack.amount
                 }
-                scheduler.runTaskLater(plugin, recentLootTask, 20L * Config.Notify.Debounce)
+                player.schedulerCompat.runDelayed(plugin, 20L * Config.Notify.Debounce, recentLootTask)
             } else {
                 player.discordAlert(message)
             }

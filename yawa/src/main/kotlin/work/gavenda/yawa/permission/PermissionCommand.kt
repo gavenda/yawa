@@ -54,28 +54,31 @@ class PermissionCommand : Command() {
 
 class PermissionPlayerCommand : Command() {
     override val permission = Permission.PERMISSION_PLAYER
-    override fun execute(sender: CommandSender, args: List<String>) = scheduler.runTaskAsynchronously(plugin) { _ ->
-        if (args.size == 3) {
-            val nameArg = args[0]
-            val permissionArg = args[1]
-            val enabledArg = args[2].toBoolean()
+    override fun execute(sender: CommandSender, args: List<String>) {
+        scheduler.runAtNextTickAsynchronously(plugin) {
+            if (args.size == 3) {
+                val nameArg = args[0]
+                val permissionArg = args[1]
+                val enabledArg = args[2].toBoolean()
 
-            try {
-                val uniqueId = PermissionFeature.Vault.lookupUuid(nameArg)
+                try {
+                    val uniqueId = PermissionFeature.Vault.lookupUuid(nameArg)
 
-                if (enabledArg) {
-                    PermissionFeature.Vault.playerAddPermission(uniqueId, permissionArg)
-                } else {
-                    PermissionFeature.Vault.playerRemovePermission(uniqueId, permissionArg)
+                    if (enabledArg) {
+                        PermissionFeature.Vault.playerAddPermission(uniqueId, permissionArg)
+                    } else {
+                        PermissionFeature.Vault.playerRemovePermission(uniqueId, permissionArg)
+                    }
+
+                    sender.sendMessageUsingKey(Message.PermissionApplied)
+                } catch (ex: IllegalArgumentException) {
+                    sender.sendMessageUsingKey(Message.PermissionPlayerNotFound)
                 }
-
-                sender.sendMessageUsingKey(Message.PermissionApplied)
-            } catch (ex: IllegalArgumentException) {
-                sender.sendMessageUsingKey(Message.PermissionPlayerNotFound)
             }
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> Bukkit.getOfflinePlayers()
@@ -92,28 +95,31 @@ class PermissionPlayerCommand : Command() {
 
 class PermissionGroupCommand : Command() {
     override val permission = Permission.PERMISSION_GROUP
-    override fun execute(sender: CommandSender, args: List<String>) = scheduler.runTaskAsynchronously(plugin) { _ ->
-        if (args.size == 3) {
-            val groupNameArg = args[0]
-            val permissionArg = args[1]
-            val enabledArg = args[2].toBoolean()
+    override fun execute(sender: CommandSender, args: List<String>) {
+        scheduler.runAtNextTickAsynchronously(plugin) {
+            if (args.size == 3) {
+                val groupNameArg = args[0]
+                val permissionArg = args[1]
+                val enabledArg = args[2].toBoolean()
 
-            try {
-                val uniqueId = PermissionFeature.Vault.lookupGroupUuid(groupNameArg)
+                try {
+                    val uniqueId = PermissionFeature.Vault.lookupGroupUuid(groupNameArg)
 
-                if (enabledArg) {
-                    PermissionFeature.Vault.groupAddPermission(uniqueId, permissionArg)
-                } else {
-                    PermissionFeature.Vault.groupRemovePermission(uniqueId, permissionArg)
+                    if (enabledArg) {
+                        PermissionFeature.Vault.groupAddPermission(uniqueId, permissionArg)
+                    } else {
+                        PermissionFeature.Vault.groupRemovePermission(uniqueId, permissionArg)
+                    }
+
+                    sender.sendMessageUsingKey(Message.PermissionApplied)
+                } catch (ex: IllegalArgumentException) {
+                    sender.sendMessageUsingKey(Message.PermissionGroupNotFound)
                 }
-
-                sender.sendMessageUsingKey(Message.PermissionApplied)
-            } catch (ex: IllegalArgumentException) {
-                sender.sendMessageUsingKey(Message.PermissionGroupNotFound)
             }
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
         return when (args.size) {
             1 -> transaction {

@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.tablist
+package work.gavenda.yawa.api.compat
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.PluginFeature
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
+import org.bukkit.Location
+import org.bukkit.entity.Entity
+import org.bukkit.event.player.PlayerTeleportEvent
+import java.util.concurrent.CompletableFuture
 
-object TabListFeature : PluginFeature {
-    override val disabled get() = Config.TabList.Disabled
+fun Entity.teleportAsyncCompat(
+    location: Location,
+    cause: PlayerTeleportEvent.TeleportCause
+): CompletableFuture<Boolean> {
+    return pluginEnvironment.teleportAsync(this, location, cause)
+}
 
-    private lateinit var tabListTask: ScheduledTaskCompat
-
-    override fun registerTasks() {
-        tabListTask = scheduler.runAtFixedRate(plugin, 0, 20L, TabListTask()::accept)
-    }
-
-    override fun unregisterTasks() {
-        tabListTask.cancel()
-    }
+fun Entity.teleportAsyncCompat(location: Location): CompletableFuture<Boolean> {
+    return pluginEnvironment.teleportAsync(this, location)
 }

@@ -25,6 +25,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.applySkin
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.MojangProfileProperty
@@ -43,7 +44,7 @@ class SkinPlayerCommand : Command() {
 
             sender.sendMessageUsingKey(Message.SkinRetrieve)
 
-            scheduler.runTaskAsynchronously(plugin) { _ ->
+            sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
                 try {
                     val uuid = MojangApi.findUuidByName(name)
                     if (uuid != null) {

@@ -29,6 +29,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class WarpCommand : Command() {
@@ -41,7 +42,7 @@ class WarpCommand : Command() {
 
         val locationName = args[0]
 
-        scheduler.runTaskAsynchronously(plugin) { _ ->
+        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
             transaction {
                 val playerLocationDb = PlayerLocationDb
                     .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }
@@ -58,7 +59,7 @@ class WarpCommand : Command() {
 
                     val location = Location(world, playerLocationDb.x, playerLocationDb.y, playerLocationDb.z)
 
-                    scheduler.runTask(plugin) { _ ->
+                    sender.schedulerCompat.runAtNextTick(plugin) {
                         world.getChunkAtAsyncCompat(location).thenAccept {
                             sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                                 sender.sendMessageUsingKey(

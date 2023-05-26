@@ -23,6 +23,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.potion.PotionEffectType
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
@@ -33,8 +34,8 @@ class PotionEffectListener : Listener {
         if (event.newEffect?.type != PotionEffectType.INVISIBILITY) return
         val player = event.entity as Player
 
-        scheduler.runTaskLater(plugin, { _ ->
+        player.schedulerCompat.runAtNextTick(plugin) {
             player.updateHiddenArmor()
-        }, 2L)
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.tablist
+package work.gavenda.yawa.api.compat
 
-import work.gavenda.yawa.Config
-import work.gavenda.yawa.PluginFeature
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
+import net.kyori.adventure.text.Component
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 
-object TabListFeature : PluginFeature {
-    override val disabled get() = Config.TabList.Disabled
+var ItemMeta.displayNameCompat
+    get(): Component? {
+        return pluginEnvironment.displayName(this)
+    }
+    set(value) = pluginEnvironment.displayName(this, value)
 
-    private lateinit var tabListTask: ScheduledTaskCompat
-
-    override fun registerTasks() {
-        tabListTask = scheduler.runAtFixedRate(plugin, 0, 20L, TabListTask()::accept)
+var ItemStack.loreCompat: List<Component>?
+    get() {
+        return pluginEnvironment.lore(this)
+    }
+    set(lore) {
+        pluginEnvironment.lore(this, lore)
     }
 
-    override fun unregisterTasks() {
-        tabListTask.cancel()
+var ItemMeta.loreCompat: List<Component>?
+    get() {
+        return pluginEnvironment.lore(this)
     }
-}
+    set(value) = pluginEnvironment.lore(this, value)

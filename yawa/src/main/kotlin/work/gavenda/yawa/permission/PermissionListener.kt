@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
@@ -41,7 +42,7 @@ class PermissionListener : Listener {
         // Add attachment
         PermissionFeature.attachTo(player)
 
-        scheduler.runTaskAsynchronously(plugin) { _ ->
+        player.schedulerCompat.runAtNextTickAsynchronously(plugin) {
             transaction {
                 PlayerDb.findById(player.uniqueId) ?: PlayerDb.new(player.uniqueId) {
                     val defaultGroup = Group.findById(Group.DefaultGroupUuid)

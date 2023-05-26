@@ -18,7 +18,6 @@
  */
 package work.gavenda.yawa.api
 
-import de.tr7zw.nbtapi.NBTItem
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.nbt.api.BinaryTagHolder
 import net.kyori.adventure.text.Component
@@ -47,35 +46,6 @@ val ItemStack.clientDisplayName
     get() = type.name
         .replace("_", " ")
         .capitalizeFully()
-
-/**
- * Returns the item stack preview.
- */
-@Suppress("DEPRECATION")
-val ItemStack.previewComponent: Component
-    get() {
-        val materialName = Component.text(clientDisplayName)
-        val displayName = if (hasItemMeta() && itemMeta.hasDisplayName()) {
-            itemMeta.displayNameCompat
-                ?.color(NamedTextColor.AQUA)
-                ?.decorate(TextDecoration.ITALIC)
-                ?: Component.empty()
-        } else materialName
-
-        itemMeta.loreCompat = listOf(itemDurability)
-
-        val nbtItem = NBTItem(this)
-        val itemKey = Key.key(type.key.toString())
-        val itemHover = HoverEvent.showItem(itemKey, amount, BinaryTagHolder.binaryTagHolder(nbtItem.asNBTString()))
-
-        return Component.textOfChildren(
-            Component.text("[", NamedTextColor.WHITE),
-            displayName
-                .color(materialColor)
-                .hoverEvent(itemHover),
-            Component.text("]", NamedTextColor.WHITE)
-        )
-    }
 
 /**
  * Returns the text color of the material used. Applies to tools, armors, and specific blocks only.

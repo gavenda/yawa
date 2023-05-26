@@ -24,6 +24,7 @@ import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKey
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
@@ -33,6 +34,7 @@ import java.security.KeyPair
 import java.security.PublicKey
 import java.time.Instant
 import java.util.*
+import java.util.function.Consumer
 
 /**
  * Determines if you have a cracked account and begins encrypting your connection if possible.
@@ -44,11 +46,11 @@ class LoginConnectionTask(
     private val uuid: Optional<UUID>,
     private val keyPair: KeyPair,
     private val profileKeyData: Optional<WrappedProfileKeyData>
-) : Runnable {
+): Consumer<ScheduledTaskCompat> {
 
     private val serverId = ""
 
-    override fun run() {
+    override fun accept(task: ScheduledTaskCompat) {
         try {
             val uuid = name.minecraftOfflineUuid()
 

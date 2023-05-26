@@ -91,7 +91,7 @@ class EnderListener(
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
         val enderTeleportTask = EnderTeleportTask(teleportingPlayers, location)
 
-        scheduler.runTaskLater(plugin, enderTeleportTask, secondsInTicks)
+        scheduler.runDelayed(plugin, secondsInTicks, enderTeleportTask::accept)
     }
 
 }

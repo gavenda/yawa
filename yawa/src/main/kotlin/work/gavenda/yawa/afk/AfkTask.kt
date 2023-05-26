@@ -23,12 +23,14 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.playerListNameCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.afk
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
-class AfkTask : Runnable {
+class AfkTask : Consumer<ScheduledTaskCompat> {
 
-    override fun run() {
+    override fun accept(task: ScheduledTaskCompat) {
         server.onlinePlayers
             .filter { it.hasPermission(Permission.AFK) }
             .forEach { player ->

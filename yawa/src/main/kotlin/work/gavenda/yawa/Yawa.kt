@@ -35,10 +35,10 @@ import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.discord.DiscordFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
-import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
-import work.gavenda.yawa.login.LoginFeature
+// import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
+// import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.notify.NotifyFeature
-import work.gavenda.yawa.permission.PermissionFeature
+// import work.gavenda.yawa.permission.PermissionFeature
 import work.gavenda.yawa.ping.PingFeature
 import work.gavenda.yawa.playerhead.PlayerHeadFeature
 import work.gavenda.yawa.sit.SitFeature
@@ -80,11 +80,11 @@ class Yawa : JavaPlugin() {
         DiscordFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
-        HiddenArmorFeature.enable()
-        LoginFeature.enable()
+        // HiddenArmorFeature.enable()
+        // LoginFeature.enable()
         NotifyFeature.enable()
         PlayerHeadFeature.enable()
-        PermissionFeature.enable()
+        // PermissionFeature.enable()
         SitFeature.enable()
         SkinFeature.enable()
         SleepFeature.enable()
@@ -113,12 +113,12 @@ class Yawa : JavaPlugin() {
         DiscordFeature.disable()
         EnderFeature.disable()
         EssentialsFeature.disable()
-        HiddenArmorFeature.disable()
-        LoginFeature.disable()
+        // HiddenArmorFeature.disable()
+        // LoginFeature.disable()
         NotifyFeature.disable()
         PingFeature.disable()
         PlayerHeadFeature.disable()
-        PermissionFeature.disable()
+        // PermissionFeature.disable()
         SitFeature.disable()
         SkinFeature.disable()
         SleepFeature.disable()

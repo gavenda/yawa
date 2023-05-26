@@ -22,6 +22,7 @@ package work.gavenda.yawa.skin
 import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.applySkin
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.plugin
@@ -30,21 +31,23 @@ import work.gavenda.yawa.scheduler
 /**
  * Restore player skin as it is found in Mojang servers.
  */
-fun Player.restoreSkin() = scheduler.runTaskAsynchronously(plugin) { _ ->
-    val uuid = if (server.onlineMode) {
-        uniqueId
-    } else MojangApi.findUuidByName(name)
+fun Player.restoreSkin() {
+    schedulerCompat.runAtNextTickAsynchronously(plugin) {
+        val uuid = if (server.onlineMode) {
+            uniqueId
+        } else MojangApi.findUuidByName(name)
 
-    if (uuid != null) {
-        MojangApi.findProfile(uuid)?.let { playerProfile ->
-            playerProfile.properties
-                .find { it.name == MOJANG_KEY_TEXTURES }
-                ?.let { texture -> applySkin(texture.value, texture.signature) }
+        if (uuid != null) {
+            MojangApi.findProfile(uuid)?.let { playerProfile ->
+                playerProfile.properties
+                    .find { it.name == MOJANG_KEY_TEXTURES }
+                    ?.let { texture -> applySkin(texture.value, texture.signature) }
+            }
+        } else {
+            applySkin(
+                Config.Skin.DefaultTexture.Value,
+                Config.Skin.DefaultTexture.Signature
+            )
         }
-    } else {
-        applySkin(
-            Config.Skin.DefaultTexture.Value,
-            Config.Skin.DefaultTexture.Signature
-        )
     }
 }

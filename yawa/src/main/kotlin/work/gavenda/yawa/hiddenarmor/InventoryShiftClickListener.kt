@@ -24,6 +24,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.PlayerInventory
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
@@ -48,9 +49,9 @@ class InventoryShiftClickListener : Listener {
         val isBoots = armorTypeStr.endsWith("_BOOTS") && inventory.boots == null
 
         if (isHelmet || isChestplate || isLeggings || isBoots) {
-            scheduler.runTaskLater(plugin, { _ ->
+            player.schedulerCompat.runAtNextTick(plugin) {
                 player.updateHiddenArmorSelf()
-            }, 1L)
+            }
         }
     }
 }

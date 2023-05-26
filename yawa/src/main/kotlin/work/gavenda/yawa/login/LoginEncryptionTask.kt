@@ -31,6 +31,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.api.compat.PluginEnvironment
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
@@ -40,6 +41,7 @@ import java.security.GeneralSecurityException
 import java.security.KeyPair
 import java.time.Instant
 import java.util.*
+import java.util.function.Consumer
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 
@@ -52,9 +54,9 @@ class LoginEncryptionTask(
     private val player: Player,
     private val keyPair: KeyPair,
     private val sharedSecret: ByteArray,
-) : Runnable {
+): Consumer<ScheduledTaskCompat> {
 
-    override fun run() {
+    override fun accept(task: ScheduledTaskCompat) {
         val decryptedKey = try {
             MinecraftEncryption.decryptSharedKey(keyPair.private, sharedSecret)
         } catch (ex: GeneralSecurityException) {

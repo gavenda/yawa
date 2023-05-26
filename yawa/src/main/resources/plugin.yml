@@ -5,6 +5,7 @@ website: https://gavenda.work
 database: true
 api-version: '1.19'
 version: ${project.version}
+folia-supported: true
 main: work.gavenda.yawa.Yawa
 load: STARTUP
 loadbefore:

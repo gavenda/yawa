@@ -9,8 +9,7 @@ dependencies {
     compileOnly(libs.kotlinx.serialization.json)
     compileOnly(libs.log4j2)
 
-    compileOnly(mcLibs.paper.api)
-    compileOnly(mcLibs.nbtapi)
+    compileOnly(mcLibs.folia.api)
     compileOnly(mcLibs.protocol.lib)
     compileOnly(mcLibs.bundles.adventure)
 }

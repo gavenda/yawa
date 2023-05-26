@@ -31,7 +31,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
-import org.bukkit.scheduler.BukkitScheduler
+import work.gavenda.yawa.api.compat.CompatSchedulers
+import work.gavenda.yawa.api.compat.SchedulerCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import work.gavenda.yawa.api.placeholder.Placeholders
@@ -54,7 +55,7 @@ val server: Server get() = Bukkit.getServer()
 /**
  * Easy access to bukkit's scheduler.
  */
-val scheduler: BukkitScheduler get() = Bukkit.getScheduler()
+val scheduler: SchedulerCompat get() = CompatSchedulers.globalRegionScheduler
 
 /**
  * Easy access to bukkit's plugin manager.

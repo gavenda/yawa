@@ -22,6 +22,7 @@ package work.gavenda.yawa.sleep
 import org.bukkit.Statistic
 import org.bukkit.World
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
@@ -31,11 +32,10 @@ import java.util.*
  */
 class SleepAnimationTask(
     private val world: World,
-    private val sleepAnimationTaskIds: MutableMap<UUID, Int>,
     private val sleepingWorlds: MutableSet<UUID>
-) : Runnable {
+) {
 
-    override fun run() {
+    fun run(task: ScheduledTaskCompat) {
         val time = world.time
         val dayTime = 1200
         val timeRate = Config.Sleep.TimeRate
@@ -61,15 +61,12 @@ class SleepAnimationTask(
             world.players.forEach { it.setStatistic(Statistic.TIME_SINCE_REST, 0) }
 
             // Finish
-            sleepAnimationTaskIds[world.uid]?.let { taskId ->
-                scheduler.cancelTask(taskId)
-                sleepAnimationTaskIds[world.uid] = -1
-            }
+            task.cancel()
 
             // Remove later
-            scheduler.runTaskLater(Yawa.Instance, { _ ->
+            scheduler.runDelayed(Yawa.Instance, 20 * 10) {
                 sleepingWorlds.remove(world.uid)
-            }, 20 * 10)
+            }
         }
         // Out of range, keep animating
         else {

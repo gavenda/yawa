@@ -26,6 +26,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
+import work.gavenda.yawa.api.compat.schedulerCompat
 
 class WarpSetCommand : Command() {
     override val permission = Permission.ESSENTIALS_WARP_SET
@@ -37,7 +38,7 @@ class WarpSetCommand : Command() {
 
         val locationName = args[0]
 
-        scheduler.runTaskAsynchronously(plugin) { _ ->
+        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
             transaction {
                 val playerLocation = PlayerLocationDb
                     .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name eq locationName) }

@@ -23,6 +23,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.compat.registerNewObjectiveCompat
 import java.util.concurrent.TimeUnit
 
@@ -32,7 +33,7 @@ const val SB_DISPLAY_NAME = "ms"
 object PingFeature : PluginFeature {
     override val disabled get() = Config.Ping.Disabled
 
-    private var pingTaskId = -1
+    private lateinit var pingTask: ScheduledTaskCompat
 
     private val pingCommand = PingCommand()
 
@@ -62,13 +63,12 @@ object PingFeature : PluginFeature {
     }
 
     override fun registerTasks() {
-        val pingTask = PingTask(scoreboard, objective)
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
 
-        pingTaskId = scheduler.scheduleSyncRepeatingTask(plugin, pingTask, 0, secondsInTicks)
+        pingTask = scheduler.runAtFixedRate(plugin, 0, secondsInTicks, PingTask(scoreboard, objective)::accept)
     }
 
     override fun unregisterTasks() {
-        scheduler.cancelTask(pingTaskId)
+        pingTask.cancel()
     }
 }

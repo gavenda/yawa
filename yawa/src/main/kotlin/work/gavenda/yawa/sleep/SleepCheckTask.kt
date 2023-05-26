@@ -23,24 +23,20 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import org.bukkit.World
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.kickCompat
-import work.gavenda.yawa.api.compat.playSoundCompat
-import work.gavenda.yawa.api.compat.sendActionBarCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
+import work.gavenda.yawa.api.compat.*
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
+import java.util.function.Consumer
 import kotlin.math.ceil
 
 /**
  * Checks per world if there are people beginning to sleep.
  */
 class SleepCheckTask(
-    private val sleepAnimationTaskIds: MutableMap<UUID, Int>,
     private val sleepingWorlds: MutableSet<UUID>
-) : Runnable {
+): Consumer<ScheduledTaskCompat> {
 
     private fun checkWorld(world: World) {
-        val sleepAnimationTaskId = sleepAnimationTaskIds[world.uid] ?: -1
         val sleepRequired = ceil(world.players.size / 2.0)
 
         // Someone is asleep, and we lack more people.
@@ -76,7 +72,7 @@ class SleepCheckTask(
                         return
                     }
 
-                    scheduler.runTask(plugin) { _ ->
+                    scheduler.runAtNextTick(plugin) {
                         // Kick awake players
                         world.awakePlayers.forEach { player ->
                             val kickMessage = Placeholders
@@ -115,14 +111,10 @@ class SleepCheckTask(
                     world.sendMessageCompat(sleepingMessage)
                 }
 
-                // Cancel existing task if exists
-                if (sleepAnimationTaskId > 0)
-                    scheduler.cancelTask(sleepAnimationTaskId)
 
-                val sleepAnimationTask = SleepAnimationTask(world, sleepAnimationTaskIds, sleepingWorlds)
+                val sleepAnimationTask = SleepAnimationTask(world, sleepingWorlds)
 
-                // Begin sleep animation
-                sleepAnimationTaskIds[world.uid] = scheduler.runTaskTimer(plugin, sleepAnimationTask, 1, 1).taskId
+                scheduler.runAtFixedRate(plugin, 1, 1, sleepAnimationTask::run)
 
                 // Reset kick seconds
                 world.kickSeconds = 0
@@ -134,7 +126,7 @@ class SleepCheckTask(
         }
     }
 
-    override fun run() {
+    override fun accept(task: ScheduledTaskCompat) {
         server.worlds.asSequence()
             // World is not sleeping
             .filter { it.uid !in sleepingWorlds }
