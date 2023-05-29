@@ -36,7 +36,7 @@ object AfkFeature : PluginFeature {
     override val disabled get() = Config.Afk.Disabled
 
     override fun registerTasks() {
-        afkTask = scheduler.runAtFixedRate(plugin, 0, 20L, AfkTask()::accept)
+        afkTask = scheduler.runAtFixedRate(plugin, 1L, 20L, AfkTask()::accept)
     }
 
     override fun enableCommands() {

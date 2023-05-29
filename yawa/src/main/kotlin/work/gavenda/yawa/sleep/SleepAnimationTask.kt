@@ -64,7 +64,7 @@ class SleepAnimationTask(
             task.cancel()
 
             // Remove later
-            scheduler.runDelayed(Yawa.Instance, 20 * 10) {
+            scheduler.runDelayed(plugin, 20 * 10) {
                 sleepingWorlds.remove(world.uid)
             }
         }

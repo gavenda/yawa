@@ -81,7 +81,7 @@ afk:
   messages.enabled: false
 
 discord:
-  disabled: false
+  disabled: true
   token: ""
   server-avatar-url: "https://minions.ddns.net/minecraft/server-icon.png"
   avatar-url: "https://mineskin.eu/helm/<player-name>.png"

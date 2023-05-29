@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022-2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -174,10 +174,26 @@ interface PlaceholderProvider {
         return mapOf()
     }
 
+    fun providePlayer(player: Player?): Map<String, Component?> {
+        return mapOf()
+    }
+
+    fun provideWorld(world: World?): Map<String, Component?> {
+        return mapOf()
+    }
+
     /**
      * Provide a placeholder.
      */
     fun provideString(player: Player?, world: World?): Map<String, String?> {
+        return mapOf()
+    }
+
+    fun providePlayerString(player: Player?): Map<String, String?> {
+        return mapOf()
+    }
+
+    fun provideWorldString(world: World?): Map<String, String?> {
         return mapOf()
     }
 }

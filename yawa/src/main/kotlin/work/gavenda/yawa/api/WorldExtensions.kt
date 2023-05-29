@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022-2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ import com.comphenix.protocol.wrappers.BukkitConverters
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.key.Key
 import org.bukkit.World
+import work.gavenda.yawa.plugin
 
 /**
  * Retrieves debug mode status.
@@ -43,5 +44,5 @@ val World.debugMode: Boolean
  */
 fun World.asAudience(): Audience {
     val namespaceKey = key.toString()
-    return YawaAPI.Instance.adventure.world(Key.key(namespaceKey))
+    return plugin.adventure.world(Key.key(namespaceKey))
 }

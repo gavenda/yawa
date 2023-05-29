@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022-2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,11 @@ package work.gavenda.yawa.api
 
 import net.kyori.adventure.audience.Audience
 import org.bukkit.Server
+import work.gavenda.yawa.plugin
 
 /**
  * Returns this server as an audience
  */
 fun Server.asAudience(): Audience {
-    return YawaAPI.Instance.adventure.players()
+    return plugin.adventure.players()
 }

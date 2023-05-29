@@ -2,7 +2,6 @@
 rootProject.name = "yawa"
 
 include("yawa")
-include("yawa-api")
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {

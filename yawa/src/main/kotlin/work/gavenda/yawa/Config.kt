@@ -269,7 +269,7 @@ object Config {
      */
     fun set(path: String, value: Any) {
         config.set(path, value)
-        Yawa.Instance.saveConfig()
+        plugin.saveConfig()
     }
 
 }

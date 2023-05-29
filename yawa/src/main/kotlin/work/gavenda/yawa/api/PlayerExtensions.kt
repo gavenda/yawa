@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022-2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,10 @@ import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.kickCompat
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerDisconnect
+import work.gavenda.yawa.plugin
 import java.util.*
 
 
@@ -48,11 +50,11 @@ const val META_AFK = "Afk"
 var Player.afk: Boolean
     get() = if (hasMetadata(META_AFK)) {
         getMetadata(META_AFK)
-            .first { it.owningPlugin == YawaAPI.Instance }
+            .first { it.owningPlugin == plugin }
             .asBoolean()
     } else false
     set(value) {
-        setMetadata(META_AFK, FixedMetadataValue(YawaAPI.Instance, value))
+        setMetadata(META_AFK, FixedMetadataValue(plugin, value))
     }
 
 /**
@@ -71,14 +73,14 @@ val Player.latencyInMillis: Int
  */
 fun Player.applySkin(textureInfo: String, signature: String = "") {
     // Should be done on main thread
-    Bukkit.getScheduler().runTask(YawaAPI.Instance) { _ ->
+    schedulerCompat.runAtNextTick(plugin) {
         val gameProfile = WrappedGameProfile.fromPlayer(this)
         val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
 
         gameProfile.properties.clear()
         gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
 
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
             refreshPlayer()
             updateScaledHealth()
             exp = exp
@@ -135,7 +137,7 @@ var Player.spoofedUuid: UUID
  * Returns this player instance as audience.
  */
 fun Player.asAudience(): Audience {
-    return YawaAPI.Instance.adventure.player(this)
+    return plugin.adventure.player(this)
 }
 
 /**
@@ -143,7 +145,7 @@ fun Player.asAudience(): Audience {
  */
 fun Player.disconnect(reason: String = "") {
     // Must use main thread
-    Bukkit.getScheduler().runTask(YawaAPI.Instance) { _ ->
+    schedulerCompat.runAtNextTick(plugin) {
         apiLogger.info("Packet disconnect: $reason")
         val disconnectPacket = WrapperLoginServerDisconnect().apply {
             writeReason(WrappedChatComponent.fromText(reason))

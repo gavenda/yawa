@@ -24,6 +24,7 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Yawa
+import work.gavenda.yawa.plugin
 import kotlin.math.max
 
 /**
@@ -52,10 +53,10 @@ const val META_WORLD_KICK_SECONDS = "SleepKickSeconds"
 var World.kickSeconds: Int
     get() = if (hasMetadata(META_WORLD_KICK_SECONDS)) {
         getMetadata(META_WORLD_KICK_SECONDS)
-            .first { it.owningPlugin == Yawa.Instance }
+            .first { it.owningPlugin == plugin }
             .asInt()
     } else 0
-    set(value) = setMetadata(META_WORLD_KICK_SECONDS, FixedMetadataValue(Yawa.Instance, value))
+    set(value) = setMetadata(META_WORLD_KICK_SECONDS, FixedMetadataValue(plugin, value))
 
 /**
  * Remaining seconds before awake players get kicked.

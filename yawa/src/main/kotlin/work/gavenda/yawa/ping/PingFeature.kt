@@ -65,7 +65,7 @@ object PingFeature : PluginFeature {
     override fun registerTasks() {
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
 
-        pingTask = scheduler.runAtFixedRate(plugin, 0, secondsInTicks, PingTask(scoreboard, objective)::accept)
+        pingTask = scheduler.runAtFixedRate(plugin, 1L, secondsInTicks, PingTask(scoreboard, objective)::accept)
     }
 
     override fun unregisterTasks() {

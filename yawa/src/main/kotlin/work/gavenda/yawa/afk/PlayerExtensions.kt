@@ -35,10 +35,10 @@ const val META_PLAYER_AFK_LAST = "AfkLast"
 var Player.lastInteractionMillis: Long
     get() = if (hasMetadata(META_PLAYER_AFK_LAST)) {
         getMetadata(META_PLAYER_AFK_LAST)
-            .first { it.owningPlugin == Yawa.Instance }
+            .first { it.owningPlugin == plugin }
             .asLong()
     } else System.currentTimeMillis()
-    set(value) = setMetadata(META_PLAYER_AFK_LAST, FixedMetadataValue(Yawa.Instance, value))
+    set(value) = setMetadata(META_PLAYER_AFK_LAST, FixedMetadataValue(plugin, value))
 
 /**
  * Fires a player interaction.
@@ -65,5 +65,5 @@ fun Player.doInteract() {
  * Clears the last interaction.
  */
 fun Player.clearLastInteract() {
-    removeMetadata(META_PLAYER_AFK_LAST, Yawa.Instance)
+    removeMetadata(META_PLAYER_AFK_LAST, plugin)
 }

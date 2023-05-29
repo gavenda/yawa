@@ -73,7 +73,7 @@ interface PluginFeature {
         registerPlaceholders()
         registerEventListeners()
 
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
             registerPaperEventListeners()
         } else {
             registerBukkitEventListeners()
@@ -95,7 +95,7 @@ interface PluginFeature {
         unregisterTasks()
         unregisterEventListeners()
 
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
+        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
             unregisterPaperEventListeners()
         } else {
             unregisterBukkitEventListeners()

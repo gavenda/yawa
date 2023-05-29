@@ -39,7 +39,7 @@ tasks.register<Copy>("package") {
     description = "Publish minecraft plugin to local server testing directory"
 
     val srcDir = file("$buildDir/libs")
-    val distDir = file("$rootDir/yawa-server/plugins")
+    val distDir = file("$rootDir/folia-server/plugins")
     from(srcDir)
     into(distDir)
 

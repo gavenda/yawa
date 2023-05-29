@@ -22,6 +22,7 @@ package work.gavenda.yawa.chat
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Yawa
+import work.gavenda.yawa.plugin
 
 const val META_PLAYER_LAST_WHISPER = "LastWhisperName"
 
@@ -32,7 +33,7 @@ const val META_PLAYER_LAST_WHISPER = "LastWhisperName"
 var Player.lastWhisperPlayer: String
     get() = if (hasMetadata(META_PLAYER_LAST_WHISPER)) {
         getMetadata(META_PLAYER_LAST_WHISPER)
-            .first { it.owningPlugin == Yawa.Instance }
+            .first { it.owningPlugin == plugin }
             .asString()
     } else ""
-    set(value) = setMetadata(META_PLAYER_LAST_WHISPER, FixedMetadataValue(Yawa.Instance, value))
+    set(value) = setMetadata(META_PLAYER_LAST_WHISPER, FixedMetadataValue(plugin, value))

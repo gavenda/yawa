@@ -166,13 +166,14 @@ class LoginEncryptionTask(
     private fun enableEncryption(player: Player, loginKey: SecretKey): Boolean {
         try {
             // Encrypt/decrypt following packets
-            if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
-                logger.info("Paper detected, using paper encryption")
+            if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+                logger.info("Paper/Folia detected, using paper encryption")
                 val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
                     .getMethodByParameters("setupEncryption", SecretKey::class.java)
 
                 encryptMethod.invoke(player.networkManager, loginKey)
             } else {
+                logger.info("Using default minecraft encryption method")
                 val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
                     .getMethodByParameters("a", Cipher::class.java, Cipher::class.java)
                 val decryptCipher = MinecraftEncryption.asCipher(Cipher.DECRYPT_MODE, loginKey)

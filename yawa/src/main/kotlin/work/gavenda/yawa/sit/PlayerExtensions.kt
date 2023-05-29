@@ -44,10 +44,10 @@ const val MAX_SIT_DISTANCE = 2.0
 var Player.isSitting: Boolean
     get() = if (hasMetadata(META_PLAYER_SITTING)) {
         getMetadata(META_PLAYER_SITTING)
-            .first { it.owningPlugin == Yawa.Instance }
+            .first { it.owningPlugin == plugin }
             .asBoolean()
     } else false
-    set(value) = setMetadata(META_PLAYER_SITTING, FixedMetadataValue(Yawa.Instance, value))
+    set(value) = setMetadata(META_PLAYER_SITTING, FixedMetadataValue(plugin, value))
 
 /**
  * The player's sitting block.
@@ -55,10 +55,10 @@ var Player.isSitting: Boolean
 var Player.sittingBlock: Block?
     get() = if (hasMetadata(META_PLAYER_SITTING_BLOCK)) {
         getMetadata(META_PLAYER_SITTING_BLOCK)
-            .first { it.owningPlugin == Yawa.Instance }
+            .first { it.owningPlugin == plugin }
             .value() as Block
     } else null
-    set(value) = setMetadata(META_PLAYER_SITTING_BLOCK, FixedMetadataValue(Yawa.Instance, value))
+    set(value) = setMetadata(META_PLAYER_SITTING_BLOCK, FixedMetadataValue(plugin, value))
 
 /**
  * The player's sitting task.
@@ -66,10 +66,10 @@ var Player.sittingBlock: Block?
 var Player.sitTaskId: Int
     get() = if (hasMetadata(META_PLAYER_SITTING_TASK_ID)) {
         getMetadata(META_PLAYER_SITTING_TASK_ID)
-            .first { it.owningPlugin == Yawa.Instance }
+            .first { it.owningPlugin == plugin }
             .asInt()
     } else -1
-    set(value) = setMetadata(META_PLAYER_SITTING_TASK_ID, FixedMetadataValue(Yawa.Instance, value))
+    set(value) = setMetadata(META_PLAYER_SITTING_TASK_ID, FixedMetadataValue(plugin, value))
 
 /**
  * Checks if the player can currently sit at the given block.

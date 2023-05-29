@@ -61,4 +61,11 @@ object CompatSchedulers {
         } else {
             BukkitSchedulerCompat(Bukkit.getScheduler())
         }
+
+    val asyncScheduler: SchedulerCompat
+        get() = if (PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+            FoliaGlobalRegionSchedulerCompat(Bukkit.getGlobalRegionScheduler())
+        } else {
+            BukkitSchedulerCompat(Bukkit.getScheduler())
+        }
 }

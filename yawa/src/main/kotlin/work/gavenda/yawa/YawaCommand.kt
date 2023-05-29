@@ -171,17 +171,17 @@ class YawaReloadCommand : Command() {
         when (args.size) {
             1 -> {
                 if (args[0] == "config") {
-                    Yawa.Instance.reloadConfig()
-                    Yawa.Instance.loadConfig()
+                    plugin.reloadConfig()
+                    plugin.loadConfig()
 
                     sender.sendMessageUsingKey(Message.PluginReloadConfig)
                 }
             }
             else -> {
-                Yawa.Instance.onDisable()
-                Yawa.Instance.reloadConfig()
-                Yawa.Instance.loadConfig()
-                Yawa.Instance.onEnable()
+                plugin.onDisable()
+                plugin.reloadConfig()
+                plugin.loadConfig()
+                plugin.onEnable()
 
                 sender.sendMessageUsingKey(Message.PluginReload)
             }

@@ -13,7 +13,7 @@ val gitHash: String = java.io.ByteArrayOutputStream().use { outputStream ->
 
 allprojects {
     group = "work.gavenda.yawa"
-    version = "1.3.10"
+    version = "1.4.0"
 }
 
 tasks.register("version") {

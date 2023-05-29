@@ -22,7 +22,9 @@ package work.gavenda.yawa.api.compat
 import io.papermc.paper.threadedregions.scheduler.EntityScheduler
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
+import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
+import java.util.concurrent.TimeUnit
 
 class FoliaTaskCompat(private val task: ScheduledTask?) : ScheduledTaskCompat {
     override fun cancel() {
@@ -31,10 +33,12 @@ class FoliaTaskCompat(private val task: ScheduledTask?) : ScheduledTaskCompat {
 }
 
 class FoliaEntitySchedulerCompat(val scheduler: EntityScheduler) : SchedulerCompat {
+
+    private val asyncScheduler = Bukkit.getAsyncScheduler()
     override fun runDelayed(plugin: Plugin, delay: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
         val returnTask = scheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
-        }, null, 1L)
+        }, null, delay)
         return FoliaTaskCompat(returnTask)
     }
 
@@ -43,9 +47,9 @@ class FoliaEntitySchedulerCompat(val scheduler: EntityScheduler) : SchedulerComp
         delay: Long,
         task: (ScheduledTaskCompat) -> Unit
     ): ScheduledTaskCompat {
-        val returnTask = scheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
+        val returnTask = asyncScheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
-        }, null, 1L)
+        }, 50 * delay, TimeUnit.MILLISECONDS)
         return FoliaTaskCompat(returnTask)
     }
 
@@ -67,15 +71,17 @@ class FoliaEntitySchedulerCompat(val scheduler: EntityScheduler) : SchedulerComp
         period: Long,
         task: (ScheduledTaskCompat) -> Unit
     ): ScheduledTaskCompat {
-        val returnTask = scheduler.runAtFixedRate(plugin, fun(foliaTask: ScheduledTask) {
+        val returnTask = asyncScheduler.runAtFixedRate(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
-        }, null, initial, period)
+        }, 50 * initial, 50 * period, TimeUnit.MILLISECONDS)
         return FoliaTaskCompat(returnTask)
     }
 }
 
 class FoliaGlobalRegionSchedulerCompat(val scheduler: GlobalRegionScheduler) : SchedulerCompat {
 
+    private val asyncScheduler = Bukkit.getAsyncScheduler()
+
     override fun runDelayed(plugin: Plugin, delay: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
         val returnTask = scheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
@@ -88,9 +94,9 @@ class FoliaGlobalRegionSchedulerCompat(val scheduler: GlobalRegionScheduler) : S
         delay: Long,
         task: (ScheduledTaskCompat) -> Unit
     ): ScheduledTaskCompat {
-        val returnTask = scheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
+        val returnTask = asyncScheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
-        }, delay)
+        }, delay * 50, TimeUnit.MILLISECONDS)
         return FoliaTaskCompat(returnTask)
     }
 
@@ -112,9 +118,9 @@ class FoliaGlobalRegionSchedulerCompat(val scheduler: GlobalRegionScheduler) : S
         period: Long,
         task: (ScheduledTaskCompat) -> Unit
     ): ScheduledTaskCompat {
-        val returnTask = scheduler.runAtFixedRate(plugin, fun(foliaTask: ScheduledTask) {
+        val returnTask = asyncScheduler.runAtFixedRate(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
-        }, initial, period)
+        }, initial * 50, period * 50, TimeUnit.MILLISECONDS)
         return FoliaTaskCompat(returnTask)
     }
 }

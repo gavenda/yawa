@@ -19,15 +19,13 @@
 
 package work.gavenda.yawa
 
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerLoadEvent
 import work.gavenda.yawa.chunk.ChunkFeature
-import work.gavenda.yawa.discord.DiscordFeature
-import work.gavenda.yawa.ping.PingFeature
+
+// import work.gavenda.yawa.ping.PingFeature
 
 class StartupListener : Listener {
 
@@ -38,7 +36,7 @@ class StartupListener : Listener {
         logger.info("Enabling post-startup features")
 
         // Enable POST-startup features
-        PingFeature.enable()
+        // PingFeature.enable()
         ChunkFeature.enable()
     }
 

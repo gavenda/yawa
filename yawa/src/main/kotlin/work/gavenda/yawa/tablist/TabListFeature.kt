@@ -31,7 +31,7 @@ object TabListFeature : PluginFeature {
     private lateinit var tabListTask: ScheduledTaskCompat
 
     override fun registerTasks() {
-        tabListTask = scheduler.runAtFixedRate(plugin, 0, 20L, TabListTask()::accept)
+        tabListTask = scheduler.runAtFixedRate(plugin, 1L, 20L, TabListTask()::accept)
     }
 
     override fun unregisterTasks() {
