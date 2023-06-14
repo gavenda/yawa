@@ -170,6 +170,7 @@ object DiscordFeature : PluginFeature, EventListener {
                         )
                     )
 
+                server.consoleSender.sendMessage(message)
                 server.onlinePlayers.forEach {
                     it.sendMessage(message)
                 }
