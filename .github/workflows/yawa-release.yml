@@ -1,4 +1,4 @@
-name: Yawa Release
+name: Release
 on:
   push:
     tags:
@@ -31,4 +31,3 @@ jobs:
           title: ${{ steps.vars.outputs.version }}
           files: |
             yawa/build/libs/yawa-${{ steps.vars.outputs.version }}.jar
-            yawa-api/build/libs/yawa-api-${{ steps.vars.outputs.version }}.jar

@@ -1,7 +1,7 @@
-name: Yawa Prerelease
+name: Preview
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 jobs:
   build:
@@ -33,4 +33,3 @@ jobs:
           title: ${{ steps.vars.outputs.version }}
           files: |
             yawa/build/libs/yawa-${{ steps.vars.outputs.version }}.jar
-            yawa-api/build/libs/yawa-api-${{ steps.vars.outputs.version }}.jar
