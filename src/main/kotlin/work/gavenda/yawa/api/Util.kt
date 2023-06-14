@@ -19,10 +19,8 @@
 
 package work.gavenda.yawa.api
 
-import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
-import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
 import work.gavenda.yawa.api.compat.PluginEnvironment
@@ -54,26 +52,8 @@ fun URL.asHttpConnection(): HttpURLConnection {
     return openConnection() as HttpURLConnection
 }
 
-@Suppress("DEPRECATION")
-fun Array<net.md_5.bungee.api.chat.BaseComponent>.toComponent(): Component {
-    return BungeeComponentSerializer.get().deserialize(this)
-}
-
-@Suppress("DEPRECATION")
-fun Component.toBaseComponent(): Array<net.md_5.bungee.api.chat.BaseComponent> {
-    return BungeeComponentSerializer.get().serialize(this)
-}
-
 fun Component.toPlainText(): String {
     return PlainTextComponentSerializer.plainText().serialize(this)
-}
-
-fun Component.toLegacyText(): String {
-    return BukkitComponentSerializer.legacy().serialize(this)
-}
-
-fun String.toComponent(): Component {
-    return BukkitComponentSerializer.legacy().deserialize(this)
 }
 
 fun String.capitalizeFully(): String {

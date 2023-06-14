@@ -21,7 +21,6 @@ package work.gavenda.yawa
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import net.milkbowl.vault.chat.Chat
 import net.milkbowl.vault.economy.Economy
 import net.milkbowl.vault.permission.Permission
@@ -58,10 +57,9 @@ import work.gavenda.yawa.tablist.TabListFeature
  */
 class Yawa : JavaPlugin() {
 
-    lateinit var adventure: BukkitAudiences
+    private lateinit var dataSource: HikariDataSource
     private val startupListener = StartupListener()
     private var safeLoad = false
-    private lateinit var dataSource: HikariDataSource
     private val rootCommand = RootCommand().apply {
         sub(ReloadCommand(), "reload")
         sub(FeatureCommand(), "feature")
@@ -75,7 +73,6 @@ class Yawa : JavaPlugin() {
     override fun onEnable() {
         // Instance
         Instance = this
-        adventure = BukkitAudiences.create(this)
         // Load configuration
         saveDefaultConfig()
         loadConfig()
@@ -184,7 +181,6 @@ class Yawa : JavaPlugin() {
             server.pluginManager.registerEvents(placeholderCommand, this)
         }
         getCommand(Commands.ROOT)?.setExecutor(rootCommand)
-
         getCommand("placeholders")?.setExecutor(placeholderCommand)
     }
 

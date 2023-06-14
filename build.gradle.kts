@@ -1,8 +1,12 @@
+import java.io.ByteArrayOutputStream
+
 plugins {
-    base
+    id("yawa.kotlin-conventions")
+    id("yawa.paper-plugin")
+    kotlin("plugin.serialization")
 }
 
-val gitHash: String = java.io.ByteArrayOutputStream().use { outputStream ->
+val gitHash: String = ByteArrayOutputStream().use { outputStream ->
     project.exec {
         commandLine("git")
         args("rev-parse", "--short", "HEAD")
@@ -11,9 +15,25 @@ val gitHash: String = java.io.ByteArrayOutputStream().use { outputStream ->
     outputStream.toString().trim()
 }
 
-allprojects {
-    group = "work.gavenda.yawa"
-    version = "1.4.0"
+group = "work.gavenda.yawa"
+version = "1.4.1"
+
+dependencies {
+    compileOnly(libs.kotlin.stdlib.jdk8)
+    compileOnly(libs.kotlinx.serialization.json)
+    compileOnly(libs.discord) {
+        exclude(group = "club.minnced", module = "opus-java")
+    }
+    compileOnly(libs.discord.webhooks)
+    compileOnly(libs.hikari)
+    compileOnly(libs.bundles.exposed) {
+        isTransitive = false
+    }
+
+    // Minecraft Libraries
+    compileOnly(mcLibs.protocol.lib)
+    compileOnly(mcLibs.folia.api)
+    compileOnly(mcLibs.vault)
 }
 
 tasks.register("version") {

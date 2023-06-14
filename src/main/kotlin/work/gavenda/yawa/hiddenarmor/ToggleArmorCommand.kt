@@ -26,7 +26,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.asAudience
 import work.gavenda.yawa.sendMessageUsingKey
 
 class ToggleArmorCommand : Command() {
@@ -40,14 +39,14 @@ class ToggleArmorCommand : Command() {
         if (isHidden) {
             HiddenArmorFeature.removeHiddenPlayer(sender)
             sender.sendMessageUsingKey(Message.HiddenArmorVisible)
-            sender.asAudience().sendActionBar(
+            sender.sendActionBar(
                 Component.text("Armor Visibility: ")
                     .append(Component.text("ON", NamedTextColor.GREEN))
             )
         } else {
             HiddenArmorFeature.addHiddenPlayer(sender)
             sender.sendMessageUsingKey(Message.HiddenArmorInvisible)
-            sender.asAudience().sendActionBar(
+            sender.sendActionBar(
                 Component.text("Armor Visibility: ")
                     .append(Component.text("OFF", NamedTextColor.RED))
             )

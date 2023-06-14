@@ -138,13 +138,6 @@ var Player.spoofedUuid: UUID
     }
 
 /**
- * Returns this player instance as audience.
- */
-fun Player.asAudience(): Audience {
-    return plugin.adventure.player(this)
-}
-
-/**
  * Disconnect the player using a packet.
  */
 fun Player.disconnect(reason: String = "", cause: PlayerKickEvent.Cause = PlayerKickEvent.Cause.UNKNOWN) {
