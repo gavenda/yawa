@@ -21,7 +21,6 @@ package work.gavenda.yawa.chat
 
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.plugin
 
 const val META_PLAYER_LAST_WHISPER = "LastWhisperName"

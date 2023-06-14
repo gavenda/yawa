@@ -24,7 +24,6 @@ import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.api.compat.registerNewObjectiveCompat
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
@@ -38,7 +37,7 @@ object PingFeature : PluginFeature {
     private val pingCommand = PingCommand()
 
     private val scoreboard = server.scoreboardManager.newScoreboard
-    private val objective = scoreboard.registerNewObjectiveCompat(
+    private val objective = scoreboard.registerNewObjective(
         SB_NAME,
         Criteria.DUMMY,
         Component.text(SB_DISPLAY_NAME)
@@ -54,11 +53,11 @@ object PingFeature : PluginFeature {
         plugin.getCommand("ping")?.setExecutor(DisabledCommand)
     }
 
-    override fun registerPaperEventListeners() {
+    override fun registerEventListeners() {
         pluginManager.registerEvents(pingCommand)
     }
 
-    override fun unregisterPaperEventListeners() {
+    override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(pingCommand)
     }
 

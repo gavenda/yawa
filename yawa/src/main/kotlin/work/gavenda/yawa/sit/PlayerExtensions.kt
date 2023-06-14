@@ -26,11 +26,10 @@ import org.bukkit.block.data.type.Slab
 import org.bukkit.block.data.type.Stairs
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
+import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.compat.schedulerCompat
-import work.gavenda.yawa.api.compat.teleportAsyncCompat
-import java.util.concurrent.TimeUnit
+import work.gavenda.yawa.plugin
+import work.gavenda.yawa.sendMessageUsingKey
 
 const val META_PLAYER_SITTING = "PlayerSitting"
 const val META_PLAYER_SITTING_TASK_ID = "PlayerSittingTaskId"
@@ -139,7 +138,7 @@ fun Player.sit(block: Block) {
 
     val chairEntity = sitLocation.spawnChairEntity()
 
-    teleportAsyncCompat(sitLocation).thenRun {
+    teleportAsync(sitLocation).thenRun {
         chairEntity.addPassenger(this)
         sittingBlock = block
         block.sittingPlayer = this

@@ -26,8 +26,7 @@ object ChatFeature : PluginFeature {
 
     private val whisperCommand = WhisperCommand()
     private val replyCommand = ReplyCommand()
-    private val paperChatListener = PaperChatListener()
-    private val bukkitChatListener = BukkitChatListener()
+    private val chatListener = ChatListener()
 
     override fun enableCommands() {
         plugin.getCommand(Commands.WHISPER)?.setExecutor(whisperCommand)
@@ -39,23 +38,15 @@ object ChatFeature : PluginFeature {
         plugin.getCommand(Commands.REPLY)?.setExecutor(DisabledCommand)
     }
 
-    override fun registerPaperEventListeners() {
-        pluginManager.registerEvents(paperChatListener)
+    override fun registerEventListeners() {
+        pluginManager.registerEvents(chatListener)
         pluginManager.registerEvents(whisperCommand)
         pluginManager.registerEvents(replyCommand)
     }
 
-    override fun registerBukkitEventListeners() {
-        pluginManager.registerEvents(bukkitChatListener)
-    }
-
-    override fun unregisterPaperEventListeners() {
+    override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(replyCommand)
         pluginManager.unregisterEvents(whisperCommand)
-        pluginManager.unregisterEvents(paperChatListener)
-    }
-
-    override fun unregisterBukkitEventListeners() {
-        pluginManager.unregisterEvents(bukkitChatListener)
+        pluginManager.unregisterEvents(chatListener)
     }
 }

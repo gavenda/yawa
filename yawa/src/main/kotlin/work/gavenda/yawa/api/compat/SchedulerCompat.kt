@@ -27,13 +27,26 @@ interface SchedulerCompat {
     fun runAtNextTick(plugin: Plugin, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
         return runDelayed(plugin, 1L, task)
     }
+
     fun runAtNextTickAsynchronously(plugin: Plugin, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
         return runDelayedAsynchronously(plugin, 1L, task)
     }
+
     fun runDelayed(plugin: Plugin, delay: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
     fun runDelayedAsynchronously(plugin: Plugin, delay: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
-    fun runAtFixedRate(plugin: Plugin, initial: Long, period: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
-    fun runAtFixedRateAsynchronously(plugin: Plugin, initial: Long, period: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
+    fun runAtFixedRate(
+        plugin: Plugin,
+        initial: Long,
+        period: Long,
+        task: (ScheduledTaskCompat) -> Unit
+    ): ScheduledTaskCompat
+
+    fun runAtFixedRateAsynchronously(
+        plugin: Plugin,
+        initial: Long,
+        period: Long,
+        task: (ScheduledTaskCompat) -> Unit
+    ): ScheduledTaskCompat
 }
 
 interface ScheduledTaskCompat {

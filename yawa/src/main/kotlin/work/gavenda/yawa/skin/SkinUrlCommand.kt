@@ -43,7 +43,7 @@ class SkinUrlCommand : Command() {
         if (args.isNotEmpty()) {
             try {
                 val url = URI(args[0])
-                val slim = if (args.size == 2) args[1].toBoolean() else false
+                val slim = if (args.size == 2) args[1].toBoolean() else true
                 val validScheme = url.scheme == "http" || url.scheme == "https"
 
                 if (!validScheme) {

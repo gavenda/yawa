@@ -25,7 +25,6 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.sendMessageUsingKey
 import work.gavenda.yawa.server
@@ -52,8 +51,8 @@ class WhisperCommand : Command() {
             .parse(Config.Chat.FormatMessageFrom)
             .append(Component.text(message))
 
-        sender.sendMessageCompat(messageTo)
-        target.sendMessageCompat(messageFrom)
+        sender.sendMessage(messageTo)
+        target.sendMessage(messageFrom)
         target.lastWhisperPlayer = sender.name
     }
 
@@ -62,6 +61,7 @@ class WhisperCommand : Command() {
             1 -> server.onlinePlayers
                 .map { it.name }
                 .toList()
+
             else -> listOf("<message>")
         }
     }

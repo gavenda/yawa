@@ -20,8 +20,6 @@ package work.gavenda.yawa.discord
 
 import club.minnced.discord.webhook.external.JDAWebhookClient
 import club.minnced.discord.webhook.send.WebhookMessageBuilder
-import com.neovisionaries.ws.client.DualStackMode
-import com.neovisionaries.ws.client.WebSocketFactory
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
@@ -41,8 +39,6 @@ import net.kyori.adventure.text.format.TextColor
 import org.bukkit.entity.Player
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.asAwtColor
-import work.gavenda.yawa.api.compat.displayNameCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 import work.gavenda.yawa.api.toPlainText
@@ -55,8 +51,7 @@ object DiscordFeature : PluginFeature, EventListener {
     private val emojiRegex = Regex("(<a?)?:\\w+:(\\d{18}>)?")
     private const val defaultAvatarUrl = "https://cravatar.eu/avatar/shirobiru/50.png"
     private val playerListener = PlayerListener()
-    private val paperChatListener = PaperChatListener()
-    private val bukkitChatListener = BukkitChatListener()
+    private val chatListener = ChatListener()
     private val slashCommandListener = SlashCommandListener()
     private lateinit var jda: JDA
     private lateinit var guild: Guild
@@ -132,7 +127,7 @@ object DiscordFeature : PluginFeature, EventListener {
         JDAWebhookClient.from(webhook).use { client ->
             client.send(
                 WebhookMessageBuilder()
-                    .setUsername(player.displayNameCompat.toPlainText())
+                    .setUsername(player.displayName().toPlainText())
                     .setAvatarUrl(player.avatarUrl)
                     .setContent(messageProcessed)
                     .build()
@@ -176,7 +171,7 @@ object DiscordFeature : PluginFeature, EventListener {
                     )
 
                 server.onlinePlayers.forEach {
-                    it.sendMessageCompat(message)
+                    it.sendMessage(message)
                 }
             }
         }
@@ -188,27 +183,13 @@ object DiscordFeature : PluginFeature, EventListener {
 
     override fun registerEventListeners() {
         jda.addEventListener(this, slashCommandListener)
+        pluginManager.registerEvents(chatListener)
         pluginManager.registerEvents(playerListener)
     }
 
     override fun unregisterEventListeners() {
         jda.removeEventListener(this, slashCommandListener)
+        pluginManager.unregisterEvents(chatListener)
         pluginManager.unregisterEvents(playerListener)
-    }
-
-    override fun registerPaperEventListeners() {
-        pluginManager.registerEvents(paperChatListener)
-    }
-
-    override fun registerBukkitEventListeners() {
-        pluginManager.registerEvents(bukkitChatListener)
-    }
-
-    override fun unregisterPaperEventListeners() {
-        pluginManager.unregisterEvents(paperChatListener)
-    }
-
-    override fun unregisterBukkitEventListeners() {
-        pluginManager.unregisterEvents(bukkitChatListener)
     }
 }

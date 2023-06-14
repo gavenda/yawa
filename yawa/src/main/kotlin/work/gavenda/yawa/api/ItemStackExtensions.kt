@@ -18,18 +18,12 @@
  */
 package work.gavenda.yawa.api
 
-import net.kyori.adventure.key.Key
-import net.kyori.adventure.nbt.api.BinaryTagHolder
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import work.gavenda.yawa.api.compat.displayNameCompat
-import work.gavenda.yawa.api.compat.loreCompat
 
 /**
  * Returns the enchantment's name as displayed in the client.

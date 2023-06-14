@@ -20,8 +20,6 @@
 package work.gavenda.yawa.afk
 
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.playerListNameCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.afk
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
@@ -46,15 +44,15 @@ class AfkTask : Consumer<ScheduledTaskCompat> {
                         .parseWithLocale(player, Message.AfkEntryMessage)
 
                     if (Config.Afk.MessageEnabled) {
-                        player.world.sendMessageCompat(message)
+                        player.world.sendMessage(message)
                     }
                     player.sendMessageUsingKey(Message.PlayerAfkStart)
                 }
 
                 if (player.afk) {
-                    player.playerListNameCompat = Placeholders.withContext(player).parse(Config.Afk.PlayerListNameAfk)
+                    player.playerListName(Placeholders.withContext(player).parse(Config.Afk.PlayerListNameAfk))
                 } else {
-                    player.playerListNameCompat = Placeholders.withContext(player).parse(Config.Afk.PlayerListName)
+                    player.playerListName(Placeholders.withContext(player).parse(Config.Afk.PlayerListName))
                 }
             }
     }

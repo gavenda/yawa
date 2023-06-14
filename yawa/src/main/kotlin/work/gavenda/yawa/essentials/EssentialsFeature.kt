@@ -29,7 +29,7 @@ object EssentialsFeature : PluginFeature {
 
     private val homeCommand = HomeCommand()
     private val homeSetCommand = HomeSetCommand()
-    private val teleportSpawnCommand = TeleportSpawnCommand()
+    private val spawnCommand = SpawnCommand()
     private val backCommand = BackCommand()
     private val warpCommand = WarpCommand()
     private val warpSetCommand = WarpSetCommand()
@@ -55,7 +55,7 @@ object EssentialsFeature : PluginFeature {
     override fun enableCommands() {
         plugin.getCommand(Commands.HOME_TELEPORT)?.setExecutor(homeCommand)
         plugin.getCommand(Commands.HOME_SET)?.setExecutor(homeSetCommand)
-        plugin.getCommand(Commands.TELEPORT_SPAWN)?.setExecutor(teleportSpawnCommand)
+        plugin.getCommand(Commands.TELEPORT_SPAWN)?.setExecutor(spawnCommand)
         plugin.getCommand(Commands.TELEPORT_DEATH)?.setExecutor(backCommand)
         plugin.getCommand(Commands.WARP_SET)?.setExecutor(warpSetCommand)
         plugin.getCommand(Commands.WARP_TELEPORT)?.setExecutor(warpCommand)
@@ -74,10 +74,10 @@ object EssentialsFeature : PluginFeature {
         plugin.getCommand(Commands.GIVE_LEVEL)?.setExecutor(DisabledCommand)
     }
 
-    override fun registerPaperEventListeners() {
+    override fun registerEventListeners() {
         pluginManager.registerEvents(homeCommand)
         pluginManager.registerEvents(homeSetCommand)
-        pluginManager.registerEvents(teleportSpawnCommand)
+        pluginManager.registerEvents(spawnCommand)
         pluginManager.registerEvents(backCommand)
         pluginManager.registerEvents(warpSetCommand)
         pluginManager.registerEvents(warpCommand)
@@ -85,13 +85,13 @@ object EssentialsFeature : PluginFeature {
         pluginManager.registerEvents(giveLevelCommand)
     }
 
-    override fun unregisterPaperEventListeners() {
+    override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(giveLevelCommand)
         pluginManager.unregisterEvents(warpDeleteCommand)
         pluginManager.unregisterEvents(warpCommand)
         pluginManager.unregisterEvents(warpSetCommand)
         pluginManager.unregisterEvents(backCommand)
-        pluginManager.unregisterEvents(teleportSpawnCommand)
+        pluginManager.unregisterEvents(spawnCommand)
         pluginManager.unregisterEvents(homeSetCommand)
         pluginManager.unregisterEvents(homeCommand)
     }

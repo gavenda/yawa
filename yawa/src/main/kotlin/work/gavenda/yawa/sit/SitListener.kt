@@ -32,7 +32,6 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.spigotmc.event.entity.EntityDismountEvent
-import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 /**
  * Listens for events related to sitting.
@@ -43,7 +42,7 @@ class SitListener : Listener {
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val player = e.player
         if (player.location.y.isNaN()) {
-            player.teleportAsyncCompat(player.world.spawnLocation).get()
+            player.teleportAsync(player.world.spawnLocation)
         }
     }
 

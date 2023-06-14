@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2023 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,28 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package work.gavenda.yawa.discord
 
-package work.gavenda.yawa.api.compat
+import io.papermc.paper.event.player.AsyncChatEvent
+import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
+import org.bukkit.event.Listener
 
-import net.kyori.adventure.sound.Sound
-import net.kyori.adventure.text.Component
-import org.bukkit.Chunk
-import org.bukkit.Location
-import org.bukkit.World
-import java.util.concurrent.CompletableFuture
+class ChatListener : Listener {
 
-fun World.sendMessageCompat(component: Component) {
-    pluginEnvironment.sendMessage(this, component)
-}
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    fun onPlayerChat(e: AsyncChatEvent) {
+        DiscordFeature.sendMessage(e.player, e.message())
+    }
 
-fun World.sendActionBarCompat(component: Component) {
-    pluginEnvironment.sendActionBar(this, component)
-}
-
-fun World.playSoundCompat(sound: Sound) {
-    pluginEnvironment.playSound(this, sound)
-}
-
-fun World.getChunkAtAsyncCompat(location: Location): CompletableFuture<Chunk> {
-    return pluginEnvironment.getChunkAtAsync(this, location)
 }

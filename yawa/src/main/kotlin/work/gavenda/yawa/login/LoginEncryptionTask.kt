@@ -26,6 +26,7 @@ import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.Converters
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerKickEvent
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
@@ -62,7 +63,8 @@ class LoginEncryptionTask(
             player.disconnect(
                 Messages
                     .forPlayer(player)
-                    .get(Message.LoginError)
+                    .get(Message.LoginError),
+                PlayerKickEvent.Cause.INVALID_PAYLOAD
             )
             logger.error("Cannot decrypt received contents", ex)
             return
@@ -75,7 +77,8 @@ class LoginEncryptionTask(
             player.disconnect(
                 Messages
                     .forPlayer(player)
-                    .get(Message.LoginInvalidToken)
+                    .get(Message.LoginInvalidToken),
+                PlayerKickEvent.Cause.INVALID_PAYLOAD
             )
             return
         }
@@ -126,14 +129,16 @@ class LoginEncryptionTask(
                         player.disconnect(
                             Messages
                                 .forPlayer(player)
-                                .get(Message.LoginInvalidSession)
+                                .get(Message.LoginInvalidSession),
+                            PlayerKickEvent.Cause.INVALID_PAYLOAD
                         )
                     } else {
                         // Not logged in before, tell them to reconnect
                         player.disconnect(
                             Messages
                                 .forPlayer(player)
-                                .get(Message.LoginInvalidSessionRetry)
+                                .get(Message.LoginInvalidSessionRetry),
+                            PlayerKickEvent.Cause.INVALID_PAYLOAD
                         )
                     }
                 }
@@ -143,7 +148,8 @@ class LoginEncryptionTask(
             player.disconnect(
                 Messages
                     .forPlayer(player)
-                    .get(Message.LoginInvalidToken)
+                    .get(Message.LoginInvalidToken),
+                PlayerKickEvent.Cause.INVALID_PAYLOAD
             )
             logger.error("Cannot connect to session server", ex)
         }
@@ -208,7 +214,8 @@ class LoginEncryptionTask(
             player.disconnect(
                 Messages
                     .forPlayer(player)
-                    .get(Message.LoginInvalidToken)
+                    .get(Message.LoginInvalidToken),
+                PlayerKickEvent.Cause.INVALID_PAYLOAD
             )
         }
     }

@@ -21,7 +21,6 @@ package work.gavenda.yawa
 
 import com.comphenix.protocol.injector.temporary.TemporaryPlayer
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.compat.localeCompat
 import java.util.*
 
 /**
@@ -152,7 +151,7 @@ class MessagesDefaultContext : MessagesContext {
 class MessagesPlayerContext(player: Player) : MessagesContext {
     private val locale = if (player is TemporaryPlayer) {
         Locale.getDefault()
-    } else player.localeCompat
+    } else player.locale()
     private val messages = ResourceBundle.getBundle("i18n.messages", locale)
 
     /**

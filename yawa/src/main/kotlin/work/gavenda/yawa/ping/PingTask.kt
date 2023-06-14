@@ -29,7 +29,7 @@ import java.util.function.Consumer
 class PingTask(
     private val scoreboard: Scoreboard,
     private val objective: Objective
-): Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTaskCompat> {
     override fun accept(task: ScheduledTaskCompat) {
         val onlinePlayers = server.onlinePlayers
 

@@ -24,8 +24,6 @@ import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import work.gavenda.yawa.api.capitalizeFully
-import work.gavenda.yawa.api.compat.displayNameCompat
-import work.gavenda.yawa.api.compat.loreCompat
 import work.gavenda.yawa.api.itemDurability
 
 /**
@@ -38,15 +36,15 @@ fun ItemStack.asArmorPlaceholder(): ItemStack {
 
     // Getting item meta and lore
     val itemMeta = itemMeta.clone()
-    val lore: List<Component> = itemMeta.clone().loreCompat ?: listOf()
+    val lore: List<Component> = itemMeta.clone().lore() ?: listOf()
 
     // Applying item meta and lore
-    itemMeta.loreCompat = lore + itemDurability
+    itemMeta.lore(lore + itemDurability)
 
     // Changing armor material and name to its placeholder's, if it has one
     val button = hiddenArmorMaterial
     if (button != null) {
-        itemMeta.displayNameCompat = hiddenArmorName
+        itemMeta.displayName(hiddenArmorName)
         type = button
     }
 
@@ -115,7 +113,7 @@ val ItemStack.hiddenArmorName: Component?
             .capitalizeFully()
 
         return if (itemMeta.hasDisplayName()) {
-            itemMeta.displayNameCompat
+            itemMeta.displayName()
                 ?.append(Component.text(" "))
                 ?.append(Component.text("(Hidden)", NamedTextColor.DARK_GRAY))
         } else {

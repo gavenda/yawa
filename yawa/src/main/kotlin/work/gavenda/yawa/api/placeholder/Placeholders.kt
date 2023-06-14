@@ -27,7 +27,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.apiLogger
+import work.gavenda.yawa.logger
 
 /**
  * Simple placeholder API.
@@ -46,7 +46,7 @@ object Placeholders {
      * Register a placeholder provider.
      */
     fun register(provider: PlaceholderProvider) {
-        apiLogger.info("Registered placeholder: ${provider::class.qualifiedName}")
+        logger.info("Registered placeholder: ${provider::class.qualifiedName}")
         providers.add(provider)
     }
 
@@ -55,7 +55,7 @@ object Placeholders {
      */
     fun unregister(provider: PlaceholderProvider) {
         providers.remove(provider)
-        apiLogger.info("Unregistered placeholder: ${provider::class.qualifiedName}")
+        logger.info("Unregistered placeholder: ${provider::class.qualifiedName}")
     }
 
     fun noContext() = PlaceholderContext(providers)
@@ -102,12 +102,15 @@ class PlaceholderContext(
                 is Int -> {
                     Placeholder.unparsed(placeholder, value.toString())
                 }
+
                 is String -> {
                     Placeholder.unparsed(placeholder, value)
                 }
+
                 is Component -> {
                     Placeholder.component(placeholder, value)
                 }
+
                 else -> {
                     TagResolver.empty()
                 }

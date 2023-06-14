@@ -23,7 +23,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.displayNameCompat
 
 class GiveLevelCommand : Command() {
     override val permission = Permission.ESSENTIALS_GIVE_LEVEL
@@ -43,10 +42,12 @@ class GiveLevelCommand : Command() {
             sender.level = sender.level - levels;
             target.level = target.level + levels;
 
-            sender.sendMessageUsingKey(Message.EssentialsGiveLevel, mapOf(
-                "level" to levels,
-                "target" to target.displayNameCompat
-            ))
+            sender.sendMessageUsingKey(
+                Message.EssentialsGiveLevel, mapOf(
+                    "level" to levels,
+                    "target" to target.displayName()
+                )
+            )
         } catch (ex: NumberFormatException) {
             sender.sendMessageUsingKey(Message.EssentialsGiveLevelErrorInvalidLevel)
             logger.warn("Cannot give level, level is not a number. Input: ${args[1]}")
@@ -60,6 +61,7 @@ class GiveLevelCommand : Command() {
             1 -> server.onlinePlayers
                 .filter { it.name.contains(args[0]) }
                 .map { it.name }
+
             2 -> listOf("<levels>")
             else -> emptyList()
         }

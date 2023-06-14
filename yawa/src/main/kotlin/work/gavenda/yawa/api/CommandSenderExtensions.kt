@@ -21,7 +21,6 @@ package work.gavenda.yawa.api
 
 import net.kyori.adventure.audience.Audience
 import org.bukkit.command.CommandSender
-import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.plugin
 
 /**

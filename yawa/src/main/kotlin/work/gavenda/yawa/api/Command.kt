@@ -26,7 +26,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import work.gavenda.yawa.api.compat.sendMessageCompat
 
 /**
  * Represents a command executor.
@@ -83,7 +82,7 @@ abstract class Command : TabExecutor, Listener {
             }
         }
         if (!hasPermission(sender, parent)) {
-            sender.sendMessageCompat(NO_PERMISSION)
+            sender.sendMessage(NO_PERMISSION)
             return
         }
         parent.execute(sender, args)

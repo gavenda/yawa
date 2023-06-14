@@ -72,12 +72,6 @@ interface PluginFeature {
         registerPlaceholders()
         registerEventListeners()
 
-        if (isPaperOrFolia) {
-            registerPaperEventListeners()
-        } else {
-            registerBukkitEventListeners()
-        }
-
         registerTasks()
         enableCommands()
         onEnable()
@@ -93,13 +87,6 @@ interface PluginFeature {
         disableCommands()
         unregisterTasks()
         unregisterEventListeners()
-
-        if (isPaperOrFolia) {
-            unregisterPaperEventListeners()
-        } else {
-            unregisterBukkitEventListeners()
-        }
-
         unregisterPlaceholders()
         unregisterHooks()
     }
@@ -140,16 +127,6 @@ interface PluginFeature {
     fun registerEventListeners() {}
 
     /**
-     * Register paper-only event listeners.
-     */
-    fun registerPaperEventListeners() {}
-
-    /**
-     * Register bukkit-only event listeners.
-     */
-    fun registerBukkitEventListeners() {}
-
-    /**
      * Register feature tasks.
      */
     fun registerTasks() {}
@@ -178,14 +155,4 @@ interface PluginFeature {
      * Unregister feature event listeners.
      */
     fun unregisterEventListeners() {}
-
-    /**
-     * Unregister paper-only event listeners.
-     */
-    fun unregisterPaperEventListeners() {}
-
-    /**
-     * Unregister bukkit-only event listeners.
-     */
-    fun unregisterBukkitEventListeners() {}
 }

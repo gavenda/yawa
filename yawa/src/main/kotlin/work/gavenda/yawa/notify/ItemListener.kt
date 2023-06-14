@@ -34,7 +34,6 @@ import work.gavenda.yawa.*
 import work.gavenda.yawa.api.capitalizeFully
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.compat.schedulerCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -68,6 +67,7 @@ class ItemListener : Listener {
                 val message = Placeholders.withContext(player)
                     .parse(recentPickupMessage, recentPlaceholderParams)
 
+                player.world.sendMessage(message)
                 player.discordAlert(message)
 
                 loots.remove(material)
@@ -93,8 +93,6 @@ class ItemListener : Listener {
             val message = Placeholders.withContext(player)
                 .parse(pickupMessage, placeholderParams)
 
-            player.world.sendMessageCompat(message)
-
             if (itemStack.maxStackSize > 1) {
                 val materialMap = playerStacks.computeIfAbsent(player.uniqueId) {
                     ConcurrentHashMap<Material, Int>()
@@ -104,6 +102,7 @@ class ItemListener : Listener {
                 }
                 player.schedulerCompat.runDelayed(plugin, 20L * Config.Notify.Debounce, recentLootTask)
             } else {
+                player.world.sendMessage(message)
                 player.discordAlert(message)
             }
         }

@@ -23,8 +23,9 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import org.bukkit.GameRule
 import org.bukkit.World
+import org.bukkit.event.player.PlayerKickEvent
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.*
+import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 import java.util.function.Consumer
@@ -35,7 +36,7 @@ import kotlin.math.ceil
  */
 class SleepCheckTask(
     private val sleepingWorlds: MutableSet<UUID>
-): Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTaskCompat> {
 
     private fun checkWorld(world: World) {
         val sleepRequired = ceil(world.awakePlayers.size / 2.0)
@@ -54,7 +55,7 @@ class SleepCheckTask(
                     .parseUsingDefaultLocale(Message.ActionBarSleepingDone)
 
                 if (Config.Sleep.ActionBar.Enabled) {
-                    world.sendActionBarCompat(message)
+                    world.sendActionBar(message)
                 }
 
                 val sleepingMessage = Placeholders
@@ -63,7 +64,7 @@ class SleepCheckTask(
 
                 // Broadcast everyone sleeping
                 if (Config.Sleep.Chat.Enabled) {
-                    world.sendMessageCompat(sleepingMessage)
+                    world.sendMessage(sleepingMessage)
                 }
 
 
@@ -74,13 +75,14 @@ class SleepCheckTask(
                 // Reset kick seconds
                 world.kickSeconds = 0
             }
+
             world.beganSleeping -> {
                 val message = Placeholders
                     .withContext(world)
                     .parseUsingDefaultLocale(Message.ActionBarSleeping)
 
                 if (Config.Sleep.ActionBar.Enabled) {
-                    world.sendActionBarCompat(message)
+                    world.sendActionBar(message)
                 }
 
                 // Sleeping @ 50%
@@ -99,9 +101,9 @@ class SleepCheckTask(
                         val sound = Sound.sound(note, Sound.Source.MASTER, 1f, 1f)
 
                         if (Config.Sleep.Chat.Enabled) {
-                            world.sendMessageCompat(kickBroadcastMessage)
+                            world.sendMessage(kickBroadcastMessage)
                         }
-                        world.playSoundCompat(sound)
+                        world.playSound(sound)
                         return
                     }
 
@@ -117,12 +119,13 @@ class SleepCheckTask(
                                 .parseUsingDefaultLocale(Message.SleepKickAlert)
 
                             player.sleepKicked = true
-                            player.kickCompat(kickMessage)
+                            player.kick(kickMessage, PlayerKickEvent.Cause.IDLING)
                             player.discordAlert(kickAlertMessage)
                         }
                     }
                 }
             }
+
             else -> {
                 // Reset kick seconds
                 world.kickSeconds = 0

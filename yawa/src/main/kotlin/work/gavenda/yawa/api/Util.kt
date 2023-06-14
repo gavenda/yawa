@@ -137,7 +137,7 @@ fun Int.toRomanNumeral(): String {
         4 to "IV",
         1 to "I"
     )
-    for (i in numbers.keys){
+    for (i in numbers.keys) {
         if (this >= i) {
             return numbers[i] + (this - i).toRomanNumeral()
         }

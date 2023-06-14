@@ -26,7 +26,6 @@ import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
 
 /**
  * Restore player skin as it is found in Mojang servers.

@@ -26,23 +26,25 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import work.gavenda.yawa.api.compat.joinMessageCompat
-import work.gavenda.yawa.api.compat.quitMessageCompat
 
 class PremiumListener : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         if (event.player.isVerified.not()) return
-        event.joinMessageCompat = event.player.verifiedName
-            .append(Component.text(" joined the game", NamedTextColor.YELLOW))
+        event.joinMessage(
+            event.player.verifiedName
+                .append(Component.text(" joined the game", NamedTextColor.YELLOW))
+        )
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         if (event.player.isVerified.not()) return
-        event.quitMessageCompat = event.player.verifiedName
-            .append(Component.text(" left the game", NamedTextColor.YELLOW))
+        event.quitMessage(
+            event.player.verifiedName
+                .append(Component.text(" left the game", NamedTextColor.YELLOW))
+        )
     }
 
 }

@@ -22,7 +22,6 @@ package work.gavenda.yawa.api.placeholder
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.sendMessageCompat
 
 class PlaceholderCommand : Command() {
     override var permission: String = "yawa.api.placeholder"
@@ -35,7 +34,7 @@ class PlaceholderCommand : Command() {
             .withContext(sender, sender.world)
             .asHelpList()
             .forEach {
-                sender.sendMessageCompat(it)
+                sender.sendMessage(it)
             }
     }
 

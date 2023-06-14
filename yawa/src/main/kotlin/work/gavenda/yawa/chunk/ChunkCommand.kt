@@ -23,7 +23,6 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.compat.sendMessageCompat
 
 class ChunkCommand : Command() {
     override val commands = listOf("chunk")
@@ -34,7 +33,7 @@ class ChunkCommand : Command() {
             .command("chunk mark", listOf(), "Mark chunk to always keep running", Permission.CHUNK_MARK)
             .command("chunk unmark", listOf(), "Reverts the chunk to default behavior", Permission.CHUNK_UNMARK)
             .generate(sender)
-            .forEach { sender.sendMessageCompat(it) }
+            .forEach { sender.sendMessage(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {

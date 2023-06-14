@@ -23,7 +23,6 @@ import org.bukkit.Statistic
 import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 
@@ -50,7 +49,7 @@ class SleepAnimationTask(
 
             // Broadcast successful sleep
             if (Config.Sleep.Chat.Enabled) {
-                world.sendMessageCompat(sleepingDoneMessage)
+                world.sendMessage(sleepingDoneMessage)
             }
 
             // Clear thunder and storm

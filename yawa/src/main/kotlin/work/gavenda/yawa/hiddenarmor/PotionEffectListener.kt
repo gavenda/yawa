@@ -25,7 +25,6 @@ import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.potion.PotionEffectType
 import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
 
 class PotionEffectListener : Listener {
     @EventHandler(ignoreCancelled = true)

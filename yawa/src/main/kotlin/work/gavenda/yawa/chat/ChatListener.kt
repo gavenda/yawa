@@ -19,40 +19,23 @@
 
 package work.gavenda.yawa.chat
 
+import io.papermc.paper.event.player.AsyncChatEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.api.toLegacyText
-import work.gavenda.yawa.login.isVerified
 
-class BukkitChatListener : Listener {
+class ChatListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    @Suppress("DEPRECATION")
-    fun onPlayerChat(e: org.bukkit.event.player.AsyncPlayerChatEvent) {
-        handleChat(e)
-    }
-
-    @Suppress("DEPRECATION")
-    fun handleChat(e: org.bukkit.event.player.AsyncPlayerChatEvent) {
-        val chatFormattedComponent = Placeholders
-            .withContext(e.player)
-            .parse(e.message)
-
-        val replacedFormat = if (e.player.isVerified) {
-            Config.Chat.FormatMessage.replace("<player-name>", "<gold>%1\$s</gold>")
-        } else {
-            Config.Chat.FormatMessage.replace("<player-name>", "%1\$s")
+    fun onPlayerChat(e: AsyncChatEvent) {
+        e.renderer { source, _, message, _ ->
+            Placeholders
+                .withContext(source)
+                .parse(Config.Chat.FormatMessage)
+                .append(message)
         }
-
-        e.format = Placeholders
-            .withContext(e.player)
-            .parse(replacedFormat)
-            .toLegacyText()
-            .plus("%2\$s")
-        e.message = chatFormattedComponent.toLegacyText()
     }
 
 }

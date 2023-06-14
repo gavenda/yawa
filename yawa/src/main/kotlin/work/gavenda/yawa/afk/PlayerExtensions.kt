@@ -22,7 +22,6 @@ package work.gavenda.yawa.afk
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.afk
 import work.gavenda.yawa.api.placeholder.Placeholders
 
@@ -52,7 +51,7 @@ fun Player.doInteract() {
             .parseWithLocale(this, Message.AfkLeaveMessage)
 
         if (Config.Afk.MessageEnabled) {
-            world.sendMessageCompat(message)
+            world.sendMessage(message)
         }
 
         sendMessageUsingKey(Message.PlayerAfkEnd)

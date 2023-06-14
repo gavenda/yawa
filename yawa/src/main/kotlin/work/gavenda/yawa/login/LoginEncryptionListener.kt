@@ -22,6 +22,7 @@ package work.gavenda.yawa.login
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
+import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Messages
@@ -55,7 +56,8 @@ class LoginEncryptionListener(
             player.disconnect(
                 Messages
                     .forPlayer(player)
-                    .get(Message.LoginInvalidRequest)
+                    .get(Message.LoginInvalidRequest),
+                PlayerKickEvent.Cause.INVALID_PAYLOAD
             )
             logger.warn("Attempted to send encryption response at an invalid state")
             return

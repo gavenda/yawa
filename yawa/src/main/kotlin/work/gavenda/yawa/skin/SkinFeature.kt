@@ -49,17 +49,12 @@ object SkinFeature : PluginFeature {
 
     override fun registerEventListeners() {
         pluginManager.registerEvents(skinListener)
-    }
-
-    override fun unregisterEventListeners() {
-        pluginManager.unregisterEvents(skinListener)
-    }
-
-    override fun registerPaperEventListeners() {
         pluginManager.registerEvents(skinCommand)
     }
 
-    override fun unregisterPaperEventListeners() {
+    override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(skinCommand)
+        pluginManager.unregisterEvents(skinListener)
     }
+
 }

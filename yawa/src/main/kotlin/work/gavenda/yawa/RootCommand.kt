@@ -24,7 +24,6 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
 import work.gavenda.yawa.discord.DiscordFeature
@@ -88,7 +87,7 @@ private val FEATURE_SWITCH = listOf(FEATURE_SWITCH_ENABLE, FEATURE_SWITCH_DISABL
 /**
  * Plugin main command.
  */
-class YawaCommand : Command() {
+class RootCommand : Command() {
     override val commands = listOf("yawa")
     override fun execute(sender: CommandSender, args: List<String>) {
         HelpList()
@@ -100,7 +99,7 @@ class YawaCommand : Command() {
                 Permission.FEATURE
             )
             .generate(sender)
-            .forEach { sender.sendMessageCompat(it) }
+            .forEach { sender.sendMessage(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
@@ -112,7 +111,7 @@ class YawaCommand : Command() {
 /**
  * Enable or disable a feature.
  */
-class YawaFeatureCommand : Command() {
+class FeatureCommand : Command() {
     override val permission = Permission.FEATURE
 
     override fun execute(sender: CommandSender, args: List<String>) {
@@ -165,7 +164,7 @@ class YawaFeatureCommand : Command() {
 /**
  * Reloads the plugin.
  */
-class YawaReloadCommand : Command() {
+class ReloadCommand : Command() {
     override val permission = Permission.RELOAD
     override fun execute(sender: CommandSender, args: List<String>) {
         when (args.size) {
@@ -177,6 +176,7 @@ class YawaReloadCommand : Command() {
                     sender.sendMessageUsingKey(Message.PluginReloadConfig)
                 }
             }
+
             else -> {
                 plugin.onDisable()
                 plugin.reloadConfig()

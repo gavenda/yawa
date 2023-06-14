@@ -46,7 +46,7 @@ class LoginConnectionTask(
     private val uuid: Optional<UUID>,
     private val keyPair: KeyPair,
     private val profileKeyData: Optional<WrappedProfileKeyData>
-): Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTaskCompat> {
 
     private val serverId = ""
 

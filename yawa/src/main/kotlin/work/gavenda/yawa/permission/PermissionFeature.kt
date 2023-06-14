@@ -92,18 +92,12 @@ object PermissionFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
+        pluginManager.registerEvents(permissionCommand)
         pluginManager.registerEvents(permissionListener)
     }
 
     override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(permissionListener)
-    }
-
-    override fun registerPaperEventListeners() {
-        pluginManager.registerEvents(permissionCommand)
-    }
-
-    override fun unregisterPaperEventListeners() {
         pluginManager.unregisterEvents(permissionCommand)
     }
 

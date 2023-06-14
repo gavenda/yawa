@@ -62,9 +62,9 @@ class Yawa : JavaPlugin() {
     private val startupListener = StartupListener()
     private var safeLoad = false
     private lateinit var dataSource: HikariDataSource
-    private val rootCommand = YawaCommand().apply {
-        sub(YawaReloadCommand(), "reload")
-        sub(YawaFeatureCommand(), "feature")
+    private val rootCommand = RootCommand().apply {
+        sub(ReloadCommand(), "reload")
+        sub(FeatureCommand(), "feature")
     }
     private val placeholderCommand = PlaceholderCommand()
 

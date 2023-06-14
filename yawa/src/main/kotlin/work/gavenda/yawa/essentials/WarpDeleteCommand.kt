@@ -25,9 +25,12 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.*
+import work.gavenda.yawa.Message
+import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.compat.schedulerCompat
+import work.gavenda.yawa.plugin
+import work.gavenda.yawa.sendMessageUsingKey
 
 class WarpDeleteCommand : Command() {
     override val permission = Permission.ESSENTIALS_WARP_DELETE
@@ -71,11 +74,13 @@ class WarpDeleteCommand : Command() {
                     .find { PlayerLocationSchema.playerUuid eq sender.uniqueId }
                     .map { it.name }
             }
+
             1 -> transaction {
                 PlayerLocationDb
                     .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name like args[0] + "%") }
                     .map { it.name }
             }
+
             else -> emptyList()
         }
     }

@@ -46,9 +46,11 @@ object HiddenArmorFeature : PluginFeature {
         pluginManager.registerEvents(inventoryShiftClickListener)
         pluginManager.registerEvents(potionEffectListener)
         pluginManager.registerEvents(gameModeListener)
+        pluginManager.registerEvents(toggleArmorCommand)
     }
 
     override fun unregisterEventListeners() {
+        pluginManager.unregisterEvents(toggleArmorCommand)
         pluginManager.unregisterEvents(gameModeListener)
         pluginManager.unregisterEvents(potionEffectListener)
         pluginManager.unregisterEvents(inventoryShiftClickListener)
@@ -63,14 +65,6 @@ object HiddenArmorFeature : PluginFeature {
 
     override fun disableCommands() {
         plugin.getCommand(Commands.TOGGLE_ARMOR)?.setExecutor(DisabledCommand)
-    }
-
-    override fun registerPaperEventListeners() {
-        pluginManager.registerEvents(toggleArmorCommand)
-    }
-
-    override fun unregisterPaperEventListeners() {
-        pluginManager.unregisterEvents(toggleArmorCommand)
     }
 
     override fun createTables() {

@@ -23,7 +23,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.sendMessageCompat
 import work.gavenda.yawa.api.afk
 import work.gavenda.yawa.api.placeholder.Placeholders
 
@@ -42,7 +41,7 @@ class AfkCommand : Command() {
             .parseWithLocale(sender, Message.AfkEntryMessage)
 
         if (Config.Afk.MessageEnabled) {
-            sender.world.sendMessageCompat(message)
+            sender.world.sendMessage(message)
         }
         sender.sendMessageUsingKey(Message.PlayerAfkStart)
     }

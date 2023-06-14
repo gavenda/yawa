@@ -28,7 +28,6 @@ import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
 
 /**
  * Listens to player join and quit events.

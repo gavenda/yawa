@@ -22,7 +22,7 @@ package work.gavenda.yawa.api.mojang
 import com.google.common.cache.CacheBuilder
 import com.google.common.util.concurrent.RateLimiter
 import kotlinx.serialization.json.Json
-import work.gavenda.yawa.api.apiLogger
+import work.gavenda.yawa.logger
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
 import java.io.FileNotFoundException
@@ -91,7 +91,7 @@ object MojangApi {
             }
             return json.decodeFromString<MojangProfile>(httpConnection.asText()).id
         } catch (ex: FileNotFoundException) {
-            apiLogger.trace("Cannot find uuid for username: $username")
+            logger.trace("Cannot find uuid for username: $username")
         }
         return null
     }
@@ -100,7 +100,7 @@ object MojangApi {
      * Retrieves the minecraft profile by confirming the username, server hash, and host ip.
      */
     fun hasJoined(username: String, serverHash: String, hostIp: InetAddress): MojangProfile? {
-        apiLogger.info("hasJoined, username: $username, serverHash: $serverHash, hostIp: ${hostIp.hostAddress}")
+        logger.info("hasJoined, username: $username, serverHash: $serverHash, hostIp: ${hostIp.hostAddress}")
 
         // Do not use ip field, since most of the time, ipv6 is probably not a proxy
         val hasJoinedUrl = if (hostIp is Inet6Address) {
@@ -140,7 +140,7 @@ object MojangApi {
 
         // If we actually hit this, we have a bad cache implementation
         if (httpConnection.responseCode == HTTP_TOO_MANY_REQUESTS) {
-            apiLogger.warn("We have actually hit the HTTP 429 response, please report it to the developer")
+            logger.warn("We have actually hit the HTTP 429 response, please report it to the developer")
             throw RateLimitException()
         }
 

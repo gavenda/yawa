@@ -24,7 +24,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.api.compat.teleportAsyncCompat
 import work.gavenda.yawa.sendMessageUsingKey
 import java.util.*
 import java.util.function.Consumer
@@ -32,13 +31,13 @@ import java.util.function.Consumer
 class EnderTeleportTask(
     private val teleportingPlayers: Queue<Player>,
     private val location: Location
-): Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTaskCompat> {
     override fun accept(task: ScheduledTaskCompat) {
         while (teleportingPlayers.isNotEmpty()) {
             val player = teleportingPlayers.remove()
 
             // Teleport to damaging entity
-            player.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRun {
+            player.teleportAsync(location, PlayerTeleportEvent.TeleportCause.PLUGIN).thenRun {
                 player.sendMessageUsingKey(Message.EnderBattleTeleport)
             }
         }

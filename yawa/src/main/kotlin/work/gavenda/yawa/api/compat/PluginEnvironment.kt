@@ -19,9 +19,6 @@
 
 package work.gavenda.yawa.api.compat
 
-import work.gavenda.yawa.api.apiLogger
-import work.gavenda.yawa.api.isPaperOrFolia
-
 enum class PluginEnvironment {
     SPIGOT, PAPER, FOLIA
 }
@@ -37,15 +34,5 @@ val PLUGIN_ENVIRONMENT by lazy {
         } catch (e: ClassNotFoundException) {
             PluginEnvironment.SPIGOT
         }
-    }
-}
-
-val pluginEnvironment: Environment by lazy {
-    if (isPaperOrFolia) {
-        apiLogger.info("Paper/Folia detected, using paper as platform for all bukkit calls")
-        PaperEnvironment()
-    } else {
-        apiLogger.info("Spigot detected, using spigot as platform for all bukkit calls")
-        SpigotEnvironment()
     }
 }

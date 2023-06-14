@@ -25,7 +25,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.compat.sendMessageCompat
 
 class PermissionCommand : Command() {
     override val commands = listOf("permission")
@@ -44,7 +43,7 @@ class PermissionCommand : Command() {
                 Permission.PERMISSION_GROUP
             )
             .generate(sender)
-            .forEach { sender.sendMessageCompat(it) }
+            .forEach { sender.sendMessage(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
@@ -84,9 +83,11 @@ class PermissionPlayerCommand : Command() {
             1 -> Bukkit.getOfflinePlayers()
                 .map { it.name!! }
                 .toList()
+
             2 -> Bukkit.getServer().pluginManager.plugins
                 .flatMap { it.description.permissions }
                 .map { it.name }
+
             3 -> listOf("true", "false")
             else -> emptyList()
         }
@@ -125,9 +126,11 @@ class PermissionGroupCommand : Command() {
             1 -> transaction {
                 Group.all().map { it.name }
             }
+
             2 -> Bukkit.getServer().pluginManager.plugins
                 .flatMap { it.description.permissions }
                 .map { it.name }
+
             3 -> listOf("true", "false")
             else -> listOf()
         }

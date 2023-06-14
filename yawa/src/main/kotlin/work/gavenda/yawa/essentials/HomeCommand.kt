@@ -25,9 +25,7 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.api.compat.schedulerCompat
-import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class HomeCommand : Command() {
     override val permission = Permission.ESSENTIALS_HOME_TELEPORT
@@ -51,10 +49,8 @@ class HomeCommand : Command() {
 
                     val location = Location(world, playerHomeDb.x, playerHomeDb.y, playerHomeDb.z)
 
-                    world.getChunkAtAsyncCompat(location).thenAccept {
-                        sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
-                            sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)
-                        }
+                    sender.teleportAsync(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
+                        sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)
                     }
                 } else {
                     sender.sendMessageUsingKey(Message.EssentialsTeleportErrorNoHome)

@@ -22,13 +22,13 @@ package work.gavenda.yawa.api.compat
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
-import work.gavenda.yawa.api.apiLogger
+import work.gavenda.yawa.logger
 
 class BukkitTaskCompat : ScheduledTaskCompat {
     var task: BukkitTask? = null
     override fun cancel() {
         if (task == null) {
-            apiLogger.warn("Task is being cancelled while task has not been setup!")
+            logger.warn("Task is being cancelled while task has not been setup!")
         }
         task?.cancel()
     }

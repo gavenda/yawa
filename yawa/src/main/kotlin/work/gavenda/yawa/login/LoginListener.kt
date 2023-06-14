@@ -25,6 +25,7 @@ import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.Converters
 import com.comphenix.protocol.wrappers.WrappedProfilePublicKey
 import com.google.common.util.concurrent.RateLimiter
+import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.plugin.Plugin
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
@@ -73,7 +74,8 @@ class LoginListener(
                 player.disconnect(
                     Messages
                         .forPlayer(player)
-                        .get(Message.LoginNameShort)
+                        .get(Message.LoginNameShort),
+                    PlayerKickEvent.Cause.ILLEGAL_CHARACTERS
                 )
                 logger.warn("Disconnected player '$name' due to invalid name")
                 return
@@ -82,7 +84,8 @@ class LoginListener(
                 player.disconnect(
                     Messages
                         .forPlayer(player)
-                        .get(Message.LoginNameLong)
+                        .get(Message.LoginNameLong),
+                    PlayerKickEvent.Cause.ILLEGAL_CHARACTERS
                 )
                 logger.warn("Disconnected player '$name' due to invalid name")
                 return
@@ -91,7 +94,8 @@ class LoginListener(
                 player.disconnect(
                     Messages
                         .forPlayer(player)
-                        .get(Message.LoginNameIllegal)
+                        .get(Message.LoginNameIllegal),
+                    PlayerKickEvent.Cause.ILLEGAL_CHARACTERS
                 )
                 logger.warn("Disconnected player '$name' due to invalid name")
                 return

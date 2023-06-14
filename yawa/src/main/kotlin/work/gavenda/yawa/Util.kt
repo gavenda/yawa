@@ -31,7 +31,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
-import work.gavenda.yawa.api.compat.*
+import work.gavenda.yawa.api.compat.CompatSchedulers
+import work.gavenda.yawa.api.compat.SchedulerCompat
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toPlainText
@@ -116,7 +117,7 @@ fun PlaceholderContext.parseUsingDefaultLocale(key: String, params: Map<String, 
  */
 fun CommandSender.sendMessageUsingKey(key: String, params: Map<String, Any?> = mapOf()) {
     if (this is Player) {
-        sendMessageCompat(
+        sendMessage(
             Placeholders
                 .withContext(this)
                 .parseWithLocale(this, key, params)
@@ -126,7 +127,7 @@ fun CommandSender.sendMessageUsingKey(key: String, params: Map<String, Any?> = m
             Messages.useDefault()
                 .get(key)
         )
-        sendMessageCompat(message)
+        sendMessage(message)
     }
 }
 

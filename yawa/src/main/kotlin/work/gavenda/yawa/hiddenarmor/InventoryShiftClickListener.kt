@@ -26,7 +26,6 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.PlayerInventory
 import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
 
 class InventoryShiftClickListener : Listener {
 

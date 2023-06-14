@@ -19,14 +19,12 @@
 
 package work.gavenda.yawa.api.mineskin
 
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import work.gavenda.yawa.api.asHttpConnection
 import work.gavenda.yawa.api.asText
 import java.net.URI
 import java.net.URL
-import java.net.URLEncoder
 
 /**
  * Provides a simplistic way to access the MineSkin API.
@@ -41,7 +39,7 @@ object MineSkinApi {
     /**
      * Generates a minecraft texture based on the given url.
      */
-    fun generateTexture(url: URI, slim: Boolean = false): MineSkinTexture {
+    fun generateTexture(url: URI, slim: Boolean = true): MineSkinTexture {
         val httpConnection = URL(URI_API_GENERATE_TEXTURE).asHttpConnection().apply {
             doOutput = true
             requestMethod = "POST"

@@ -29,8 +29,6 @@ object AfkFeature : PluginFeature {
 
     private lateinit var afkTask: ScheduledTaskCompat
     private val afkListener = AfkListener()
-    private val bukkitAfkListener = BukkitAfkListener()
-    private val paperAfkListener = PaperAfkListener()
     private val afkCommand = AfkCommand()
 
     override val disabled get() = Config.Afk.Disabled
@@ -48,17 +46,10 @@ object AfkFeature : PluginFeature {
     }
 
     override fun registerEventListeners() {
+        pluginManager.registerEvents(afkCommand)
         pluginManager.registerEvents(afkListener)
     }
 
-    override fun registerPaperEventListeners() {
-        pluginManager.registerEvents(afkCommand)
-        pluginManager.registerEvents(paperAfkListener)
-    }
-
-    override fun registerBukkitEventListeners() {
-        pluginManager.registerEvents(bukkitAfkListener)
-    }
 
     override fun unregisterTasks() {
         afkTask.cancel()
@@ -66,14 +57,6 @@ object AfkFeature : PluginFeature {
 
     override fun unregisterEventListeners() {
         pluginManager.unregisterEvents(afkListener)
-    }
-
-    override fun unregisterPaperEventListeners() {
-        pluginManager.unregisterEvents(paperAfkListener)
         pluginManager.unregisterEvents(afkCommand)
-    }
-
-    override fun unregisterBukkitEventListeners() {
-        pluginManager.unregisterEvents(bukkitAfkListener)
     }
 }

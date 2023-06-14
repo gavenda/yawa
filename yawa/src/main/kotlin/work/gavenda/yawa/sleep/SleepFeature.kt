@@ -19,10 +19,7 @@
 
 package work.gavenda.yawa.sleep
 
-import org.bukkit.Bukkit
-import org.bukkit.GameRule
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.CompatSchedulers
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*

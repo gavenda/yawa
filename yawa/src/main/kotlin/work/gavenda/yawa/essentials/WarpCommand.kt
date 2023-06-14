@@ -28,9 +28,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.getChunkAtAsyncCompat
 import work.gavenda.yawa.api.compat.schedulerCompat
-import work.gavenda.yawa.api.compat.teleportAsyncCompat
 
 class WarpCommand : Command() {
     override val permission = Permission.ESSENTIALS_WARP_TELEPORT
@@ -59,14 +57,12 @@ class WarpCommand : Command() {
 
                     val location = Location(world, playerLocationDb.x, playerLocationDb.y, playerLocationDb.z)
 
-                    world.getChunkAtAsyncCompat(location).thenAccept {
-                        sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
-                            sender.sendMessageUsingKey(
-                                Message.EssentialsWarpTeleport, mapOf(
-                                    "location-name" to Component.text(playerLocationDb.name, NamedTextColor.WHITE)
-                                )
+                    sender.teleportAsync(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenRun {
+                        sender.sendMessageUsingKey(
+                            Message.EssentialsWarpTeleport, mapOf(
+                                "location-name" to Component.text(playerLocationDb.name, NamedTextColor.WHITE)
                             )
-                        }
+                        )
                     }
                 } else {
                     sender.sendMessageUsingKey(
@@ -87,11 +83,13 @@ class WarpCommand : Command() {
                     .find { PlayerLocationSchema.playerUuid eq sender.uniqueId }
                     .map { it.name }
             }
+
             1 -> transaction {
                 PlayerLocationDb
                     .find { (PlayerLocationSchema.playerUuid eq sender.uniqueId) and (PlayerLocationSchema.name like args[0] + "%") }
                     .map { it.name }
             }
+
             else -> emptyList()
         }
     }

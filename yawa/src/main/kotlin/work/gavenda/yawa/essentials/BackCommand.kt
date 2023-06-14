@@ -24,7 +24,6 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import work.gavenda.yawa.Message
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.teleportAsyncCompat
 import work.gavenda.yawa.sendMessageUsingKey
 
 class BackCommand : Command() {
@@ -36,7 +35,7 @@ class BackCommand : Command() {
         val lastDeathLocation = sender.lastDeathLocation
 
         if (lastDeathLocation != null) {
-            sender.teleportAsyncCompat(lastDeathLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
+            sender.teleportAsync(lastDeathLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                 sender.sendMessageUsingKey(Message.EssentialsTeleportDeath)
             }
         } else {

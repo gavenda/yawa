@@ -22,7 +22,6 @@ package work.gavenda.yawa.sit
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.plugin
 
 const val META_BLOCK_OCCUPIED = "BlockOccupied"

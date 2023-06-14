@@ -30,11 +30,12 @@ import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerDisconnect
+import work.gavenda.yawa.logger
 import work.gavenda.yawa.plugin
 import java.util.*
 
@@ -84,11 +85,10 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
             player.showPlayer(plugin, this)
         }
 
-        if (isPaperOrFolia) {
-            PaperSkinRefresher.refresh(this)
-        } else {
-            SpigotSkinRefresher.refresh(this)
-        }
+        refreshPlayer()
+        updateScaledHealth()
+        exp = exp
+        level = level
     }
 }
 
@@ -103,7 +103,7 @@ fun Player.updateScaledHealth() {
 }
 
 fun Player.refreshPlayer() {
-    val refreshPlayerMethod  = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("refreshPlayer")
+    val refreshPlayerMethod = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("refreshPlayer")
     refreshPlayerMethod.isAccessible = true
     refreshPlayerMethod.invoke(this)
 }
@@ -147,10 +147,10 @@ fun Player.asAudience(): Audience {
 /**
  * Disconnect the player using a packet.
  */
-fun Player.disconnect(reason: String = "") {
+fun Player.disconnect(reason: String = "", cause: PlayerKickEvent.Cause = PlayerKickEvent.Cause.UNKNOWN) {
     // Must use main thread
     schedulerCompat.runAtNextTick(plugin) {
-        apiLogger.info("Packet disconnect: $reason")
+        logger.info("Packet disconnect: $reason")
         val disconnectPacket = WrapperLoginServerDisconnect().apply {
             writeReason(WrappedChatComponent.fromText(reason))
         }
@@ -160,7 +160,7 @@ fun Player.disconnect(reason: String = "") {
             disconnectPacket.sendPacket(this)
         } finally {
             try {
-                kickCompat(Component.text("Disconnected"))
+                kick(Component.text("Disconnected"), cause)
             } catch (e: UnsupportedOperationException) {
                 // ProtocolLib will throw an error for kicking temporary players
             }

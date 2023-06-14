@@ -24,7 +24,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerGameModeChangeEvent
 import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
 
 class GameModeListener : Listener {
     @EventHandler(ignoreCancelled = true)

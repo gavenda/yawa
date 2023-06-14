@@ -24,7 +24,6 @@ import org.bukkit.entity.Player
 import work.gavenda.yawa.Permission
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.HelpList
-import work.gavenda.yawa.api.compat.sendMessageCompat
 
 class SkinCommand : Command() {
     override val commands = listOf("skin")
@@ -36,7 +35,7 @@ class SkinCommand : Command() {
             .command("skin url", listOf("<url>", "<slim:true>"), "Apply a skin from a url", Permission.SKIN_URL)
             .command("skin reset", listOf(), "Resets your skin", Permission.SKIN_URL)
             .generate(sender)
-            .forEach { sender.sendMessageCompat(it) }
+            .forEach { sender.sendMessage(it) }
     }
 
     override fun onTab(sender: CommandSender, args: List<String>): List<String> {
