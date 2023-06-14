@@ -55,7 +55,7 @@ fun Player.calculatePermissions() {
     @Suppress("DEPRECATION")
     schedulerCompat.runAtNextTickAsynchronously(plugin) {
         transaction {
-            val permissionList = Bukkit.getServer().pluginManager.plugins
+            val permissionList = server.pluginManager.plugins
                 .flatMap { it.description.permissions }
                 .map { it.name }
 

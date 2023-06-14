@@ -29,8 +29,8 @@ import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
 import work.gavenda.yawa.afk.AfkFeature
-import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
-import work.gavenda.yawa.api.compat.PluginEnvironment
+import work.gavenda.yawa.api.isFolia
+import work.gavenda.yawa.api.isPaperOrFolia
 import work.gavenda.yawa.api.placeholder.PlaceholderCommand
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
@@ -45,7 +45,7 @@ import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
 import work.gavenda.yawa.login.LoginFeature
 import work.gavenda.yawa.notify.NotifyFeature
 import work.gavenda.yawa.permission.PermissionFeature
-// import work.gavenda.yawa.ping.PingFeature
+import work.gavenda.yawa.ping.PingFeature
 import work.gavenda.yawa.playerhead.PlayerHeadFeature
 import work.gavenda.yawa.sit.SitFeature
 import work.gavenda.yawa.skin.SkinFeature
@@ -131,13 +131,18 @@ class Yawa : JavaPlugin() {
         HiddenArmorFeature.disable()
         LoginFeature.disable()
         NotifyFeature.disable()
-        // PingFeature.disable()
         PlayerHeadFeature.disable()
         PermissionFeature.disable()
         SitFeature.disable()
         SkinFeature.disable()
         SleepFeature.disable()
         TabListFeature.disable()
+
+        // Features that don't work in Folia
+        if (isFolia.not()) {
+            PingFeature.disable()
+        }
+
         // Unregister startup listener
         HandlerList.unregisterAll(startupListener)
         // Close data source
@@ -174,7 +179,7 @@ class Yawa : JavaPlugin() {
     }
 
     private fun registerRootCommand() {
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+        if (isPaperOrFolia) {
             server.pluginManager.registerEvents(rootCommand, this)
             server.pluginManager.registerEvents(placeholderCommand, this)
         }
@@ -186,7 +191,7 @@ class Yawa : JavaPlugin() {
     private fun unregisterRootCommand() {
         getCommand("placeholders")?.setExecutor(null)
         getCommand(Commands.ROOT)?.setExecutor(null)
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+        if (isPaperOrFolia) {
             HandlerList.unregisterAll(placeholderCommand)
             HandlerList.unregisterAll(rootCommand)
         }

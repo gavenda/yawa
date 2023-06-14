@@ -31,9 +31,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
-import work.gavenda.yawa.api.compat.CompatSchedulers
-import work.gavenda.yawa.api.compat.SchedulerCompat
-import work.gavenda.yawa.api.compat.sendMessageCompat
+import work.gavenda.yawa.api.compat.*
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toPlainText

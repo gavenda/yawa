@@ -60,7 +60,6 @@ class LoginConnectionTask(
             }
 
             if (userLogin != null) {
-                logger.info("User information already exists")
                 if (userLogin.premium) {
                     encryptConnection(packetEvent, player, name, keyPair.public)
                 } else {

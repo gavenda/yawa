@@ -29,10 +29,9 @@ import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
-import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.disconnect
+import work.gavenda.yawa.api.isPaperOrFolia
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.networkManager
 import work.gavenda.yawa.api.spoofedUuid
@@ -54,7 +53,7 @@ class LoginEncryptionTask(
     private val player: Player,
     private val keyPair: KeyPair,
     private val sharedSecret: ByteArray,
-): Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTaskCompat> {
 
     override fun accept(task: ScheduledTaskCompat) {
         val decryptedKey = try {
@@ -166,7 +165,7 @@ class LoginEncryptionTask(
     private fun enableEncryption(player: Player, loginKey: SecretKey): Boolean {
         try {
             // Encrypt/decrypt following packets
-            if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+            if (isPaperOrFolia) {
                 logger.info("Paper/Folia detected, using paper encryption")
                 val encryptMethod = FuzzyReflection.fromClass(MinecraftReflection.getNetworkManagerClass())
                     .getMethodByParameters("setupEncryption", SecretKey::class.java)
@@ -198,9 +197,6 @@ class LoginEncryptionTask(
 
         val startPacket = PacketContainer(PacketType.Login.Client.START).apply {
             strings.write(0, name)
-            // 1.19.2
-            // getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).write(0, loginSession.profileKeyData)
-            // getOptionals(Converters.passthrough(UUID::class.java)).write(1, loginSession.uuid)
             getOptionals(Converters.passthrough(UUID::class.java)).write(0, loginSession.uuid)
         }
         try {

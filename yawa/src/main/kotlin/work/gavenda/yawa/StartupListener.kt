@@ -23,9 +23,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerLoadEvent
+import work.gavenda.yawa.api.isFolia
 import work.gavenda.yawa.chunk.ChunkFeature
-
-// import work.gavenda.yawa.ping.PingFeature
+import work.gavenda.yawa.ping.PingFeature
 
 class StartupListener : Listener {
 
@@ -36,7 +36,12 @@ class StartupListener : Listener {
         logger.info("Enabling post-startup features")
 
         // Enable POST-startup features
-        // PingFeature.enable()
+
+        // Features that don't work in Folia
+        if (isFolia.not()) {
+            PingFeature.enable()
+        }
+
         ChunkFeature.enable()
     }
 

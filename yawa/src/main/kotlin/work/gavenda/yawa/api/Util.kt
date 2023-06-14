@@ -24,6 +24,8 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
+import work.gavenda.yawa.api.compat.PluginEnvironment
 import java.awt.Color
 import java.net.HttpURLConnection
 import java.net.URL
@@ -142,3 +144,13 @@ fun Int.toRomanNumeral(): String {
     }
     return ""
 }
+
+/**
+ * True if is in folia or paper
+ */
+val isPaperOrFolia = PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA || PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER
+
+/**
+ * True if folia.
+ */
+val isFolia = PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA

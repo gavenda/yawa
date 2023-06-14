@@ -1,10 +1,10 @@
 [versions]
-paper = "1.19.4-R0.1-SNAPSHOT"
+paper = "1.20.1-R0.1-SNAPSHOT"
 folia = "1.19.4-R0.1-SNAPSHOT"
 paper-lib = "1.0.7"
 adventure = "4.13.1"
 adventure-bukkit = "4.3.0"
-protocol-lib = "5.0.0-SNAPSHOT"
+protocol-lib = "5.0.0"
 vault = "1.7"
 datafixerupper = "1.0.20"
 nbtapi = "2.11.0"

@@ -21,6 +21,7 @@ package work.gavenda.yawa.sleep
 
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
+import org.bukkit.GameRule
 import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.*
@@ -37,10 +38,42 @@ class SleepCheckTask(
 ): Consumer<ScheduledTaskCompat> {
 
     private fun checkWorld(world: World) {
-        val sleepRequired = ceil(world.players.size / 2.0)
+        val sleepRequired = ceil(world.awakePlayers.size / 2.0)
+        val sleepPercentage = ceil((sleepRequired / world.players.size) * 100).toInt()
+
+        world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, sleepPercentage)
 
         // Someone is asleep, and we lack more people.
         when {
+            // Everyone is asleep, and we have enough people
+            world.isEveryoneSleeping -> {
+                sleepingWorlds.add(world.uid)
+
+                val message = Placeholders
+                    .withContext(world)
+                    .parseUsingDefaultLocale(Message.ActionBarSleepingDone)
+
+                if (Config.Sleep.ActionBar.Enabled) {
+                    world.sendActionBarCompat(message)
+                }
+
+                val sleepingMessage = Placeholders
+                    .withContext(world)
+                    .parseUsingDefaultLocale(Message.Sleeping)
+
+                // Broadcast everyone sleeping
+                if (Config.Sleep.Chat.Enabled) {
+                    world.sendMessageCompat(sleepingMessage)
+                }
+
+
+                val sleepAnimationTask = SleepAnimationTask(world, sleepingWorlds)
+
+                scheduler.runAtFixedRate(plugin, 1, 1, sleepAnimationTask::run)
+
+                // Reset kick seconds
+                world.kickSeconds = 0
+            }
             world.beganSleeping -> {
                 val message = Placeholders
                     .withContext(world)
@@ -89,35 +122,6 @@ class SleepCheckTask(
                         }
                     }
                 }
-            }
-            // Everyone is asleep, and we have enough people
-            world.isEveryoneSleeping -> {
-                sleepingWorlds.add(world.uid)
-
-                val message = Placeholders
-                    .withContext(world)
-                    .parseUsingDefaultLocale(Message.ActionBarSleepingDone)
-
-                if (Config.Sleep.ActionBar.Enabled) {
-                    world.sendActionBarCompat(message)
-                }
-
-                val sleepingMessage = Placeholders
-                    .withContext(world)
-                    .parseUsingDefaultLocale(Message.Sleeping)
-
-                // Broadcast everyone sleeping
-                if (Config.Sleep.Chat.Enabled) {
-                    world.sendMessageCompat(sleepingMessage)
-                }
-
-
-                val sleepAnimationTask = SleepAnimationTask(world, sleepingWorlds)
-
-                scheduler.runAtFixedRate(plugin, 1, 1, sleepAnimationTask::run)
-
-                // Reset kick seconds
-                world.kickSeconds = 0
             }
             else -> {
                 // Reset kick seconds

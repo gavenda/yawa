@@ -31,8 +31,6 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
-import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.api.compat.kickCompat
 import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
@@ -80,11 +78,16 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
         gameProfile.properties.clear()
         gameProfile.properties.put(MOJANG_KEY_TEXTURES, textureSignedProperty)
 
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
-            refreshPlayer()
-            updateScaledHealth()
-            exp = exp
-            level = level
+        // Refresh
+        Bukkit.getOnlinePlayers().forEach { player ->
+            player.hidePlayer(plugin, this)
+            player.showPlayer(plugin, this)
+        }
+
+        if (isPaperOrFolia) {
+            PaperSkinRefresher.refresh(this)
+        } else {
+            SpigotSkinRefresher.refresh(this)
         }
     }
 }
@@ -93,7 +96,8 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
  * Update scaled health.
  */
 fun Player.updateScaledHealth() {
-    val updateScaledHealthMethod = MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
+    val updateScaledHealthMethod =
+        MinecraftReflection.getCraftPlayerClass().getDeclaredMethod("updateScaledHealth")
     updateScaledHealthMethod.isAccessible = true
     updateScaledHealthMethod.invoke(this)
 }

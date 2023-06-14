@@ -35,24 +35,6 @@ object SleepFeature : PluginFeature {
     private val sleepingWorlds = mutableSetOf<UUID>()
     private val sleepBedListener = SleepListener(sleepingWorlds)
 
-    override fun onEnable() {
-        // Disable sleeping on all worlds
-        CompatSchedulers.asyncScheduler.runAtNextTick(plugin) {
-            server.worlds.forEach {
-                it.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, 101)
-            }
-        }
-    }
-
-    override fun onDisable() {
-        // Reset game rule
-        CompatSchedulers.asyncScheduler.runAtNextTick(plugin) {
-            server.worlds.forEach {
-                it.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, 100)
-            }
-        }
-    }
-
     override fun registerTasks() {
         val sleepCheckTask = SleepCheckTask(sleepingWorlds)
 

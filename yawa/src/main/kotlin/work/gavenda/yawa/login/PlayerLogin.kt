@@ -24,7 +24,6 @@ import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.javatime.timestamp
-import work.gavenda.yawa.login.PlayerLoginSchema.nullable
 import java.util.*
 
 /**

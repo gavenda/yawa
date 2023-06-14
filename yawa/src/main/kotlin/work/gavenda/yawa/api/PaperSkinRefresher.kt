@@ -1,7 +1,7 @@
 /*
  * Yawa - All in one plugin for my personally deployed Vanilla SMP servers
  *
- * Copyright (c) 2022 Gavenda <gavenda@disroot.org>
+ * Copyright (c) 2023 Gavenda <gavenda@disroot.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,28 +17,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package work.gavenda.yawa.api.placeholder.provider
+package work.gavenda.yawa.api
 
-import org.bukkit.Bukkit
-import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.placeholder.PlaceholderProvider
-import work.gavenda.yawa.server
 
-/**
- * Provides common placeholders for server information.
- */
-class ServerPlaceholderProvider : PlaceholderProvider {
+object PaperSkinRefresher {
 
-    companion object {
-        const val SERVER_PLAYER_COUNT = "server-player-count"
-        const val SERVER_PLAYER_MAX = "server-player-max"
+    fun refresh(player: Player) {
+        player.refreshPlayer()
+        player.updateScaledHealth()
+        player.exp = player.exp
+        player.level = player.level
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
-        return mapOf(
-            SERVER_PLAYER_COUNT to server.onlinePlayers.size.toString(),
-            SERVER_PLAYER_MAX to server.maxPlayers.toString(),
-        )
-    }
 }

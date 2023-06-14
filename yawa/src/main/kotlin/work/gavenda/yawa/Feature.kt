@@ -19,8 +19,7 @@
 
 package work.gavenda.yawa
 
-import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
-import work.gavenda.yawa.api.compat.PluginEnvironment
+import work.gavenda.yawa.api.isPaperOrFolia
 
 /**
  * Constants for features.
@@ -73,7 +72,7 @@ interface PluginFeature {
         registerPlaceholders()
         registerEventListeners()
 
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+        if (isPaperOrFolia) {
             registerPaperEventListeners()
         } else {
             registerBukkitEventListeners()
@@ -95,7 +94,7 @@ interface PluginFeature {
         unregisterTasks()
         unregisterEventListeners()
 
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER || PLUGIN_ENVIRONMENT == PluginEnvironment.FOLIA) {
+        if (isPaperOrFolia) {
             unregisterPaperEventListeners()
         } else {
             unregisterBukkitEventListeners()

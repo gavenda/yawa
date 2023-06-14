@@ -51,11 +51,9 @@ class HomeCommand : Command() {
 
                     val location = Location(world, playerHomeDb.x, playerHomeDb.y, playerHomeDb.z)
 
-                    sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
-                        world.getChunkAtAsyncCompat(location).thenAccept {
-                            sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
-                                sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)
-                            }
+                    world.getChunkAtAsyncCompat(location).thenAccept {
+                        sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
+                            sender.sendMessageUsingKey(Message.EssentialsHomeTeleport)
                         }
                     }
                 } else {

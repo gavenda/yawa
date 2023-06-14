@@ -22,12 +22,8 @@ package work.gavenda.yawa.discord
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import work.gavenda.yawa.api.compat.PLUGIN_ENVIRONMENT
-import work.gavenda.yawa.api.compat.PluginEnvironment
 import work.gavenda.yawa.logger
 import work.gavenda.yawa.server
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class SlashCommandListener : ListenerAdapter() {
 
@@ -36,7 +32,6 @@ class SlashCommandListener : ListenerAdapter() {
 
         when (event.name) {
             "online" -> showOnline(event)
-            "server" -> showServer(event)
             else -> logger.info("Unknown slash command: ${event.name}")
         }
     }
@@ -55,29 +50,5 @@ class SlashCommandListener : ListenerAdapter() {
             .build()
 
         event.hook.sendMessageEmbeds(embed).queue()
-    }
-
-    private fun showServer(event: SlashCommandInteractionEvent) {
-        val embed = EmbedBuilder()
-            .setTitle("Server Information")
-            .addField("Server", server.version, false)
-            .addField("Online Players", "${server.onlinePlayers.size} / ${server.maxPlayers}", false)
-
-        if (PLUGIN_ENVIRONMENT == PluginEnvironment.PAPER) {
-            val df = DecimalFormat("#.##").apply {
-                roundingMode = RoundingMode.CEILING
-            }
-
-            val averageTickTime = df.format(server.averageTickTime)
-            val tps1m = df.format(server.tps[0])
-            val tps5m = df.format(server.tps[1])
-            val tps15m = df.format(server.tps[2])
-
-            embed.addField("Version", server.minecraftVersion, false)
-            embed.addField("Average Tick Time", "${averageTickTime}ms", true)
-            embed.addField("Ticks Per Second", "$tps1m (1m), $tps5m (5m), $tps15m (15m)", true)
-        }
-
-        event.hook.sendMessageEmbeds(embed.build()).queue()
     }
 }

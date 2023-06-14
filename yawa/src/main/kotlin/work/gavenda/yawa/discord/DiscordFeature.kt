@@ -65,9 +65,6 @@ object DiscordFeature : PluginFeature, EventListener {
 
     override fun registerHooks() {
         jda = JDABuilder.createDefault(Config.Discord.Token)
-            .setWebsocketFactory(
-                WebSocketFactory().setDualStackMode(DualStackMode.BOTH)
-            )
             .setMemberCachePolicy(MemberCachePolicy.ONLINE)
             .setAutoReconnect(true)
             .setEnableShutdownHook(false)

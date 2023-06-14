@@ -19,11 +19,11 @@
 
 package work.gavenda.yawa.sleep
 
+import org.bukkit.GameMode
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.Yawa
 import work.gavenda.yawa.plugin
 import kotlin.math.max
 
@@ -34,15 +34,19 @@ val World.isNightTime get(): Boolean = time > 12950 || time < 23950
 
 /**
  * Returns all sleeping players in this world.
+ * Does not include operators and non survival players.
  */
 val World.sleepingPlayers
-    get(): List<Player> = players.filter { it.isSleeping }
+    get(): List<Player> = players
+        .filter { it.gameMode == GameMode.SURVIVAL && it.isSleeping }
 
 /**
  * Returns awake players in this world.
+ * Does not include operators and non survival players.
  */
 val World.awakePlayers
-    get(): List<Player> = players.filter { it.isSleeping.not() }
+    get(): List<Player> = players
+        .filter { it.gameMode == GameMode.SURVIVAL && it.isSleeping.not() }
 
 
 const val META_WORLD_KICK_SECONDS = "SleepKickSeconds"
@@ -68,16 +72,16 @@ val World.remainingSeconds get(): Int = Config.Sleep.KickSeconds - kickSeconds
  */
 val World.sleepingNeeded
     get(): Int {
-        val neededUnsafe = players.size - sleepingPlayers.size
+        val neededUnsafe = awakePlayers.size - sleepingPlayers.size
         return max(0, neededUnsafe)
     }
 
 /**
  * Returns true if any player begins to sleep.
  */
-val World.beganSleeping get(): Boolean = sleepingPlayers.isNotEmpty() && sleepingNeeded > 0
+val World.beganSleeping get(): Boolean = sleepingPlayers.isNotEmpty()
 
 /**
  * Returns true if every player is in bed.
  */
-val World.isEveryoneSleeping get(): Boolean = sleepingNeeded == 0 && sleepingPlayers.isNotEmpty()
+val World.isEveryoneSleeping get(): Boolean = sleepingPlayers.isNotEmpty() && awakePlayers.isEmpty()

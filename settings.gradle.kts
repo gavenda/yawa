@@ -15,8 +15,8 @@ dependencyResolutionManagement {
         maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots") {
             name = "spigot-snapshots"
         }
-        maven(url = "https://repo.dmulloy2.net/nexus/repository/public") {
-            name = "protocollib-snapshots"
+        maven(url = "https://repo.dmulloy2.net/repository/public/") {
+            name = "dmulloy2-repo"
         }
         maven(url = "https://m2.dv8tion.net/releases") {
             name = "jda-releases"

@@ -62,24 +62,9 @@ class LoginListener(
 
         val packet = packetEvent.packet
         val name = packet.strings.read(0)
-        // Disabled in 1.19.3
-        // val profileKeyData = packet.getOptionals(BukkitConverters.getWrappedPublicKeyDataConverter()).read(0)
         val profileKeyData = Optional.empty<WrappedProfilePublicKey.WrappedProfileKeyData>()
         val uuid = packet.getOptionals(Converters.passthrough(UUID::class.java)).readSafely(0)
         val player = packetEvent.player
-
-        // Public key check
-        // Disabled in 1.19.3
-        // if (profileKeyData.isPresent && uuid.isPresent) {
-        //     if (MinecraftEncryption.verifyClientKey(profileKeyData.get(), uuid = uuid.get()).not()) {
-        //         player.disconnect(
-        //             Messages
-        //                 .forPlayer(player)
-        //                 .get(Message.LoginInvalidPublicKey)
-        //         )
-        //         logger.warn("Disconnected player '$name' due to invalid client public key")
-        //     }
-        // }
 
         // Use mojang name check
         if (Config.Login.StrictNames) {

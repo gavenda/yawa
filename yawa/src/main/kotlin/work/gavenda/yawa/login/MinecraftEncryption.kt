@@ -19,15 +19,8 @@
 
 package work.gavenda.yawa.login
 
-import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKeyData
-import com.google.common.io.Resources
-import com.google.common.primitives.Longs
 import java.math.BigInteger
-import java.nio.ByteBuffer
 import java.security.*
-import java.security.spec.X509EncodedKeySpec
-import java.time.Instant
-import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
@@ -38,17 +31,9 @@ import javax.crypto.spec.SecretKeySpec
  */
 object MinecraftEncryption {
 
-    private const val MOJANG_CERTIFICATE = "yggdrasil_session_pubkey.der"
     private const val VERIFY_TOKEN_LENGTH = 4
-    private const val MILLISECOND_SIZE = 8
-    private const val UUID_SIZE = 2 * MILLISECOND_SIZE
     private const val KEY_PAIR_ALGORITHM = "RSA"
     private val SECURE_RANDOM = SecureRandom()
-    private val MOJANG_SESSION_KEY = KeyFactory.getInstance("RSA").generatePublic(
-        X509EncodedKeySpec(
-            Resources.getResource(MOJANG_CERTIFICATE).readBytes()
-        )
-    )
 
     /**
      * Generate an RSA key pair with a `1024` length.
@@ -99,38 +84,6 @@ object MinecraftEncryption {
      */
     fun decryptSharedKey(privateKey: PrivateKey, sharedKey: ByteArray): SecretKey =
         SecretKeySpec(decrypt(privateKey, sharedKey), "AES")
-
-    fun verifyClientKey(
-        profileKeyData: WrappedProfileKeyData,
-        timestamp: Instant = Instant.now(),
-        uuid: UUID
-    ): Boolean {
-        if (!timestamp.isBefore(profileKeyData.expireTime)) {
-            return false
-        }
-
-        return Signature.getInstance("SHA1withRSA").apply {
-            initVerify(MOJANG_SESSION_KEY)
-            update(toSignable(profileKeyData, uuid))
-        }.verify(profileKeyData.signature)
-    }
-
-    private fun toSignable(clientPublicKey: WrappedProfileKeyData, uuid: UUID): ByteArray {
-        val keyData: ByteArray = clientPublicKey.key.encoded
-        return ByteBuffer.allocate(keyData.size + UUID_SIZE + MILLISECOND_SIZE)
-            .putLong(uuid.mostSignificantBits)
-            .putLong(uuid.leastSignificantBits)
-            .putLong(clientPublicKey.expireTime.toEpochMilli())
-            .put(keyData)
-            .array()
-    }
-
-    fun verifySignedNonce(nonce: ByteArray, clientKey: PublicKey, signatureSalt: Long, signature: ByteArray) =
-        Signature.getInstance("SHA256withRSA").apply {
-            initVerify(clientKey)
-            update(nonce)
-            update(Longs.toByteArray(signatureSalt))
-        }.verify(signature)
 
     /**
      * Decrypt the given data using the given private key.

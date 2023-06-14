@@ -19,8 +19,8 @@ dependencies {
     }
     compileOnly(libs.log4j2)
 
+    // Minecraft Libraries
     compileOnly(mcLibs.protocol.lib)
-    compileOnly(mcLibs.datafixerupper)
     compileOnly(mcLibs.folia.api)
     compileOnly(mcLibs.bundles.adventure)
     compileOnly(mcLibs.vault)

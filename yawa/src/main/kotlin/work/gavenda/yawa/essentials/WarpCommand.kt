@@ -59,15 +59,13 @@ class WarpCommand : Command() {
 
                     val location = Location(world, playerLocationDb.x, playerLocationDb.y, playerLocationDb.z)
 
-                    sender.schedulerCompat.runAtNextTick(plugin) {
-                        world.getChunkAtAsyncCompat(location).thenAccept {
-                            sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
-                                sender.sendMessageUsingKey(
-                                    Message.EssentialsWarpTeleport, mapOf(
-                                        "location-name" to Component.text(playerLocationDb.name, NamedTextColor.WHITE)
-                                    )
+                    world.getChunkAtAsyncCompat(location).thenAccept {
+                        sender.teleportAsyncCompat(location, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
+                            sender.sendMessageUsingKey(
+                                Message.EssentialsWarpTeleport, mapOf(
+                                    "location-name" to Component.text(playerLocationDb.name, NamedTextColor.WHITE)
                                 )
-                            }
+                            )
                         }
                     }
                 } else {
