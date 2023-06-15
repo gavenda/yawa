@@ -30,7 +30,7 @@ class LocationPlaceholder : PlaceholderProvider {
         const val Z = "location-z"
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+    override fun providePlayerString(player: Player?): Map<String, String?> {
         val location = player?.location
 
         return mapOf(

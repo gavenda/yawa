@@ -40,9 +40,6 @@ class SleepCheckTask(
 
     private fun checkWorld(world: World) {
         val sleepRequired = ceil(world.awakePlayers.size / 2.0)
-        val sleepPercentage = ceil((sleepRequired / world.players.size) * 100).toInt()
-
-        world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, sleepPercentage)
 
         // Someone is asleep, and we lack more people.
         when {
@@ -66,7 +63,6 @@ class SleepCheckTask(
                 if (Config.Sleep.Chat.Enabled) {
                     world.sendMessage(sleepingMessage)
                 }
-
 
                 val sleepAnimationTask = SleepAnimationTask(world, sleepingWorlds)
 

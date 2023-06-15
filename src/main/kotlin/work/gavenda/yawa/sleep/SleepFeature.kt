@@ -19,6 +19,8 @@
 
 package work.gavenda.yawa.sleep
 
+import org.bukkit.GameRule
+import org.bukkit.World
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
@@ -31,6 +33,22 @@ object SleepFeature : PluginFeature {
     private val sleepPlaceholderProvider = SleepPlaceholderProvider()
     private val sleepingWorlds = mutableSetOf<UUID>()
     private val sleepBedListener = SleepListener(sleepingWorlds)
+
+    override fun onEnable() {
+        server.worlds
+            .filter { it.environment == World.Environment.NORMAL }
+            .forEach {
+                it.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, 101)
+            }
+    }
+
+    override fun onDisable() {
+        server.worlds
+            .filter { it.environment == World.Environment.NORMAL }
+            .forEach {
+                it.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, 100)
+            }
+    }
 
     override fun registerTasks() {
         val sleepCheckTask = SleepCheckTask(sleepingWorlds)

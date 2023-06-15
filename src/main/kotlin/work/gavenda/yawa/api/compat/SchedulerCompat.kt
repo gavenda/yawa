@@ -32,6 +32,8 @@ interface SchedulerCompat {
         return runDelayedAsynchronously(plugin, 1L, task)
     }
 
+    fun runNow(plugin: Plugin, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
+
     fun runDelayed(plugin: Plugin, delay: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
     fun runDelayedAsynchronously(plugin: Plugin, delay: Long, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat
     fun runAtFixedRate(

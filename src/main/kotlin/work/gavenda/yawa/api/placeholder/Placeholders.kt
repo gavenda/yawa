@@ -27,7 +27,12 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.World
 import org.bukkit.entity.Player
+import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.logger
+import work.gavenda.yawa.plugin
+import work.gavenda.yawa.scheduler
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
 
 /**
  * Simple placeholder API.
@@ -139,24 +144,73 @@ class PlaceholderContext(
         }
     }
 
-    fun providers(): Map<String, Any?> {
-        val stringPlaceholders = providers
-            .map { it.provideString(player, world) }
+    private fun provideWorld(): Map<String, Component?> {
+        return providers
+            .map { it.provideWorld(world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { it.value != null }
-        val componentPlaceholders = providers
-            .map { it.provide(player, world) }
+    }
+
+    private fun provideWorldString(): Map<String, String?> {
+        return providers
+            .map { it.provideWorldString(world) }
             .flatMap { it.entries }
             .associate { it.key to it.value }
             .filter { it.value != null }
+    }
+
+    private fun providePlayer(): Map<String, Component?> {
+        return providers
+            .map { it.providePlayer(player) }
+            .flatMap { it.entries }
+            .associate { it.key to it.value }
+            .filter { it.value != null }
+    }
+
+    private fun providePlayerString(): Map<String, String?> {
+        return providers
+            .map { it.providePlayerString(player) }
+            .flatMap { it.entries }
+            .associate { it.key to it.value }
+            .filter { it.value != null }
+    }
+
+    private fun providers(): Map<String, Any?> {
+        val playerStringPlaceholders = CompletableFuture<Map<String, String?>>()
+        val playerPlaceholders = CompletableFuture<Map<String, Component?>>()
+        val worldStringPlaceholders = CompletableFuture<Map<String, String?>>()
+        val worldPlaceholders = CompletableFuture<Map<String, Component?>>()
+
+        if (player != null) {
+            player.schedulerCompat.runNow(plugin) {
+                playerPlaceholders.complete(providePlayer())
+                playerStringPlaceholders.complete(providePlayerString())
+            }
+        } else {
+            playerPlaceholders.complete(emptyMap())
+            playerStringPlaceholders.complete(emptyMap())
+        }
+
+        if (world != null) {
+            scheduler.runNow(plugin) {
+                worldPlaceholders.complete(provideWorld())
+                worldStringPlaceholders.complete(provideWorldString())
+            }
+        } else {
+            worldPlaceholders.complete(emptyMap())
+            worldStringPlaceholders.complete(emptyMap())
+        }
+
         return mapOf(
-            *stringPlaceholders.toList().toTypedArray(),
-            *componentPlaceholders.toList().toTypedArray(),
+            *worldStringPlaceholders.get().toList().toTypedArray(),
+            *worldPlaceholders.get().toList().toTypedArray(),
+            *playerStringPlaceholders.get().toList().toTypedArray(),
+            *playerPlaceholders.get().toList().toTypedArray(),
         )
     }
 
-    fun mergeWithProviders(params: Map<String, Any?> = mapOf()): Map<String, Any?> {
+    private fun mergeWithProviders(params: Map<String, Any?> = mapOf()): Map<String, Any?> {
         // Order of priority -> params > component > string
         return mapOf(
             *providers().toList().toTypedArray(),
@@ -170,25 +224,11 @@ class PlaceholderContext(
  * A simple interface for a class that provides placeholders.
  */
 interface PlaceholderProvider {
-    /**
-     * Provide a placeholder.
-     */
-    fun provide(player: Player?, world: World?): Map<String, Component?> {
-        return mapOf()
-    }
-
     fun providePlayer(player: Player?): Map<String, Component?> {
         return mapOf()
     }
 
     fun provideWorld(world: World?): Map<String, Component?> {
-        return mapOf()
-    }
-
-    /**
-     * Provide a placeholder.
-     */
-    fun provideString(player: Player?, world: World?): Map<String, String?> {
         return mapOf()
     }
 

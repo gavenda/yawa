@@ -42,6 +42,13 @@ class FoliaEntitySchedulerCompat(val scheduler: EntityScheduler) : SchedulerComp
         return FoliaTaskCompat(returnTask)
     }
 
+    override fun runNow(plugin: Plugin, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
+        val returnTask = scheduler.run(plugin, fun(foliaTask: ScheduledTask) {
+            task(FoliaTaskCompat(foliaTask))
+        }, null)
+        return FoliaTaskCompat(returnTask)
+    }
+
     override fun runDelayedAsynchronously(
         plugin: Plugin,
         delay: Long,
@@ -86,6 +93,13 @@ class FoliaGlobalRegionSchedulerCompat(val scheduler: GlobalRegionScheduler) : S
         val returnTask = scheduler.runDelayed(plugin, fun(foliaTask: ScheduledTask) {
             task(FoliaTaskCompat(foliaTask))
         }, delay)
+        return FoliaTaskCompat(returnTask)
+    }
+
+    override fun runNow(plugin: Plugin, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
+        val returnTask = scheduler.run(plugin, fun(foliaTask: ScheduledTask) {
+            task(FoliaTaskCompat(foliaTask))
+        })
         return FoliaTaskCompat(returnTask)
     }
 

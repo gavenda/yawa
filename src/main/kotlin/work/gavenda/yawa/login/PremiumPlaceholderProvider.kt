@@ -30,7 +30,7 @@ import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
  */
 class PremiumPlaceholderProvider : PlaceholderProvider {
 
-    override fun provide(player: Player?, world: World?): Map<String, Component?> {
+    override fun providePlayer(player: Player?): Map<String, Component?> {
         return mapOf(
             PlayerPlaceholderProvider.NAME to player?.verifiedName
         )

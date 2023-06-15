@@ -100,7 +100,13 @@ class Yawa : JavaPlugin() {
         SitFeature.enable()
         SkinFeature.enable()
         SleepFeature.enable()
-        TabListFeature.enable()
+
+        // Features that don't work in Folia
+        if (isFolia.not()) {
+            TabListFeature.enable()
+        } else {
+            logger.warning("Folia detected, tab list and ping scoreboard will not work and is disabled.")
+        }
 
         // Register root command
         registerRootCommand()
@@ -133,10 +139,10 @@ class Yawa : JavaPlugin() {
         SitFeature.disable()
         SkinFeature.disable()
         SleepFeature.disable()
-        TabListFeature.disable()
 
         // Features that don't work in Folia
         if (isFolia.not()) {
+            TabListFeature.disable()
             PingFeature.disable()
         }
 

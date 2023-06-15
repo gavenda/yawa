@@ -31,14 +31,16 @@ class SleepPlaceholderProvider : PlaceholderProvider {
 
     companion object {
         const val SLEEPING = "world-sleeping"
+        const val AWAKE = "world-awake"
         const val SLEEPING_NEEDED = "world-sleeping-needed"
         const val KICK_REMAINING = "sleep-kick-remaining"
         const val KICK_SECONDS = "sleep-kick-seconds"
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+    override fun provideWorldString(world: World?): Map<String, String?> {
         return mapOf(
             SLEEPING to world?.sleepingPlayers?.size.toString(),
+            AWAKE to world?.awakePlayers?.size.toString(),
             SLEEPING_NEEDED to world?.sleepingNeeded.toString(),
             KICK_REMAINING to world?.remainingSeconds.toString(),
             KICK_SECONDS to Config.Sleep.KickSeconds.toString()

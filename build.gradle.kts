@@ -16,7 +16,7 @@ val gitHash: String = ByteArrayOutputStream().use { outputStream ->
 }
 
 group = "work.gavenda.yawa"
-version = "1.4.1"
+version = "1.4.2"
 
 dependencies {
     compileOnly(libs.kotlin.stdlib.jdk8)

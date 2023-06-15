@@ -51,6 +51,16 @@ class BukkitSchedulerCompat(val scheduler: org.bukkit.scheduler.BukkitScheduler)
         return bukkitTaskCompat.setup(bukkitTask.runTaskLater(plugin, delay))
     }
 
+    override fun runNow(plugin: Plugin, task: (ScheduledTaskCompat) -> Unit): ScheduledTaskCompat {
+        val bukkitTaskCompat = BukkitTaskCompat()
+        val bukkitTask = object : BukkitRunnable() {
+            override fun run() {
+                task(bukkitTaskCompat)
+            }
+        }
+        return bukkitTaskCompat.setup(bukkitTask.runTask(plugin))
+    }
+
     override fun runDelayedAsynchronously(
         plugin: Plugin,
         delay: Long,

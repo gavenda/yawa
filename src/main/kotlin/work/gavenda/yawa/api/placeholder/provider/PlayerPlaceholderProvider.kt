@@ -38,13 +38,13 @@ class PlayerPlaceholderProvider : PlaceholderProvider {
     }
 
     @Suppress("DEPRECATION")
-    override fun provide(player: Player?, world: World?): Map<String, Component?> {
+    override fun providePlayer(player: Player?): Map<String, Component?> {
         return mapOf(
             DISPLAY_NAME to player?.displayName()
         )
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+    override fun providePlayerString(player: Player?): Map<String, String?> {
         return mapOf(
             NAME to player?.name,
             LEVEL to player?.level.toString().padStart(2, '0'),

@@ -34,7 +34,7 @@ class ServerPlaceholderProvider : PlaceholderProvider {
         const val SERVER_PLAYER_MAX = "server-player-max"
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+    override fun provideWorldString(world: World?): Map<String, String?> {
         return mapOf(
             SERVER_PLAYER_COUNT to server.onlinePlayers.size.toString(),
             SERVER_PLAYER_MAX to server.maxPlayers.toString(),

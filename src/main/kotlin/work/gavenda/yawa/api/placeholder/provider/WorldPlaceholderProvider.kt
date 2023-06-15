@@ -32,7 +32,7 @@ class WorldPlaceholderProvider : PlaceholderProvider {
         const val WORLD_PLAYER_COUNT = "world-player-count"
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+    override fun provideWorldString(world: World?): Map<String, String?> {
         return mapOf(
             WORLD_PLAYER_COUNT to world?.players?.size.toString(),
         )

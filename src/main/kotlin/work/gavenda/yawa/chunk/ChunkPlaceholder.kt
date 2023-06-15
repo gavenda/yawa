@@ -29,7 +29,7 @@ class ChunkPlaceholder : PlaceholderProvider {
         const val CURRENT_CHUNK_Z = "current-chunk-x"
     }
 
-    override fun provideString(player: Player?, world: World?): Map<String, String?> {
+    override fun providePlayerString(player: Player?): Map<String, String?> {
         val currentChunk = player?.location?.chunk
         val currentChunkX = currentChunk?.x
         val currentChunkZ = currentChunk?.z
