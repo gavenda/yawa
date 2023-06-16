@@ -30,4 +30,4 @@ jobs:
           prerelease: false
           title: ${{ steps.vars.outputs.version }}
           files: |
-            yawa/build/libs/yawa-${{ steps.vars.outputs.version }}.jar
+            build/libs/yawa-${{ steps.vars.outputs.version }}.jar
