@@ -39,12 +39,8 @@ object SkinFeature : PluginFeature {
         }
     }
 
-    override fun enableCommands() {
+    override fun registerCommands() {
         plugin.getCommand(Commands.SKIN)?.setExecutor(skinCommand)
-    }
-
-    override fun disableCommands() {
-        plugin.getCommand(Commands.SKIN)?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {

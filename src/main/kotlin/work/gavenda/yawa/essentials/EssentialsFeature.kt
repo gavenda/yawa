@@ -52,7 +52,7 @@ object EssentialsFeature : PluginFeature {
         Placeholders.unregister(locationPlaceholder)
     }
 
-    override fun enableCommands() {
+    override fun registerCommands() {
         plugin.getCommand(Commands.HOME_TELEPORT)?.setExecutor(homeCommand)
         plugin.getCommand(Commands.HOME_SET)?.setExecutor(homeSetCommand)
         plugin.getCommand(Commands.TELEPORT_SPAWN)?.setExecutor(spawnCommand)
@@ -61,17 +61,6 @@ object EssentialsFeature : PluginFeature {
         plugin.getCommand(Commands.WARP_TELEPORT)?.setExecutor(warpCommand)
         plugin.getCommand(Commands.WARP_DELETE)?.setExecutor(warpDeleteCommand)
         plugin.getCommand(Commands.GIVE_LEVEL)?.setExecutor(giveLevelCommand)
-    }
-
-    override fun disableCommands() {
-        plugin.getCommand(Commands.HOME_TELEPORT)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.HOME_SET)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.TELEPORT_SPAWN)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.TELEPORT_DEATH)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.WARP_SET)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.WARP_TELEPORT)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.WARP_DELETE)?.setExecutor(DisabledCommand)
-        plugin.getCommand(Commands.GIVE_LEVEL)?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {

@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.sit
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
@@ -27,7 +28,6 @@ import org.bukkit.block.data.type.Stairs
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import work.gavenda.yawa.Message
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.sendMessageUsingKey
 
@@ -148,10 +148,10 @@ fun Player.sit(block: Block) {
         // Resit before arrow de-spawns
         val secondsInTicks = 1000L
 
-        schedulerCompat.runAtFixedRate(plugin, secondsInTicks, secondsInTicks) { task ->
+        val sitTask = fun(task: ScheduledTask) {
             if (isSitting.not()) {
                 task.cancel()
-                return@runAtFixedRate
+                return
             }
 
             val oldChairEntity = vehicle
@@ -161,6 +161,8 @@ fun Player.sit(block: Block) {
             oldChairEntity?.remove()
             isSitting = true
         }
+
+        scheduler.runAtFixedRate(plugin, sitTask, null, secondsInTicks, secondsInTicks)
 
         sendMessageUsingKey(Message.PlayerSitStart)
     }

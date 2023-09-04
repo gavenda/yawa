@@ -26,13 +26,12 @@ import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedGameProfile
 import com.comphenix.protocol.wrappers.WrappedSignedProperty
-import net.kyori.adventure.audience.Audience
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.metadata.FixedMetadataValue
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mojang.MOJANG_KEY_TEXTURES
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerDisconnect
 import work.gavenda.yawa.logger
@@ -72,7 +71,7 @@ val Player.latencyInMillis: Int
  */
 fun Player.applySkin(textureInfo: String, signature: String = "") {
     // Should be done on main thread
-    schedulerCompat.runAtNextTick(plugin) {
+    scheduler.run(plugin, fun(_: ScheduledTask) {
         val gameProfile = WrappedGameProfile.fromPlayer(this)
         val textureSignedProperty = WrappedSignedProperty.fromValues(MOJANG_KEY_TEXTURES, textureInfo, signature)
 
@@ -89,7 +88,7 @@ fun Player.applySkin(textureInfo: String, signature: String = "") {
         updateScaledHealth()
         exp = exp
         level = level
-    }
+    }, null);
 }
 
 /**
@@ -142,7 +141,7 @@ var Player.spoofedUuid: UUID
  */
 fun Player.disconnect(reason: String = "", cause: PlayerKickEvent.Cause = PlayerKickEvent.Cause.UNKNOWN) {
     // Must use main thread
-    schedulerCompat.runAtNextTick(plugin) {
+    scheduler.run(plugin, fun(_: ScheduledTask) {
         logger.info("Packet disconnect: $reason")
         val disconnectPacket = WrapperLoginServerDisconnect().apply {
             writeReason(WrappedChatComponent.fromText(reason))
@@ -158,5 +157,5 @@ fun Player.disconnect(reason: String = "", cause: PlayerKickEvent.Cause = Player
                 // ProtocolLib will throw an error for kicking temporary players
             }
         }
-    }
+    }, null)
 }

@@ -39,8 +39,8 @@ class GiveLevelCommand : Command() {
                 return
             }
 
-            sender.level = sender.level - levels;
-            target.level = target.level + levels;
+            sender.level -= levels
+            target.level += levels
 
             sender.sendMessageUsingKey(
                 Message.EssentialsGiveLevel, mapOf(

@@ -19,10 +19,10 @@
 
 package work.gavenda.yawa.sleep
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Statistic
 import org.bukkit.World
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 
@@ -34,7 +34,7 @@ class SleepAnimationTask(
     private val sleepingWorlds: MutableSet<UUID>
 ) {
 
-    fun run(task: ScheduledTaskCompat) {
+    fun run(task: ScheduledTask) {
         val time = world.time
         val dayTime = 1200
         val timeRate = Config.Sleep.TimeRate
@@ -62,10 +62,11 @@ class SleepAnimationTask(
             // Finish
             task.cancel()
 
-            // Remove later
-            scheduler.runDelayed(plugin, 20 * 10) {
+            val removeSleepingWorld = fun (_: ScheduledTask) {
                 sleepingWorlds.remove(world.uid)
             }
+            // Remove later
+            scheduler.runDelayed(plugin, removeSleepingWorld, 20 * 10)
         }
         // Out of range, keep animating
         else {

@@ -27,12 +27,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.World
 import org.bukkit.entity.Player
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.logger
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.scheduler
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.TimeUnit
 
 /**
  * Simple placeholder API.
@@ -177,36 +172,11 @@ class PlaceholderContext(
     }
 
     private fun providers(): Map<String, Any?> {
-        val playerStringPlaceholders = CompletableFuture<Map<String, String?>>()
-        val playerPlaceholders = CompletableFuture<Map<String, Component?>>()
-        val worldStringPlaceholders = CompletableFuture<Map<String, String?>>()
-        val worldPlaceholders = CompletableFuture<Map<String, Component?>>()
-
-        if (player != null) {
-            player.schedulerCompat.runNow(plugin) {
-                playerPlaceholders.complete(providePlayer())
-                playerStringPlaceholders.complete(providePlayerString())
-            }
-        } else {
-            playerPlaceholders.complete(emptyMap())
-            playerStringPlaceholders.complete(emptyMap())
-        }
-
-        if (world != null) {
-            scheduler.runNow(plugin) {
-                worldPlaceholders.complete(provideWorld())
-                worldStringPlaceholders.complete(provideWorldString())
-            }
-        } else {
-            worldPlaceholders.complete(emptyMap())
-            worldStringPlaceholders.complete(emptyMap())
-        }
-
         return mapOf(
-            *worldStringPlaceholders.get().toList().toTypedArray(),
-            *worldPlaceholders.get().toList().toTypedArray(),
-            *playerStringPlaceholders.get().toList().toTypedArray(),
-            *playerPlaceholders.get().toList().toTypedArray(),
+            *provideWorldString().toList().toTypedArray(),
+            *provideWorld().toList().toTypedArray(),
+            *providePlayerString().toList().toTypedArray(),
+            *providePlayer().toList().toTypedArray(),
         )
     }
 

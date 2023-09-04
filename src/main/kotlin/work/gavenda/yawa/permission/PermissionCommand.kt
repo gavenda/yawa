@@ -54,7 +54,7 @@ class PermissionCommand : Command() {
 class PermissionPlayerCommand : Command() {
     override val permission = Permission.PERMISSION_PLAYER
     override fun execute(sender: CommandSender, args: List<String>) {
-        scheduler.runAtNextTickAsynchronously(plugin) {
+        asyncScheduler.runNow(plugin) {
             if (args.size == 3) {
                 val nameArg = args[0]
                 val permissionArg = args[1]
@@ -97,7 +97,7 @@ class PermissionPlayerCommand : Command() {
 class PermissionGroupCommand : Command() {
     override val permission = Permission.PERMISSION_GROUP
     override fun execute(sender: CommandSender, args: List<String>) {
-        scheduler.runAtNextTickAsynchronously(plugin) {
+        asyncScheduler.runNow(plugin) {
             if (args.size == 3) {
                 val groupNameArg = args[0]
                 val permissionArg = args[1]

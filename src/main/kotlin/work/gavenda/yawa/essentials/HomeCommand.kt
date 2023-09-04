@@ -25,7 +25,6 @@ import org.bukkit.event.player.PlayerTeleportEvent
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.schedulerCompat
 
 class HomeCommand : Command() {
     override val permission = Permission.ESSENTIALS_HOME_TELEPORT
@@ -34,7 +33,7 @@ class HomeCommand : Command() {
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
-        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
+        asyncScheduler.runNow(plugin) {
             transaction {
                 val playerHomeDb = PlayerHomeDb.findById(sender.uniqueId)
 

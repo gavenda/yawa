@@ -21,17 +21,29 @@ package work.gavenda.yawa.login
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
+import net.milkbowl.vault.permission.Permission
+import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.plugin.RegisteredServiceProvider
+import work.gavenda.yawa.vaultPermission
+
 
 class PremiumListener : Listener {
+
+    private val rsp: RegisteredServiceProvider<Permission>? = Bukkit.getServer().servicesManager.getRegistration(
+        Permission::class.java
+    )
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPlayerJoin(event: PlayerJoinEvent) {
         if (event.player.isVerified.not()) return
+
+        vaultPermission.playerAddGroup(null, event.player, "premium")
+
         event.joinMessage(
             event.player.verifiedName
                 .append(Component.text(" joined the game", NamedTextColor.YELLOW))

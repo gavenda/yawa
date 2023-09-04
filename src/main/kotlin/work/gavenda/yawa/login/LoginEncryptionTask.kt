@@ -25,12 +25,12 @@ import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.reflect.FuzzyReflection
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.Converters
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerKickEvent
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.disconnect
 import work.gavenda.yawa.api.isPaperOrFolia
 import work.gavenda.yawa.api.mojang.MojangApi
@@ -54,9 +54,9 @@ class LoginEncryptionTask(
     private val player: Player,
     private val keyPair: KeyPair,
     private val sharedSecret: ByteArray,
-) : Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTask> {
 
-    override fun accept(task: ScheduledTaskCompat) {
+    override fun accept(task: ScheduledTask) {
         val decryptedKey = try {
             MinecraftEncryption.decryptSharedKey(keyPair.private, sharedSecret)
         } catch (ex: GeneralSecurityException) {

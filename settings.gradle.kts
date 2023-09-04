@@ -13,8 +13,8 @@ dependencyResolutionManagement {
         maven(url = "https://repo.dmulloy2.net/repository/public/") {
             name = "dmulloy2-repo"
         }
-        maven(url = "https://m2.dv8tion.net/releases") {
-            name = "jda-releases"
+        maven(url = "https://nexus.scarsz.me/content/groups/public/") {
+            name = "scarsz"
         }
         maven(url = "https://jitpack.io") {
             name = "jitpack"

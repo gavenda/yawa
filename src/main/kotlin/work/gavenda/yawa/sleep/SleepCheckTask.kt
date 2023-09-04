@@ -19,13 +19,12 @@
 
 package work.gavenda.yawa.sleep
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
-import org.bukkit.GameRule
 import org.bukkit.World
 import org.bukkit.event.player.PlayerKickEvent
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 import java.util.function.Consumer
@@ -36,7 +35,7 @@ import kotlin.math.ceil
  */
 class SleepCheckTask(
     private val sleepingWorlds: MutableSet<UUID>
-) : Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTask> {
 
     private fun checkWorld(world: World) {
         val sleepRequired = ceil(world.awakePlayers.size / 2.0)
@@ -66,7 +65,7 @@ class SleepCheckTask(
 
                 val sleepAnimationTask = SleepAnimationTask(world, sleepingWorlds)
 
-                scheduler.runAtFixedRate(plugin, 1, 1, sleepAnimationTask::run)
+                scheduler.runAtFixedRate(plugin, sleepAnimationTask::run, 1, 1)
 
                 // Reset kick seconds
                 world.kickSeconds = 0
@@ -103,7 +102,7 @@ class SleepCheckTask(
                         return
                     }
 
-                    scheduler.runAtNextTick(plugin) {
+                    scheduler.run(plugin) {
                         // Kick awake players
                         world.awakePlayers.forEach { player ->
                             val kickMessage = Placeholders
@@ -116,7 +115,7 @@ class SleepCheckTask(
 
                             player.sleepKicked = true
                             player.kick(kickMessage, PlayerKickEvent.Cause.IDLING)
-                            player.discordAlert(kickAlertMessage)
+                            discordAlert(kickAlertMessage)
                         }
                     }
                 }
@@ -129,7 +128,7 @@ class SleepCheckTask(
         }
     }
 
-    override fun accept(task: ScheduledTaskCompat) {
+    override fun accept(task: ScheduledTask) {
         server.worlds.asSequence()
             // World is not sleeping
             .filter { it.uid !in sleepingWorlds }

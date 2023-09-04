@@ -59,12 +59,8 @@ object ChunkFeature : PluginFeature {
         }
     }
 
-    override fun enableCommands() {
+    override fun registerCommands() {
         plugin.getCommand(Commands.CHUNK)?.setExecutor(chunkCommand)
-    }
-
-    override fun disableCommands() {
-        plugin.getCommand(Commands.CHUNK)?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {

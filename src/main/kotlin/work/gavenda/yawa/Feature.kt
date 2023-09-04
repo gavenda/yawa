@@ -19,30 +19,6 @@
 
 package work.gavenda.yawa
 
-import work.gavenda.yawa.api.isPaperOrFolia
-
-/**
- * Constants for features.
- */
-object Feature {
-    const val NOTIFY = "notify"
-    const val HIDDEN_ARMOR = "hidden-armor"
-    const val DISCORD = "discord"
-    const val CHUNK = "chunk"
-    const val AFK = "afk"
-    const val CHAT = "chat"
-    const val ESSENTIALS = "essentials"
-    const val ENDER = "ender"
-    const val LOGIN = "login"
-    const val PERMISSION = "permission"
-    const val PING = "ping"
-    const val PLAYER_HEAD = "player-head"
-    const val SIT = "sit"
-    const val SKIN = "skin"
-    const val SLEEP = "sleep"
-    const val TAB_LIST = "tab-list"
-}
-
 /**
  * Represents a feature in the plugin.
  */
@@ -71,9 +47,8 @@ interface PluginFeature {
         registerHooks()
         registerPlaceholders()
         registerEventListeners()
-
         registerTasks()
-        enableCommands()
+        registerCommands()
         onEnable()
     }
 
@@ -84,7 +59,6 @@ interface PluginFeature {
         if (disabled) return
 
         onDisable()
-        disableCommands()
         unregisterTasks()
         unregisterEventListeners()
         unregisterPlaceholders()
@@ -107,9 +81,9 @@ interface PluginFeature {
     fun createTables() {}
 
     /**
-     * Enable feature commands.
+     * Register feature commands.
      */
-    fun enableCommands() {}
+    fun registerCommands() {}
 
     /**
      * Register plugin hooks.

@@ -19,9 +19,9 @@
 
 package work.gavenda.yawa.ping
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.latencyInMillis
 import work.gavenda.yawa.server
 import java.util.function.Consumer
@@ -29,8 +29,8 @@ import java.util.function.Consumer
 class PingTask(
     private val scoreboard: Scoreboard,
     private val objective: Objective
-) : Consumer<ScheduledTaskCompat> {
-    override fun accept(task: ScheduledTaskCompat) {
+) : Consumer<ScheduledTask> {
+    override fun accept(task: ScheduledTask) {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {

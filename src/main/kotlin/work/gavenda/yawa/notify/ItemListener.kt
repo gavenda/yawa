@@ -19,6 +19,7 @@
 
 package work.gavenda.yawa.notify
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -32,8 +33,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantInventory
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.capitalizeFully
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -42,10 +41,9 @@ import java.util.concurrent.ConcurrentHashMap
  * Notifier for items.
  */
 class ItemListener : Listener {
-
     private val playerStacks = ConcurrentHashMap<UUID, ConcurrentHashMap<Material, Int>>()
 
-    private val recentLootTask = fun(_: ScheduledTaskCompat) {
+    private val recentLootTask = fun(_: ScheduledTask) {
         playerStacks.forEach { (playerId, loots) ->
             val player = server.getPlayer(playerId)
 
@@ -68,7 +66,7 @@ class ItemListener : Listener {
                     .parse(recentPickupMessage, recentPlaceholderParams)
 
                 player.world.sendMessage(message)
-                player.discordAlert(message)
+                discordAlert(message)
 
                 loots.remove(material)
             }
@@ -100,10 +98,10 @@ class ItemListener : Listener {
                 materialMap.compute(itemStack.type) { _, amount ->
                     (amount ?: 0) + itemStack.amount
                 }
-                player.schedulerCompat.runDelayed(plugin, 20L * Config.Notify.Debounce, recentLootTask)
+                player.scheduler.runDelayed(plugin, recentLootTask, null, 20L * Config.Notify.Debounce)
             } else {
                 player.world.sendMessage(message)
-                player.discordAlert(message)
+                discordAlert(message)
             }
         }
     }

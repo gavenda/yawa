@@ -25,7 +25,7 @@ enum class PluginEnvironment {
 
 val PLUGIN_ENVIRONMENT by lazy {
     try {
-        Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler")
+        Class.forName("io.papermc.paper.threadedregions.RegionizedServer")
         PluginEnvironment.FOLIA
     } catch (e: ClassNotFoundException) {
         try {

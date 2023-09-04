@@ -21,9 +21,13 @@ package work.gavenda.yawa
 
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
+import github.scarsz.discordsrv.DiscordSRV
+import io.papermc.paper.threadedregions.scheduler.AsyncScheduler
+import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler
+import net.dv8tion.jda.api.EmbedBuilder
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextColor
+import net.milkbowl.vault.permission.Permission
 import org.bukkit.Bukkit
 import org.bukkit.Server
 import org.bukkit.command.CommandSender
@@ -31,13 +35,11 @@ import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.PluginManager
-import work.gavenda.yawa.api.compat.CompatSchedulers
-import work.gavenda.yawa.api.compat.SchedulerCompat
+import org.bukkit.plugin.RegisteredServiceProvider
+import work.gavenda.yawa.api.asAwtColor
 import work.gavenda.yawa.api.placeholder.PlaceholderContext
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.toPlainText
-import work.gavenda.yawa.discord.DiscordFeature
-import work.gavenda.yawa.discord.avatarUrl
 import java.util.concurrent.TimeUnit
 
 
@@ -52,9 +54,14 @@ val plugin get() = Yawa.Instance
 val server: Server get() = Bukkit.getServer()
 
 /**
- * Easy access to bukkit's scheduler.
+ * Easy access to the global region scheduler.
  */
-val scheduler: SchedulerCompat get() = CompatSchedulers.globalRegionScheduler
+val scheduler: GlobalRegionScheduler get() = Bukkit.getGlobalRegionScheduler()
+
+/**
+ * Easy access to async scheduler.
+ */
+val asyncScheduler: AsyncScheduler get() = Bukkit.getAsyncScheduler()
 
 /**
  * Easy access to bukkit's plugin manager.
@@ -65,6 +72,20 @@ val pluginManager: PluginManager get() = Bukkit.getPluginManager()
  * Easy access to ProtocolLib protocol manager.
  */
 val protocolManager: ProtocolManager get() = ProtocolLibrary.getProtocolManager()
+
+/**
+ * Returns true if discord srv is enabled.
+ */
+val isDiscordSRVEnabled get() = pluginManager.getPlugin("DiscordSRV") != null
+
+/**
+ * Access vault permission.
+ */
+val vaultPermission by lazy {
+    val rsp = Bukkit.getServer().servicesManager.getRegistration(Permission::class.java)
+    if (rsp?.provider != null) return@lazy rsp.provider
+    throw IllegalStateException("Vault not found!")
+}
 
 /**
  * Convert time unit into minecraft ticks.
@@ -131,10 +152,13 @@ fun CommandSender.sendMessageUsingKey(key: String, params: Map<String, Any?> = m
     }
 }
 
-fun Player.discordAlert(text: String, color: TextColor = NamedTextColor.YELLOW) {
-    DiscordFeature.sendAlert(text, avatarUrl, color)
-}
+fun discordAlert(alert: Component, avatarUrl: String? = null, color: NamedTextColor = NamedTextColor.BLACK) {
+    if (isDiscordSRVEnabled) {
+        val embed = EmbedBuilder()
+            .setAuthor(alert.toPlainText(), null, avatarUrl)
+            .setColor(color.asAwtColor())
+            .build()
 
-fun Player.discordAlert(component: Component, color: TextColor = NamedTextColor.YELLOW) {
-    discordAlert(component.toPlainText(), color)
+        DiscordSRV.getPlugin().getMainTextChannel().sendMessageEmbeds(embed)
+    }
 }

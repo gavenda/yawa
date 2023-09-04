@@ -19,14 +19,14 @@
 
 package work.gavenda.yawa.tablist
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import work.gavenda.yawa.Config
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.server
 import java.util.function.Consumer
 
-class TabListTask : Consumer<ScheduledTaskCompat> {
-    override fun accept(task: ScheduledTaskCompat) {
+class TabListTask : Consumer<ScheduledTask> {
+    override fun accept(task: ScheduledTask) {
         val onlinePlayers = server.onlinePlayers
 
         for (player in onlinePlayers) {

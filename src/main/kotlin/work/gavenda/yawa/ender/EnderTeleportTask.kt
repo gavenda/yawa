@@ -19,11 +19,11 @@
 
 package work.gavenda.yawa.ender
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent
 import work.gavenda.yawa.Message
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.sendMessageUsingKey
 import java.util.*
 import java.util.function.Consumer
@@ -31,8 +31,8 @@ import java.util.function.Consumer
 class EnderTeleportTask(
     private val teleportingPlayers: Queue<Player>,
     private val location: Location
-) : Consumer<ScheduledTaskCompat> {
-    override fun accept(task: ScheduledTaskCompat) {
+) : Consumer<ScheduledTask> {
+    override fun accept(task: ScheduledTask) {
         while (teleportingPlayers.isNotEmpty()) {
             val player = teleportingPlayers.remove()
 

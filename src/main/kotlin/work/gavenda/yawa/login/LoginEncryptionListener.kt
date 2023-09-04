@@ -24,11 +24,8 @@ import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.plugin.Plugin
-import work.gavenda.yawa.Message
-import work.gavenda.yawa.Messages
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.disconnect
-import work.gavenda.yawa.logger
-import work.gavenda.yawa.scheduler
 import java.security.KeyPair
 
 /**
@@ -73,6 +70,6 @@ class LoginEncryptionListener(
 
         packetEvent.asyncMarker.incrementProcessingDelay()
 
-        scheduler.runAtNextTickAsynchronously(plugin, encryptionTask::accept)
+        asyncScheduler.runNow(plugin, encryptionTask::accept)
     }
 }

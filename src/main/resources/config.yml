@@ -22,7 +22,7 @@ permission:
 
 # Essentials feature configuration
 essentials:
-  disabled: true
+  disabled: false
 
 # Ping feature configuration
 ping:
@@ -69,35 +69,9 @@ skin:
 
 # Premium login configuration
 login:
-  disabled: false
+  disabled: true
   use-premium-uuid: true
   strict-names: false
-
-afk:
-  disabled: false
-  seconds: 120
-  player-list-name: "<player-name>"
-  player-list-name-afk: "<player-name> <yellow>AFK</yellow>"
-  messages.enabled: false
-
-discord:
-  disabled: true
-  token: ""
-  server-avatar-url: "https://minions.ddns.net/minecraft/server-icon.png"
-  avatar-url: "https://mineskin.eu/helm/<player-name>.png"
-  guild:
-    id: 672642223942139915
-    channel: 985847790594834452
-    webhook: "Yawa"
-  format:
-    message: "[<aqua><player-name></aqua>] <aqua>»</aqua> "
-
-chat:
-  disabled: false
-  format:
-    message: "[<player-name>] <gold>»</gold> "
-    message-to: "[<light_purple><player-name></light_purple>] <light_purple>«</light_purple> "
-    message-from: "[<light_purple><player-name></light_purple>] <light_purple>»</light_purple> "
 
 notify:
   disabled: false

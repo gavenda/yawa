@@ -19,7 +19,6 @@
 
 package work.gavenda.yawa.ender
 
-import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.entity.EnderDragon
@@ -30,7 +29,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.discord.DiscordFeature
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -85,13 +83,13 @@ class EnderListener(
         val alertMessage = Placeholders.noContext()
             .parseUsingDefaultLocale(Message.EnderBattleAlert)
 
-        DiscordFeature.sendAlert(alertMessage, enderAvatarUrl, NamedTextColor.LIGHT_PURPLE)
+        discordAlert(alertMessage, avatarUrl = enderAvatarUrl)
 
         // Teleport to ender dragon after 5 seconds
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
         val enderTeleportTask = EnderTeleportTask(teleportingPlayers, location)
 
-        scheduler.runDelayed(plugin, secondsInTicks, enderTeleportTask::accept)
+        scheduler.runDelayed(plugin, enderTeleportTask::accept, secondsInTicks)
     }
 
 }

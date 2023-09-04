@@ -21,10 +21,10 @@ package work.gavenda.yawa.login
 
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.WrappedProfilePublicKey.WrappedProfileKeyData
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.api.mojang.MojangApi
 import work.gavenda.yawa.api.mojang.RateLimitException
 import work.gavenda.yawa.api.wrapper.WrapperLoginServerEncryptionBegin
@@ -46,11 +46,11 @@ class LoginConnectionTask(
     private val uuid: Optional<UUID>,
     private val keyPair: KeyPair,
     private val profileKeyData: Optional<WrappedProfileKeyData>
-) : Consumer<ScheduledTaskCompat> {
+) : Consumer<ScheduledTask> {
 
     private val serverId = ""
 
-    override fun accept(task: ScheduledTaskCompat) {
+    override fun accept(task: ScheduledTask) {
         try {
             val uuid = name.minecraftOfflineUuid()
 

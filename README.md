@@ -16,9 +16,9 @@ All code is licensed under [GNU GPLv3](LICENSE).
 - Ping in Scoreboard
 - Tab List Customization
 - Skin Changing
-- AFK System
+- ~~AFK System~~ (Removed in 1.5.0)
 - Premium Login on Offline Mode
-- Discord chat sync
+- ~~Discord chat sync~~ (Removed in 1.5.0)
 - Minimal Permission System w/[Vault](https://github.com/MilkBowl/VaultAPI)
 
 ## Code based on popular plugins

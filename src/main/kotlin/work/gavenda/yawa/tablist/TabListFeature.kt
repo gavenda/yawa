@@ -19,19 +19,19 @@
 
 package work.gavenda.yawa.tablist
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import work.gavenda.yawa.Config
 import work.gavenda.yawa.PluginFeature
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import work.gavenda.yawa.plugin
 import work.gavenda.yawa.scheduler
 
 object TabListFeature : PluginFeature {
     override val disabled get() = Config.TabList.Disabled
 
-    private lateinit var tabListTask: ScheduledTaskCompat
+    private lateinit var tabListTask: ScheduledTask
 
     override fun registerTasks() {
-        tabListTask = scheduler.runAtFixedRate(plugin, 1L, 20L, TabListTask()::accept)
+        tabListTask = scheduler.runAtFixedRate(plugin, TabListTask()::accept, 20, 1)
     }
 
     override fun unregisterTasks() {

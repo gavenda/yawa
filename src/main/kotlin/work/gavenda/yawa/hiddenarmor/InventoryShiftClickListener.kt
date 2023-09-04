@@ -18,13 +18,13 @@
  */
 package work.gavenda.yawa.hiddenarmor
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.PlayerInventory
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 
 class InventoryShiftClickListener : Listener {
@@ -48,9 +48,10 @@ class InventoryShiftClickListener : Listener {
         val isBoots = armorTypeStr.endsWith("_BOOTS") && inventory.boots == null
 
         if (isHelmet || isChestplate || isLeggings || isBoots) {
-            player.schedulerCompat.runAtNextTick(plugin) {
+            val updateTask = fun(_: ScheduledTask) {
                 player.updateHiddenArmorSelf()
             }
+            player.scheduler.run(plugin, updateTask, null)
         }
     }
 }

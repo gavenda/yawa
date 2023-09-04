@@ -18,12 +18,12 @@
  */
 package work.gavenda.yawa.hiddenarmor
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.potion.PotionEffectType
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 
 class PotionEffectListener : Listener {
@@ -33,8 +33,9 @@ class PotionEffectListener : Listener {
         if (event.newEffect?.type != PotionEffectType.INVISIBILITY) return
         val player = event.entity as Player
 
-        player.schedulerCompat.runAtNextTick(plugin) {
+        val updateTask = fun(_: ScheduledTask) {
             player.updateHiddenArmor()
         }
+        player.scheduler.run(plugin, updateTask, null)
     }
 }

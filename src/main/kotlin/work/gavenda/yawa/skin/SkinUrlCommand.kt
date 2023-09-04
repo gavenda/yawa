@@ -25,7 +25,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
 import work.gavenda.yawa.api.applySkin
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.mineskin.MineSkinApi
 import work.gavenda.yawa.api.mineskin.MineSkinTexture
 import work.gavenda.yawa.api.mojang.RateLimitException
@@ -53,7 +52,7 @@ class SkinUrlCommand : Command() {
 
                 sender.sendMessageUsingKey(Message.SkinGenerate)
 
-                sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
+                asyncScheduler.runNow(plugin)  {
                     try {
                         val texture = MineSkinApi.generateTexture(url, slim)
                         applyAndSaveSkin(sender, texture)

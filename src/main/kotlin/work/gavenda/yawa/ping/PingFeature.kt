@@ -19,11 +19,11 @@
 
 package work.gavenda.yawa.ping
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.text.Component
 import org.bukkit.scoreboard.Criteria
 import org.bukkit.scoreboard.DisplaySlot
 import work.gavenda.yawa.*
-import work.gavenda.yawa.api.compat.ScheduledTaskCompat
 import java.util.concurrent.TimeUnit
 
 const val SB_NAME = "ping"
@@ -32,7 +32,7 @@ const val SB_DISPLAY_NAME = "ms"
 object PingFeature : PluginFeature {
     override val disabled get() = Config.Ping.Disabled
 
-    private lateinit var pingTask: ScheduledTaskCompat
+    private lateinit var pingTask: ScheduledTask
 
     private val pingCommand = PingCommand()
 
@@ -45,12 +45,8 @@ object PingFeature : PluginFeature {
         displaySlot = DisplaySlot.PLAYER_LIST
     }
 
-    override fun enableCommands() {
+    override fun registerCommands() {
         plugin.getCommand("ping")?.setExecutor(pingCommand)
-    }
-
-    override fun disableCommands() {
-        plugin.getCommand("ping")?.setExecutor(DisabledCommand)
     }
 
     override fun registerEventListeners() {
@@ -64,7 +60,7 @@ object PingFeature : PluginFeature {
     override fun registerTasks() {
         val secondsInTicks = TimeUnit.SECONDS.toTicks(5)
 
-        pingTask = scheduler.runAtFixedRate(plugin, 1L, secondsInTicks, PingTask(scoreboard, objective)::accept)
+        pingTask = scheduler.runAtFixedRate(plugin, PingTask(scoreboard, objective)::accept, 1L, secondsInTicks)
     }
 
     override fun unregisterTasks() {

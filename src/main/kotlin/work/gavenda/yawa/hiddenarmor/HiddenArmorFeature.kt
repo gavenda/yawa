@@ -59,12 +59,8 @@ object HiddenArmorFeature : PluginFeature {
         protocolManager.removePacketListener(armorOthersPacketListener)
     }
 
-    override fun enableCommands() {
+    override fun registerCommands() {
         plugin.getCommand(Commands.TOGGLE_ARMOR)?.setExecutor(toggleArmorCommand)
-    }
-
-    override fun disableCommands() {
-        plugin.getCommand(Commands.TOGGLE_ARMOR)?.setExecutor(DisabledCommand)
     }
 
     override fun createTables() {

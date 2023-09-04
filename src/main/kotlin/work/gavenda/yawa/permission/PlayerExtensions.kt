@@ -19,9 +19,10 @@
 
 package work.gavenda.yawa.permission
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.api.compat.schedulerCompat
+import work.gavenda.yawa.asyncScheduler
 import work.gavenda.yawa.logger
 import work.gavenda.yawa.plugin
 
@@ -51,7 +52,7 @@ fun Player.calculatePermissions() {
     }
 
     @Suppress("DEPRECATION")
-    schedulerCompat.runAtNextTickAsynchronously(plugin) {
+    asyncScheduler.runNow(plugin) {
         transaction {
             val permissionList = server.pluginManager.plugins
                 .flatMap { it.description.permissions }
@@ -94,11 +95,13 @@ fun Player.calculatePermissions() {
 
             logger.info("Effective permissions: ${attachment.permissions}")
 
-            // Recalculate
-            schedulerCompat.runAtNextTick(plugin) {
+            val recalculateTask = fun(_: ScheduledTask) {
                 recalculatePermissions()
                 updateCommands()
             }
+
+            // Recalculate
+            scheduler.run(plugin, recalculateTask, null)
         }
     }
 }

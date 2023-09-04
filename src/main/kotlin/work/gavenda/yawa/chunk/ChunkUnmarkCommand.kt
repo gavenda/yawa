@@ -20,20 +20,16 @@ package work.gavenda.yawa.chunk
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import work.gavenda.yawa.Message
-import work.gavenda.yawa.Permission
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.api.placeholder.Placeholders
-import work.gavenda.yawa.parseWithLocale
-import work.gavenda.yawa.plugin
 
 class ChunkUnmarkCommand : Command() {
     override val permission = Permission.CHUNK_UNMARK
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
-        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
+        asyncScheduler.runNow(plugin) {
             updateChunkMark(sender.location, false)
             sender.sendMessage(
                 Placeholders.withContext(sender)

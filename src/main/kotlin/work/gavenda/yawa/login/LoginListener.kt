@@ -117,6 +117,6 @@ class LoginListener(
             profileKeyData = profileKeyData
         )
 
-        scheduler.runAtNextTickAsynchronously(plugin, loginConnectionTask::accept)
+        asyncScheduler.runNow(plugin, loginConnectionTask::accept)
     }
 }

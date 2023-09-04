@@ -18,11 +18,11 @@
  */
 package work.gavenda.yawa.hiddenarmor
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerGameModeChangeEvent
-import work.gavenda.yawa.api.compat.schedulerCompat
 import work.gavenda.yawa.plugin
 
 class GameModeListener : Listener {
@@ -34,9 +34,10 @@ class GameModeListener : Listener {
             event.player.updateHiddenArmor()
             HiddenArmorFeature.removeIgnoredPlayer(event.player)
         } else {
-            event.player.schedulerCompat.runAtNextTick(plugin) {
+            val updateTask = fun(_: ScheduledTask) {
                 event.player.updateHiddenArmor()
             }
+            event.player.scheduler.run(plugin, updateTask, null)
         }
     }
 }

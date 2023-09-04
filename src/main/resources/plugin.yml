@@ -8,33 +8,27 @@ version: ${project.version}
 folia-supported: true
 main: work.gavenda.yawa.Yawa
 load: STARTUP
-loadbefore:
-  - Vault
 softdepend:
-  - Vault
+  - DiscordSRV
 depend:
+  - Vault
   - ProtocolLib
 libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
-  - org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1
-  - org.jetbrains.kotlin:kotlin-reflect:1.8.21
-  - org.jetbrains.exposed:exposed-core:0.41.1
-  - org.jetbrains.exposed:exposed-dao:0.41.1
-  - org.jetbrains.exposed:exposed-jdbc:0.41.1
-  - org.jetbrains.exposed:exposed-java-time:0.41.1
+  - org.jetbrains.kotlin:kotlin-stdlib:1.9.0
+  - org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0
+  - org.jetbrains.kotlin:kotlin-reflect:1.9.0
+  - org.jetbrains.exposed:exposed-core:0.43.0
+  - org.jetbrains.exposed:exposed-dao:0.43.0
+  - org.jetbrains.exposed:exposed-jdbc:0.43.0
+  - org.jetbrains.exposed:exposed-java-time:0.43.0
   - com.zaxxer:HikariCP:5.0.1
-  - net.dv8tion:JDA:5.0.0-beta.2
-  - com.fasterxml.jackson.core:jackson-annotations:2.14.1
-  - club.minnced:discord-webhooks:0.8.0
+  - net.dv8tion:JDA:5.0.0-beta.13
+  - club.minnced:discord-webhooks:0.8.4
 commands:
   placeholders:
     description: Lists all available placeholders.
     permission: yawa.api.placeholder
     usage: /placeholders
-  afk:
-    description: Toggles being AFK. (Away from Keyboard)
-    permission: yawa.afk
-    usage: /<command>
   togglearmor:
     description: Toggle armor visibility.
     permission: yawa.hidden-armor.toggle
@@ -51,14 +45,6 @@ commands:
   yawa:
     description: Plugin root command.
     usage: /<command> <subcommands>
-  whisper:
-    description: Send a whisper to a player.
-    usage: /<command> <player> <message>
-    aliases: [ w, msg, tell ]
-  reply:
-    description: Reply to a whisper from a player.
-    usage: /<command> <message>
-    aliases: [ r ]
   chunk:
     description: Manages the current chunk.
     usage: /<command>
@@ -104,8 +90,6 @@ permissions:
     children:
       yawa.reload: true
       yawa.ping: true
-      yawa.feature: true
-      yawa.afk: true
       yawa.permission.*: true
       yawa.hidden-armor.*: true
       yawa.skin.*: true
@@ -123,12 +107,6 @@ permissions:
   yawa.reload:
     description: Permission to reload the plugin.
     default: op
-  yawa.feature:
-    description: Permission to toggle plugin features.
-    default: op
-  yawa.afk:
-    description: Permission to shown as away from keyboard.
-    default: true
   yawa.skin.*:
     description: Gives access to all skin commands.
     children:
@@ -179,25 +157,25 @@ permissions:
       yawa.essentials.give.level: true
   yawa.essentials.home.teleport:
     description: Permission to teleport home.
-    default: true
+    default: false
   yawa.essentials.home.set:
     description: Permission to set home.
-    default: true
+    default: false
   yawa.essentials.teleport.spawn:
     description: Permission to teleport to world spawn.
-    default: true
+    default: false
   yawa.essentials.teleport.death:
     description: Permission to teleport to death location.
-    default: true
+    default: false
   yawa.essentials.warp.teleport:
     description: Permission to warp to specified location.
-    default: true
+    default: false
   yawa.essentials.warp.set:
     description: Permission to set a warp location.
-    default: true
+    default: false
   yawa.essentials.warp.delete:
     description: Permission to delete a warp location.
-    default: true
+    default: false
   yawa.essentials.give.level:
     description: Permission to give a certain amount of levels.
-    default: true
+    default: false

@@ -21,12 +21,8 @@ package work.gavenda.yawa.essentials
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
-import work.gavenda.yawa.Message
-import work.gavenda.yawa.Permission
+import work.gavenda.yawa.*
 import work.gavenda.yawa.api.Command
-import work.gavenda.yawa.api.compat.schedulerCompat
-import work.gavenda.yawa.plugin
-import work.gavenda.yawa.sendMessageUsingKey
 
 class HomeSetCommand : Command() {
     override val permission = Permission.ESSENTIALS_HOME_SET
@@ -35,7 +31,7 @@ class HomeSetCommand : Command() {
     override fun execute(sender: CommandSender, args: List<String>) {
         if (sender !is Player) return
 
-        sender.schedulerCompat.runAtNextTickAsynchronously(plugin) {
+        asyncScheduler.runNow(plugin) {
             transaction {
                 val playerHome = PlayerHomeDb.findById(sender.uniqueId) ?: PlayerHomeDb.new(sender.uniqueId) {}
 

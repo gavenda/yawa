@@ -27,7 +27,6 @@ import net.milkbowl.vault.permission.Permission
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.jetbrains.exposed.sql.Database
-import work.gavenda.yawa.afk.AfkFeature
 import work.gavenda.yawa.api.isFolia
 import work.gavenda.yawa.api.isPaperOrFolia
 import work.gavenda.yawa.api.placeholder.PlaceholderCommand
@@ -35,9 +34,7 @@ import work.gavenda.yawa.api.placeholder.Placeholders
 import work.gavenda.yawa.api.placeholder.provider.PlayerPlaceholderProvider
 import work.gavenda.yawa.api.placeholder.provider.ServerPlaceholderProvider
 import work.gavenda.yawa.api.placeholder.provider.WorldPlaceholderProvider
-import work.gavenda.yawa.chat.ChatFeature
 import work.gavenda.yawa.chunk.ChunkFeature
-import work.gavenda.yawa.discord.DiscordFeature
 import work.gavenda.yawa.ender.EnderFeature
 import work.gavenda.yawa.essentials.EssentialsFeature
 import work.gavenda.yawa.hiddenarmor.HiddenArmorFeature
@@ -51,7 +48,6 @@ import work.gavenda.yawa.skin.SkinFeature
 import work.gavenda.yawa.sleep.SleepFeature
 import work.gavenda.yawa.tablist.TabListFeature
 
-
 /**
  * Yawa plugin entry point.
  */
@@ -62,7 +58,6 @@ class Yawa : JavaPlugin() {
     private var safeLoad = false
     private val rootCommand = RootCommand().apply {
         sub(ReloadCommand(), "reload")
-        sub(FeatureCommand(), "feature")
     }
     private val placeholderCommand = PlaceholderCommand()
 
@@ -87,9 +82,6 @@ class Yawa : JavaPlugin() {
         // Listen to POST-server startup, required for some features
         server.pluginManager.registerEvents(startupListener, this)
         // Enable features
-        AfkFeature.enable()
-        ChatFeature.enable()
-        DiscordFeature.enable()
         EnderFeature.enable()
         EssentialsFeature.enable()
         HiddenArmorFeature.enable()
@@ -125,10 +117,7 @@ class Yawa : JavaPlugin() {
         unregisterRootCommand()
 
         // Disable features
-        AfkFeature.disable()
-        ChatFeature.disable()
         ChunkFeature.disable()
-        DiscordFeature.disable()
         EnderFeature.disable()
         EssentialsFeature.disable()
         HiddenArmorFeature.disable()
