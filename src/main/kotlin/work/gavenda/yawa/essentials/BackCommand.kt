@@ -37,6 +37,7 @@ class BackCommand : Command() {
         if (lastDeathLocation != null) {
             sender.teleportAsync(lastDeathLocation, PlayerTeleportEvent.TeleportCause.COMMAND).thenAccept {
                 sender.sendMessageUsingKey(Message.EssentialsTeleportDeath)
+                sender.lastDeathLocation = null
             }
         } else {
             sender.sendMessageUsingKey(Message.EssentialsTeleportErrorNoDeath)
